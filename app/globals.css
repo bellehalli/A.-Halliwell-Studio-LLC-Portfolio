@@ -1196,3 +1196,52 @@ html { scroll-behavior:smooth; scroll-padding-top:92px; }
  *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
  .project-sheet:hover .asset-slot::before { background-position:center top; }
 }
+
+/* SPRINT 4: real media states, case studies, accessibility */
+:focus-visible { outline:3px solid #7b3fc7; outline-offset:4px; }
+button:focus-visible, a:focus-visible { border-radius:8px; }
+.project-links { display:flex; flex-wrap:wrap; gap:12px 22px; margin-top:8px; }
+.project-links a { font-family:var(--font-mono),monospace; font-size:11px; font-weight:700; text-transform:uppercase; text-underline-offset:5px; }
+.asset-slot > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; opacity:0; transition:opacity .3s ease, object-position 5s ease; }
+.asset-slot.has-project-image > img { opacity:1; }
+.project-sheet:hover .asset-slot.has-project-image > img { object-position:center bottom; }
+.asset-slot::before { display:none !important; }
+.phone-card > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; opacity:0; }
+.phone-card.has-project-image > img { opacity:1; }
+.case-page { padding:1px 0 34px; }
+.case-nav { margin-top:22px; min-height:72px; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:20px; border:1px solid rgba(13,11,13,.16); border-radius:999px; background:rgba(255,248,239,.9); backdrop-filter:blur(16px); position:relative; z-index:5; }
+.case-nav > a:not(.logo) { font-family:var(--font-mono),monospace; font-size:10px; font-weight:700; text-transform:uppercase; }
+.case-sheet { width:min(1380px,calc(100% - 54px)); margin:28px auto 0; border-radius:32px; overflow:hidden; background:#fff8ef; box-shadow:0 22px 55px rgba(64,29,48,.16); }
+.case-sheet.project-maison { background:#171317; color:#fff8ef; }
+.case-hero { padding:clamp(60px,8vw,120px) clamp(24px,7vw,100px) 50px; }
+.case-index { display:flex; justify-content:space-between; gap:24px; font-family:var(--font-mono),monospace; font-size:10px; text-transform:uppercase; }
+.case-hero h1 { margin:36px 0 18px; font-family:var(--font-editorial),Georgia,serif; font-size:clamp(72px,11vw,160px); line-height:.8; letter-spacing:-.07em; }
+.case-hero > p { max-width:720px; font-size:clamp(18px,2vw,26px); line-height:1.35; }
+.case-sheet > .device-composition { width:min(1120px,calc(100% - 48px)); margin:0 auto; padding-bottom:70px; }
+.case-story { display:grid; grid-template-columns:1fr 1fr; gap:70px; padding:clamp(55px,7vw,100px); border-top:1px solid currentColor; }
+.case-story small,.case-end small { font-family:var(--font-mono),monospace; font-weight:700; }
+.case-story h2,.case-end h2 { font-family:var(--font-editorial),Georgia,serif; font-size:clamp(42px,5vw,72px); line-height:.9; letter-spacing:-.05em; }
+.case-story p { max-width:620px; font-size:17px; line-height:1.7; }
+.case-approach { margin-top:28px; border-top:1px solid currentColor; }
+.case-approach > div { display:grid; grid-template-columns:48px 1fr; gap:16px; padding:18px 0; border-bottom:1px solid currentColor; }
+.case-approach span { font-family:var(--font-mono),monospace; font-size:10px; }
+.case-capabilities { grid-column:1/-1; }
+.case-capabilities > div { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+.case-capabilities span { padding:10px 14px; border:1px solid currentColor; border-radius:999px; font-family:var(--font-mono),monospace; font-size:10px; text-transform:uppercase; }
+.case-end { padding:70px 24px 90px; text-align:center; border-top:1px solid currentColor; }
+.case-end img { margin:auto; }
+.case-end h2 { margin:16px auto 28px; }
+@media (max-width:760px){
+ .case-nav { width:calc(100% - 24px); margin-top:12px; border-radius:22px; }
+ .case-nav .logo > span:last-child { display:none; }
+ .case-sheet { width:calc(100% - 24px); margin-top:12px; border-radius:22px; }
+ .case-index { flex-direction:column; gap:7px; }
+ .case-story { grid-template-columns:1fr; gap:45px; padding:50px 22px; }
+ .case-capabilities { grid-column:auto; }
+ .case-sheet > .device-composition { width:calc(100% - 32px); }
+ .project-links { flex-direction:column; }
+}
+@media (prefers-reduced-motion:reduce){
+ .asset-slot > img { transition:none; }
+ .project-sheet:hover .asset-slot.has-project-image > img { object-position:center top; }
+}
