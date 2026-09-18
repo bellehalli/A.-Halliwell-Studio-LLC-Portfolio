@@ -24,7 +24,7 @@ export default function Home() {
       <section className="hero shell">
         <div className="eyebrow">
           <span className="status-dot" aria-hidden="true" />
-          Independent creative development studio
+          <span>Independent creative<br />development studio</span>
         </div>
 
         <Image
@@ -37,15 +37,6 @@ export default function Home() {
         />
 
         <Image
-          className="hero-object hero-flower"
-          src="/flower-icon.png"
-          alt=""
-          width={150}
-          height={150}
-          priority
-        />
-
-        <Image
           className="hero-object hero-sparkle"
           src="/sparkle.png"
           alt=""
@@ -54,23 +45,25 @@ export default function Home() {
           priority
         />
 
-        <h1 className="hero-title">
-          WEBSITES
-          <br />
-          WITH <em>PERSONALITY.</em>
-        </h1>
+        <div className="hero-title-wrap">
+          <h1 className="hero-title">
+            <span className="hero-editorial">Websites</span>
+            <span className="hero-editorial hero-with">With</span>
+            <span className="hero-princess">
+              Personality<span className="title-heart" aria-hidden="true">♥</span>
+            </span>
+          </h1>
+        </div>
 
         <div className="hero-bottom">
           <p className="hero-description">
-            Custom digital experiences designed around how your business
-            actually works.
+            Custom digital experiences designed around how your business actually works.
           </p>
 
           <div className="hero-actions">
             <a className="button button-primary" href="#work">
-              View the work ↘
+              View the work ↗
             </a>
-
             <a className="button" href="#start">
               Start a project ↗
             </a>
@@ -80,10 +73,18 @@ export default function Home() {
 
       <div className="hero-strip" aria-label="Studio capabilities">
         <div className="hero-strip-track">
-          STRATEGY ✦ UX ✦ WEB DESIGN ✦ DEVELOPMENT ✦ INTERACTIVE SYSTEMS ✦
-          COMMERCE ✦ BOOKING ✦ HOSPITALITY ✦ STRATEGY ✦ UX ✦ WEB DESIGN ✦
-          DEVELOPMENT ✦ INTERACTIVE SYSTEMS ✦ COMMERCE ✦ BOOKING ✦
-          HOSPITALITY ✦
+          <span>WEB DESIGN</span><b>✦</b>
+          <span>DEVELOPMENT</span><b>✦</b>
+          <span>INTERACTIVE SYSTEMS</span><b>✦</b>
+          <span>COMMERCE</span><b>✦</b>
+          <span>BRAND EXPERIENCES</span><b>✦</b>
+          <span>ONGOING SUPPORT</span><b>✦</b>
+          <span>WEB DESIGN</span><b>✦</b>
+          <span>DEVELOPMENT</span><b>✦</b>
+          <span>INTERACTIVE SYSTEMS</span><b>✦</b>
+          <span>COMMERCE</span><b>✦</b>
+          <span>BRAND EXPERIENCES</span><b>✦</b>
+          <span>ONGOING SUPPORT</span><b>✦</b>
         </div>
       </div>
 
