@@ -14,9 +14,43 @@ const services = [
   ["06", "Studio Support", "Continued refinement, maintenance and new capabilities after launch."],
 ];
 
+const studioSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://ahalliwellstudio.com/#studio",
+  name: "A. Halliwell Studio",
+  url: "https://ahalliwellstudio.com",
+  description:
+    "Independent creative web design and development studio building custom websites, digital experiences, booking systems, e-commerce experiences, and business systems.",
+  areaServed: [
+    {
+      "@type": "Country",
+      name: "United States",
+    },
+  ],
+  serviceType: [
+    "Web Design",
+    "Web Development",
+    "Digital Strategy",
+    "Experience Design",
+    "Custom Development",
+    "E-Commerce",
+    "Booking Systems",
+    "Business Systems",
+    "Website Support",
+  ],
+};
+
 export default function Home() {
   return (
     <main id="top">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(studioSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <div className="site-background" aria-hidden="true" />
       <Navigation />
 
