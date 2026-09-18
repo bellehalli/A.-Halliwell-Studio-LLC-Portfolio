@@ -1,16 +1,8 @@
 "use client";
 
-import {
-  FormEvent,
-  useMemo,
-  useState,
-} from "react";
+import { FormEvent, useMemo, useState } from "react";
 
-type Status =
-  | "idle"
-  | "sending"
-  | "success"
-  | "error";
+type Status = "idle" | "sending" | "success" | "error";
 
 const projectTypes = [
   "A new website",
@@ -50,72 +42,33 @@ const investmentOptions = [
 ];
 
 export default function StartProject() {
-  const [projectType, setProjectType] =
-    useState("");
-
-  const [needs, setNeeds] = useState<string[]>(
-    []
-  );
-
+  const [projectType, setProjectType] = useState("");
+  const [needs, setNeeds] = useState<string[]>([]);
   const [timing, setTiming] = useState("");
-
-  const [investment, setInvestment] =
-    useState("");
-
+  const [investment, setInvestment] = useState("");
   const [name, setName] = useState("");
-
   const [email, setEmail] = useState("");
-
   const [business, setBusiness] = useState("");
-
   const [message, setMessage] = useState("");
-
   const [website, setWebsite] = useState("");
-
-  const [status, setStatus] =
-    useState<Status>("idle");
-
+  const [status, setStatus] = useState<Status>("idle");
   const [feedback, setFeedback] = useState("");
 
   const brief = useMemo(() => {
-    if (
-      !projectType &&
-      !needs.length &&
-      !timing &&
-      !investment
-    ) {
-      return "";
-    }
-
     return [
-      projectType
-        ? `Project: ${projectType}`
-        : null,
-      needs.length
-        ? `Needs: ${needs.join(", ")}`
-        : null,
-      timing
-        ? `Timing: ${timing}`
-        : null,
-      investment
-        ? `Investment: ${investment}`
-        : null,
+      projectType ? `Project: ${projectType}` : null,
+      needs.length ? `Needs: ${needs.join(", ")}` : null,
+      timing ? `Timing: ${timing}` : null,
+      investment ? `Investment: ${investment}` : null,
     ]
       .filter(Boolean)
       .join("\n");
-  }, [
-    projectType,
-    needs,
-    timing,
-    investment,
-  ]);
+  }, [projectType, needs, timing, investment]);
 
   const toggleNeed = (need: string) => {
     setNeeds((current) =>
       current.includes(need)
-        ? current.filter(
-            (item) => item !== need
-          )
+        ? current.filter((item) => item !== need)
         : [...current, need]
     );
   };
@@ -157,34 +110,29 @@ export default function StartProject() {
     setFeedback("");
 
     try {
-      const response = await fetch(
-        "/api/inquiry",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            business,
-            projectType,
-            needs,
-            timing,
-            investment,
-            message,
-            website,
-          }),
-        }
-      );
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          business,
+          projectType,
+          needs,
+          timing,
+          investment,
+          message,
+          website,
+        }),
+      });
 
       const result = await response.json();
 
       if (!response.ok || !result.success) {
         throw new Error(
-          result.message ||
-            "Your inquiry could not be sent."
+          result.message || "Your inquiry could not be sent."
         );
       }
 
@@ -193,10 +141,7 @@ export default function StartProject() {
         "Your project is officially in my inbox. I'll be in touch soon. ♥"
       );
     } catch (error) {
-      console.error(
-        "Inquiry submission error:",
-        error
-      );
+      console.error("Inquiry submission error:", error);
 
       setStatus("error");
       setFeedback(
@@ -205,356 +150,326 @@ export default function StartProject() {
     }
   };
 
-  if (status === "success") {
-    return (
-      <section
-        className="start-project"
-        id="start"
-      >
-        <div className="start-project-success">
-          <span className="start-kicker">
-            INQUIRY RECEIVED
-          </span>
-
-          <div
-            className="start-success-heart"
-            aria-hidden="true"
-          >
-            ♥
-          </div>
-
-          <h2>
-            It's officially
-            <br />
-            in my inbox.
-          </h2>
-
-          <p>{feedback}</p>
-
-          <div className="start-success-summary">
-            <span>PROJECT</span>
-            <strong>{projectType}</strong>
-
-            <span>INVESTMENT</span>
-            <strong>{investment}</strong>
-
-            <span>TIMING</span>
-            <strong>{timing}</strong>
-          </div>
-
-          <button
-            type="button"
-            className="button button-primary"
-            onClick={resetForm}
-          >
-            Start another project ↗
-          </button>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section
-      className="start-project"
-      id="start"
-    >
-      <div className="start-project-header">
-        <span className="start-kicker">
-          START A PROJECT
-        </span>
+    <section className="sheet start-sheet" id="start">
+      <div className="start-project">
+        {status === "success" ? (
+          <div className="start-project-success">
+            <span className="start-kicker">
+              INQUIRY RECEIVED
+            </span>
 
-        <h2>
-          Okay, tell me
-          <br />
-          what we're building.
-        </h2>
-
-        <p>
-          A few quick questions give me enough
-          context to understand the project before
-          we ever get on a call.
-        </p>
-      </div>
-
-      <form
-        className="project-builder"
-        onSubmit={handleSubmit}
-      >
-        <fieldset className="builder-step">
-          <legend>
-            <span>01</span>
-            What are we making?
-          </legend>
-
-          <div className="builder-options">
-            {projectTypes.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={
-                  projectType === option
-                    ? "selected"
-                    : ""
-                }
-                aria-pressed={
-                  projectType === option
-                }
-                onClick={() =>
-                  setProjectType(option)
-                }
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset className="builder-step">
-          <legend>
-            <span>02</span>
-            What does it need to do?
-          </legend>
-
-          <p className="builder-hint">
-            Choose as many as you need.
-          </p>
-
-          <div className="builder-options">
-            {projectNeeds.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={
-                  needs.includes(option)
-                    ? "selected"
-                    : ""
-                }
-                aria-pressed={needs.includes(
-                  option
-                )}
-                onClick={() =>
-                  toggleNeed(option)
-                }
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset className="builder-step">
-          <legend>
-            <span>03</span>
-            What's the timing?
-          </legend>
-
-          <div className="builder-options">
-            {timingOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={
-                  timing === option
-                    ? "selected"
-                    : ""
-                }
-                aria-pressed={
-                  timing === option
-                }
-                onClick={() =>
-                  setTiming(option)
-                }
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset className="builder-step">
-          <legend>
-            <span>04</span>
-            What investment are you planning for?
-          </legend>
-
-          <div className="builder-options">
-            {investmentOptions.map(
-              (option) => (
-                <button
-                  key={option}
-                  type="button"
-                  className={
-                    investment === option
-                      ? "selected"
-                      : ""
-                  }
-                  aria-pressed={
-                    investment === option
-                  }
-                  onClick={() =>
-                    setInvestment(option)
-                  }
-                >
-                  {option}
-                </button>
-              )
-            )}
-          </div>
-        </fieldset>
-
-        <fieldset className="builder-step builder-contact">
-          <legend>
-            <span>05</span>
-            And who am I talking to?
-          </legend>
-
-          <div className="builder-fields">
-            <label>
-              <span>
-                Your name
-                <b aria-hidden="true">*</b>
-              </span>
-
-              <input
-                type="text"
-                name="name"
-                value={name}
-                onChange={(event) =>
-                  setName(event.target.value)
-                }
-                autoComplete="name"
-                maxLength={100}
-                required
-                placeholder="Your name"
-              />
-            </label>
-
-            <label>
-              <span>
-                Email
-                <b aria-hidden="true">*</b>
-              </span>
-
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
-                autoComplete="email"
-                maxLength={254}
-                required
-                placeholder="you@business.com"
-              />
-            </label>
-
-            <label>
-              <span>
-                Business or brand
-              </span>
-
-              <input
-                type="text"
-                name="business"
-                value={business}
-                onChange={(event) =>
-                  setBusiness(
-                    event.target.value
-                  )
-                }
-                autoComplete="organization"
-                maxLength={150}
-                placeholder="Business name"
-              />
-            </label>
-
-            <label className="builder-message">
-              <span>
-                Anything else I should know?
-              </span>
-
-              <textarea
-                name="message"
-                value={message}
-                onChange={(event) =>
-                  setMessage(
-                    event.target.value
-                  )
-                }
-                maxLength={3000}
-                rows={6}
-                placeholder="Tell me about the business, the problem, the dream, the weird idea..."
-              />
-            </label>
-
-            <label
-              className="builder-honeypot"
+            <div
+              className="start-success-heart"
               aria-hidden="true"
             >
-              Website
-              <input
-                type="text"
-                name="website"
-                value={website}
-                onChange={(event) =>
-                  setWebsite(
-                    event.target.value
-                  )
-                }
-                tabIndex={-1}
-                autoComplete="off"
-              />
-            </label>
-          </div>
-        </fieldset>
+              ♥
+            </div>
 
-        {brief && (
-          <div className="builder-brief">
-            <span>YOUR PROJECT BRIEF</span>
+            <h2>
+              It's officially
+              <br />
+              in my inbox.
+            </h2>
 
-            <pre>{brief}</pre>
+            <p>{feedback}</p>
+
+            <div className="start-success-summary">
+              <span>PROJECT</span>
+              <strong>{projectType}</strong>
+
+              <span>INVESTMENT</span>
+              <strong>{investment}</strong>
+
+              <span>TIMING</span>
+              <strong>{timing}</strong>
+            </div>
+
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={resetForm}
+            >
+              Start another project ↗
+            </button>
           </div>
+        ) : (
+          <>
+            <div className="start-project-header">
+              <div>
+                <span className="start-kicker">
+                  05 / START A PROJECT
+                </span>
+
+                <h2>
+                  Okay, tell me
+                  <br />
+                  what we're building.
+                </h2>
+              </div>
+
+              <p>
+                A few quick questions give me enough
+                context to understand the project before
+                we ever get on a call.
+              </p>
+            </div>
+
+            <form
+              className="project-builder"
+              onSubmit={handleSubmit}
+            >
+              <fieldset className="builder-step">
+                <legend>
+                  <span>01</span>
+                  What are we making?
+                </legend>
+
+                <div className="builder-options">
+                  {projectTypes.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={
+                        projectType === option
+                          ? "selected"
+                          : ""
+                      }
+                      aria-pressed={projectType === option}
+                      onClick={() => setProjectType(option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="builder-step">
+                <legend>
+                  <span>02</span>
+                  What does it need to do?
+                </legend>
+
+                <p className="builder-hint">
+                  Choose as many as you need.
+                </p>
+
+                <div className="builder-options">
+                  {projectNeeds.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={
+                        needs.includes(option)
+                          ? "selected"
+                          : ""
+                      }
+                      aria-pressed={needs.includes(option)}
+                      onClick={() => toggleNeed(option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className="builder-split">
+                <fieldset className="builder-step">
+                  <legend>
+                    <span>03</span>
+                    What's the timing?
+                  </legend>
+
+                  <div className="builder-options">
+                    {timingOptions.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        className={
+                          timing === option
+                            ? "selected"
+                            : ""
+                        }
+                        aria-pressed={timing === option}
+                        onClick={() => setTiming(option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <fieldset className="builder-step">
+                  <legend>
+                    <span>04</span>
+                    What's the investment?
+                  </legend>
+
+                  <div className="builder-options">
+                    {investmentOptions.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        className={
+                          investment === option
+                            ? "selected"
+                            : ""
+                        }
+                        aria-pressed={
+                          investment === option
+                        }
+                        onClick={() =>
+                          setInvestment(option)
+                        }
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
+
+              <fieldset className="builder-step builder-contact">
+                <legend>
+                  <span>05</span>
+                  And who am I talking to?
+                </legend>
+
+                <div className="builder-fields">
+                  <label>
+                    <span>
+                      Your name <b>*</b>
+                    </span>
+
+                    <input
+                      type="text"
+                      name="name"
+                      value={name}
+                      onChange={(event) =>
+                        setName(event.target.value)
+                      }
+                      autoComplete="name"
+                      maxLength={100}
+                      required
+                      placeholder="Your name"
+                    />
+                  </label>
+
+                  <label>
+                    <span>
+                      Email <b>*</b>
+                    </span>
+
+                    <input
+                      type="email"
+                      name="email"
+                      value={email}
+                      onChange={(event) =>
+                        setEmail(event.target.value)
+                      }
+                      autoComplete="email"
+                      maxLength={254}
+                      required
+                      placeholder="you@business.com"
+                    />
+                  </label>
+
+                  <label>
+                    <span>Business or brand</span>
+
+                    <input
+                      type="text"
+                      name="business"
+                      value={business}
+                      onChange={(event) =>
+                        setBusiness(event.target.value)
+                      }
+                      autoComplete="organization"
+                      maxLength={150}
+                      placeholder="Business name"
+                    />
+                  </label>
+
+                  <label className="builder-message">
+                    <span>
+                      Anything else I should know?
+                    </span>
+
+                    <textarea
+                      name="message"
+                      value={message}
+                      onChange={(event) =>
+                        setMessage(event.target.value)
+                      }
+                      maxLength={3000}
+                      rows={6}
+                      placeholder="Tell me about the business, the problem, the dream, the weird idea..."
+                    />
+                  </label>
+
+                  <label
+                    className="builder-honeypot"
+                    aria-hidden="true"
+                  >
+                    Website
+                    <input
+                      type="text"
+                      name="website"
+                      value={website}
+                      onChange={(event) =>
+                        setWebsite(event.target.value)
+                      }
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </label>
+                </div>
+              </fieldset>
+
+              {brief && (
+                <div className="builder-brief">
+                  <span>YOUR PROJECT BRIEF</span>
+                  <pre>{brief}</pre>
+                </div>
+              )}
+
+              <div className="builder-submit">
+                <div>
+                  <small>READY WHEN YOU ARE</small>
+                  <p>
+                    Your answers come directly to
+                    A. Halliwell Studio.
+                  </p>
+                </div>
+
+                <button
+                  type="submit"
+                  className="button button-primary"
+                  disabled={status === "sending"}
+                >
+                  {status === "sending"
+                    ? "Sending..."
+                    : "Send my project ↗"}
+                </button>
+              </div>
+
+              {feedback && status === "error" && (
+                <p
+                  className="builder-feedback builder-error"
+                  role="alert"
+                >
+                  {feedback}
+                </p>
+              )}
+
+              <p className="builder-privacy">
+                Your information is used only to respond
+                to your project inquiry.
+              </p>
+            </form>
+          </>
         )}
-
-        <div className="builder-submit">
-          <div>
-            <small>
-              READY WHEN YOU ARE
-            </small>
-
-            <p>
-              This sends your project details
-              directly to A. Halliwell Studio.
-            </p>
-          </div>
-
-          <button
-            type="submit"
-            className="button button-primary"
-            disabled={status === "sending"}
-          >
-            {status === "sending"
-              ? "Sending..."
-              : "Send my project ↗"}
-          </button>
-        </div>
-
-        {feedback && status === "error" && (
-          <p
-            className="builder-feedback builder-error"
-            role="alert"
-          >
-            {feedback}
-          </p>
-        )}
-
-        <p className="builder-privacy">
-          Your information is used only to respond
-          to your project inquiry.
-        </p>
-      </form>
+      </div>
     </section>
   );
 }
