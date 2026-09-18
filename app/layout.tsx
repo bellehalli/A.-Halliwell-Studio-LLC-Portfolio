@@ -6,36 +6,37 @@ import {
   Parisienne,
   Space_Mono,
 } from "next/font/google";
+
 import "./globals.css";
 
-const editorial = Fraunces({
+const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-editorial",
   display: "swap",
 });
 
-const princess = Parisienne({
-  subsets: ["latin"],
+const parisienne = Parisienne({
   weight: "400",
+  subsets: ["latin"],
   variable: "--font-princess",
   display: "swap",
 });
 
-const fashion = Bodoni_Moda({
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
   variable: "--font-fashion",
   display: "swap",
 });
 
-const sans = Inter({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const mono = Space_Mono({
-  subsets: ["latin"],
+const spaceMono = Space_Mono({
   weight: ["400", "700"],
+  subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -82,13 +83,6 @@ export const metadata: Metadata = {
     },
   },
 };
-  title: {
-    default: "A. Halliwell Studio",
-    template: "%s | A. Halliwell Studio",
-  },
-  description:
-    "Independent creative web design and development studio creating custom digital experiences designed around how your business actually works.",
-};
 
 export default function RootLayout({
   children,
@@ -96,12 +90,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${editorial.variable} ${princess.variable} ${fashion.variable} ${sans.variable} ${mono.variable}`}
-      >
-        {children}
-      </body>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${parisienne.variable} ${bodoni.variable} ${inter.variable} ${spaceMono.variable}`}
+    >
+      <body>{children}</body>
     </html>
   );
 }
