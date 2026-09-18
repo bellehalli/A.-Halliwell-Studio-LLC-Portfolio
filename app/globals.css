@@ -8,13 +8,9 @@
   --line: rgba(23, 19, 23, 0.18);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -24,31 +20,19 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-}
+a { color: inherit; }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* --------------------------------
-   BACKGROUND WORLD
--------------------------------- */
+button, a { -webkit-tap-highlight-color: transparent; }
 
 .site-background {
   position: fixed;
   inset: -8%;
   z-index: -10;
-
   background-image: url("/flower-backdrop.png");
   background-repeat: repeat;
   background-position: center;
   background-size: 520px;
-
-  opacity: 0.22;
-
+  opacity: 0.72;
   animation: backgroundDrift 26s ease-in-out infinite alternate;
 }
 
@@ -56,59 +40,45 @@ a {
   content: "";
   position: absolute;
   inset: 0;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255, 250, 244, 0.52),
-      rgba(255, 250, 244, 0.74)
-    );
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 250, 244, 0.08),
+    rgba(255, 250, 244, 0.18)
+  );
 }
 
 @keyframes backgroundDrift {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-
-  to {
-    transform: translate3d(-35px, 24px, 0) rotate(0.5deg);
-  }
+  from { transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { transform: translate3d(-35px, 24px, 0) rotate(0.5deg); }
 }
-
-/* --------------------------------
-   GLOBAL LAYOUT
--------------------------------- */
 
 .shell {
   width: min(1400px, calc(100% - 64px));
   margin-inline: auto;
 }
 
-/* --------------------------------
-   NAVIGATION
--------------------------------- */
-
 .site-nav {
   position: relative;
   z-index: 20;
-
-  height: 92px;
-
+  height: 82px;
+  margin-top: 18px;
+  padding-inline: 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  border-bottom: 1px solid var(--line);
+  background: rgba(255, 250, 244, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  border-radius: 999px;
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-
   color: var(--ink);
   text-decoration: none;
-
   font-size: 19px;
   font-weight: 800;
   letter-spacing: -0.05em;
@@ -117,15 +87,11 @@ a {
 .logo-mark {
   width: 35px;
   height: 35px;
-
   display: grid;
   place-items: center;
-
   border-radius: 50%;
-
   background: var(--ink);
   color: white;
-
   font-family: Georgia, serif;
   font-style: italic;
   font-weight: 400;
@@ -141,46 +107,32 @@ a {
   color: var(--ink);
   text-decoration: none;
   text-transform: uppercase;
-
   font-family: "Courier New", monospace;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
 
-.nav-links a:not(.nav-cta) {
-  position: relative;
-}
+.nav-links a:not(.nav-cta) { position: relative; }
 
 .nav-links a:not(.nav-cta)::after {
   content: "";
-
   position: absolute;
   left: 0;
   right: 100%;
   bottom: -6px;
-
   height: 1px;
-
   background: var(--ink);
-
   transition: right 180ms ease;
 }
 
-.nav-links a:not(.nav-cta):hover::after {
-  right: 0;
-}
+.nav-links a:not(.nav-cta):hover::after { right: 0; }
 
 .nav-cta {
   padding: 13px 18px;
-
   border: 1px solid var(--ink);
   border-radius: 999px;
-
-  transition:
-    background 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .nav-cta:hover {
@@ -189,34 +141,23 @@ a {
   transform: translateY(-2px);
 }
 
-/* --------------------------------
-   HERO
--------------------------------- */
-
 .hero {
   position: relative;
-
-  min-height: calc(100svh - 92px);
-
+  min-height: calc(100svh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   padding-block: 70px 60px;
-
   overflow: hidden;
 }
 
 .eyebrow {
   position: relative;
   z-index: 4;
-
   display: flex;
   align-items: center;
   gap: 9px;
-
   width: fit-content;
-
   font-family: "Courier New", monospace;
   font-size: 10px;
   font-weight: 700;
@@ -227,21 +168,16 @@ a {
 .status-dot {
   width: 8px;
   height: 8px;
-
   border-radius: 50%;
   background: #2dbb61;
-
   box-shadow: 0 0 0 4px rgba(45, 187, 97, 0.12);
 }
 
 .hero-title {
   position: relative;
   z-index: 3;
-
   margin: 68px 0 55px;
-
   max-width: 1300px;
-
   font-size: clamp(78px, 11.3vw, 174px);
   line-height: 0.76;
   font-weight: 800;
@@ -250,9 +186,7 @@ a {
 
 .hero-title em {
   display: inline-block;
-
   color: var(--hot-pink);
-
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
   font-style: italic;
@@ -262,7 +196,6 @@ a {
 .hero-bottom {
   position: relative;
   z-index: 4;
-
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -271,9 +204,7 @@ a {
 
 .hero-description {
   max-width: 520px;
-
   margin: 0;
-
   font-size: clamp(17px, 1.4vw, 21px);
   line-height: 1.5;
   letter-spacing: -0.025em;
@@ -288,34 +219,23 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-height: 44px;
   padding: 0 18px;
-
   border: 1px solid var(--ink);
   border-radius: 999px;
-
   background: rgba(255, 250, 244, 0.78);
   backdrop-filter: blur(12px);
-
   color: var(--ink);
   text-decoration: none;
   text-transform: uppercase;
-
   font-family: "Courier New", monospace;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.05em;
-
-  transition:
-    transform 180ms ease,
-    background 180ms ease,
-    color 180ms ease;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
 }
 
-.button:hover {
-  transform: translateY(-3px);
-}
+.button:hover { transform: translateY(-3px); }
 
 .button-primary {
   background: var(--ink);
@@ -327,136 +247,92 @@ a {
   color: var(--ink);
 }
 
-/* --------------------------------
-   FLOATING OBJECTS
--------------------------------- */
-
 .hero-object {
   position: absolute;
   z-index: 2;
-
   pointer-events: none;
   user-select: none;
-
   object-fit: contain;
-
   filter: drop-shadow(0 14px 16px rgba(23, 19, 23, 0.13));
-
   animation: objectFloat 5.5s ease-in-out infinite;
 }
 
 .hero-heart {
   width: clamp(110px, 13vw, 190px);
   height: auto;
-
   top: 9%;
   right: 5%;
-
   transform: rotate(10deg);
 }
 
 .hero-flower {
   width: clamp(90px, 10vw, 150px);
   height: auto;
-
   left: 45%;
   bottom: 5%;
-
   animation-delay: -1.7s;
 }
 
 .hero-sparkle {
   width: clamp(60px, 7vw, 105px);
   height: auto;
-
   right: 32%;
   top: 18%;
-
   animation-delay: -3.1s;
 }
 
 @keyframes objectFloat {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-
-  50% {
-    translate: 0 -13px;
-  }
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -13px; }
 }
-
-/* --------------------------------
-   BOTTOM STRIP
--------------------------------- */
 
 .hero-strip {
   position: relative;
   z-index: 10;
-
   overflow: hidden;
-
   background: var(--ink);
   color: var(--acid);
-
   border-top: 1px solid var(--ink);
   border-bottom: 1px solid var(--ink);
-
   padding-block: 15px;
-
   font-family: "Courier New", monospace;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
-
   white-space: nowrap;
 }
 
 .hero-strip-track {
   width: max-content;
-
   animation: ticker 26s linear infinite;
 }
 
 @keyframes ticker {
-  to {
-    transform: translateX(-35%);
-  }
+  to { transform: translateX(-35%); }
 }
 
-/* --------------------------------
-   MOBILE
--------------------------------- */
-
 @media (max-width: 800px) {
-  .shell {
-    width: calc(100% - 30px);
-  }
+  .shell { width: calc(100% - 30px); }
 
   .site-nav {
-    height: 76px;
+    height: 68px;
+    margin-top: 12px;
+    padding-inline: 14px;
   }
 
-  .nav-links {
-    gap: 10px;
-  }
+  .nav-links { gap: 10px; }
 
-  .nav-links a:not(.nav-cta) {
-    display: none;
-  }
+  .nav-links a:not(.nav-cta) { display: none; }
 
-  .nav-cta {
-    padding: 11px 14px;
-  }
+  .nav-cta { padding: 11px 14px; }
 
   .hero {
-    min-height: calc(100svh - 76px);
+    min-height: calc(100svh - 80px);
     padding-block: 55px 35px;
   }
 
   .hero-title {
     margin: 70px 0 45px;
-
     font-size: clamp(65px, 19vw, 112px);
     line-height: 0.78;
   }
@@ -466,9 +342,7 @@ a {
     flex-direction: column;
   }
 
-  .hero-actions {
-    flex-wrap: wrap;
-  }
+  .hero-actions { flex-wrap: wrap; }
 
   .hero-heart {
     width: 105px;
@@ -491,9 +365,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
 
   .site-background,
   .hero-object,
