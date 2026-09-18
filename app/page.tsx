@@ -2,6 +2,7 @@ import Image from "next/image";
 import CapabilityPlayground from "@/components/CapabilityPlayground";
 import ProjectShowcase from "@/components/ProjectShowcase";
 import StartProject from "@/components/StartProject";
+import Navigation from "@/components/Navigation";
 import { projects } from "@/data/projects";
 
 const services = [
@@ -17,10 +18,7 @@ export default function Home() {
   return (
     <main id="top">
       <div className="site-background" aria-hidden="true" />
-      <header className="site-nav shell">
-        <a className="logo" href="#top" aria-label="A. Halliwell Studio home"><span className="logo-mark">A.</span><span>HALLIWELL</span></a>
-        <nav className="nav-links" aria-label="Primary navigation"><a href="#work">Work</a><a href="#services">Services</a><a href="#studio">Studio</a><a className="nav-cta" href="#start">Start a project ↗</a></nav>
-      </header>
+      <Navigation />
 
       <section className="hero shell">
         <div className="eyebrow"><span className="status-dot" aria-hidden="true" />Independent creative development studio</div>
