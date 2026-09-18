@@ -41,6 +41,47 @@ const mono = Space_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ahalliwellstudio.com"),
+
+  title: {
+    default: "A. Halliwell Studio | Web Design & Development",
+    template: "%s | A. Halliwell Studio",
+  },
+
+  description:
+    "Independent creative web design and development studio building custom websites, digital experiences, booking systems, e-commerce experiences, and business systems.",
+
+  applicationName: "A. Halliwell Studio",
+
+  alternates: {
+    canonical: "/",
+  },
+
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "A. Halliwell Studio",
+    title: "A. Halliwell Studio | Web Design & Development",
+    description:
+      "Custom websites and digital experiences designed around how your business actually works.",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "A. Halliwell Studio | Web Design & Development",
+    description:
+      "Custom websites and digital experiences designed around how your business actually works.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+};
   title: {
     default: "A. Halliwell Studio",
     template: "%s | A. Halliwell Studio",
