@@ -15,6 +15,8 @@ type InquiryBody = {
   website?: unknown;
 };
 
+const MAX_BODY_BYTES = 12_000;
+
 const clean = (value: unknown, maxLength: number) => {
   if (typeof value !== "string") return "";
 
@@ -35,34 +37,171 @@ const escapeHtml = (value: string) =>
 const validEmail = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+const json = (
+  body: Record<string, unknown>,
+  status = 200,
+  extraHeaders?: HeadersInit
+) =>
+  NextResponse.json(body, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+      ...extraHeaders,
+    },
+  });
+
 export async function POST(request: Request) {
   try {
+    /*
+      Only accept JSON submissions from the application.
+    */
+    const contentType = request.headers.get("content-type") || "";
+
+    if (!contentType.toLowerCase().includes("application/json")) {
+      return json(
+        {
+          success: false,
+          message: "Unsupported request format.",
+        },
+        415
+      );
+    }
+
+    /*
+      Reject obviously oversized submissions before parsing them.
+
+      Content-Length is not a complete security boundary, so the actual
+      body length is checked again below.
+    */
+    const contentLength = request.headers.get("content-length");
+
+    if (contentLength) {
+      const bytes = Number(contentLength);
+
+      if (
+        !Number.isFinite(bytes) ||
+        bytes < 0 ||
+        bytes > MAX_BODY_BYTES
+      ) {
+        return json(
+          {
+            success: false,
+            message: "Inquiry is too large.",
+          },
+          413
+        );
+      }
+    }
+
+    /*
+      Basic same-origin protection.
+
+      This is not a substitute for rate limiting, but it prevents ordinary
+      cross-site browser submissions when Origin is present.
+    */
+    const origin = request.headers.get("origin");
+
+    if (origin) {
+      let originHost = "";
+
+      try {
+        originHost = new URL(origin).host;
+      } catch {
+        return json(
+          {
+            success: false,
+            message: "Invalid request origin.",
+          },
+          403
+        );
+      }
+
+      const requestHost =
+        request.headers.get("x-forwarded-host") ||
+        request.headers.get("host");
+
+      if (!requestHost || originHost !== requestHost) {
+        return json(
+          {
+            success: false,
+            message: "Invalid request origin.",
+          },
+          403
+        );
+      }
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
 
     if (!apiKey) {
       console.error("RESEND_API_KEY is not configured.");
 
-      return NextResponse.json(
+      return json(
         {
           success: false,
           message: "Inquiry delivery is temporarily unavailable.",
         },
-        { status: 500 }
+        500
       );
     }
 
-    const body = (await request.json()) as InquiryBody;
+    /*
+      Read as text first so the server can enforce a real body-size limit
+      even when Content-Length is missing or inaccurate.
+    */
+    const rawBody = await request.text();
+
+    if (Buffer.byteLength(rawBody, "utf8") > MAX_BODY_BYTES) {
+      return json(
+        {
+          success: false,
+          message: "Inquiry is too large.",
+        },
+        413
+      );
+    }
+
+    let body: InquiryBody;
+
+    try {
+      body = JSON.parse(rawBody) as InquiryBody;
+    } catch {
+      return json(
+        {
+          success: false,
+          message: "Invalid inquiry data.",
+        },
+        400
+      );
+    }
+
+    if (
+      !body ||
+      typeof body !== "object" ||
+      Array.isArray(body)
+    ) {
+      return json(
+        {
+          success: false,
+          message: "Invalid inquiry data.",
+        },
+        400
+      );
+    }
 
     /*
       Honeypot field.
 
       Real visitors should never fill this out.
       Bots frequently will.
+
+      We intentionally return success so bots do not learn that they
+      triggered the spam trap.
     */
     const website = clean(body.website, 200);
 
     if (website) {
-      return NextResponse.json({
+      return json({
         success: true,
         message: "Your inquiry was received.",
       });
@@ -85,33 +224,27 @@ export async function POST(request: Request) {
       : [];
 
     if (!name || !email || !projectType || !timing || !investment) {
-      return NextResponse.json(
+      return json(
         {
           success: false,
           message: "Please complete all required fields.",
         },
-        { status: 400 }
+        400
       );
     }
 
     if (!validEmail(email)) {
-      return NextResponse.json(
+      return json(
         {
           success: false,
           message: "Please enter a valid email address.",
         },
-        { status: 400 }
+        400
       );
     }
 
     const resend = new Resend(apiKey);
 
-    /*
-      Replace this sender after your A. Halliwell Studio
-      sending domain has been verified in Resend.
-
-      Resend's onboarding sender can be used while testing.
-    */
     const fromAddress =
       process.env.INQUIRY_FROM_EMAIL ||
       "A. Halliwell Studio <onboarding@resend.dev>";
@@ -135,7 +268,7 @@ export async function POST(request: Request) {
       ? safe.needs.map((need) => `<li>${need}</li>`).join("")
       : "<li>None selected</li>";
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: fromAddress,
       to: [recipient],
       replyTo: email,
@@ -250,34 +383,33 @@ ${message || "No additional message"}
     if (error) {
       console.error("Resend inquiry error:", error);
 
-      return NextResponse.json(
+      return json(
         {
           success: false,
           message:
             "We couldn't send your inquiry right now. Please try again.",
         },
-        { status: 502 }
+        502
       );
     }
 
-    return NextResponse.json(
+    return json(
       {
         success: true,
         message: "Your project inquiry has been sent.",
-        id: data?.id,
       },
-      { status: 200 }
+      200
     );
   } catch (error) {
     console.error("Inquiry route error:", error);
 
-    return NextResponse.json(
+    return json(
       {
         success: false,
         message:
           "Something went wrong while sending your inquiry. Please try again.",
       },
-      { status: 500 }
+      500
     );
   }
 }
