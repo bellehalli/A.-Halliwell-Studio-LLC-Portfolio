@@ -9,11 +9,48 @@ export function generateStaticParams() {
   return projects.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project) return {};
-  return { title: project.name, description: project.description };
+
+  if (!project) {
+    return {
+      title: "Project Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  const canonicalPath = `/work/${project.slug}`;
+
+  return {
+    title: `${project.name} Case Study`,
+    description: project.description,
+
+    alternates: {
+      canonical: canonicalPath,
+    },
+
+    openGraph: {
+      type: "website",
+      url: canonicalPath,
+      siteName: "A. Halliwell Studio",
+      title: `${project.name} Case Study | A. Halliwell Studio`,
+      description: project.description,
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.name} Case Study | A. Halliwell Studio`,
+      description: project.description,
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
