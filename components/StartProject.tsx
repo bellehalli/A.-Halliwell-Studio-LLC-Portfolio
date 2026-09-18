@@ -27,9 +27,9 @@ const projectNeeds = [
 
 const timingOptions = [
   "As soon as possible",
+  "Within 2 weeks",
+  "Within 3–4 weeks",
   "Within 1–2 months",
-  "Within 3–4 months",
-  "Later this year",
   "I'm flexible",
 ];
 
