@@ -34,6 +34,7 @@ const timingOptions = [
 ];
 
 const investmentOptions = [
+  "$2k-$5k",
   "$5k–$10k",
   "$10k–$20k",
   "$20k–$30k",
