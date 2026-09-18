@@ -149,6 +149,24 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .hero-title-wrap { position: relative; z-index: 3; margin-top: 24px; }
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: -4%;
+  top: 24%;
+  width: min(900px, 78%);
+  height: 56%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 250, 244, 0.78) 0%,
+    rgba(255, 238, 246, 0.50) 42%,
+    rgba(255, 250, 244, 0) 76%
+  );
+  filter: blur(22px);
+}
+
 .hero-title {
   margin: 0;
   max-width: 1100px;
@@ -318,4 +336,72 @@ button, a { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: auto; }
   .site-background, .hero-object, .hero-strip-track { animation: none; }
   .button, .nav-cta { transition: none; }
+}
+
+
+/* HERO PRECISION PASS */
+.hero-title {
+  position: relative;
+  z-index: 3;
+}
+
+.hero-title em,
+.hero-title .princess,
+.hero-title .personality {
+  position: relative;
+  z-index: 4;
+}
+
+.personality-line {
+  position: relative;
+  z-index: 4;
+  width: min(980px, 92%);
+  margin-top: -0.14em;
+  margin-left: 0.01em;
+  font-family: var(--font-princess), cursive;
+  font-size: clamp(94px, 12.8vw, 198px);
+  font-weight: 400;
+  line-height: 0.72;
+  letter-spacing: -0.045em;
+  color: #ff2f91;
+  white-space: nowrap;
+}
+
+.personality-heart {
+  display: inline-block;
+  margin-left: 0.015em;
+  font-family: var(--font-editorial), Georgia, serif;
+  font-size: 0.38em;
+  line-height: 1;
+  vertical-align: 0.18em;
+  transform: rotate(7deg);
+}
+
+.hero-bottom {
+  margin-top: clamp(42px, 6vw, 82px);
+}
+
+@media (max-width: 800px) {
+  .site-nav {
+    margin-top: 16px;
+  }
+
+  .hero::before {
+    left: -18%;
+    top: 27%;
+    width: 120%;
+    height: 48%;
+  }
+
+  .personality-line {
+    width: 100%;
+    margin-top: -0.05em;
+    font-size: clamp(68px, 20vw, 118px);
+    line-height: 0.78;
+    white-space: normal;
+  }
+
+  .hero-bottom {
+    margin-top: 38px;
+  }
 }
