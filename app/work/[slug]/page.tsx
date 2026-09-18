@@ -34,12 +34,36 @@ export async function generateMetadata({
   if (!project) {
     return {
       title: "Project Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
+
+  const canonicalPath = `/work/${project.slug}`;
 
   return {
     title: `${project.name} Case Study`,
     description: project.description,
+
+    alternates: {
+      canonical: canonicalPath,
+    },
+
+    openGraph: {
+      type: "website",
+      url: canonicalPath,
+      siteName: "A. Halliwell Studio",
+      title: `${project.name} Case Study | A. Halliwell Studio`,
+      description: project.description,
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.name} Case Study | A. Halliwell Studio`,
+      description: project.description,
+    },
   };
 }
 
