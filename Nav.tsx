@@ -1,0 +1,1 @@
+import Link from "next/link";export default function Nav(){return <header className="nav shell"><Link className="brand" href="/"><span>A.</span> HALLIWELL</Link><nav><Link href="/work">Work</Link><Link href="/services">Services</Link><Link href="/studio">Studio</Link><Link href="/lab">Lab</Link><Link className="pill" href="/start">Start a project ↗</Link></nav></header>}

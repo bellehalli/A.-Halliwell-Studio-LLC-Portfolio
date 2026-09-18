@@ -1,0 +1,1 @@
+import Link from "next/link";export default function Footer(){return <footer className="shell"><div className="brand"><span>A.</span> HALLIWELL</div><p>DESIGN + DEVELOPMENT<br/>DETROIT / AVAILABLE WORLDWIDE</p><p>© 2026 A. HALLIWELL STUDIO LLC</p><Link href="/start">START A PROJECT ↗</Link></footer>}
