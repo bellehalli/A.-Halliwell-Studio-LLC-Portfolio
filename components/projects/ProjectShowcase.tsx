@@ -1,9 +1,10 @@
 import Link from "next/link";
-import type { Project } from "@/data/projects";
 import ProjectMedia from "@/components/ProjectMedia";
+import type { Project } from "@/data/projects";
 
 export default function ProjectShowcase({ project }: { project: Project }) {
   const willow = project.tone === "willow";
+
   return (
     <article className={`project-world project-world-${project.tone}`}>
       <div className="project-world-paper">
@@ -13,7 +14,9 @@ export default function ProjectShowcase({ project }: { project: Project }) {
         </div>
 
         <div className="project-world-title">
-          <span className="project-world-script">{willow ? "The estate file" : "After dark"}</span>
+          <span className="project-world-accent">
+            {willow ? "The estate file" : "After dark"}
+          </span>
           <h3>{project.name}</h3>
           <p>{project.description}</p>
         </div>
@@ -38,7 +41,10 @@ export default function ProjectShowcase({ project }: { project: Project }) {
           </div>
         </div>
       </div>
-      <span className="project-world-mark" aria-hidden="true">{willow ? "✿" : "♥"}</span>
+
+      <span className="project-world-mark" aria-hidden="true">
+        {willow ? "✿" : "♥"}
+      </span>
     </article>
   );
 }
