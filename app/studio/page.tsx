@@ -1,0 +1,11 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+export const metadata: Metadata = { title: "Studio", description: "An independent digital design, development and systems company building distinctive internet experiences and the infrastructure behind them.", alternates: { canonical: "/studio" } };
+const blocks: string[][] = [["THE APPROACH", "Built around the business.", "The work begins with what the business needs the internet to accomplish, how customers make decisions and where the existing experience creates friction."], ["THE STANDARD", "Personality without sacrificing usability.", "Strong art direction can coexist with accessibility, performance, security and clear conversion paths."], ["THE METHOD", "Strategy before decoration.", "Every interaction, page and system should have a reason to exist. Complexity has to earn its place."], ["THE NORTH STAR", "More than websites.", "Sometimes the deliverable is a website. Sometimes it is commerce, booking, software, a publication or infrastructure."]];
+export default function Page() {
+ return <main className="destination-page"><div className="site-background" aria-hidden="true"/>
+ <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><nav className="destination-nav"><Link href="/work">Work</Link><Link href="/services">Services</Link><Link href="/studio">Studio</Link><Link href="/lab">Lab</Link></nav><Link href="/start">Start a project ↗</Link></header>
+ <article className="destination-sheet"><section className="destination-hero"><small>A. HALLIWELL STUDIO</small><h1>The person behind the cursor.</h1><p>An independent digital design, development and systems company building distinctive internet experiences and the infrastructure behind them.</p></section>
+ <section className="destination-grid">{blocks.map(([label,t,b])=><article key={label+t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
+ <section className="case-end"><small>NEXT</small><h2>Build something<br/>worth using.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section></article></main>;
+}
