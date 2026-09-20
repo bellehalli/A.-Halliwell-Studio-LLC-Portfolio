@@ -6,11 +6,11 @@ import { useEffect, useRef, useState } from "react";
 const HEART = "/assets/hearts/Portfolio Assets A.Halliwell  - 1.PNG";
 
 const links = [
-  ["EXPLORE", "#top"],
-  ["PROJECTS", "#work"],
-  ["SERVICES", "#services"],
-  ["STUDIO", "#studio"],
-  ["LAB", "#capabilities"],
+  ["HOME", "/"],
+  ["WORK", "/work"],
+  ["SERVICES", "/services"],
+  ["STUDIO", "/studio"],
+  ["LAB", "/lab"],
 ];
 
 export default function Navigation() {
@@ -20,7 +20,7 @@ export default function Navigation() {
   useEffect(() => {
     document.body.classList.toggle("nav-open", open);
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && open) {
+      if (event.key === "Escape") {
         setOpen(false);
         triggerRef.current?.focus();
       }
@@ -34,7 +34,7 @@ export default function Navigation() {
 
   return (
     <header className="site-nav shell">
-      <a className="logo" href="#top" aria-label="A. Halliwell Studio home">
+      <a className="logo" href="/" aria-label="A. Halliwell Studio home">
         <span className="logo-mark">A.</span>
         <span className="logo-type">HALLIWELL</span>
       </a>
@@ -43,34 +43,29 @@ export default function Navigation() {
         ref={triggerRef}
         className="heart-menu-trigger"
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => setOpen(v => !v)}
         aria-expanded={open}
-        aria-controls="heart-navigation"
-        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+        aria-controls="primary-navigation"
+        aria-label={open ? "Close navigation" : "Open navigation"}
       >
         <span className="heart-button-art" aria-hidden="true">
-          <Image src={HEART} alt="" fill sizes="76px" priority />
+          <Image src={HEART} alt="" fill sizes="64px" priority />
         </span>
         <span className="heart-button-label">{open ? "CLOSE" : "MENU"}</span>
       </button>
 
-      <nav
-        id="heart-navigation"
-        className={`heart-dock ${open ? "is-open" : ""}`}
-        aria-label="Primary navigation"
-      >
+      <nav id="primary-navigation" className={`heart-dock ${open ? "is-open" : ""}`} aria-label="Primary navigation">
         {links.map(([label, href]) => (
-          <a className="heart-nav-button" href={href} key={label} onClick={() => setOpen(false)}>
+          <a className="heart-nav-button" href={href} key={href} onClick={() => setOpen(false)}>
             <span className="heart-button-art" aria-hidden="true">
-              <Image src={HEART} alt="" fill sizes="100px" />
+              <Image src={HEART} alt="" fill sizes="88px" />
             </span>
             <span className="heart-button-label">{label}</span>
           </a>
         ))}
-
-        <a className="heart-nav-button heart-start" href="#start" onClick={() => setOpen(false)}>
+        <a className="heart-nav-button heart-start" href="/start" onClick={() => setOpen(false)}>
           <span className="heart-button-art" aria-hidden="true">
-            <Image src={HEART} alt="" fill sizes="118px" />
+            <Image src={HEART} alt="" fill sizes="104px" />
           </span>
           <span className="heart-button-label">START A<br />PROJECT</span>
         </a>
