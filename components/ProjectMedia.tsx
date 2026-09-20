@@ -1,22 +1,21 @@
-"use client";
-import { useState } from "react";
-type Props = { desktop: string; mobile: string; name: string };
-export default function ProjectMedia({ desktop, mobile, name }: Props) {
-  const [desktopReady, setDesktopReady] = useState(false);
-  const [mobileReady, setMobileReady] = useState(false);
+type Props = { name: string; url?: string };
+
+export default function ProjectMedia({ name, url }: Props) {
   return (
-    <div className="device-composition">
-      <div className="browser-card">
-        <div className="browser-top"><span/><span/><span/><div>Live project preview</div></div>
-        <div className={`asset-slot ${desktopReady ? "has-project-image" : ""}`}>
-          <img src={desktop} alt={`${name} desktop website preview`} onLoad={() => setDesktopReady(true)} onError={() => setDesktopReady(false)} />
-          {!desktopReady && <div className="asset-fallback"><small>LIVE PROJECT</small><strong>{name}</strong><em>Built for real life.</em></div>}
-        </div>
+    <div className="project-evidence" aria-label={`${name} project evidence`}>
+      <div className="project-evidence-bar">
+        <span>LIVE PROJECT</span>
+        <span>A. HALLIWELL STUDIO</span>
       </div>
-      <div className={`phone-card ${mobileReady ? "has-project-image" : ""}`} aria-label={`${name} mobile website preview`}>
-        <div className="phone-notch"/>
-        <img src={mobile} alt="" onLoad={() => setMobileReady(true)} onError={() => setMobileReady(false)} />
-        {!mobileReady && <div className="phone-fallback">{name}<small>mobile</small></div>}
+      <div className="project-evidence-body">
+        <small>PROJECT / {name.toUpperCase()}</small>
+        <strong>{name}</strong>
+        <p>The live website is the primary proof of the work.</p>
+        {url ? (
+          <a href={url} target="_blank" rel="noreferrer">
+            Open live website ↗
+          </a>
+        ) : null}
       </div>
     </div>
   );
