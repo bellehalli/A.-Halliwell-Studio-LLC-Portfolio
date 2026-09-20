@@ -1,8 +1,0 @@
-.flower-motion { animation: flower-turn 24s linear infinite; }
-.heart-motion { animation: heart-beat 3s ease-in-out infinite; }
-.sparkle-motion { animation: sparkle-twinkle 4s ease-in-out infinite; }
-@keyframes flower-turn { to { transform: rotate(360deg); } }
-@keyframes heart-beat { 0%,100% { transform: scale(1); } 40% { transform: scale(1.07) rotate(-4deg); } 60% { transform: scale(1.02); } }
-@keyframes sparkle-twinkle { 0%,100% { transform: scale(.9) rotate(-8deg); opacity:.7; } 50% { transform: scale(1.08) rotate(8deg); opacity:1; } }
-@media(prefers-reduced-motion:reduce) { .flower-motion,.heart-motion,.sparkle-motion { animation:none; } }
-body.paused img { animation-play-state:paused; }
