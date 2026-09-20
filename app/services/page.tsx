@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Navigation from "@/components/navigation/Navigation";
-import { services } from "@/data/services";
-
-export const metadata: Metadata = { title: "Services", description: "Digital strategy, experience design, custom development, commerce, booking, business systems and studio support.", alternates: { canonical: "/services" } };
-
-export default function ServicesPage() {
-  return <main className="site-shell"><div className="moving-background background-services" aria-hidden="true"/><Navigation/>
-    <section className="page-hero shell"><small>SERVICES / BUSINESS MODE</small><h1>Design with a job to do.</h1><p>Premium custom work starts with the business problem, not a page count.</p></section>
-    <section className="service-system shell">{services.map(service => <article className="service-detail" key={service.slug}><div><span>{service.number}</span><h2>{service.title}</h2><p>{service.purpose}</p></div><ul>{service.includes.map(item => <li key={item}>{item}</li>)}</ul></article>)}</section>
-    <section className="process shell"><h2>How an engagement moves</h2><ol><li>Discovery and qualification</li><li>Strategy and scope</li><li>Experience design</li><li>Development</li><li>QA and client review</li><li>Launch</li><li>Support or expansion</li></ol></section>
-    <section className="page-cta shell"><p>Scope, ownership and recurring fees stay explicit. No fake urgency and no hidden requirements.</p><Link className="primary-action" href="/start">Build the project brief ↗</Link></section>
-  </main>;
+export const metadata: Metadata = { title: "Services", description: "Strategy, experience design and custom development shaped around how the business actually works.", alternates: { canonical: "/services" } };
+const blocks: string[][] = [["01 / DIGITAL STRATEGY", "Before decoration.", "Clarify the customer journey, business goals, content structure and technical requirements before deciding what the interface should look like."], ["02 / EXPERIENCE DESIGN", "Make the next step obvious.", "Information architecture, responsive interfaces and conversion paths that help people understand, trust and act."], ["03 / CUSTOM DEVELOPMENT", "Custom means custom.", "Purpose-built websites and interactive systems for businesses that have outgrown template-shaped experiences."], ["04 / COMMERCE + BOOKING", "The website should participate.", "Buying, inquiry, reservation and scheduling flows designed around the real customer decision."], ["05 / BUSINESS SYSTEMS", "Connect the storefront to the work.", "Forms, workflows and operational connections that reduce friction behind the public experience."], ["06 / STUDIO SUPPORT", "Launch is not the end.", "Ongoing refinement, maintenance and expansion for digital properties that need to keep evolving."]];
+export default function Page() {
+ return <main className="destination-page"><div className="site-background" aria-hidden="true"/>
+ <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><nav className="destination-nav"><Link href="/work">Work</Link><Link href="/services">Services</Link><Link href="/studio">Studio</Link><Link href="/lab">Lab</Link></nav><Link href="/start">Start a project ↗</Link></header>
+ <article className="destination-sheet"><section className="destination-hero"><small>WHAT THE STUDIO BUILDS</small><h1>Design with a job to do.</h1><p>Strategy, experience design and custom development shaped around how the business actually works.</p></section>
+ <section className="destination-grid">{blocks.map(([label,t,b])=><article key={label+t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
+ <section className="case-end"><small>NEXT</small><h2>Build something<br/>worth using.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section></article></main>;
 }
