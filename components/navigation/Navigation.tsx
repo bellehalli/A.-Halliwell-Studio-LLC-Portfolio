@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const HEART = "/assets/hearts/Portfolio Assets A.Halliwell  - 1.PNG";
@@ -15,21 +16,31 @@ const links = [
 export default function Navigation() {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const close = () => setOpen(false);
+    window.addEventListener("resize", close);
+    return () => window.removeEventListener("resize", close);
+  }, []);
+
   return (
     <header className="site-nav shell ah-nav">
-      <a className="logo" href="#top">
+      <a className="logo" href="#top" aria-label="A. Halliwell Studio home">
         <span className="logo-mark">A.</span>
         <span>HALLIWELL</span>
       </a>
 
       <button
         className="heart-menu-trigger"
-        onClick={() => setOpen(!open)}
+        type="button"
+        onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-controls="heart-navigation"
+        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
       >
-        <Image src={HEART} alt="" width={72} height={72} />
-        <span>{open ? "CLOSE" : "MENU"}</span>
+        <span className="heart-button-art" aria-hidden="true">
+          <Image src={HEART} alt="" fill sizes="72px" priority />
+        </span>
+        <span className="heart-button-label">{open ? "Close" : "Menu"}</span>
       </button>
 
       <nav
@@ -38,22 +49,31 @@ export default function Navigation() {
         aria-label="Primary navigation"
       >
         {links.map(([label, href]) => (
-          <a href={href} key={label} onClick={() => setOpen(false)}>
-            <Image src={HEART} alt="" width={100} height={100} />
-            <span>{label}</span>
+          <a
+            className="heart-nav-button"
+            href={href}
+            key={label}
+            onClick={() => setOpen(false)}
+          >
+            <span className="heart-button-art" aria-hidden="true">
+              <Image src={HEART} alt="" fill sizes="96px" />
+            </span>
+            <span className="heart-button-label">{label}</span>
           </a>
         ))}
 
         <a
-          className="heart-start"
+          className="heart-nav-button heart-start"
           href="#start"
           onClick={() => setOpen(false)}
         >
-          <Image src={HEART} alt="" width={118} height={118} />
-          <span>
-            START A
+          <span className="heart-button-art" aria-hidden="true">
+            <Image src={HEART} alt="" fill sizes="112px" />
+          </span>
+          <span className="heart-button-label">
+            Start a
             <br />
-            PROJECT
+            Project
           </span>
         </a>
       </nav>
