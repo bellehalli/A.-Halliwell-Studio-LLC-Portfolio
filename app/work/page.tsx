@@ -1,11 +1,44 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Navigation from "@/components/navigation/Navigation";
-import ProjectCard from "@/components/projects/ProjectCard";
+import ProjectMedia from "@/components/ProjectMedia";
 import { projects } from "@/data/projects";
 
-export const metadata: Metadata = { title: "Selected Work", description: "Real live digital projects by A. Halliwell Studio.", alternates: { canonical: "/work" } };
+export const metadata: Metadata = {
+  title: "Selected Work",
+  description: "Selected custom websites and digital experiences by A. Halliwell Studio.",
+  alternates: { canonical: "/work" },
+};
 
 export default function WorkPage() {
-  return <main className="site-shell"><div className="moving-background background-work" aria-hidden="true"/><Navigation/><section className="page-hero shell"><small>SELECTED WORK / REAL LIVE PROJECTS ONLY</small><h1>Work is evidence.</h1><p>Each case study documents the brief, the problem, the strategy, the system, the build and the verifiable public result.</p></section><section className="shell project-stack">{projects.map(project => <ProjectCard project={project} key={project.slug}/>)}</section><section className="page-cta shell"><h2>Need a system of your own?</h2><Link className="primary-action" href="/start">Start a project ↗</Link></section></main>;
+  return (
+    <main className="case-page">
+      <div className="site-background" aria-hidden="true" />
+      <header className="case-nav shell">
+        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
+        <Link href="/#start">Start a project ↗</Link>
+      </header>
+      <section className="case-sheet">
+        <div className="case-hero">
+          <div className="case-index"><span>SELECTED WORK</span><span>A. HALLIWELL STUDIO</span></div>
+          <h1>Built to be<br/>used.</h1>
+          <p>Custom digital experiences designed around what each business actually needs the internet to do.</p>
+        </div>
+        <div className="case-story">
+          {projects.map((project) => (
+            <article key={project.slug} className="work-index-project">
+              <small>PROJECT {project.number} / {project.category}</small>
+              <h2>{project.name}</h2>
+              <p>{project.description}</p>
+              <ProjectMedia desktop={project.desktopAsset} mobile={project.mobileAsset} name={project.name} />
+              <div className="case-actions">
+                <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>
+                <a className="button" href={project.url} target="_blank" rel="noreferrer">Visit live site ↗</a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <section className="case-end"><small>HAVE A PROJECT IN MIND?</small><h2>Let's build something<br/>worth clicking.</h2><Link className="button button-primary" href="/#start">Start a project ↗</Link></section>
+      </section>
+    </main>
+  );
 }
