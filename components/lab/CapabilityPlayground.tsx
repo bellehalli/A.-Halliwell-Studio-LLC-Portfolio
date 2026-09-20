@@ -1,131 +1,68 @@
 "use client";
+import { useMemo, useState } from "react";
 
-import { useState } from "react";
+const demos = {
+  booking: {
+    label: "BOOKING",
+    title: "Reservation flow",
+    steps: ["Choose experience", "Select date", "Enter guest details", "Review request"]
+  },
+  package: {
+    label: "PACKAGE BUILDER",
+    title: "Configure an offer",
+    steps: ["Choose base package", "Add upgrades", "Review selections", "Create inquiry brief"]
+  },
+  lead: {
+    label: "LEAD QUALIFICATION",
+    title: "Route the right inquiry",
+    steps: ["Choose project type", "Select required capabilities", "Set timing", "Create lead summary"]
+  },
+  event: {
+    label: "EVENT SYSTEM",
+    title: "Find the right event",
+    steps: ["Choose date range", "Filter event type", "Review event details", "Reserve intent"]
+  }
+} as const;
 
-type Demo = {
-  eyebrow: string;
-  title: string;
-  fields: string[];
-  action: string;
-  result: string;
-};
-
-const demos: Record<string, Demo> = {
-  "Take bookings": {
-    eyebrow: "RESERVATION FLOW",
-    title: "Find your time",
-    fields: ["Choose experience", "Select a date", "Guest details"],
-    action: "Check availability",
-    result: "A calm path from interest to confirmed intent.",
-  },
-  "Sell products": {
-    eyebrow: "CUSTOM COMMERCE",
-    title: "Make it yours",
-    fields: ["Choose a style", "Add personalization", "Review order"],
-    action: "Build my order",
-    result: "Commerce shaped around the product, not a generic grid.",
-  },
-  "Build packages": {
-    eyebrow: "PACKAGE BUILDER",
-    title: "Build your experience",
-    fields: ["Start with a base", "Choose upgrades", "See your selections"],
-    action: "Create my package",
-    result: "Complex offers become easy to understand and easier to buy.",
-  },
-  "Manage events": {
-    eyebrow: "EVENT SYSTEM",
-    title: "What's happening?",
-    fields: ["Browse calendar", "Filter the vibe", "Reserve access"],
-    action: "See this week",
-    result: "One source of truth for guests, events and conversion.",
-  },
-  "Capture leads": {
-    eyebrow: "SMART INQUIRY",
-    title: "Tell us what you need",
-    fields: ["Qualify the request", "Collect useful details", "Route follow-up"],
-    action: "Build my inquiry",
-    result: "Better questions create better leads before the first call.",
-  },
-  "Something weird": {
-    eyebrow: "CUSTOM INTERACTION",
-    title: "Good. Let's make it strange.",
-    fields: ["Invent the interaction", "Give it a job", "Make it delightful"],
-    action: "Do the weird thing",
-    result: "Personality is strongest when it still has a purpose.",
-  },
-};
+type DemoKey = keyof typeof demos;
 
 export default function CapabilityPlayground() {
-  const [active, setActive] = useState("Take bookings");
+  const [active, setActive] = useState<DemoKey>("booking");
   const [step, setStep] = useState(0);
   const demo = demos[active];
+  const summary = useMemo(() => demo.steps.slice(0, step + 1), [demo, step]);
 
-  const choose = (key: string) => {
+  function selectDemo(key: DemoKey) {
     setActive(key);
     setStep(0);
-  };
-
-  const advance = () => setStep((value) => (value + 1) % demo.fields.length);
+  }
 
   return (
-    <section className="sheet sheet-lavender capability" id="capabilities">
-      <div className="content-shell capability-grid">
-        <div className="capability-copy">
-          <span className="section-kicker-text">03 / THE LAB</span>
-          <h2>
-            Don't just read
-            <br />
-            <em>what I can build.</em>
-          </h2>
-          <p className="capability-intro">
-            Use it. Pick a job the internet needs to do and click through a tiny
-            working demonstration.
-          </p>
-
-          <div className="capability-tabs" role="group" aria-label="Website capability examples">
-            {Object.keys(demos).map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={active === item ? "is-active" : ""}
-                onClick={() => choose(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+    <section className="lab-engine" aria-labelledby="lab-engine-title">
+      <div className="lab-tabs">
+        {(Object.keys(demos) as DemoKey[]).map(key => (
+          <button key={key} type="button" className={active === key ? "active" : ""} onClick={() => selectDemo(key)}>
+            {demos[key].label}
+          </button>
+        ))}
+      </div>
+      <div className="lab-console">
+        <div className="lab-console-head"><span>INTERACTIVE PROOF</span><strong>{demo.title}</strong></div>
+        <ol className="lab-steps">
+          {demo.steps.map((item, index) => (
+            <li className={index <= step ? "complete" : ""} key={item}>
+              <span>{String(index + 1).padStart(2, "0")}</span><strong>{item}</strong>
+            </li>
+          ))}
+        </ol>
+        <div className="lab-output">
+          <small>STATE</small>
+          <p>{summary.join(" → ")}</p>
         </div>
-
-        <div className="demo-stage">
-          <span className="lab-note">YOU AREN'T READING A LIST. YOU'RE USING IT. ↘</span>
-          <div className="demo-window" aria-live="polite">
-            <div className="demo-window-top">
-              <span /><span /><span />
-              <b>A. HALLIWELL / LAB PREVIEW</b>
-            </div>
-
-            <div className="demo-screen">
-              <small>{demo.eyebrow}</small>
-              <h3>{demo.title}</h3>
-
-              <div className="demo-progress" aria-label={`Step ${step + 1} of ${demo.fields.length}`}>
-                {demo.fields.map((_, index) => (
-                  <i key={index} className={index <= step ? "active" : ""} />
-                ))}
-              </div>
-
-              <button className="demo-interaction" type="button" onClick={advance}>
-                <span>0{step + 1}</span>
-                <strong>{demo.fields[step]}</strong>
-                <i>↗</i>
-              </button>
-
-              <div className="demo-result">{demo.result} <span>♥</span></div>
-              <button className="demo-action" type="button" onClick={advance}>
-                {demo.action} ↗
-              </button>
-            </div>
-          </div>
+        <div className="lab-controls">
+          <button type="button" onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}>Back</button>
+          <button type="button" onClick={() => setStep(Math.min(demo.steps.length - 1, step + 1))} disabled={step === demo.steps.length - 1}>Continue</button>
+          <button type="button" onClick={() => setStep(0)}>Reset</button>
         </div>
       </div>
     </section>
