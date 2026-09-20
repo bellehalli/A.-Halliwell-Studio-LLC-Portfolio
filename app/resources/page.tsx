@@ -1,52 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Navigation from "@/components/navigation/Navigation";
+import { resources } from "@/data/resources";
 
-export const metadata: Metadata = {
-  title: "Resources",
-  description: "Practical notes from A. Halliwell Studio about websites, digital experiences and business systems.",
-  alternates: { canonical: "/resources" },
-};
-
-const resources = [
-  {
-    type: "GUIDE",
-    title: "What should a wedding venue website include?",
-    body: "A practical framework for helping prospective couples understand the property, offer and next step.",
-    href: "/resources/wedding-venue-website",
-  },
-  {
-    type: "CHECKLIST",
-    title: "Website redesign checklist",
-    body: "What to examine before rebuilding a website simply because it looks dated.",
-    href: "/resources/website-redesign-checklist",
-  },
-];
+export const metadata: Metadata = { title: "Resources", description: "Practical writing about custom websites, hospitality digital experiences and business systems.", alternates: { canonical: "/resources" } };
 
 export default function ResourcesPage() {
-  return (
-    <main className="destination-page">
-      <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell">
-        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
-        <Link href="/start">Start a project ↗</Link>
-      </header>
-      <article className="destination-sheet">
-        <section className="destination-hero">
-          <small>JOURNAL + RESOURCES</small>
-          <h1>Useful things for better websites.</h1>
-          <p>Practical notes about custom websites, customer journeys and the systems behind them.</p>
-        </section>
-        <section className="destination-grid">
-          {resources.map(item => (
-            <Link className="destination-block resource-link" href={item.href} key={item.href}>
-              <small>{item.type}</small>
-              <h2>{item.title}</h2>
-              <p>{item.body}</p>
-              <strong>Read ↗</strong>
-            </Link>
-          ))}
-        </section>
-      </article>
-    </main>
-  );
+  return <main className="site-shell"><div className="moving-background background-resources" aria-hidden="true"/><Navigation/><section className="page-hero shell"><small>RESOURCES / SEARCH + CONTENT</small><h1>Useful things for better websites.</h1><p>Real guidance, tools and articles designed to earn authority through usefulness rather than thin SEO pages.</p></section><section className="resource-index shell">{Object.entries(resources).map(([slug,article],index) => <Link href={`/resources/${slug}`} key={slug}><span>{String(index+1).padStart(2,"0")}</span><div><small>RESOURCE</small><h2>{article.title}</h2><p>{article.dek}</p></div><b>READ ↗</b></Link>)}</section></main>;
 }
