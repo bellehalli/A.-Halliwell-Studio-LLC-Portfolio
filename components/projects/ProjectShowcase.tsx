@@ -22,11 +22,7 @@ export default function ProjectShowcase({ project }: { project: Project }) {
         </div>
 
         <div className="project-world-media">
-          <ProjectMedia
-            desktop={project.desktopAsset}
-            mobile={project.mobileAsset}
-            name={project.name}
-          />
+          <ProjectMedia name={project.name} url={project.url} />
           <span className="tape tape-one" aria-hidden="true" />
           <span className="tape tape-two" aria-hidden="true" />
         </div>
