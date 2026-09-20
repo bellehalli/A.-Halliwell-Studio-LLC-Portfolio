@@ -1,23 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Navigation from "@/components/navigation/Navigation";
 
-export const metadata: Metadata = {
-  title: "Client Portal",
-  description: "Private client workspace access for active A. Halliwell Studio projects.",
-  robots: { index: false, follow: false },
-};
+export const metadata: Metadata = { title: "Client Portal", description: "Private client workspace status.", robots: { index: false, follow: false } };
 
-export default function PortalPage(){
-  return <main className="portal-page">
-    <div className="site-background" aria-hidden="true"/>
-    <section className="portal-card">
-      <Link className="portal-brand" href="/"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>
-      <small>CLIENT PORTAL</small>
-      <h1>Your project has<br/><em>a place to live.</em></h1>
-      <p>Active clients receive a private project workspace for approved project materials, milestones, decisions and next steps.</p>
-      <div className="portal-status"><span>PRIVATE BY DEFAULT</span><p>Portal access is issued directly by the studio. There is no public self-registration.</p></div>
-      <a className="button button-primary" href="mailto:arabellakhalliwell@gmail.com?subject=Client%20portal%20access">Request portal access ↗</a>
-      <Link className="portal-back" href="/">← Return to the studio</Link>
-    </section>
-  </main>
+export default function PortalPage() {
+  return <main className="site-shell"><div className="moving-background background-portal" aria-hidden="true"/><Navigation/><section className="portal shell"><small>CLIENT PORTAL / PRIVATE EXPERIENCE</small><h1>The portal will become real only when the infrastructure is real.</h1><p>The target system includes project status, milestones, files, approvals, invoices, payments, requests, contracts, updates and support. Those features require authenticated users, server-side organization isolation, storage and real client records.</p><div className="portal-state"><strong>CURRENT STATE</strong><span>Private portal architecture planned</span><span>No fake accounts</span><span>No fake invoices</span><span>No fake client data</span></div><a className="primary-action" href="mailto:arabellakhalliwell@gmail.com?subject=Client%20portal%20access">Contact the studio ↗</a><Link href="/">Return home</Link></section></main>;
 }
