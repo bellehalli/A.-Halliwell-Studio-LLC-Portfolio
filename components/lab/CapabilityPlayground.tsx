@@ -46,19 +46,27 @@ export default function CapabilityPlayground() {
           </button>
         ))}
       </div>
+
       <div className="lab-console">
-        <div className="lab-console-head"><span>INTERACTIVE PROOF</span><strong>{demo.title}</strong></div>
+        <div className="lab-console-head">
+          <span>INTERACTIVE PROOF</span>
+          <strong id="lab-engine-title">{demo.title}</strong>
+        </div>
+
         <ol className="lab-steps">
           {demo.steps.map((item, index) => (
             <li className={index <= step ? "complete" : ""} key={item}>
-              <span>{String(index + 1).padStart(2, "0")}</span><strong>{item}</strong>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{item}</strong>
             </li>
           ))}
         </ol>
+
         <div className="lab-output">
           <small>STATE</small>
           <p>{summary.join(" → ")}</p>
         </div>
+
         <div className="lab-controls">
           <button type="button" onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}>Back</button>
           <button type="button" onClick={() => setStep(Math.min(demo.steps.length - 1, step + 1))} disabled={step === demo.steps.length - 1}>Continue</button>
