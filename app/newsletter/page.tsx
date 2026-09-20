@@ -1,27 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Navigation from "@/components/navigation/Navigation";
 
-export const metadata: Metadata = {
-  title: "A. Halliwell Letters",
-  description: "A. Halliwell Studio editorial letters. Subscription is not yet open.",
-  alternates: { canonical: "/newsletter" },
-};
+export const metadata: Metadata = { title: "A. Halliwell Letters", description: "Editorial publication status for A. Halliwell Studio.", alternates: { canonical: "/newsletter" } };
 
 export default function NewsletterPage() {
-  return (
-    <main className="destination-page">
-      <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell">
-        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
-        <Link href="/">Return home</Link>
-      </header>
-      <article className="destination-sheet">
-        <section className="destination-hero">
-          <small>A. HALLIWELL LETTERS</small>
-          <h1>Notes from inside the internet.</h1>
-          <p>The publication is planned, but subscriptions are not open yet. No fake signup form and no dead workflow.</p>
-        </section>
-      </article>
-    </main>
-  );
+  return <main className="site-shell"><div className="moving-background background-newsletter" aria-hidden="true"/><Navigation/><section className="page-hero shell"><small>A. HALLIWELL LETTERS</small><h1>The publication is planned.<br/>The signup system is not live yet.</h1><p>The Bible requires consent, source tracking, welcome flow and legitimate unsubscribe behavior. Until those pieces exist, the public site will not display a fake subscription form.</p><Link href="/resources">Read current resources ↗</Link></section></main>;
 }
