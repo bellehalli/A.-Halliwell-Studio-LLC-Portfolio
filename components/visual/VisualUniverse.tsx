@@ -1,25 +1,22 @@
 "use client";
+
 import Image from "next/image";
 
 type Zone = "hero" | "work" | "services" | "lab" | "studio" | "start";
 type Asset = { src: string; c: string };
 
-const P = "/assets";
 const file = (folder: string, n: number) =>
-  `${P}/${folder}/Portfolio Assets A.Halliwell  - ${n}.PNG`;
+  `/assets/${folder}/Portfolio Assets A.Halliwell  - ${n}.PNG`;
 
 const zones: Record<Zone, Asset[]> = {
   hero: [
-    { src: file("hearts", 1), c: "a-heart-main" },
     { src: file("hearts", 2), c: "a-heart-purple" },
     { src: file("hearts", 3), c: "a-heart-glass" },
     { src: file("animations", 5), c: "a-spark" },
-    { src: file("animations", 6), c: "a-star-blur" },
     { src: file("animations", 7), c: "a-butterfly-blur" },
     { src: file("objects", 9), c: "a-phone" },
     { src: file("objects", 10), c: "a-bow" },
     { src: file("ui", 14), c: "a-message" },
-    { src: file("objects", 15), c: "a-planet" },
     { src: file("ui", 16), c: "a-computer" },
     { src: file("animations", 18), c: "a-chrome-star" },
   ],
@@ -36,20 +33,10 @@ const zones: Record<Zone, Asset[]> = {
   services: [
     { src: file("ui", 34), c: "a-window-faint" },
     { src: file("ui", 35), c: "a-frame-pink" },
-    { src: file("backgrounds", 36), c: "a-flower-pattern" },
-    { src: file("backgrounds", 39), c: "a-pink-field" },
-    { src: file("backgrounds", 42), c: "a-pixel-pink" },
     { src: file("hearts", 43), c: "a-pixel-heart" },
   ],
   lab: [
-    { src: file("backgrounds", 47), c: "a-star-pattern" },
-    { src: file("backgrounds", 48), c: "a-checker" },
-    { src: file("backgrounds", 50), c: "a-holo-texture" },
     { src: file("objects", 51), c: "a-chrome-drip" },
-    { src: file("backgrounds", 52), c: "a-holo-sheet" },
-    { src: file("backgrounds", 53), c: "a-leopard" },
-    { src: file("backgrounds", 55), c: "a-grain" },
-    { src: file("backgrounds", 56), c: "a-halftone" },
     { src: file("objects", 57), c: "a-globe" },
   ],
   studio: [
@@ -62,7 +49,6 @@ const zones: Record<Zone, Asset[]> = {
     { src: file("animations", 66), c: "a-pearl-flower" },
   ],
   start: [
-    { src: file("backgrounds", 4), c: "a-heart-rings" },
     { src: file("ui", 13), c: "a-yes" },
     { src: file("animations", 17), c: "a-tiny-spark" },
     { src: file("animations", 25), c: "a-pink-sparkle" },
@@ -81,7 +67,7 @@ export default function VisualUniverse({ zone }: { zone: Zone }) {
           alt=""
           width={420}
           height={420}
-          sizes="(max-width: 800px) 140px, 320px"
+          sizes="(max-width: 800px) 120px, 300px"
         />
       ))}
     </div>
