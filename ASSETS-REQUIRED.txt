@@ -1,1 +1,0 @@
-Before deployment, copy these existing GitHub assets into /public: flower-backdrop.png, flower-icon.png, jelly-heart.png, sparkle.png
