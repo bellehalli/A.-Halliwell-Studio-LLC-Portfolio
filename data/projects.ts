@@ -13,6 +13,8 @@ export type Project = {
   build: string[];
   verifiedResult: string;
   nextAction: string;
+  desktopAsset: string;
+  mobileAsset: string;
 };
 
 export const projects: Project[] = [
@@ -31,6 +33,8 @@ export const projects: Project[] = [
     build: ["Custom Next.js experience", "Responsive interface", "SEO foundation"],
     verifiedResult: "The live website is the verifiable artifact. No unsupported performance claims are presented.",
     nextAction: "Review the experience and begin a project conversation."
+    ,desktopAsset: "/projects/willow-lily/desktop.webp"
+    ,mobileAsset: "/projects/willow-lily/mobile.webp"
   },
   {
     slug: "maison-riviere",
@@ -47,6 +51,8 @@ export const projects: Project[] = [
     build: ["Custom development", "Responsive layouts", "Metadata"],
     verifiedResult: "The live website is the verifiable artifact.",
     nextAction: "Start a project for a custom digital experience."
+    ,desktopAsset: "/projects/maison-riviere/desktop.webp"
+    ,mobileAsset: "/projects/maison-riviere/mobile.webp"
   }
 ];
 
