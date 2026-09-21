@@ -33,10 +33,10 @@ export default function Navigation() {
   }, [open]);
 
   return (
-    <header className="site-nav shell">
-      <Link className="brand" href="/" aria-label="A. Halliwell Studio home">
-        <span className="brand-mark">A.</span>
-        <span>A. HALLIWELL STUDIO</span>
+    <header className="site-nav">
+      <Link className="logo" href="/" aria-label="A. Halliwell Studio home">
+        <span className="logo-mark">A.</span>
+        <span className="logo-type">A. HALLIWELL STUDIO</span>
       </Link>
 
       <button
@@ -48,20 +48,20 @@ export default function Navigation() {
         aria-controls="primary-navigation"
         aria-label={open ? "Close navigation" : "Open navigation"}
       >
-        <span className="heart-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="70px" priority /></span>
-        <span className="heart-label">{open ? "CLOSE" : "MENU"}</span>
+        <span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="70px" priority /></span>
+        <span className="heart-button-label">{open ? "CLOSE" : "MENU"}</span>
       </button>
 
       <nav id="primary-navigation" className={`heart-dock ${open ? "is-open" : ""}`} aria-label="Primary navigation">
         {links.map(([label, href]) => (
-          <Link className="heart-button" href={href} key={href} onClick={() => setOpen(false)}>
-            <span className="heart-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="92px" /></span>
-            <span className="heart-label">{label}</span>
+          <Link className="heart-nav-button" href={href} key={href} onClick={() => setOpen(false)}>
+            <span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="92px" /></span>
+            <span className="heart-button-label">{label}</span>
           </Link>
         ))}
-        <Link className="heart-button heart-start" href="/start" onClick={() => setOpen(false)}>
-          <span className="heart-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="110px" /></span>
-          <span className="heart-label">START A<br/>PROJECT</span>
+        <Link className="heart-nav-button heart-start" href="/start" onClick={() => setOpen(false)}>
+          <span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="110px" /></span>
+          <span className="heart-button-label">START A<br/>PROJECT</span>
         </Link>
       </nav>
     </header>
