@@ -2,7 +2,6 @@ import CapabilityPlayground from "@/components/lab/CapabilityPlayground";
 import ProjectShowcase from "@/components/projects/ProjectShowcase";
 import StartProject from "@/components/forms/StartProject";
 import Navigation from "@/components/navigation/Navigation";
-import VisualUniverse from "@/components/visual/VisualUniverse";
 import { projects } from "@/data/projects";
 
 const services = [
@@ -48,7 +47,6 @@ export default function Home() {
       <Navigation />
 
       <section className="hero shell">
-        <VisualUniverse zone="hero" />
 
         <div className="eyebrow">
           <span className="status-dot" />
@@ -84,7 +82,6 @@ export default function Home() {
 
       <div className="studio-world">
         <section className="world-sheet intro-sheet" id="work">
-          <VisualUniverse zone="work" />
           <div className="content-shell">
             <div className="section-kicker">
               <span>01 / PROJECTS</span>
@@ -109,7 +106,6 @@ export default function Home() {
         </div>
 
         <section className="world-sheet service-world" id="services">
-          <VisualUniverse zone="services" />
           <div className="content-shell">
             <div className="section-kicker">
               <span>02 / SERVICES</span>
@@ -142,12 +138,10 @@ export default function Home() {
         </section>
 
         <section className="lab-world">
-          <VisualUniverse zone="lab" />
           <CapabilityPlayground />
         </section>
 
         <section className="world-sheet studio-section" id="studio">
-          <VisualUniverse zone="studio" />
           <div className="content-shell studio-grid">
             <div className="studio-heading">
               <span className="section-kicker-text">04 / THE STUDIO</span>
@@ -185,7 +179,6 @@ export default function Home() {
         </section>
 
         <section className="start-world">
-          <VisualUniverse zone="start" />
           <StartProject />
         </section>
       </div>
