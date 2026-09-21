@@ -12,7 +12,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         </div>
         <div className="project-card-system">
           <small>WHAT IT PROVES</small>
-          <ul>{project.disciplines.map(item => <li key={item}>{item}</li>)}</ul>
+          <ul>{project.build.map(item => <li key={item}>{item}</li>)}</ul>
         </div>
       </div>
       <div className="project-actions">
