@@ -29,7 +29,7 @@ export default function WorkPage() {
               <small>PROJECT {project.number} / {project.category}</small>
               <h2>{project.name}</h2>
               <p>{project.description}</p>
-              <ProjectMedia desktop={project.desktopAsset} mobile={project.mobileAsset} name={project.name} />
+              <ProjectMedia name={project.name} url={project.url} />
               <div className="case-actions">
                 <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>
                 <a className="button" href={project.url} target="_blank" rel="noreferrer">Visit live site ↗</a>
