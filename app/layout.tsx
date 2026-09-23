@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Fraunces, Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
+import "./credibility.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -30,26 +31,26 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ahalliwellstudio.com"),
   title: {
-    default: "A. Halliwell Studio | Web Design & Development",
+    default: "A. Halliwell Studio | Wedding Venue Web Design & Development",
     template: "%s | A. Halliwell Studio",
   },
   description:
-    "Independent creative web design and development studio building custom websites, digital experiences, booking systems, e-commerce experiences, and business systems.",
+    "Custom strategy, web design and development for wedding venues and hospitality brands that want a more distinctive digital experience and clearer inquiry paths.",
   applicationName: "A. Halliwell Studio",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "/",
     siteName: "A. Halliwell Studio",
-    title: "A. Halliwell Studio | Web Design & Development",
+    title: "A. Halliwell Studio | Wedding Venue Web Design & Development",
     description:
-      "Custom websites and digital experiences designed around how your business actually works.",
+      "Custom websites and digital experiences for wedding venues and hospitality brands.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "A. Halliwell Studio | Web Design & Development",
+    title: "A. Halliwell Studio | Wedding Venue Web Design & Development",
     description:
-      "Custom websites and digital experiences designed around how your business actually works.",
+      "Custom websites and digital experiences for wedding venues and hospitality brands.",
   },
   robots: {
     index: true,

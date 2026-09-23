@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CapabilityPlayground from "@/components/lab/CapabilityPlayground";
 import ProjectShowcase from "@/components/projects/ProjectShowcase";
 import StartProject from "@/components/forms/StartProject";
@@ -19,6 +20,7 @@ const schema = {
   "@id": "https://ahalliwellstudio.com/#studio",
   name: "A. Halliwell Studio",
   url: "https://ahalliwellstudio.com",
+  email: "mailto:hello@ahalliwellstudio.com",
   description:
     "Independent web design and development studio creating custom websites and digital experiences for wedding venues and hospitality brands.",
   areaServed: [{ "@type": "Country", name: "United States" }],
@@ -102,6 +104,59 @@ export default function Home() {
           ))}
         </div>
 
+        <section className="world-sheet proof-world" aria-labelledby="proof-title">
+          <div className="content-shell">
+            <div className="section-kicker">
+              <span>PROOF / WITHOUT THE PRETENDING</span>
+              <span>INSPECT THE WORK YOURSELF.</span>
+            </div>
+
+            <div className="proof-heading">
+              <h2 id="proof-title">
+                Don&apos;t take
+                <br />
+                <em>my word for it.</em>
+              </h2>
+              <p>
+                I do not have a wall of client logos to manufacture. What I can show you is the work itself, the thinking behind it and the interactions running live.
+              </p>
+            </div>
+
+            <div className="proof-grid">
+              <article>
+                <span>01 / WALK THROUGH THE WORK</span>
+                <h3>Live builds, not mockups.</h3>
+                <p>Open the venue concepts in a browser and experience the responsive sites as a prospective couple would.</p>
+                <div className="proof-links">
+                  <a href="https://willowlilyestate.com" target="_blank" rel="noreferrer">Willow Lily ↗</a>
+                  <a href="https://www.maisonrivieredetroit.com" target="_blank" rel="noreferrer">Maison Rivière ↗</a>
+                </div>
+              </article>
+
+              <article>
+                <span>02 / SEE THE THINKING</span>
+                <h3>Strategy you can read.</h3>
+                <p>Each case study documents the challenge, strategy, build decisions and what the concept is designed to demonstrate.</p>
+                <div className="proof-links">
+                  <a href="/work/willow-lily">Read Willow Lily ↗</a>
+                  <a href="/work/maison-riviere">Read Maison Rivière ↗</a>
+                </div>
+              </article>
+
+              <article>
+                <span>03 / TRY THE INTERACTIONS</span>
+                <h3>The details actually work.</h3>
+                <p>Maps, builders, inquiry paths, planning moments and responsive behavior are there to be clicked, not described in a pitch deck.</p>
+                <a className="proof-single-link" href="/work">Explore selected work ↗</a>
+              </article>
+            </div>
+
+            <p className="proof-disclosure">
+              These are original studio concept projects, not commissioned client work. I do not publish invented testimonials, logos or performance results.
+            </p>
+          </div>
+        </section>
+
         <section className="world-sheet service-world" id="services">
           <div className="content-shell">
             <div className="section-kicker">
@@ -145,37 +200,55 @@ export default function Home() {
         </section>
 
         <section className="world-sheet studio-section" id="studio">
-          <div className="content-shell studio-grid">
-            <div className="studio-heading">
+          <div className="content-shell founder-preview">
+            <div className="founder-preview-copy">
               <span className="section-kicker-text">04 / THE STUDIO</span>
               <h2>
                 The person
                 <br />
                 behind the <em>cursor.</em>
               </h2>
-              <span className="studio-scribble">strategy before decoration.</span>
-            </div>
 
-            <div className="studio-copy">
               <p className="studio-lead">
-                A. Halliwell Studio is an independent web design and development studio focused on wedding venues and hospitality brands that have outgrown ordinary websites.
+                I&apos;m Arabella Halliwell, founder, designer and developer of A. Halliwell Studio.
               </p>
               <p>
-                The work starts with how couples choose a venue, what they need to understand before they inquire, and how the property should feel before they ever arrive. Then we make it beautiful.
+                My background sits at the intersection of psychology, hospitality and digital design. I spent years working directly with customers before moving into web design and development, so I tend to look at websites from both sides: how the business operates and how a person decides whether to trust it.
               </p>
+              <p>
+                Today the studio focuses on wedding venues and hospitality brands that want the digital experience to feel as considered as the one they create in person.
+              </p>
+
               <div className="studio-note">
                 <span>STRATEGY</span>
                 <span>DESIGN</span>
                 <span>CODE</span>
                 <span>PERSONALITY ♥</span>
               </div>
+
+              <a className="button" href="/studio">MEET THE STUDIO ↗</a>
             </div>
 
-            <aside className="studio-desk-note">
-              <small>DESK NOTE / 001</small>
-              <strong>Custom means custom.</strong>
-              <p>No template-shaped venues.</p>
-            </aside>
+            <div className="founder-preview-visual">
+              <div className="founder-photo-card">
+                <Image
+                  src="/assets/founder/arabella-halliwell.jpg"
+                  alt="Arabella Halliwell, founder, designer and developer of A. Halliwell Studio"
+                  fill
+                  sizes="(max-width: 820px) 86vw, 420px"
+                />
+                <span className="founder-photo-label">ARABELLA HALLIWELL / FOUNDER</span>
+              </div>
+
+              <aside className="founder-desk-note">
+                <small>FROM MY DESK</small>
+                <strong>Detroit, Michigan</strong>
+                <span>Independent studio</span>
+                <span>Strategy + design + development</span>
+                <span>Booking select venue + hospitality projects</span>
+                <a href="mailto:hello@ahalliwellstudio.com">hello@ahalliwellstudio.com ↗</a>
+              </aside>
+            </div>
           </div>
         </section>
 
@@ -191,7 +264,10 @@ export default function Home() {
             <strong>A. HALLIWELL STUDIO</strong>
           </div>
           <p>Strategy, design and development for venues that want the website to participate in the sale.</p>
-          <div className="footer-links"><a href="mailto:arabellakhalliwell@gmail.com?subject=Website%20inquiry">EMAIL THE STUDIO ↗</a><a href="#top">BACK TO TOP ↑</a></div>
+          <div className="footer-links">
+            <a href="mailto:hello@ahalliwellstudio.com?subject=Website%20inquiry">EMAIL THE STUDIO ↗</a>
+            <a href="#top">BACK TO TOP ↑</a>
+          </div>
         </div>
       </footer>
     </main>

@@ -1,0 +1,338 @@
+/* CREDIBILITY PASS: proof + founder */
+
+.proof-world {
+  margin-top: clamp(40px, 7vw, 86px);
+  background:
+    linear-gradient(rgba(255,250,245,.96), rgba(255,250,245,.96)),
+    url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.PNG");
+  background-size: cover, 520px;
+  background-position: center, right top;
+}
+
+.proof-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  align-items: end;
+  gap: clamp(30px, 6vw, 90px);
+}
+
+.proof-heading > p {
+  margin: 38px 0 8px;
+  max-width: 560px;
+  font-size: clamp(17px, 1.45vw, 21px);
+  line-height: 1.6;
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(52px, 7vw, 86px);
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+}
+
+.proof-grid article {
+  min-height: 330px;
+  padding: clamp(26px, 3.3vw, 42px);
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  background: rgba(255,250,245,.82);
+}
+
+.proof-grid article > span,
+.proof-disclosure,
+.proof-links a,
+.proof-single-link {
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .055em;
+}
+
+.proof-grid h3 {
+  margin: 52px 0 16px;
+  font-family: var(--font-editorial), Georgia, serif;
+  font-size: clamp(32px, 3.4vw, 50px);
+  line-height: .96;
+  letter-spacing: -.045em;
+}
+
+.proof-grid p {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.proof-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.proof-links a,
+.proof-single-link {
+  text-underline-offset: 4px;
+}
+
+.proof-single-link {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.proof-disclosure {
+  margin: 24px 0 0;
+  max-width: 900px;
+  line-height: 1.6;
+}
+
+.founder-preview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr);
+  gap: clamp(50px, 8vw, 110px);
+  align-items: center;
+}
+
+.founder-preview-copy h2 {
+  margin: 38px 0 0;
+}
+
+.founder-preview-copy > p {
+  max-width: 690px;
+  font-size: 17px;
+  line-height: 1.68;
+}
+
+.founder-preview-copy .studio-lead {
+  margin-top: 36px;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.5;
+}
+
+.founder-preview-copy .button {
+  margin-top: 28px;
+}
+
+.founder-preview-visual {
+  position: relative;
+  padding: 0 0 72px 28px;
+}
+
+.founder-photo-card,
+.founder-profile-photo {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--ink);
+  box-shadow: 12px 14px 0 rgba(255,159,199,.46);
+}
+
+.founder-photo-card {
+  width: min(100%, 430px);
+  margin-left: auto;
+  aspect-ratio: 4 / 5;
+  transform: rotate(1.25deg);
+}
+
+.founder-photo-card img,
+.founder-profile-photo img {
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.founder-photo-label,
+.founder-profile-photo > span {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 9px 10px;
+  background: rgba(255,250,245,.92);
+  border: 1px solid rgba(16,13,16,.22);
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+.founder-desk-note {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
+  width: min(280px, 72%);
+  padding: 22px 20px;
+  background: var(--lavender);
+  border: 1px solid var(--ink);
+  box-shadow: 8px 9px 0 rgba(16,13,16,.12);
+  transform: rotate(-2.5deg);
+}
+
+.founder-desk-note small,
+.founder-desk-note span,
+.founder-desk-note a {
+  display: block;
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  line-height: 1.55;
+}
+
+.founder-desk-note strong {
+  display: block;
+  margin: 14px 0 10px;
+  font-family: var(--font-editorial), Georgia, serif;
+  font-size: 24px;
+  letter-spacing: -.035em;
+}
+
+.founder-desk-note a {
+  margin-top: 14px;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+.studio-destination .destination-hero {
+  padding-bottom: clamp(48px, 7vw, 84px);
+}
+
+.founder-profile {
+  display: grid;
+  grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr);
+  gap: clamp(42px, 7vw, 90px);
+  align-items: center;
+  padding: clamp(42px, 7vw, 90px) 0;
+  border-top: 1px solid var(--ink);
+}
+
+.founder-profile-photo {
+  width: min(100%, 470px);
+  aspect-ratio: 4 / 5;
+  transform: rotate(-.8deg);
+}
+
+.founder-profile-copy > small,
+.studio-integrity > small {
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.founder-profile-copy h2,
+.studio-integrity h2 {
+  margin: 20px 0;
+  font-family: var(--font-editorial), Georgia, serif;
+  font-size: clamp(46px, 6vw, 86px);
+  line-height: .9;
+  letter-spacing: -.055em;
+}
+
+.founder-profile-copy > p {
+  max-width: 700px;
+  font-size: 17px;
+  line-height: 1.72;
+}
+
+.founder-profile-copy .founder-lead {
+  font-size: clamp(20px, 2vw, 27px);
+  line-height: 1.48;
+}
+
+.founder-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0;
+}
+
+.founder-facts span {
+  padding: 8px 10px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.studio-integrity {
+  margin-top: clamp(64px, 9vw, 120px);
+  padding: clamp(40px, 6vw, 70px);
+  border: 1px solid var(--ink);
+  background: var(--soft-pink);
+}
+
+.studio-integrity p {
+  max-width: 760px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.studio-integrity > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.work-proof-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 38px;
+}
+
+.work-proof-strip span {
+  padding: 8px 10px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .proof-heading,
+  .founder-preview,
+  .founder-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid article {
+    min-height: 0;
+  }
+
+  .founder-preview-visual {
+    width: min(100%, 540px);
+    margin-inline: auto;
+  }
+
+  .founder-profile-photo {
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .founder-preview-visual {
+    padding-left: 0;
+    padding-bottom: 115px;
+  }
+
+  .founder-photo-card {
+    width: 92%;
+    margin: 0 auto;
+  }
+
+  .founder-desk-note {
+    width: 88%;
+    left: 6%;
+  }
+
+  .studio-integrity {
+    padding: 32px 22px;
+  }
+}
