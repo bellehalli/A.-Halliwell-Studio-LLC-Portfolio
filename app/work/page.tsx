@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function WorkPage() {
   return (
-    <main className="case-page">
+    <main className="case-page work-page">
       <div className="site-background" aria-hidden="true" />
       <header className="case-nav shell">
         <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
