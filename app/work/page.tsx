@@ -5,7 +5,7 @@ import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Selected Work",
-  description: "Selected custom websites and digital experiences by A. Halliwell Studio.",
+  description: "Original wedding venue and hospitality concept websites by A. Halliwell Studio, shown with live builds and transparent case-study thinking.",
   alternates: { canonical: "/work" },
 };
 
@@ -17,13 +17,22 @@ export default function WorkPage() {
         <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
         <Link href="/#start">Start a project ↗</Link>
       </header>
+
       <section className="case-sheet">
         <div className="case-hero">
           <div className="case-index"><span>SELECTED WORK</span><span>A. HALLIWELL STUDIO</span></div>
-          <h1>Built to be<br/>used.</h1>
-          <p>Custom digital experiences designed around what each business actually needs the internet to do.</p>
-          <p className="demo-disclosure">Willow Lily and Maison Rivière are original studio demonstrations for fictional venue brands.</p>
+          <h1>Built to be<br />used.</h1>
+          <p>Working venue concepts that show how I think about storytelling, decision-making, inquiry and custom interaction.</p>
+          <p className="demo-disclosure"><strong>Original studio work:</strong> Willow Lily and Maison Rivière were created independently to demonstrate my approach. They are fictional venue brands, not commissioned client projects, and I do not claim invented results.</p>
         </div>
+
+        <div className="work-proof-strip">
+          <span>LIVE BUILDS</span>
+          <span>CASE-STUDY THINKING</span>
+          <span>WORKING INTERACTIONS</span>
+          <span>NO INVENTED METRICS</span>
+        </div>
+
         <div className="case-story">
           {projects.map((project) => (
             <article key={project.slug} className="work-index-project">
@@ -38,7 +47,12 @@ export default function WorkPage() {
             </article>
           ))}
         </div>
-        <section className="case-end"><small>HAVE A PROJECT IN MIND?</small><h2>Let's build something<br/>worth clicking.</h2><Link className="button button-primary" href="/#start">Start a project ↗</Link></section>
+
+        <section className="case-end">
+          <small>HAVE A VENUE PROJECT IN MIND?</small>
+          <h2>Let&apos;s build something<br />worth clicking.</h2>
+          <Link className="button button-primary" href="/#start">Start a project ↗</Link>
+        </section>
       </section>
     </main>
   );
