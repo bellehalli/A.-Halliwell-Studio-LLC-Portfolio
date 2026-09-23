@@ -19,10 +19,11 @@ export default function ProjectShowcase({ project }: { project: Project }) {
           </span>
           <h3>{project.name}</h3>
           <p>{project.description}</p>
+          <small>ORIGINAL STUDIO DEMONSTRATION / FICTIONAL VENUE</small>
         </div>
 
         <div className="project-world-media">
-          <ProjectMedia name={project.name} url={project.url} />
+          <ProjectMedia project={project} />
           <span className="tape tape-one" aria-hidden="true" />
           <span className="tape tape-two" aria-hidden="true" />
         </div>
