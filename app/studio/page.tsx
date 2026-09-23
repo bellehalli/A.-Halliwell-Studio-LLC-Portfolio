@@ -41,7 +41,7 @@ export default function Page() {
         <section className="founder-profile">
           <div className="founder-profile-photo">
             <Image
-              src="/assets/founder/arabella-halliwell.jpg"
+              src="/assets/founder/arabella-halliwell.PNG"
               alt="Arabella Halliwell, founder, designer and developer of A. Halliwell Studio"
               fill
               sizes="(max-width: 800px) 90vw, 460px"
