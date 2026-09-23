@@ -11,6 +11,7 @@ export type Project = {
   mobileAsset: string;
   brief: string;
   approach: string[];
+  evidence: string[];
 };
 
 export const projects: Project[] = [
@@ -23,10 +24,11 @@ export const projects: Project[] = [
     url: "https://willowlilyestate.com",
     tone: "willow",
     details: ["UX Strategy", "Custom Development", "Interactive Systems"],
-    desktopAsset: "/projects/willow-lily/desktop.webp",
-    mobileAsset: "/projects/willow-lily/mobile.webp",
+    desktopAsset: "/projects/willow-lily/desktop/willow-entry-screen.PNG",
+    mobileAsset: "/projects/willow-lily/desktop/willow-contact-form.PNG",
     brief: "Create a polished hospitality experience that helps prospective wedding clients understand the property, explore the offer and move toward inquiry without flattening the brand into a generic venue template.",
     approach: ["Clearer guest journey", "Custom interactive moments", "Conversion-minded structure", "Responsive experience"],
+    evidence: ["/projects/willow-lily/desktop/willow-entry-screen.PNG", "/projects/willow-lily/desktop/willow-estate-map.PNG", "/projects/willow-lily/desktop/willow-contact-form.PNG"],
   },
   {
     slug: "maison-riviere",
@@ -37,10 +39,11 @@ export const projects: Project[] = [
     url: "https://www.maisonrivieredetroit.com",
     tone: "maison",
     details: ["Web Design", "Development", "Hospitality UX"],
-    desktopAsset: "/projects/maison-riviere/desktop.webp",
-    mobileAsset: "/projects/maison-riviere/mobile.webp",
+    desktopAsset: "/projects/maison-riviere/desktop/maison-homepage-hero.PNG",
+    mobileAsset: "/projects/maison-riviere/desktop/maison-tour-inquiry.PNG",
     brief: "Translate an event and hospitality brand into a digital presence that feels intentional, easy to explore and ready to support real customer decisions.",
     approach: ["Editorial presentation", "Hospitality-first UX", "Responsive development", "Clear action paths"],
+    evidence: ["/projects/maison-riviere/desktop/maison-homepage-hero.PNG", "/projects/maison-riviere/desktop/maison-wedding-builder.PNG", "/projects/maison-riviere/desktop/maison-tour-inquiry.PNG"],
   },
 ];
 
