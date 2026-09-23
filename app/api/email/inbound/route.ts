@@ -17,10 +17,11 @@ function escapeHtml(value: string) {
 export async function POST(request: Request) {
   try {
     const webhookSecret = process.env.RESEND_WEBHOOK_SECRET;
+    const destination = process.env.INQUIRY_TO_EMAIL;
 
-    if (!webhookSecret) {
+    if (!webhookSecret || !destination) {
       return NextResponse.json(
-        { error: "Webhook secret is not configured." },
+        { error: "Inbound email is not fully configured." },
         { status: 500 }
       );
     }
@@ -56,7 +57,6 @@ export async function POST(request: Request) {
 
     if (retrieveError || !receivedEmail) {
       console.error("Could not retrieve inbound email:", retrieveError);
-
       return NextResponse.json(
         { error: "Could not retrieve inbound email." },
         { status: 502 }
@@ -68,22 +68,17 @@ export async function POST(request: Request) {
 
     const { error: sendError } = await resend.emails.send({
       from: "A. Halliwell Studio <hello@ahalliwellstudio.com>",
-      to: [
-        process.env.INQUIRY_TO_EMAIL || "arabellakhalliwell@gmail.com",
-      ],
+      to: [destination],
       replyTo: originalSender,
       subject,
       html:
         receivedEmail.html ||
-        `<pre style="white-space:pre-wrap;font-family:Arial,sans-serif;">${escapeHtml(
-          receivedEmail.text || ""
-        )}</pre>`,
+        `<pre style="white-space:pre-wrap;font-family:Arial,sans-serif;">${escapeHtml(receivedEmail.text || "")}</pre>`,
       text: receivedEmail.text || undefined,
     });
 
     if (sendError) {
       console.error("Could not forward inbound email:", sendError);
-
       return NextResponse.json(
         { error: "Could not forward inbound email." },
         { status: 502 }
@@ -93,7 +88,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error("Invalid Resend webhook:", error);
-
     return NextResponse.json(
       { error: "Invalid webhook." },
       { status: 400 }
