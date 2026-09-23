@@ -42,7 +42,7 @@ function Package() {
   return <><Heading number="03" label="PACKAGE BUILDER" title="Make room for more." description="Build a sample event package and see the estimate change." />
     <div className="lab-field"><b>CHOOSE YOUR SPACE</b><Choices items={["The garden", "The hall"]} value={space} change={setSpace} label="Event space" /></div>
     <div className="lab-field"><b>ADD THE GOOD STUFF</b><div className="lab-additions">{additions.map(item => <label key={item.name}><input type="checkbox" checked={selected.includes(item.name)} onChange={() => setSelected(current => current.includes(item.name) ? current.filter(value => value !== item.name) : [...current, item.name])} /><span>{item.name}</span><strong>+${item.price.toLocaleString()}</strong></label>)}</div></div>
-    <div className="lab-total" aria-live="polite"><span>SAMPLE ESTIMATE <small>{space} + {selected.length} add-ons</small></span><strong>${total.toLocaleString()}</strong></div><p className="lab-footnote">Illustrative amounts only. This is not a real venue quote.</p>
+    <div className="lab-total" aria-live="polite"><span>SAMPLE ESTIMATE <small>{space} + {selected.length} {selected.length === 1 ? "add-on" : "add-ons"}</small></span><strong>${total.toLocaleString()}</strong></div><p className="lab-footnote">Illustrative amounts only. This is not a real venue quote.</p>
   </>;
 }
 const events = [{ title: "Garden Table", type: "Food", time: "Evening", date: "OCT 09" }, { title: "Make Something", type: "Workshop", time: "Daytime", date: "OCT 11" }, { title: "After Hours", type: "Music", time: "Evening", date: "OCT 16" }, { title: "Sunday Studio", type: "Workshop", time: "Daytime", date: "OCT 18" }];
@@ -51,7 +51,7 @@ function Events() {
   const filtered = filter === "All" ? events : events.filter(event => event.type === filter);
   return <><Heading number="04" label="EVENT DISCOVERY" title="Find your kind of night." description="Filter a sample calendar to find the event you came for." />
     <Choices items={["All", "Food", "Workshop", "Music"]} value={filter} change={setFilter} label="Filter events" />
-    <div className="lab-event-list" aria-live="polite">{filtered.map(event => <article key={event.title}><time>{event.date}</time><div><strong>{event.title}</strong><small>{event.type} / {event.time}</small></div><span aria-hidden="true">↗</span></article>)}</div><p className="lab-footnote">Sample events only. No tickets or dates are available here.</p>
+    <div className="lab-event-list" aria-live="polite">{filtered.map(event => <article key={event.title}><time>{event.date}</time><div><strong>{event.title}</strong><small>{event.type} / {event.time}</small></div><span aria-hidden="true">✳</span></article>)}</div><p className="lab-footnote">Sample events only. No tickets or dates are available here.</p>
   </>;
 }
 function Leads() {
