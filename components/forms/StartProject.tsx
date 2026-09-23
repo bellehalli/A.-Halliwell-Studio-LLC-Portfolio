@@ -44,6 +44,7 @@ export default function StartProject() {
 
     setStatus("sending");
     setFeedback("");
+
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -66,7 +67,7 @@ export default function StartProject() {
         <div className="start-project start-project-success">
           <span className="start-kicker">INQUIRY RECEIVED</span>
           <div className="start-success-heart">♥</div>
-          <h2>It's officially<br />in my inbox.</h2>
+          <h2>It&apos;s officially<br />in my inbox.</h2>
           <p>{feedback}</p>
           <div className="start-success-summary">
             <span>BUSINESS</span><strong>{projectType}</strong>
@@ -100,8 +101,8 @@ export default function StartProject() {
           </fieldset>
 
           <div className="builder-split">
-            <fieldset className="builder-step"><legend><span>03</span>What's the timing?</legend><div className="builder-options">{timingOptions.map((option) => <button key={option} type="button" className={timing === option ? "selected" : ""} aria-pressed={timing === option} onClick={() => setTiming(option)}>{option}</button>)}</div></fieldset>
-            <fieldset className="builder-step"><legend><span>04</span>What's the investment?</legend><div className="builder-options">{investmentOptions.map((option) => <button key={option} type="button" className={investment === option ? "selected" : ""} aria-pressed={investment === option} onClick={() => setInvestment(option)}>{option}</button>)}</div></fieldset>
+            <fieldset className="builder-step"><legend><span>03</span>What&apos;s the timing?</legend><div className="builder-options">{timingOptions.map((option) => <button key={option} type="button" className={timing === option ? "selected" : ""} aria-pressed={timing === option} onClick={() => setTiming(option)}>{option}</button>)}</div></fieldset>
+            <fieldset className="builder-step"><legend><span>04</span>What&apos;s the investment?</legend><div className="builder-options">{investmentOptions.map((option) => <button key={option} type="button" className={investment === option ? "selected" : ""} aria-pressed={investment === option} onClick={() => setInvestment(option)}>{option}</button>)}</div></fieldset>
           </div>
 
           <fieldset className="builder-step builder-contact">
@@ -122,7 +123,15 @@ export default function StartProject() {
             <button type="submit" className="button button-primary" disabled={status === "sending"}>{status === "sending" ? "Sending..." : "Send my project ↗"}</button>
           </div>
 
-          {feedback && status === "error" && <p className="builder-feedback builder-error" role="alert">{feedback} <a href={`mailto:arabellakhalliwell@gmail.com?subject=${encodeURIComponent("Website inquiry for " + (business || name))}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\nBusiness: ${business}\n${brief}\n\n${message}`)}`}>Email your brief directly ↗</a></p>}
+          {feedback && status === "error" && (
+            <p className="builder-feedback builder-error" role="alert">
+              {feedback}{" "}
+              <a href={`mailto:hello@ahalliwellstudio.com?subject=${encodeURIComponent("Website inquiry for " + (business || name))}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\nBusiness: ${business}\n${brief}\n\n${message}`)}`}>
+                Email your brief directly ↗
+              </a>
+            </p>
+          )}
+
           <p className="builder-privacy">Your information is used only to respond to your project inquiry.</p>
         </form>
       </div>
