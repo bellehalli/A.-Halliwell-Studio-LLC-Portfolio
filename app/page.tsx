@@ -50,7 +50,7 @@ export default function Home() {
 
         <div className="eyebrow">
           <span className="status-dot" />
-          INDEPENDENT CREATIVE DEVELOPMENT STUDIO
+          CUSTOM WEBSITES FOR WEDDING VENUES + HOSPITALITY
         </div>
 
         <div className="hero-title-wrap">
@@ -64,12 +64,12 @@ export default function Home() {
 
         <div className="hero-bottom">
           <p className="hero-description">
-            Custom digital experiences designed around how your business actually works.
+            I build websites for wedding venues and hospitality businesses that turn browsing into bookings. Custom sites start at $5,000 + scope.
           </p>
 
           <div className="hero-actions">
-            <a className="button button-primary" href="#work">EXPLORE THE STUDIO ↘</a>
-            <a className="button" href="#start">START A PROJECT ↗</a>
+            <a className="button button-primary" href="#start">START A PROJECT ↗</a>
+            <a className="button" href="#work">VIEW VENUE DEMOS ↘</a>
           </div>
         </div>
       </section>
@@ -93,8 +93,7 @@ export default function Home() {
               <em>a world of its own.</em>
             </h2>
             <p className="world-lede">
-              Each project gets its own visual language, customer journey and system.
-              The portfolio is evidence, not the entire story.
+              Explore two original venue demonstrations showing how a guest moves from first impression to a confident inquiry. These are concept projects, not commissioned client work.
             </p>
           </div>
         </section>
@@ -133,6 +132,11 @@ export default function Home() {
                   <p>{description}</p>
                 </article>
               ))}
+            </div>
+            <div className="launch-process">
+              <h3>From first conversation to launch</h3>
+              <p>We start with your venue, guest journey and booking goals. You receive a defined scope, timeline and deliverables before design begins. I then design, build and test the site, guide launch, and offer ongoing maintenance and improvements under a separate support agreement.</p>
+              <p>Custom venue websites start at $5,000 + scope. The final quote depends on pages, content, integrations and custom features.</p>
             </div>
           </div>
         </section>
@@ -190,7 +194,7 @@ export default function Home() {
             <strong>A. HALLIWELL STUDIO</strong>
           </div>
           <p>The website is the storefront. The platform is the machinery.</p>
-          <div className="footer-links"><a href="/portal">CLIENT PORTAL ↗</a><a href="#top">BACK TO TOP ↑</a></div>
+          <div className="footer-links"><a href="mailto:arabellakhalliwell@gmail.com?subject=Website%20inquiry">EMAIL THE STUDIO ↗</a><a href="#top">BACK TO TOP ↑</a></div>
         </div>
       </footer>
     </main>

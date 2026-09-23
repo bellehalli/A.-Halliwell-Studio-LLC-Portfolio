@@ -511,3 +511,14 @@ img { max-width: 100%; }
   .heart-dock .heart-nav-button{width:120px!important;height:94px!important}
   .heart-dock .heart-start{width:135px!important;height:105px!important}
 }
+
+/* Case study screenshots */
+.project-evidence-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:12px}
+.project-evidence-gallery figure{margin:0;min-width:0;background:#f6f1ec}
+.project-evidence-gallery img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;object-position:top}
+.project-evidence-gallery figcaption{padding:10px;font:700 9px var(--font-mono),monospace;text-transform:uppercase}
+@media(max-width:700px){.project-evidence-gallery{grid-template-columns:1fr}}
+.launch-process{margin:48px 0 0;padding:clamp(20px,4vw,44px);border:1px solid currentColor;background:#fffaf5;color:#120d10}
+.launch-process h3{margin:0 0 16px;font-family:var(--font-editorial),Georgia,serif;font-size:clamp(28px,3vw,46px)}
+.launch-process p{max-width:850px;line-height:1.6}
+.demo-disclosure{font-size:14px;line-height:1.5}
