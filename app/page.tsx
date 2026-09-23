@@ -5,12 +5,12 @@ import Navigation from "@/components/navigation/Navigation";
 import { projects } from "@/data/projects";
 
 const services = [
-  ["01", "Digital Strategy", "Define the job before decorating the interface."],
-  ["02", "Experience Design", "Shape customer journeys that feel intuitive, distinctive and intentional."],
-  ["03", "Custom Development", "Build the experience around the business instead of forcing the business into a template."],
-  ["04", "Commerce + Booking", "Turn buying, booking and inquiry into designed customer experiences."],
-  ["05", "Business Systems", "Connect the public-facing experience to the machinery behind the business."],
-  ["06", "Studio Support", "Keep refining, maintaining and extending the work after launch."],
+  ["01", "Venue Strategy", "Clarify what couples need to understand before they feel ready to inquire or book a tour."],
+  ["02", "Experience Design", "Turn the venue, the stay and the celebration into a digital journey that feels as considered as the property itself."],
+  ["03", "Custom Development", "Build around the real venue experience instead of forcing it into a template."],
+  ["04", "Inquiry + Booking UX", "Make pricing, availability, tours and inquiry feel connected instead of scattered across the site."],
+  ["05", "Interactive Venue Tools", "Maps, wedding builders, itineraries, planning tools and other custom features that help guests picture the experience."],
+  ["06", "Launch + Studio Support", "Test, launch, maintain and keep improving the site after it goes live."],
 ];
 
 const schema = {
@@ -20,17 +20,16 @@ const schema = {
   name: "A. Halliwell Studio",
   url: "https://ahalliwellstudio.com",
   description:
-    "Independent creative web design and development studio building custom websites, digital experiences, booking systems, e-commerce experiences, and business systems.",
+    "Independent web design and development studio creating custom websites and digital experiences for wedding venues and hospitality brands.",
   areaServed: [{ "@type": "Country", name: "United States" }],
   serviceType: [
-    "Web Design",
+    "Wedding Venue Web Design",
+    "Hospitality Web Design",
     "Web Development",
     "Digital Strategy",
     "Experience Design",
-    "Custom Development",
-    "E-Commerce",
-    "Booking Systems",
-    "Business Systems",
+    "Booking and Inquiry UX",
+    "Interactive Venue Tools",
     "Website Support",
   ],
 };
@@ -47,7 +46,6 @@ export default function Home() {
       <Navigation />
 
       <section className="hero shell">
-
         <div className="eyebrow">
           <span className="status-dot" />
           CUSTOM WEBSITES FOR WEDDING VENUES + HOSPITALITY
@@ -55,28 +53,28 @@ export default function Home() {
 
         <div className="hero-title-wrap">
           <h1 className="hero-title">
-            <span>Websites</span>
-            <span>With</span>
-            <em>Personality♥</em>
+            <span>Venue websites</span>
+            <span>built to</span>
+            <em>be remembered.♥</em>
           </h1>
           <p className="hero-margin-note">PRETTY IS ONLY THE BEGINNING.</p>
         </div>
 
         <div className="hero-bottom">
           <p className="hero-description">
-            I build websites for wedding venues and hospitality businesses that turn browsing into bookings. Custom sites start at $5,000 + scope.
+            I design and develop custom websites for wedding venues and hospitality brands that need the digital experience to feel as considered as the property itself. Custom sites start at $5,000 + scope.
           </p>
 
           <div className="hero-actions">
             <a className="button button-primary" href="#start">START A PROJECT ↗</a>
-            <a className="button" href="#work">VIEW VENUE DEMOS ↘</a>
+            <a className="button" href="#work">VIEW SELECTED WORK ↘</a>
           </div>
         </div>
       </section>
 
       <div className="hero-strip" aria-hidden="true">
         <div className="hero-strip-track">
-          WEB DESIGN ✦ DEVELOPMENT ✦ INTERACTIVE SYSTEMS ✦ COMMERCE ✦ BRAND EXPERIENCES ✦ ONGOING SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ INTERACTIVE SYSTEMS ✦ COMMERCE ✦ BRAND EXPERIENCES ✦ ONGOING SUPPORT ✦
+          VENUE STRATEGY ✦ WEB DESIGN ✦ CUSTOM DEVELOPMENT ✦ INQUIRY UX ✦ INTERACTIVE TOOLS ✦ STUDIO SUPPORT ✦ VENUE STRATEGY ✦ WEB DESIGN ✦ CUSTOM DEVELOPMENT ✦ INQUIRY UX ✦ INTERACTIVE TOOLS ✦ STUDIO SUPPORT ✦
         </div>
       </div>
 
@@ -84,7 +82,7 @@ export default function Home() {
         <section className="world-sheet intro-sheet" id="work">
           <div className="content-shell">
             <div className="section-kicker">
-              <span>01 / PROJECTS</span>
+              <span>01 / SELECTED WORK</span>
               <span>THE SITE IS THE PROOF ↗</span>
             </div>
             <h2>
@@ -93,7 +91,7 @@ export default function Home() {
               <em>a world of its own.</em>
             </h2>
             <p className="world-lede">
-              Explore two original venue demonstrations showing how a guest moves from first impression to a confident inquiry. These are concept projects, not commissioned client work.
+              Two original venue concepts showing how strategy, design and custom development can move a couple from first impression to a confident inquiry.
             </p>
           </div>
         </section>
@@ -107,20 +105,20 @@ export default function Home() {
         <section className="world-sheet service-world" id="services">
           <div className="content-shell">
             <div className="section-kicker">
-              <span>02 / SERVICES</span>
-              <span>DESIGN WITH A JOB TO DO.</span>
+              <span>02 / THE OFFER</span>
+              <span>DESIGNED AROUND HOW VENUES SELL.</span>
             </div>
 
             <div className="services-heading-grid">
               <h2>
-                Beautiful enough
+                Make the venue
                 <br />
-                to remember.
+                easier to imagine.
                 <br />
-                <em>Useful enough to become infrastructure.</em>
+                <em>Make the next step easier to take.</em>
               </h2>
               <p className="service-question">
-                WHAT DOES THE BUSINESS NEED THE INTERNET TO DO?
+                WHAT DOES A COUPLE NEED TO SEE BEFORE THEY FEEL READY?
               </p>
             </div>
 
@@ -133,9 +131,10 @@ export default function Home() {
                 </article>
               ))}
             </div>
+
             <div className="launch-process">
               <h3>From first conversation to launch</h3>
-              <p>We start with your venue, guest journey and booking goals. You receive a defined scope, timeline and deliverables before design begins. I then design, build and test the site, guide launch, and offer ongoing maintenance and improvements under a separate support agreement.</p>
+              <p>We start with the property, your ideal couple, the questions they ask before touring and the places the current website creates friction. You receive a defined scope, timeline and deliverables before design begins. I then design, build and test the experience, guide launch, and offer ongoing maintenance and improvements under a separate support agreement.</p>
               <p>Custom venue websites start at $5,000 + scope. The final quote depends on pages, content, integrations and custom features.</p>
             </div>
           </div>
@@ -159,12 +158,10 @@ export default function Home() {
 
             <div className="studio-copy">
               <p className="studio-lead">
-                A. Halliwell Studio is an independent creative web design and development
-                studio for businesses that have outgrown ordinary websites.
+                A. Halliwell Studio is an independent web design and development studio focused on wedding venues and hospitality brands that have outgrown ordinary websites.
               </p>
               <p>
-                The work starts with how a business operates, how customers make decisions
-                and what the digital experience actually needs to accomplish. Then we make it beautiful.
+                The work starts with how couples choose a venue, what they need to understand before they inquire, and how the property should feel before they ever arrive. Then we make it beautiful.
               </p>
               <div className="studio-note">
                 <span>STRATEGY</span>
@@ -177,7 +174,7 @@ export default function Home() {
             <aside className="studio-desk-note">
               <small>DESK NOTE / 001</small>
               <strong>Custom means custom.</strong>
-              <p>No template-shaped businesses.</p>
+              <p>No template-shaped venues.</p>
             </aside>
           </div>
         </section>
@@ -193,7 +190,7 @@ export default function Home() {
             <span className="logo-mark">A.</span>
             <strong>A. HALLIWELL STUDIO</strong>
           </div>
-          <p>The website is the storefront. The platform is the machinery.</p>
+          <p>Strategy, design and development for venues that want the website to participate in the sale.</p>
           <div className="footer-links"><a href="mailto:arabellakhalliwell@gmail.com?subject=Website%20inquiry">EMAIL THE STUDIO ↗</a><a href="#top">BACK TO TOP ↑</a></div>
         </div>
       </footer>
