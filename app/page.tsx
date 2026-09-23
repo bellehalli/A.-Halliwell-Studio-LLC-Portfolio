@@ -232,7 +232,7 @@ export default function Home() {
             <div className="founder-preview-visual">
               <div className="founder-photo-card">
                 <Image
-                  src="/assets/founder/arabella-halliwell.jpg"
+                  src="/assets/founder/arabella-halliwell.PNG"
                   alt="Arabella Halliwell, founder, designer and developer of A. Halliwell Studio"
                   fill
                   sizes="(max-width: 820px) 86vw, 420px"
