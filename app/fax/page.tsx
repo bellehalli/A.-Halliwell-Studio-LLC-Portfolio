@@ -1,4 +1,4 @@
-import FaxClient from "./FaxClient";
+import { notFound } from "next/navigation";
 
 export const metadata = {
   title: "A. Halliwell Fax",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function FaxPage() {
-  return <FaxClient />;
+  notFound();
 }

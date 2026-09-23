@@ -20,9 +20,10 @@ export default async function ProjectPage({params}:Props){
       <section className="case-hero">
         <div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div>
         <h1>{project.name}</h1><p>{project.description}</p>
+        <p className="demo-disclosure">Original studio demonstration. This is a fictional venue concept, not a commissioned client project or a claim of measured booking results.</p>
         <div className="project-links"><a href={project.url} target="_blank" rel="noopener noreferrer">Visit live site ↗</a></div>
       </section>
-      <ProjectMedia name={project.name} url={project.url} />
+      <ProjectMedia project={project} />
       <section className="case-story">
         <div><small>01 / THE BRIEF</small><h2>Built around<br/>the real job.</h2></div><div><p>{project.brief}</p></div>
         <div><small>02 / THE APPROACH</small><h2>Strategy before<br/>decoration.</h2></div>

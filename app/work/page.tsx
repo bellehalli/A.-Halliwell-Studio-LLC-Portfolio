@@ -22,6 +22,7 @@ export default function WorkPage() {
           <div className="case-index"><span>SELECTED WORK</span><span>A. HALLIWELL STUDIO</span></div>
           <h1>Built to be<br/>used.</h1>
           <p>Custom digital experiences designed around what each business actually needs the internet to do.</p>
+          <p className="demo-disclosure">Willow Lily and Maison Rivière are original studio demonstrations for fictional venue brands.</p>
         </div>
         <div className="case-story">
           {projects.map((project) => (
@@ -29,7 +30,7 @@ export default function WorkPage() {
               <small>PROJECT {project.number} / {project.category}</small>
               <h2>{project.name}</h2>
               <p>{project.description}</p>
-              <ProjectMedia name={project.name} url={project.url} />
+              <ProjectMedia project={project} />
               <div className="case-actions">
                 <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>
                 <a className="button" href={project.url} target="_blank" rel="noreferrer">Visit live site ↗</a>
