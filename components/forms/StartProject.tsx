@@ -42,7 +42,7 @@ export default function StartProject(){
    </div></fieldset>
    {brief&&<div className="builder-brief"><span>YOUR PROJECT BRIEF</span><pre>{brief}</pre></div>}
    <div className="builder-submit"><div><small>READY WHEN YOU ARE</small><p>Your answers come directly to A. Halliwell Studio.</p></div><button type="submit" className="button button-primary" disabled={status==="sending"}>{status==="sending"?"Sending...":"Send my project ↗"}</button></div>
-   {feedback&&status==="error"&&<p className="builder-feedback builder-error" role="alert">{feedback}</p>}
+   {feedback&&status==="error"&&<p className="builder-feedback builder-error" role="alert">{feedback} <a href={`mailto:arabellakhalliwell@gmail.com?subject=${encodeURIComponent("Website inquiry for " + (business || name))}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\nBusiness: ${business}\n${brief}\n\n${message}`)}`}>Email your brief directly ↗</a></p>}
    <p className="builder-privacy">Your information is used only to respond to your project inquiry.</p>
   </form>
  </div></section>
