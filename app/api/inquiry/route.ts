@@ -21,6 +21,16 @@ const esc = (value: string) =>
 const nl2br = (value: string) => esc(value).replace(/\n/g, "<br/>");
 const emailOK = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+const urlOK = (value: string) => {
+  if (!value) return true;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 const json = (body: Record<string, unknown>, status = 200) =>
   NextResponse.json(body, {
     status,
@@ -146,6 +156,13 @@ export async function POST(request: Request) {
     if (!emailOK(email)) {
       return json(
         { success: false, message: "Please enter a valid email address." },
+        400
+      );
+    }
+
+    if (!urlOK(currentUrl)) {
+      return json(
+        { success: false, message: "Please enter a valid website URL." },
         400
       );
     }
