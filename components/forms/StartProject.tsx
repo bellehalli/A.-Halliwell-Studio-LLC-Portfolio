@@ -116,6 +116,22 @@ export default function StartProject() {
   const isExistingSite = needs.some((x) =>
     ["Website redesign", "Add to an existing website", "Ongoing support"].includes(x)
   );
+  const hasProjectSpecificDetails = isCommerce || hasBooking || isHospitality || isExistingSite;
+  const step = {
+    details: 3,
+    timing: hasProjectSpecificDetails ? 4 : 3,
+    investment: hasProjectSpecificDetails ? 5 : 4,
+    change: hasProjectSpecificDetails ? 6 : 5,
+    assets: hasProjectSpecificDetails ? 7 : 6,
+    referral: hasProjectSpecificDetails ? 8 : 7,
+    contact: hasProjectSpecificDetails ? 9 : 8,
+  };
+
+  const normalizeUrl = () => {
+    const value = currentUrl.trim();
+    if (!value) return;
+    if (!/^https?:\/\//i.test(value)) setCurrentUrl(`https://${value}`);
+  };
 
   const brief = useMemo(
     () =>
@@ -346,9 +362,9 @@ export default function StartProject() {
             </div>
           </fieldset>
 
-          {(isCommerce || hasBooking || isHospitality || isExistingSite) && (
+          {hasProjectSpecificDetails && (
             <fieldset className="builder-step">
-              <legend><span>03</span>A few project-specific details.</legend>
+              <legend><span>{String(step.details).padStart(2, "0")}</span>A few project-specific details.</legend>
               <div className="builder-fields">
                 {isCommerce && (
                   <div className="builder-message">
@@ -404,7 +420,7 @@ export default function StartProject() {
 
           <div className="builder-split">
             <fieldset className="builder-step">
-              <legend><span>04</span>What&apos;s the timing?</legend>
+              <legend><span>{String(step.timing).padStart(2, "0")}</span>What&apos;s the timing?</legend>
               <div className="builder-options">
                 {timingOptions.map((x) => (
                   <button
@@ -421,7 +437,7 @@ export default function StartProject() {
             </fieldset>
 
             <fieldset className="builder-step">
-              <legend><span>05</span>What investment range fits?</legend>
+              <legend><span>{String(step.investment).padStart(2, "0")}</span>What investment range fits?</legend>
               <p className="builder-hint">This helps me shape the right scope, not force you into a package.</p>
               <div className="builder-options">
                 {investmentOptions.map((x) => (
@@ -440,7 +456,7 @@ export default function StartProject() {
           </div>
 
           <fieldset className="builder-step builder-contact">
-            <legend><span>06</span>What needs to change?</legend>
+            <legend><span>{String(step.change).padStart(2, "0")}</span>What needs to change?</legend>
             <div className="builder-fields">
               <label className="builder-message">
                 <span>What is not working well right now?</span>
@@ -465,7 +481,7 @@ export default function StartProject() {
           </fieldset>
 
           <fieldset className="builder-step">
-            <legend><span>07</span>What do you already have?</legend>
+            <legend><span>{String(step.assets).padStart(2, "0")}</span>What do you already have?</legend>
             <p className="builder-hint">Choose everything that is ready. Starting from scratch is completely fine.</p>
             <div className="builder-options">
               {assetOptions.map((x) => (
@@ -483,7 +499,7 @@ export default function StartProject() {
           </fieldset>
 
           <fieldset className="builder-step">
-            <legend><span>08</span>How did you find the studio?</legend>
+            <legend><span>{String(step.referral).padStart(2, "0")}</span>How did you find the studio?</legend>
             <div className="builder-options">
               {referralOptions.map((x) => (
                 <button
@@ -513,7 +529,7 @@ export default function StartProject() {
           </fieldset>
 
           <fieldset className="builder-step builder-contact">
-            <legend><span>09</span>And who am I talking to?</legend>
+            <legend><span>{String(step.contact).padStart(2, "0")}</span>And who am I talking to?</legend>
             <div className="builder-fields">
               <label>
                 <span>Your name <b>*</b></span>
@@ -551,11 +567,13 @@ export default function StartProject() {
               <label>
                 <span>Current website URL</span>
                 <input
+                  type="url"
                   inputMode="url"
                   autoComplete="url"
                   value={currentUrl}
                   onChange={(e) => setCurrentUrl(e.target.value)}
-                  placeholder="yourbusiness.com"
+                  onBlur={normalizeUrl}
+                  placeholder="https://yourbusiness.com"
                 />
               </label>
 
