@@ -64,7 +64,7 @@ export const projects: Project[] = [
     name: "Vanta Social",
     category: "Nightlife / Events / Guest Conversion",
     description: "A nightlife platform that gives guests one clear place to discover events, join a guest list, understand arrival details and move into VIP without hunting across social media.",
-    url: "https://vanta-social-nightlife-platfo.vercel.app",
+    url: "https://vantanightclubdetroit.com",
     tone: "vanta",
     details: ["Event Discovery", "VIP Conversion", "Guest List UX", "Responsive Development"],
     brief: "Build a nightlife website that does more than establish mood. Guests should be able to answer the practical question behind every night out: what is happening, how do I get in and what are my options?",
