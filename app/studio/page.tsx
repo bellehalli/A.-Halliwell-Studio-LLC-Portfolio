@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import SceneProps from "@/components/visual/SceneProps";
 
 export const metadata: Metadata = {
   title: "Studio",
@@ -21,7 +22,7 @@ export default function Page() {
       <div className="site-background" aria-hidden="true" />
       <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><nav className="destination-nav"><Link href="/work">Work</Link><Link href="/services">Services</Link><Link href="/studio">Studio</Link><Link href="/lab">Lab</Link></nav><Link href="/start">Start a project ↗</Link></header>
 
-      <article className="destination-sheet studio-destination">
+      <article className="destination-sheet studio-destination"><SceneProps scene="studioPage"/>
         <section className="destination-hero"><small>A. HALLIWELL STUDIO / DETROIT, MICHIGAN</small><h1>The person behind the cursor.</h1><p>An independent web design, development and digital systems studio building expressive, useful websites around what each business actually needs the internet to do.</p></section>
 
         <section className="founder-profile">
