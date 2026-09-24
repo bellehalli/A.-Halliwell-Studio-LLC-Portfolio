@@ -37,6 +37,7 @@ export const projects: Project[] = [
     approach: ["Digital first-tour structure", "Interactive estate map", "Weekend and wedding planning flows", "Clear investment and inquiry paths"],
     outcome: "A conversion-focused demonstration of how a luxury venue can connect storytelling, planning information and custom interaction in one cohesive guest journey.",
     evidence: ["/projects/willow-lily/desktop/willow-entry-screen.PNG", "/projects/willow-lily/desktop/willow-estate-map.PNG", "/projects/willow-lily/desktop/willow-contact-form.PNG"],
+    livePreview: true,
     disclosure: "Original studio concept. Fictional venue brand. No measured business results are claimed."
   },
   {
@@ -56,6 +57,7 @@ export const projects: Project[] = [
     approach: ["Editorial presentation", "Hospitality-first navigation", "Responsive custom development", "Tour and inquiry pathways"],
     outcome: "A studio demonstration showing how a hospitality brand can feel expressive without making the customer work to understand what to do next.",
     evidence: ["/projects/maison-riviere/desktop/maison-homepage-hero.PNG", "/projects/maison-riviere/desktop/maison-wedding-builder.PNG", "/projects/maison-riviere/desktop/maison-tour-inquiry.PNG"],
+    livePreview: true,
     disclosure: "Original studio concept. Fictional venue brand. No measured business results are claimed."
   },
   {
