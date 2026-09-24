@@ -5,6 +5,7 @@ export type Project = {
   category: string;
   description: string;
   url: string;
+  embedUrl?: string;
   tone: "willow" | "maison" | "vanta" | "elan" | "northstar" | "restaurant" | "commerce";
   details: string[];
   desktopAsset?: string;
@@ -27,6 +28,7 @@ export const projects: Project[] = [
     category: "Hospitality / Weddings / Custom Experience",
     description: "A digital-first tour of a luxury inn and wedding estate, designed to help couples understand the property, picture the weekend and move toward inquiry with confidence.",
     url: "https://willowlilyestate.com",
+    embedUrl: "https://willowlily.ahalliwellstudio.com",
     tone: "willow",
     details: ["Venue Strategy", "Custom Development", "Interactive Systems"],
     desktopAsset: "/projects/willow-lily/desktop/willow-entry-screen.PNG",
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     category: "Hospitality / Events / Digital Presence",
     description: "An editorial hospitality concept designed to make the venue feel considered before a guest ever walks through the door, while keeping tours and inquiry easy to reach.",
     url: "https://www.maisonrivieredetroit.com",
+    embedUrl: "https://maison.ahalliwellstudio.com",
     tone: "maison",
     details: ["Experience Design", "Development", "Hospitality UX"],
     desktopAsset: "/projects/maison-riviere/desktop/maison-homepage-hero.PNG",
