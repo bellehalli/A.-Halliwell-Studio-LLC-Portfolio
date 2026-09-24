@@ -4,6 +4,7 @@ type Props = { project: Project };
 
 export default function ProjectMedia({ project }: Props) {
   const hasEvidence = project.evidence.length > 0;
+  const previewUrl = project.embedUrl || project.url;
 
   return (
     <div className="project-media-stack">
@@ -22,17 +23,17 @@ export default function ProjectMedia({ project }: Props) {
 
           <div className="project-browser-bar" aria-hidden="true">
             <i /><i /><i />
-            <span>{project.url.replace(/^https?:\/\//, "")}</span>
+            <span>{previewUrl.replace(/^https?:\/\//, "")}</span>
           </div>
 
           <iframe
-            src={project.url}
+            src={previewUrl}
             title={`${project.name} live website preview`}
             loading="lazy"
           />
 
           <p className="project-preview-note">
-            Scroll, click and explore the live build here. If a destination blocks embedding, use “Open full site” above.
+            Scroll, click and explore the live build here. “Open full site” launches the standalone project.
           </p>
         </div>
       )}
