@@ -1,114 +1,96 @@
 "use client";
-
 import { useState } from "react";
 
-type Question = { prompt: string; options: [string, string, string] };
-type Demo = { eyebrow: string; title: string; questions: [Question, Question, Question]; action: string; preview: (answers: string[]) => { heading: string; detail: string } };
+const jobs = ["Book appointments","Sell products","Request quotes","Client portal","Manage events","Capture leads"] as const;
+type Job = typeof jobs[number];
 
-const demos: Record<string, Demo> = {
-  "Take bookings": {
-    eyebrow: "VENUE INQUIRY DEMO", title: "Plan a visit", action: "Preview inquiry",
-    questions: [
-      { prompt: "What brings you here?", options: ["Wedding weekend", "Private celebration", "Venue tour"] },
-      { prompt: "When works for you?", options: ["Friday", "Saturday", "Flexible"] },
-      { prompt: "How many guests?", options: ["Under 80", "80–160", "Over 160"] },
-    ],
-    preview: ([occasion, day, guests]) => ({ heading: "A useful inquiry, ready to send.", detail: `${occasion} · ${day} · ${guests} guests. A real venue would collect contact details, check its calendar and follow up with the right information. No reservation has been made.` }),
-  },
-  "Sell products": {
-    eyebrow: "CUSTOM COMMERCE DEMO", title: "Make it yours", action: "Preview product",
-    questions: [
-      { prompt: "Choose a product", options: ["Welcome box", "Event print", "Gift card"] },
-      { prompt: "Choose a style", options: ["Classic", "Colorful", "Minimal"] },
-      { prompt: "Add a detail", options: ["Personal note", "Custom date", "No extras"] },
-    ],
-    preview: ([product, style, detail]) => ({ heading: "A product shaped around the buyer.", detail: `${style} ${product.toLowerCase()} · ${detail.toLowerCase()}. These selections could become a product specification before checkout. Nothing was purchased.` }),
-  },
-  "Build packages": {
-    eyebrow: "PACKAGE BUILDER DEMO", title: "Build your experience", action: "Preview package",
-    questions: [
-      { prompt: "Start with a gathering", options: ["Wedding", "Retreat", "Private event"] },
-      { prompt: "Choose your space", options: ["Garden", "Ballroom", "Whole estate"] },
-      { prompt: "Add an experience", options: ["Welcome dinner", "Morning brunch", "No add-on"] },
-    ],
-    preview: ([event, space, extra]) => ({ heading: "One clear package brief.", detail: `${event} · ${space} · ${extra}. A venue could use this brief to explain inclusions and prepare a quote. This demo does not show live pricing.` }),
-  },
-  "Manage events": {
-    eyebrow: "EVENT DISCOVERY DEMO", title: "Find your event", action: "Preview event match",
-    questions: [
-      { prompt: "Who is coming?", options: ["A couple", "A group", "Just me"] },
-      { prompt: "What sounds good?", options: ["Dinner", "Live music", "A workshop"] },
-      { prompt: "What time?", options: ["Daytime", "Evening", "Either"] },
-    ],
-    preview: ([party, interest, time]) => ({ heading: "A more relevant event list.", detail: `${interest} · ${time.toLowerCase()} · ${party.toLowerCase()}. An event calendar could use these preferences to filter actual events and show the next available date. No live calendar is connected here.` }),
-  },
-  "Capture leads": {
-    eyebrow: "SMART INQUIRY DEMO", title: "Ask better questions", action: "Preview lead brief",
-    questions: [
-      { prompt: "What do you need?", options: ["A venue tour", "Pricing details", "A custom proposal"] },
-      { prompt: "When do you need it?", options: ["Soon", "This season", "Still exploring"] },
-      { prompt: "What matters most?", options: ["Guest experience", "Budget clarity", "Availability"] },
-    ],
-    preview: ([need, timing, priority]) => ({ heading: "A lead with useful context.", detail: `${need} · ${timing.toLowerCase()} · ${priority.toLowerCase()}. A team could route this to the right person and respond with relevant details, instead of starting with a blank email.` }),
-  },
-  "Something weird": {
-    eyebrow: "CUSTOM INTERACTION DEMO", title: "Let's make it strange", action: "Invent my interaction",
-    questions: [
-      { prompt: "Pick a little world", options: ["A secret garden", "A midnight hotel", "A floating menu"] },
-      { prompt: "How should it react?", options: ["On a tap", "As you scroll", "When you choose"] },
-      { prompt: "Give it a job", options: ["Reveal the venue", "Explain an offer", "Guide an inquiry"] },
-    ],
-    preview: ([world, trigger, purpose]) => ({ heading: `${world}, with a reason to exist.`, detail: `${trigger}, the scene changes to ${purpose.toLowerCase()}. That is the start of a custom interaction: a memorable moment with a clear next step. Your combination is a concept, not a finished client project.` }),
-  },
-};
+function Booking() {
+  const [day,setDay]=useState("WED 14");
+  const [time,setTime]=useState("1:00 PM");
+  return <div className="ahs-live">
+    <header><div><small>BOOKING / SCHEDULING</small><h3>Choose a time</h3></div><b>LIVE UI</b></header>
+    <div className="ahs-days">{["MON 12","TUE 13","WED 14","THU 15","FRI 16"].map(x=><button key={x} className={day===x?"on":""} onClick={()=>setDay(x)}>{x}</button>)}</div>
+    <div className="ahs-pills">{["10:00 AM","11:30 AM","1:00 PM","3:30 PM"].map(x=><button key={x} className={time===x?"on":""} onClick={()=>setTime(x)}>{x}</button>)}</div>
+    <aside><small>SELECTED</small><strong>{day} · {time}</strong><p>This could connect to live staff availability, deposits, reminders and confirmation emails.</p></aside>
+  </div>
+}
 
-export default function CapabilityPlayground() {
-  const [active, setActive] = useState("Take bookings");
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [finished, setFinished] = useState(false);
-  const demo = demos[active];
-  const question = demo.questions[step];
-  const preview = finished ? demo.preview(answers) : null;
+function Shop() {
+  const [item,setItem]=useState("Silk Set");
+  const [cart,setCart]=useState(false);
+  return <div className="ahs-live">
+    <header><div><small>E-COMMERCE</small><h3>Shop the edit</h3></div><b>{cart?"1 ITEM":"0 ITEMS"}</b></header>
+    <div className="ahs-products">{["Silk Set","Crystal Bag","Pink Mule"].map((x,i)=><button key={x} className={item===x?"on":""} onClick={()=>{setItem(x);setCart(false)}}><i>{["✦","♡","✿"][i]}</i><strong>{x}</strong><span>${[148,92,124][i]}</span></button>)}</div>
+    <button className="ahs-main-action" onClick={()=>setCart(true)}>{cart?`${item} added ♥`:`Add ${item} to cart`}</button>
+  </div>
+}
 
-  function chooseDemo(key: string) { setActive(key); setStep(0); setAnswers([]); setFinished(false); }
-  function chooseAnswer(value: string) { setAnswers(current => [...current.slice(0, step), value]); }
-  function advance() { if (!answers[step]) return; if (step === demo.questions.length - 1) setFinished(true); else setStep(step + 1); }
+function Quote() {
+  const [service,setService]=useState("Website redesign");
+  const [pages,setPages]=useState(5);
+  return <div className="ahs-live">
+    <header><div><small>SMART QUOTE BUILDER</small><h3>Build the request</h3></div><b>CONDITIONAL</b></header>
+    <label><span>WHAT DO YOU NEED?</span><select value={service} onChange={e=>setService(e.target.value)}><option>Website redesign</option><option>Custom feature</option><option>Brand refresh</option></select></label>
+    {service==="Website redesign"&&<label><span>APPROXIMATE PAGES</span><input type="range" min="1" max="12" value={pages} onChange={e=>setPages(+e.target.value)}/><strong>{pages} pages</strong></label>}
+    <aside><small>READY TO ROUTE</small><strong>{service}{service==="Website redesign"?` · ${pages} pages`:""}</strong><p>A real build could calculate ranges or trigger different follow-ups.</p></aside>
+  </div>
+}
 
-  return <section className="sheet sheet-lavender capability" id="capabilities">
-    <div className="content-shell capability-grid">
-      <div className="capability-copy">
-        <span className="section-kicker-text">03 / THE LAB</span>
-        <h2>Don't just read<br /><em>what I can build.</em></h2>
-        <p className="capability-intro">Choose a task and try a short interactive concept. Your choices change the preview. These examples use sample scenarios, not live booking or sales data.</p>
-        <div className="capability-tabs" role="group" aria-label="Website capability examples">
-          {Object.keys(demos).map(item => <button key={item} type="button" className={active === item ? "is-active" : ""} aria-pressed={active === item} onClick={() => chooseDemo(item)}>{item}</button>)}
-        </div>
+function Portal() {
+  const [tab,setTab]=useState("Overview");
+  const data:Record<string,string[]>={
+    Overview:["Website redesign","In progress","Next review: Friday"],
+    Files:["Brand-assets.zip","Homepage-v3.pdf","Copy-notes.docx"],
+    Messages:["2 unread","Latest: homepage feedback","Reply from dashboard"]
+  };
+  return <div className="ahs-live ahs-portal">
+    <nav><strong>CLIENT SPACE</strong>{Object.keys(data).map(x=><button key={x} className={tab===x?"on":""} onClick={()=>setTab(x)}>{x}</button>)}</nav>
+    <section><small>WELCOME BACK</small><h3>{tab}</h3>{data[tab].map((x,i)=><div className="ahs-card" key={x}><span>0{i+1}</span><strong>{x}</strong></div>)}</section>
+  </div>
+}
+
+function Events() {
+  const [filter,setFilter]=useState("All");
+  const events=[["Workshop","CERAMICS AFTER DARK","OCT 04"],["Dinner","CHEF'S TABLE","OCT 12"],["Music","MIDNIGHT LISTENING ROOM","OCT 18"]];
+  return <div className="ahs-live">
+    <header><div><small>EVENTS / TICKETING</small><h3>What&apos;s happening</h3></div></header>
+    <div className="ahs-pills">{["All","Workshop","Dinner","Music"].map(x=><button key={x} className={filter===x?"on":""} onClick={()=>setFilter(x)}>{x}</button>)}</div>
+    <div className="ahs-events">{events.filter(e=>filter==="All"||e[0]===filter).map(e=><article key={e[1]}><span>{e[2]}</span><div><small>{e[0]}</small><strong>{e[1]}</strong></div><button>TICKETS ↗</button></article>)}</div>
+  </div>
+}
+
+function Leads() {
+  const [goal,setGoal]=useState("Book a consultation");
+  const [budget,setBudget]=useState("$5k–$10k");
+  return <div className="ahs-live">
+    <header><div><small>LEAD QUALIFICATION</small><h3>Start with context</h3></div><b>SMART FORM</b></header>
+    <p className="ahs-label">WHAT&apos;S THE GOAL?</p><div className="ahs-pills">{["Book a consultation","Get a proposal","Ask a question"].map(x=><button key={x} className={goal===x?"on":""} onClick={()=>setGoal(x)}>{x}</button>)}</div>
+    <p className="ahs-label">PROJECT RANGE</p><div className="ahs-pills">{["$1k–$5k","$5k–$10k","$10k+"].map(x=><button key={x} className={budget===x?"on":""} onClick={()=>setBudget(x)}>{x}</button>)}</div>
+    <aside><small>LEAD CONTEXT</small><strong>{goal} · {budget}</strong><p>The business starts the conversation with useful information instead of a blank email.</p></aside>
+  </div>
+}
+
+function Demo({job}:{job:Job}) {
+  if(job==="Book appointments") return <Booking/>;
+  if(job==="Sell products") return <Shop/>;
+  if(job==="Request quotes") return <Quote/>;
+  if(job==="Client portal") return <Portal/>;
+  if(job==="Manage events") return <Events/>;
+  return <Leads/>;
+}
+
+export default function CapabilityPlayground(){
+  const [job,setJob]=useState<Job>("Book appointments");
+  return <section className="sheet sheet-lavender capability ahs-lab" id="capabilities">
+    <div className="content-shell">
+      <div className="ahs-lab-head">
+        <div><span className="section-kicker-text">03 / THE LAB</span><h2>What does your business<br/><em>need the internet to do?</em></h2></div>
+        <p>Pick a job. The interface changes in front of you. These are functioning mini demos, not a list of claims.</p>
       </div>
-      <div className="demo-stage">
-        <span className="lab-note">PICK A PATH. SEE WHAT IT BUILDS. ↘</span>
-        <div className="demo-window">
-          <div className="demo-window-top"><span /><span /><span /><b>A. HALLIWELL / INTERACTIVE CONCEPT</b></div>
-          <div className="demo-screen">
-            <small>{demo.eyebrow}</small><h3>{demo.title}</h3>
-            <div className="demo-progress" aria-label={finished ? "Preview complete" : `Question ${step + 1} of ${demo.questions.length}`}>
-              {demo.questions.map((_, index) => <i key={index} className={finished || index <= step ? "active" : ""} />)}
-            </div>
-            {preview ? <div className="demo-preview" role="status">
-              <span>YOUR INTERACTIVE PREVIEW ♥</span><h4>{preview.heading}</h4><p>{preview.detail}</p>
-              <button type="button" className="demo-action" onClick={() => chooseDemo(active)}>Try another combination ↗</button>
-            </div> : <div className="demo-question" role="group" aria-label={question.prompt}>
-              <span className="demo-step-label">0{step + 1} / 0{demo.questions.length}</span><h4>{question.prompt}</h4>
-              <div className="demo-choices">{question.options.map(option => <button key={option} type="button" aria-pressed={answers[step] === option} className={answers[step] === option ? "is-selected" : ""} onClick={() => chooseAnswer(option)}>{option}</button>)}</div>
-              <div className="demo-controls">
-                {step > 0 && <button type="button" className="demo-back" onClick={() => setStep(step - 1)}>← Back</button>}
-                <button type="button" className="demo-action" disabled={!answers[step]} onClick={advance}>{step === demo.questions.length - 1 ? demo.action : "Next question"} ↗</button>
-              </div>
-            </div>}
-            <p className="demo-disclaimer">Concept demo only. No booking, purchase or message is submitted.</p>
-          </div>
-        </div>
+      <div className="ahs-lab-grid">
+        <nav className="ahs-job-list"><small>CHOOSE A CAPABILITY</small>{jobs.map((x,i)=><button key={x} className={job===x?"on":""} onClick={()=>setJob(x)}><span>0{i+1}</span><strong>{x}</strong><b>↗</b></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
+        <div className="ahs-demo-shell"><div className="demo-window-top"><span/><span/><span/><b>A. HALLIWELL / FUNCTIONING DEMO</b></div><Demo job={job}/><footer>DEMO ONLY · NO REAL BOOKING, PURCHASE, QUOTE, TICKET OR MESSAGE IS SUBMITTED.</footer></div>
       </div>
     </div>
-  </section>;
+  </section>
 }
