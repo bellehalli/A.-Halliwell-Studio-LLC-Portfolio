@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import SceneProps from "@/components/visual/SceneProps";
 
 const articles = {
   "wedding-venue-website": {
@@ -66,6 +67,7 @@ export default async function ResourcePage({ params }: Props) {
         <Link href="/resources">← Resources</Link>
       </header>
       <article className="destination-sheet article-sheet">
+        <SceneProps scene="resources" />
         <section className="destination-hero">
           <small>A. HALLIWELL JOURNAL</small>
           <h1>{article.title}</h1>
