@@ -2,9 +2,17 @@ import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import type { Project } from "@/data/projects";
 
-export default function ProjectShowcase({ project }: { project: Project }) {
-  const willow = project.tone === "willow";
+const accent: Record<Project["tone"], string> = {
+  willow: "The estate file",
+  maison: "After dark",
+  vanta: "Tonight, organized",
+  elan: "Beauty with a path",
+  northstar: "Urgency, simplified",
+  restaurant: "Dinner starts here",
+  commerce: "Browse to bag"
+};
 
+export default function ProjectShowcase({ project }: { project: Project }) {
   return (
     <article className={`project-world project-world-${project.tone}`}>
       <div className="project-world-paper">
@@ -14,34 +22,22 @@ export default function ProjectShowcase({ project }: { project: Project }) {
         </div>
 
         <div className="project-world-title">
-          <span className="project-world-accent">
-            {willow ? "The estate file" : "After dark"}
-          </span>
+          <span className="project-world-accent">{accent[project.tone]}</span>
           <h3>{project.name}</h3>
           <p>{project.description}</p>
-          <small>ORIGINAL STUDIO DEMONSTRATION / FICTIONAL VENUE</small>
+          <small>{project.disclosure}</small>
         </div>
 
-        <div className="project-world-media">
-          <ProjectMedia project={project} />
-          <span className="tape tape-one" aria-hidden="true" />
-          <span className="tape tape-two" aria-hidden="true" />
-        </div>
+        <div className="project-world-media"><ProjectMedia project={project} /></div>
 
         <div className="project-world-footer">
-          <div className="project-tags">
-            {project.details.map((detail) => <span key={detail}>{detail}</span>)}
-          </div>
+          <div className="project-tags">{project.details.map((detail) => <span key={detail}>{detail}</span>)}</div>
           <div className="project-links">
             <Link href={`/work/${project.slug}`}>Open the case file ↗</Link>
-            <a href={project.url} target="_blank" rel="noreferrer">Visit live site ↗</a>
+            <a href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noreferrer" : undefined}>Visit live build ↗</a>
           </div>
         </div>
       </div>
-
-      <span className="project-world-mark" aria-hidden="true">
-        {willow ? "✿" : "♥"}
-      </span>
     </article>
   );
 }
