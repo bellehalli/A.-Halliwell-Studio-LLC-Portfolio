@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 
-const baseUrl = "https://ahalliwellstudio.com";
+const baseUrl = "https://www.ahalliwellstudio.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
@@ -11,7 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/studio",
     "/lab",
     "/resources",
-    "/newsletter",
+    "/resources/wedding-venue-website",
+    "/resources/website-redesign-checklist",
     "/start",
     "/concepts/restaurant",
     "/concepts/commerce",
@@ -22,7 +23,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}${path}`,
       lastModified: new Date(),
       changeFrequency: (index === 0 ? "weekly" : "monthly") as "weekly" | "monthly",
-      priority: index === 0 ? 1 : path.startsWith("/concepts/") ? 0.7 : 0.8,
+      priority:
+        index === 0
+          ? 1
+          : path.startsWith("/work/")
+            ? 0.9
+            : path.startsWith("/resources/")
+              ? 0.7
+              : path.startsWith("/concepts/")
+                ? 0.7
+                : 0.8,
     })),
     ...projects.map((project) => ({
       url: `${baseUrl}/work/${project.slug}`,

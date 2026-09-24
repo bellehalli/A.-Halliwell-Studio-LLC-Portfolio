@@ -9,7 +9,7 @@ const bodoni=Bodoni_Moda({subsets:["latin"],variable:"--font-fashion",display:"s
 const inter=Inter({subsets:["latin"],variable:"--font-sans",display:"swap"});
 const spaceMono=Space_Mono({weight:["400","700"],subsets:["latin"],variable:"--font-mono",display:"swap"});
 export const metadata:Metadata={
- metadataBase:new URL("https://ahalliwellstudio.com"),
+ metadataBase:new URL("https://www.ahalliwellstudio.com"),
  title:{default:"A. Halliwell Studio | Web Design, Development & Digital Systems",template:"%s | A. Halliwell Studio"},
  description:"Custom web design, development and digital systems for businesses that need more than a pretty homepage.",
  applicationName:"A. Halliwell Studio",alternates:{canonical:"/"},
