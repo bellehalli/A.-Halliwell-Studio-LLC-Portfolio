@@ -14,7 +14,6 @@ export const metadata:Metadata={
  description:"Custom web design, development and digital systems for businesses that need more than a pretty homepage.",
  applicationName:"A. Halliwell Studio",alternates:{canonical:"/"},
  openGraph:{type:"website",url:"/",siteName:"A. Halliwell Studio",title:"A. Halliwell Studio | Web Design, Development & Digital Systems",description:"Custom websites, interactive experiences and business systems built around what the business actually needs the internet to do."},
- twitter:{card:"summary_large_image",title:"A. Halliwell Studio | Web Design, Development & Digital Systems",description:"Custom websites, interactive experiences and business systems built around what the business actually needs the internet to do."},
- robots:{index:true,follow:true,googleBot:{index:true,follow:true}}
+ twitter:{card:"summary_large_image",title:"A. Halliwell Studio | Web Design, Development & Digital Systems",description:"Custom websites, interactive experiences and business systems built around what the business actually needs the internet to do."}
 };
 export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en" className={`${fraunces.variable} ${bodoni.variable} ${inter.variable} ${spaceMono.variable}`}><body>{children}</body></html>}

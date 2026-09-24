@@ -14,8 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources/wedding-venue-website",
     "/resources/website-redesign-checklist",
     "/start",
-    "/concepts/restaurant",
-    "/concepts/commerce",
   ];
 
   return [
@@ -26,13 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority:
         index === 0
           ? 1
-          : path.startsWith("/work/")
-            ? 0.9
-            : path.startsWith("/resources/")
-              ? 0.7
-              : path.startsWith("/concepts/")
-                ? 0.7
-                : 0.8,
+          : path.startsWith("/resources/")
+            ? 0.7
+            : 0.8,
     })),
     ...projects.map((project) => ({
       url: `${baseUrl}/work/${project.slug}`,
