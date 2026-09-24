@@ -28,7 +28,29 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = articles[slug as keyof typeof articles];
-  return article ? { title: article.title, description: article.dek } : { title: "Resource Not Found" };
+
+  if (!article) {
+    return { title: "Resource Not Found", robots: { index: false, follow: true } };
+  }
+
+  const canonical = `/resources/${slug}`;
+
+  return {
+    title: article.title,
+    description: article.dek,
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      url: canonical,
+      title: article.title,
+      description: article.dek,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.dek,
+    },
+  };
 }
 
 export default async function ResourcePage({ params }: Props) {
