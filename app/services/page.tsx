@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SceneProps from "@/components/visual/SceneProps";
 
 export const metadata: Metadata = {
   title: "Web Design, Development & Digital Systems",
@@ -22,7 +23,7 @@ export default function Page() {
       <div className="site-background" aria-hidden="true" />
       <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><nav className="destination-nav"><Link href="/work">Work</Link><Link href="/services">Services</Link><Link href="/studio">Studio</Link><Link href="/lab">Lab</Link></nav><Link href="/start">Start a project ↗</Link></header>
 
-      <article className="destination-sheet">
+      <article className="destination-sheet services-destination"><SceneProps scene="services"/>
         <section className="destination-hero">
           <small>WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</small>
           <h1>The website should participate in the business.</h1>
