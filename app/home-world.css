@@ -78,17 +78,24 @@
 vercel-live-feedback { display: none !important; }
 .home-world #home-content > .site-nav {
   position: absolute; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,252,255,.77); border-color: rgba(72,34,74,.18);
-  box-shadow: 0 9px 26px rgba(107,68,118,.09);
+  background: transparent; border: 0; box-shadow: none; backdrop-filter: none;
 }
 @media (min-width: 821px) {
-  .home-world #home-content > .site-nav { min-height: 66px; width: min(1280px,calc(100% - 80px)); border-radius: 0; }
-  .home-world .site-nav .heart-nav-button { width: auto; height: 40px; min-width: 56px; aspect-ratio: auto; margin-left: 14px; }
-  .home-world .site-nav .heart-button-art { display: none; }
-  .home-world .site-nav .heart-button-label { width: auto; color: #321c3c; font: 700 10px var(--font-sans),sans-serif; letter-spacing: .11em; }
-  .home-world .site-nav .heart-start { min-width: 130px; padding-inline: 12px; background: #321c3c; }
-  .home-world .site-nav .heart-start .heart-button-label { color: #fff; }
-  .home-world .site-nav .heart-nav-button:hover { color: #a12c78; transform: translateY(-2px); }
+  .home-world #home-content > .site-nav { width: min(1280px,calc(100% - 48px)); }
+}
+@media (min-width: 700px) and (max-width: 1180px) {
+  .home-world .site-nav .heart-menu-trigger { display: none !important; }
+  .home-world .site-nav .heart-dock {
+    position: static !important; inset: auto !important; z-index: auto !important;
+    display: flex !important; flex: 1; align-items: center; justify-content: flex-end !important;
+    gap: 0 !important; min-width: 0; padding: 0 !important; background: transparent !important;
+    opacity: 1 !important; visibility: visible !important; transform: none !important;
+  }
+  .home-world .site-nav .heart-dock .heart-nav-button {
+    width: clamp(57px,7.3vw,85px) !important; height: auto !important;
+    aspect-ratio: 1;
+  }
+  .home-world .site-nav .heart-dock .heart-start { width: clamp(67px,8.3vw,97px) !important; }
 }
 .home-world .home-hero {
   position: relative; width: 100%; min-height: 100svh; margin: 0; padding: 0;
@@ -101,14 +108,14 @@ vercel-live-feedback { display: none !important; }
   position: relative; width: min(100vw,177.865svh); max-width: 100%; aspect-ratio: 1366 / 768;
   background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center / 100% 100% no-repeat;
 }
-.home-hero-copy { position: absolute; z-index: 4; left: 8.5%; top: 26%; width: 36%; color: #2b1233; }
+.home-hero-copy { position: absolute; z-index: 4; left: 8.5%; top: 30%; width: 36%; color: #2b1233; }
 .home-hero-index {
   margin: 0 0 20px; font: 750 clamp(7px,.67vw,10px)/1.5 var(--font-sans),sans-serif;
   letter-spacing: .16em; color: #67286f;
 }
 .home-hero-index span { padding: 0 7px; }
 .home-hero-title {
-  margin: 0; font: 500 clamp(45px,5.25vw,82px)/.88 var(--font-fashion),Georgia,serif;
+  margin: 0; font: 500 clamp(43px,4.65vw,72px)/.91 var(--font-fashion),Georgia,serif;
   letter-spacing: -.07em; text-shadow: 0 1px 12px rgba(255,255,255,.35);
 }
 .home-hero-title span,.home-hero-title em { display: block; }
@@ -134,25 +141,26 @@ vercel-live-feedback { display: none !important; }
   margin: 19px 0 0; font: 750 clamp(8px,.75vw,10px)/1.5 var(--font-sans),sans-serif;
   letter-spacing: .1em; color: #5c2863;
 }
-.home-monitor-copy {
+.home-monitor-logo {
   position: absolute; z-index: 5; left: 77%; top: 53%; width: 10.3%; height: 16%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8%;
-  color: #492b67; text-align: center; text-decoration: none;
-  transform: rotate(12deg) skew(-4deg,-1deg); transition: transform .3s ease;
+  display: grid; place-items: center; transform: rotate(12deg) skew(-4deg,-1deg);
+  pointer-events: none;
 }
-.home-monitor-copy small { font: 750 clamp(5px,.5vw,8px)/1.2 var(--font-sans),sans-serif; letter-spacing: .11em; }
-.home-monitor-copy strong { font: 600 clamp(8px,1.1vw,16px)/.94 var(--font-fashion),Georgia,serif; letter-spacing: -.05em; }
-.home-monitor-copy span { font: 750 clamp(5px,.48vw,8px)/1 var(--font-sans),sans-serif; letter-spacing: .03em; }
-.home-monitor-copy:hover { transform: rotate(12deg) skew(-4deg,-1deg) scale(1.06); }
-.home-monitor-copy:focus-visible { outline: 3px solid #43166c; outline-offset: 5px; }
+.home-monitor-logo span {
+  width: 45%; aspect-ratio: 1; display: grid; place-items: center;
+  border-radius: 50%; background: #321b3e; color: white;
+  font: italic 700 clamp(12px,2.7vw,38px)/1 var(--font-fashion),Georgia,serif;
+  box-shadow: 0 2px 12px rgba(86,40,97,.15);
+}
 .home-star-link {
-  position: absolute; z-index: 5; left: 68%; top: 80%; width: 18%; height: 12%;
-  display: grid; place-content: center; text-align: center; color: #401745; text-decoration: none;
-  font: 850 clamp(9px,1.06vw,16px)/1.05 var(--font-sans),sans-serif;
-  letter-spacing: .07em; transform: rotate(7deg); text-shadow: 0 1px rgba(255,255,255,.6);
+  position: absolute; z-index: 5; left: 68%; top: 81%; width: 18%; height: 10%;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  color: #401745; text-align: center; text-decoration: none;
+  font: italic 600 clamp(11px,1.65vw,24px)/1 var(--font-fashion),Georgia,serif;
+  letter-spacing: -.04em; transform: rotate(7deg); text-shadow: 0 1px rgba(255,255,255,.6);
   transition: transform .25s ease;
 }
-.home-star-link span { font-size: 22px; }
+.home-star-link > span:last-child { font: normal 500 .7em/1 var(--font-sans),Arial,sans-serif; }
 .home-star-link:hover { transform: rotate(7deg) scale(1.06); }
 .home-star-link:focus-visible,.home-hero-text-link:focus-visible { outline: 3px solid #43166c; outline-offset: 5px; }
 .home-world .hero-strip { background: #241621; color: #ffcee2; }
@@ -169,20 +177,17 @@ vercel-live-feedback { display: none !important; }
   .home-world #home-content > .site-nav { position: relative; width: 100%; margin: 0; border-radius: 0; }
   .home-world .home-hero { display: block; min-height: 56.223vw; background: #f8effb; }
   .home-art-stage { width: 100vw; max-width: 100%; height: 56.223vw; aspect-ratio: auto; }
-  .home-hero-copy { left: 7%; top: 25%; width: 39%; }
+  .home-hero-copy { left: 7%; top: 29%; width: 39%; }
   .home-hero-index { margin-bottom: 7px; font-size: clamp(6px,.85vw,8px); letter-spacing: .045em; }
   .home-hero-index span { padding-inline: 2px; }
-  .home-hero-title { font-size: clamp(29px,5.45vw,50px); }
+  .home-hero-title { font-size: clamp(29px,4.9vw,45px); }
   .home-hero-description { margin-top: 10px; font-size: clamp(10px,1.45vw,13px); }
   .home-hero-actions { margin-top: 10px; }
   .home-hero-actions .button { min-height: 34px; padding-inline: 11px; font-size: 8px; }
   .home-hero-actions .button span { margin-left: 8px; font-size: 12px; }
   .home-hero-investment { margin-top: 9px; font-size: 7px; }
-  .home-star-link { font-size: clamp(8px,1.2vw,12px); }
-  .home-star-link span { font-size: 1.1em; }
-  .home-monitor-copy { gap: 4%; }
-  .home-monitor-copy small,.home-monitor-copy span { font-size: clamp(4px,.6vw,6px); }
-  .home-monitor-copy strong { font-size: clamp(6px,1vw,10px); }
+  .home-star-link { font-size: clamp(10px,1.65vw,16px); gap: 3px; }
+  .home-monitor-logo span { font-size: clamp(12px,2.7vw,25px); }
 }
 @media (max-width: 600px) {
   .opening-edition { top: 29px; left: 30px; font-size: 8px; }
@@ -215,10 +220,10 @@ vercel-live-feedback { display: none !important; }
   .home-hero-actions .button { min-height: 43px; padding-inline: 15px; font-size: 9px; }
   .home-hero-text-link { display: inline-flex; font-size: 9px; }
   .home-hero-investment { margin-top: 16px; font-size: 8px; }
-  .home-star-link { top: 44.978vw; font-size: 8px; }
-  .home-monitor-copy { top: 29.8vw; height: 9vw; }
-  .home-monitor-copy small,.home-monitor-copy span { display: none; }
-  .home-monitor-copy strong { font-size: clamp(5px,1.45vw,8px); }
+  .home-star-link { top: 45.5vw; height: 6vw; font-size: 10px; }
+  .home-star-optional { display: none; }
+  .home-monitor-logo { top: 29.8vw; height: 9vw; }
+  .home-monitor-logo span { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .home-opening *, .home-world .hero-strip-track { animation: none !important; }

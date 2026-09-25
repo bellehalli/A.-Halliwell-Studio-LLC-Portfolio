@@ -21,14 +21,14 @@ export default function Home(){
   <section className="hero home-hero" aria-labelledby="home-heading">
    <div className="home-art-stage">
     <div className="home-hero-copy">
-     <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DIGITAL DESIGN FOR VENUES</p>
+     <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DESIGN WITH A PULSE.</p>
      <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Before</span><span>the tour,</span><em>the feeling.</em></h1>
      <p className="home-hero-description">I build websites for wedding venues and hospitality businesses that turn browsing into bookings.</p>
      <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <span aria-hidden="true">↗︎</span></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘︎</span></a></div>
      <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
     </div>
-    <a className="home-monitor-copy" href="#start" aria-label="Start a project with A. Halliwell Studio"><small>A. HALLIWELL<br/>STUDIO</small><strong>MAKE IT<br/>MEMORABLE.</strong><span>LET&apos;S TALK ↗︎</span></a>
-    <a className="home-star-link" href="#work" aria-label="Explore the work">VIEW THE<br/>WORK <span aria-hidden="true">↗︎</span></a>
+    <div className="home-monitor-logo" aria-hidden="true"><span>A.</span></div>
+    <a className="home-star-link" href="#work" aria-label="View the work"><span>View <span className="home-star-optional">the </span>work</span><span aria-hidden="true">↗︎</span></a>
    </div>
   </section>
   <div className="hero-strip"><div className="hero-strip-track">WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦ PORTALS ✦ INTERACTIVE TOOLS ✦ BUSINESS SYSTEMS ✦ SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦</div></div>
