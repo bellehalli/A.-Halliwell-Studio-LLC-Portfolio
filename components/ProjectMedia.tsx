@@ -1,8 +1,8 @@
 import type { Project } from "@/data/projects";
 
-type Props = { project: Project };
+type Props = { project: Project; previewFallback?: boolean };
 
-export default function ProjectMedia({ project }: Props) {
+export default function ProjectMedia({ project, previewFallback = false }: Props) {
   const hasEvidence = project.evidence.length > 0;
   const previewUrl = project.embedUrl || project.url;
 
@@ -11,7 +11,7 @@ export default function ProjectMedia({ project }: Props) {
       {project.livePreview && (
         <div className="project-evidence project-live-preview" aria-label={`${project.name} live project preview`}>
           <div className="project-evidence-bar">
-            <span>LIVE BUILD PREVIEW</span>
+            <span>{previewFallback ? "PREVIEW BUILD SCREENS" : "LIVE BUILD PREVIEW"}</span>
             <a
               href={project.url}
               target={project.url.startsWith("http") ? "_blank" : undefined}
@@ -26,14 +26,22 @@ export default function ProjectMedia({ project }: Props) {
             <span>{previewUrl.replace(/^https?:\/\//, "")}</span>
           </div>
 
-          <iframe
-            src={previewUrl}
-            title={`${project.name} live website preview`}
-            loading="lazy"
-          />
+          {previewFallback ? (
+            <div className="project-preview-scroll" role="region" tabIndex={0} aria-label={`Scroll through ${project.name} screens`}>
+              {[
+                "/projects/willow-lily/desktop/willow-entry-screen.PNG",
+                "/projects/willow-lily/desktop/willow-estate-map.PNG",
+                "/projects/willow-lily/desktop/willow-availability-result.PNG",
+                "/projects/willow-lily/desktop/willow-date-picker.PNG",
+                "/projects/willow-lily/desktop/willow-contact-form.PNG",
+              ].map((src, index) => <img key={src} src={src} alt={`${project.name} screen ${index + 1}`} loading={index ? "lazy" : "eager"} />)}
+            </div>
+          ) : (
+            <iframe src={previewUrl} title={`${project.name} live website preview`} loading="lazy" />
+          )}
 
           <p className="project-preview-note">
-            Scroll, click and explore the live build here. “Open full site” launches the standalone project.
+            {previewFallback ? "The live site restricts embedding on temporary preview domains. Scroll the screens here, or open the full site to interact with it." : "Scroll, click and explore the live build here. “Open full site” launches the standalone project."}
           </p>
         </div>
       )}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ProjectMedia from "@/components/ProjectMedia";
+import VenueMedia from "@/components/projects/VenueMedia";
 import { projects } from "@/data/projects";
 
 const venues = [projects[0], projects[1]];
@@ -18,7 +18,7 @@ export default function WorkWorldGallery() {
               <a href={project.url} target="_blank" rel="noreferrer">OPEN THE FULL SITE ↗</a>
             </div>
           </div>
-          <div className="work-gallery-media"><ProjectMedia project={project} /></div>
+          <div className="work-gallery-media"><VenueMedia project={project} /></div>
           <div className="work-gallery-details">
             <span>ORIGINAL STUDIO CONCEPT / {project.number}</span>
             <div className="project-tags">{project.details.map((detail) => <span key={detail}>{detail}</span>)}</div>

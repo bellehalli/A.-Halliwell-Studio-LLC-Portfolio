@@ -263,6 +263,12 @@ vercel-live-feedback { display: none !important; }
 .work-gallery .project-evidence-bar { background: #f6daef; color: #4c244f; }
 .work-gallery .project-browser-bar { background: #e6e1f1; }
 .work-gallery .project-live-preview iframe { height: clamp(480px,58vw,720px); min-height: 0; }
+.work-gallery .project-preview-scroll {
+  height: clamp(480px,58vw,720px); overflow-y: auto; overscroll-behavior: contain;
+  background: #173b2e; scrollbar-color: #d95b9d #f5d9eb;
+}
+.work-gallery .project-preview-scroll img { display: block; width: 100%; height: auto; }
+.work-gallery .project-preview-scroll:focus-visible { outline: 4px solid #e13291; outline-offset: -4px; }
 .work-gallery .project-preview-note { background: #fff8fc; }
 .work-gallery .project-evidence:not(.project-live-preview) { border: 0; background: transparent; box-shadow: none; }
 .work-gallery .project-evidence:not(.project-live-preview) > .project-evidence-bar { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -301,6 +307,7 @@ vercel-live-feedback { display: none !important; }
   .work-gallery-description { font-size: 15px; }
   .work-gallery-links { gap: 6px 18px; }
   .work-gallery .project-live-preview iframe { height: 570px; }
+  .work-gallery .project-preview-scroll { height: 570px; }
   .work-gallery .project-evidence-gallery {
     display: flex; gap: 16px; overflow-x: auto; aspect-ratio: auto; min-height: 380px;
     padding: 40px 24px 35px; scroll-snap-type: x mandatory;
