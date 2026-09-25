@@ -442,3 +442,110 @@ vercel-live-feedback { display: none !important; }
   .home-hero-specialty p { font-size: 13px; }
   .home-hero-specialty p:first-child { display: grid; gap: 7px; }
 }
+
+/* The following three art scenes carry the existing proof, investment and Lab content. */
+.home-world .proof-world,
+.home-world .offer-world,
+.home-world .lab-world {
+  position: relative; isolation: isolate; width: 100%; margin: 0; transform: none;
+  border: 0; box-shadow: none; overflow: hidden;
+}
+.home-world .proof-world {
+  padding: clamp(390px,43vw,600px) 24px clamp(70px,8vw,110px);
+  background: #f8b9e0;
+}
+.home-world .proof-world::before,
+.home-world .offer-world::before,
+.home-world .lab-world::before {
+  content: ''; position: absolute; z-index: -1; inset: 0 0 auto;
+  height: min(56.22vw,768px); min-height: 390px;
+  background-position: center top; background-size: cover; background-repeat: no-repeat;
+  pointer-events: none;
+}
+.home-world .proof-world::before { background-image: url('/assets/art-direction/A. Halliwell Studio Website Design  - 7.PNG'); }
+.home-world .proof-world .content-shell {
+  width: min(1190px,100%); padding: clamp(34px,5vw,76px);
+  background: #fffaf5; border: 1px solid #38163a;
+  box-shadow: 15px 17px 0 rgba(66,16,61,.23);
+}
+.home-world .proof-world .section-kicker { color: #931360; }
+.home-world .proof-world h2 { margin-top: 24px; color: #32102e; }
+.home-world .proof-world h2 em { color: #eb008b; }
+.home-world .proof-world .proof-grid { margin-top: clamp(34px,4vw,56px); border: 0; gap: 13px; }
+.home-world .proof-world .proof-grid article {
+  min-height: 310px; padding: clamp(24px,2.8vw,38px);
+  border: 1px solid #482448; background: #fff;
+  box-shadow: 6px 7px 0 #f3acd7;
+}
+.home-world .proof-world .proof-grid article:nth-child(2) { background: #fff1f9; }
+.home-world .proof-world .proof-grid article:nth-child(3) { background: #f8eeff; }
+.home-world .proof-world .proof-grid h3 { margin-top: 42px; }
+
+.home-world .offer-world {
+  padding: clamp(360px,41vw,560px) 24px clamp(70px,8vw,110px);
+  background: #f3d7e5;
+}
+.home-world .offer-world::before { background-image: url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG'); }
+.home-world .offer-world .content-shell {
+  width: min(1190px,100%); padding: clamp(34px,5vw,76px);
+  border: 1px solid rgba(110,55,83,.55); background: rgba(255,249,246,.96);
+  box-shadow: 16px 18px 0 rgba(201,121,158,.26);
+}
+.home-world .offer-world .section-kicker { color: #8d4565; }
+.home-world .offer-world h2 { margin-top: 24px; }
+.home-world .offer-world h2 em { color: #ad4c81; }
+.home-world .offer-world .offer-grid { gap: 12px; margin-top: clamp(36px,5vw,70px); border: 0; }
+.home-world .offer-world .offer-grid article {
+  min-height: 340px; border: 1px solid rgba(98,44,74,.55);
+  background: #fffaf8; box-shadow: 6px 7px 0 rgba(208,126,169,.25);
+}
+.home-world .offer-world .offer-grid article:nth-child(2) { background: #fff0fa; }
+.home-world .offer-world .offer-grid article:nth-child(3) { background: #f8f0ff; }
+.home-world .offer-world .offer-grid article > strong { font-size: 10px; line-height: 1.4; }
+
+.home-world .lab-world {
+  padding: clamp(400px,43vw,600px) 24px clamp(70px,8vw,110px);
+  background: #d8d4ff;
+}
+.home-world .lab-world::before { background-image: url('/assets/art-direction/A. Halliwell Studio Website Design  - 8.PNG'); }
+.home-world .lab-world .ahs-lab {
+  width: min(1190px,100%); margin: 0 auto; padding: clamp(38px,5vw,76px) 0;
+  transform: none; border: 1px solid #37253e; background: #faf7ff;
+  box-shadow: 16px 18px 0 rgba(62,46,133,.2);
+}
+.home-world .lab-world .ahs-lab .content-shell { width: min(100% - 70px,1060px); }
+.home-world .lab-world .ahs-lab h2 { margin-top: 24px; }
+.home-world .lab-world .ahs-lab h2 em { color: #872daf; }
+.home-world .lab-world .ahs-job-list { background: #f2eaff; }
+.home-world .lab-world .ahs-demo-shell { background: white; box-shadow: 9px 11px 0 rgba(144,96,180,.24); }
+.home-world .lab-world .ahs-job-list > button:hover,
+.home-world .lab-world .ahs-job-list > button:focus-visible { background: #e6d7f6; }
+
+@media (max-width: 900px) {
+  .home-world .proof-world,
+  .home-world .offer-world,
+  .home-world .lab-world { padding-inline: 16px; }
+  .home-world .proof-world .proof-grid,
+  .home-world .offer-world .offer-grid { grid-template-columns: 1fr; }
+  .home-world .proof-world .proof-grid article,
+  .home-world .offer-world .offer-grid article { min-height: 0; }
+}
+@media (max-width: 600px) {
+  .home-world .proof-world,
+  .home-world .offer-world,
+  .home-world .lab-world { padding: 62vw 12px 56px; }
+  .home-world .proof-world::before,
+  .home-world .offer-world::before,
+  .home-world .lab-world::before { height: 74vw; min-height: 0; background-size: auto 100%; }
+  .home-world .proof-world .content-shell,
+  .home-world .offer-world .content-shell { padding: 30px 20px; box-shadow: 7px 9px 0 rgba(74,29,73,.2); }
+  .home-world .proof-world .proof-heading,
+  .home-world .offer-world .offer-heading { display: block; }
+  .home-world .proof-world .proof-heading > p,
+  .home-world .offer-world .offer-heading > p { margin-top: 22px; font-size: 16px; }
+  .home-world .proof-world h2,
+  .home-world .offer-world h2 { font-size: clamp(44px,12vw,68px); }
+  .home-world .proof-world .proof-grid h3 { margin-top: 25px; }
+  .home-world .lab-world .ahs-lab { box-shadow: 7px 9px 0 rgba(62,46,133,.2); }
+  .home-world .lab-world .ahs-lab .content-shell { width: calc(100% - 40px); }
+}
