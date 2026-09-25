@@ -117,13 +117,20 @@ vercel-live-feedback { display: none !important; }
 }
 .home-hero-index span { padding: 0 7px; }
 .home-hero-title {
-  margin: 0; font: 500 clamp(43px,4.65vw,72px)/.91 var(--font-fashion),Georgia,serif;
+  margin: 0; font: 900 clamp(43px,4.3vw,62px)/.89 var(--font-editorial),Georgia,serif;
   letter-spacing: -.07em; text-shadow: 0 1px 12px rgba(255,255,255,.35);
 }
 .home-hero-title span,.home-hero-title em { display: block; }
 .home-hero-title:focus { outline: none; }
-.home-hero-title span:nth-child(2) { padding-left: .36em; }
-.home-hero-title em { margin-left: .07em; color: #9b286f; font-weight: 500; white-space: nowrap; }
+.home-hero-title span:nth-child(2) { padding-left: 0; }
+.home-hero-title em {
+  margin-left: .02em; color: #d62980; font-family: var(--font-fashion),Georgia,serif;
+  font-weight: 500; white-space: nowrap;
+}
+.home-hero-title em b {
+  display: inline-block; margin-left: .08em; color: #ec2f8d;
+  font: normal 800 .82em/1 Arial,sans-serif; vertical-align: .03em;
+}
 .home-hero-description {
   max-width: 410px; margin: 18px 0 0;
   font: 550 clamp(13px,1.23vw,18px)/1.35 var(--font-sans),Arial,sans-serif;

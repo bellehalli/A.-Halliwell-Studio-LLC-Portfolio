@@ -24,7 +24,7 @@ export default function Home(){
    <div className="home-art-stage">
     <div className="home-hero-copy">
      <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DESIGN WITH A PULSE.</p>
-     <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Before</span><span>the tour,</span><em>the feeling.</em></h1>
+     <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Websites</span><span>that actually</span><em>do things.<b aria-hidden="true">♥︎</b></em></h1>
      <p className="home-hero-description">Your venue has a feeling. I make it impossible to miss—and easy to book.</p>
      <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={26} height={26} aria-hidden="true" /></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘︎</span></a></div>
      <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
