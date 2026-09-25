@@ -33,6 +33,26 @@ export default function Home(){
     <a className="home-star-link" href="#work" aria-label="View the work"><span>VIEW <span className="home-star-optional">THE </span>WORK</span><Image className="glitter-cursor" src={CURSOR} alt="" width={30} height={30} aria-hidden="true" /></a>
    </div>
   </section>
+  <section className="home-manifesto" aria-label="About A. Halliwell Studio">
+   <div className="home-manifesto-inner">
+    <div className="home-manifesto-main">
+     <p className="home-manifesto-kicker"><span className="home-manifesto-sparkle" aria-hidden="true">✦</span> WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</p>
+     <p className="home-manifesto-statement">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage.</p>
+    </div>
+    <div className="home-manifesto-details">
+     <p className="home-manifesto-pricing">One-page projects start at $1,000 + scope.<br/>Custom multi-page websites start at $5,000 + scope.</p>
+     <div className="home-manifesto-actions">
+      <a className="home-manifesto-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={28} height={28} aria-hidden="true" /></a>
+      <a className="home-manifesto-secondary" href="#capabilities">TRY THE LAB <span aria-hidden="true">↘</span></a>
+     </div>
+    </div>
+    <div className="home-manifesto-specialty">
+     <span className="home-manifesto-specialty-label">CURRENT SPECIALTY</span>
+     <strong>Hospitality + experience-driven businesses</strong>
+     <p>Specialty, not exclusivity. If your business needs the web to sell, book, organize, explain or automate, I want to hear about it.</p>
+    </div>
+   </div>
+  </section>
   <div className="hero-strip"><div className="hero-strip-track">WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦ PORTALS ✦ INTERACTIVE TOOLS ✦ BUSINESS SYSTEMS ✦ SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦</div></div>
 
   <div className="studio-world">
