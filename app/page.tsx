@@ -23,34 +23,21 @@ export default function Home(){
   <section className="hero home-hero" aria-labelledby="home-heading">
    <div className="home-art-stage">
     <div className="home-hero-copy">
-     <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DESIGN WITH A PULSE.</p>
+     <p className="home-hero-index">WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</p>
      <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Websites</span><span>that actually</span><em>do things.<b aria-hidden="true">♥︎</b></em></h1>
-     <p className="home-hero-description">Your venue has a feeling. I make it impossible to miss—and easy to book.</p>
-     <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={26} height={26} aria-hidden="true" /></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘︎</span></a></div>
-     <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
+     <p className="home-hero-tagline">PRETTY IS ONLY THE BEGINNING.</p>
+     <p className="home-hero-description">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage. One-page projects start at $1,000 + scope. Custom multi-page websites start at $5,000 + scope.</p>
+     <div className="home-hero-actions">
+      <a className="button button-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={26} height={26} aria-hidden="true" /></a>
+      <a className="home-hero-text-link" href="#capabilities">TRY THE LAB <Image className="glitter-cursor" src={CURSOR} alt="" width={24} height={24} aria-hidden="true" /></a>
+     </div>
+     <div className="home-hero-specialty">
+      <p><span>CURRENT SPECIALTY</span><strong>Hospitality + experience-driven businesses</strong></p>
+      <p>Specialty, not exclusivity. If your business needs the web to sell, book, organize, explain or automate, I want to hear about it.</p>
+     </div>
     </div>
     <div className="home-monitor-logo" aria-hidden="true"><span>A.</span></div>
     <a className="home-star-link" href="#work" aria-label="View the work"><span>VIEW <span className="home-star-optional">THE </span>WORK</span><Image className="glitter-cursor" src={CURSOR} alt="" width={30} height={30} aria-hidden="true" /></a>
-   </div>
-  </section>
-  <section className="home-manifesto" aria-label="About A. Halliwell Studio">
-   <div className="home-manifesto-inner">
-    <div className="home-manifesto-main">
-     <p className="home-manifesto-kicker"><span className="home-manifesto-sparkle" aria-hidden="true">✦</span> WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</p>
-     <p className="home-manifesto-statement">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage.</p>
-    </div>
-    <div className="home-manifesto-details">
-     <p className="home-manifesto-pricing">One-page projects start at $1,000 + scope.<br/>Custom multi-page websites start at $5,000 + scope.</p>
-     <div className="home-manifesto-actions">
-      <a className="home-manifesto-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={28} height={28} aria-hidden="true" /></a>
-      <a className="home-manifesto-secondary" href="#capabilities">TRY THE LAB <span aria-hidden="true">↘</span></a>
-     </div>
-    </div>
-    <div className="home-manifesto-specialty">
-     <span className="home-manifesto-specialty-label">CURRENT SPECIALTY</span>
-     <strong>Hospitality + experience-driven businesses</strong>
-     <p>Specialty, not exclusivity. If your business needs the web to sell, book, organize, explain or automate, I want to hear about it.</p>
-    </div>
    </div>
   </section>
   <div className="hero-strip"><div className="hero-strip-track">WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦ PORTALS ✦ INTERACTIVE TOOLS ✦ BUSINESS SYSTEMS ✦ SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦</div></div>
