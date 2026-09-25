@@ -19,15 +19,16 @@ export default function Home(){
   <HomeOpening/>
   <div id="home-content"><Navigation/>
   <section className="hero home-hero" aria-labelledby="home-heading">
-   <div className="home-template-light" aria-hidden="true"/>
-   <div className="home-hero-copy">
-    <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DIGITAL DESIGN FOR VENUES</p>
-    <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Before</span><span>the tour,</span><em>the feeling.</em></h1>
-    <p className="home-hero-description">I build websites for wedding venues and hospitality businesses that turn browsing into bookings.</p>
-    <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <span aria-hidden="true">↗</span></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘</span></a></div>
-    <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
+   <div className="home-art-stage">
+    <div className="home-hero-copy">
+     <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DIGITAL DESIGN FOR VENUES</p>
+     <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Before</span><span>the tour,</span><em>the feeling.</em></h1>
+     <p className="home-hero-description">I build websites for wedding venues and hospitality businesses that turn browsing into bookings.</p>
+     <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <span aria-hidden="true">↗</span></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘</span></a></div>
+     <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
+    </div>
+    <a className="home-star-link" href="#work" aria-label="Explore the work">VIEW THE<br/>WORK <span aria-hidden="true">↗</span></a>
    </div>
-   <a className="home-star-link" href="#work" aria-label="Explore the work">EXPLORE<br/>THE WORK <span aria-hidden="true">↗</span></a>
   </section>
   <div className="hero-strip"><div className="hero-strip-track">WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦ PORTALS ✦ INTERACTIVE TOOLS ✦ BUSINESS SYSTEMS ✦ SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦</div></div>
 
