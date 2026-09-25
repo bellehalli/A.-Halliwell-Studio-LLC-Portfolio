@@ -127,7 +127,7 @@ vercel-live-feedback { display: none !important; }
 .home-hero-description {
   max-width: 410px; margin: 18px 0 0;
   font: 550 clamp(13px,1.23vw,18px)/1.35 var(--font-sans),Arial,sans-serif;
-  letter-spacing: -.02em;
+  letter-spacing: -.02em; text-wrap: balance;
 }
 .home-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; margin-top: 17px; }
 .home-hero-actions .button {
