@@ -74,6 +74,8 @@
   background: #eee0fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
 }
 /* Page two uses the approved Canva composition as a stage for real text and controls. */
+/* Vercel adds this control to previews; it is not part of the studio interface. */
+vercel-live-feedback { display: none !important; }
 .home-world #home-content > .site-nav {
   position: absolute; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(255,252,255,.77); border-color: rgba(72,34,74,.18);
@@ -132,6 +134,17 @@
   margin: 19px 0 0; font: 750 clamp(8px,.75vw,10px)/1.5 var(--font-sans),sans-serif;
   letter-spacing: .1em; color: #5c2863;
 }
+.home-monitor-copy {
+  position: absolute; z-index: 5; left: 77%; top: 53%; width: 10.3%; height: 16%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8%;
+  color: #492b67; text-align: center; text-decoration: none;
+  transform: rotate(12deg) skew(-4deg,-1deg); transition: transform .3s ease;
+}
+.home-monitor-copy small { font: 750 clamp(5px,.5vw,8px)/1.2 var(--font-sans),sans-serif; letter-spacing: .11em; }
+.home-monitor-copy strong { font: 600 clamp(8px,1.1vw,16px)/.94 var(--font-fashion),Georgia,serif; letter-spacing: -.05em; }
+.home-monitor-copy span { font: 750 clamp(5px,.48vw,8px)/1 var(--font-sans),sans-serif; letter-spacing: .03em; }
+.home-monitor-copy:hover { transform: rotate(12deg) skew(-4deg,-1deg) scale(1.06); }
+.home-monitor-copy:focus-visible { outline: 3px solid #43166c; outline-offset: 5px; }
 .home-star-link {
   position: absolute; z-index: 5; left: 68%; top: 80%; width: 18%; height: 12%;
   display: grid; place-content: center; text-align: center; color: #401745; text-decoration: none;
@@ -154,14 +167,22 @@
 }
 @media (max-width: 920px) {
   .home-world #home-content > .site-nav { position: relative; width: 100%; margin: 0; border-radius: 0; }
-  .home-world .home-hero { display: block; min-height: 100svh; background: #f8effb; }
-  .home-art-stage { width: 100%; aspect-ratio: auto; padding-top: 56.223vw; background-size: 100% auto; background-position: center top; }
-  .home-hero-copy { position: relative; left: auto; top: auto; width: 100%; max-width: 620px; margin: 0 auto; padding: 34px 28px 52px; }
-  .home-hero-title { font-size: clamp(57px,8vw,80px); }
-  .home-hero-description { font-size: 17px; }
-  .home-star-link { top: 44.978vw; min-width: 44px; min-height: 44px; font-size: clamp(8px,1.2vw,12px); }
+  .home-world .home-hero { min-height: 0; background: #f8effb; }
+  .home-art-stage { width: 100%; aspect-ratio: 1366 / 768; }
+  .home-hero-copy { left: 7%; top: 25%; width: 39%; }
+  .home-hero-index { margin-bottom: 7px; font-size: clamp(6px,.85vw,8px); letter-spacing: .045em; }
+  .home-hero-index span { padding-inline: 2px; }
+  .home-hero-title { font-size: clamp(29px,5.45vw,50px); }
+  .home-hero-description { margin-top: 10px; font-size: clamp(10px,1.45vw,13px); }
+  .home-hero-actions { margin-top: 10px; }
+  .home-hero-actions .button { min-height: 34px; padding-inline: 11px; font-size: 8px; }
+  .home-hero-actions .button span { margin-left: 8px; font-size: 12px; }
+  .home-hero-investment { margin-top: 9px; font-size: 7px; }
+  .home-star-link { font-size: clamp(8px,1.2vw,12px); }
   .home-star-link span { font-size: 1.1em; }
-  .home-hero-text-link { display: inline-flex; }
+  .home-monitor-copy { gap: 4%; }
+  .home-monitor-copy small,.home-monitor-copy span { font-size: clamp(4px,.6vw,6px); }
+  .home-monitor-copy strong { font-size: clamp(6px,1vw,10px); }
 }
 @media (max-width: 600px) {
   .opening-edition { top: 29px; left: 30px; font-size: 8px; }
@@ -171,16 +192,33 @@
   .opening-brand { font-size: clamp(37px,10.2vw,62px); }
   .opening-brand em { margin-left: 22vw; font-size: .81em; }
   .opening-caption { margin-top: 14px; font-size: 9px; letter-spacing: .2em; }
-  .home-world .home-hero { min-height: 100svh; padding: 0; }
-  .home-hero-copy { width: 100%; max-width: 450px; margin: 0 auto; padding: 31px 22px 50px; background: transparent; border: 0; }
-  .home-hero-index { margin-bottom: 28px; font-size: 8px; letter-spacing: .08em; }
-  .home-hero-index span { padding-inline: 3px; }
-  .home-hero-title { width: 100%; font-size: clamp(38px,11vw,59px); line-height: .95; }
+  .home-world .home-hero { min-height: 0; padding: 0; }
+  .home-art-stage {
+    min-height: max(570px,calc(100svh - 76px)); aspect-ratio: auto; overflow: hidden;
+    background: #f6eafb url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+  }
+  .home-art-stage::before {
+    content: ''; position: absolute; inset: 0 0 auto; height: 56.223vw;
+    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center top / 100% auto no-repeat;
+    mask-image: linear-gradient(#000 75%,transparent 100%);
+  }
+  .home-art-stage::after {
+    content: ''; position: absolute; z-index: 1; left: -12%; top: 35vw; width: 88%; height: 70vw;
+    background: radial-gradient(ellipse,rgba(255,248,255,.55),transparent 70%); pointer-events: none;
+  }
+  .home-hero-copy { left: 6%; top: clamp(148px,39vw,225px); width: 88%; max-width: none; padding: 0; }
+  .home-hero-index { margin-bottom: 16px; font-size: 8px; letter-spacing: .07em; }
+  .home-hero-title { width: 100%; font-size: clamp(38px,10vw,53px); line-height: .95; }
   .home-hero-title em { margin-left: .04em; }
-  .home-hero-description { margin-top: 27px; font-size: 16px; }
-  .home-hero-actions { gap: 21px; }
-  .home-hero-actions .button { width: 100%; justify-content: space-between; }
-  .home-hero-investment { font-size: 9px; }
+  .home-hero-description { max-width: 340px; margin-top: 19px; font-size: 15px; line-height: 1.4; }
+  .home-hero-actions { gap: 12px; margin-top: 17px; }
+  .home-hero-actions .button { min-height: 43px; padding-inline: 15px; font-size: 9px; }
+  .home-hero-text-link { display: inline-flex; font-size: 9px; }
+  .home-hero-investment { margin-top: 16px; font-size: 8px; }
+  .home-star-link { top: 44.978vw; font-size: 8px; }
+  .home-monitor-copy { top: 29.8vw; height: 9vw; }
+  .home-monitor-copy small,.home-monitor-copy span { display: none; }
+  .home-monitor-copy strong { font-size: clamp(5px,1.45vw,8px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .home-opening *, .home-world .hero-strip-track { animation: none !important; }
