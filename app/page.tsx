@@ -7,6 +7,8 @@ import HomeOpening from "@/components/visual/HomeOpening";
 import SceneProps from "@/components/visual/SceneProps";
 import { projects } from "@/data/projects";
 
+const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+
 const offers=[
  ["01 / ONE PAGE","A strong place to send people.","Starting at $1,000 + scope","For a small business, launch, service or offer that needs one focused custom page."],
  ["02 / CUSTOM WEBSITE","A complete digital presence.","Starting at $5,000 + scope","Strategy, custom design and development for a multi-page customer journey."],
@@ -23,12 +25,12 @@ export default function Home(){
     <div className="home-hero-copy">
      <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> DESIGN WITH A PULSE.</p>
      <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Before</span><span>the tour,</span><em>the feeling.</em></h1>
-     <p className="home-hero-description">I build websites for wedding venues and hospitality businesses that turn browsing into bookings.</p>
-     <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <span aria-hidden="true">↗︎</span></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘︎</span></a></div>
+     <p className="home-hero-description">Your venue has a feeling. I make it impossible to miss—and easy to book.</p>
+     <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={26} height={26} aria-hidden="true" /></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘︎</span></a></div>
      <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
     </div>
     <div className="home-monitor-logo" aria-hidden="true"><span>A.</span></div>
-    <a className="home-star-link" href="#work" aria-label="View the work"><span>View <span className="home-star-optional">the </span>work</span><span aria-hidden="true">↗︎</span></a>
+    <a className="home-star-link" href="#work" aria-label="View the work"><span>VIEW <span className="home-star-optional">THE </span>WORK</span><Image className="glitter-cursor" src={CURSOR} alt="" width={30} height={30} aria-hidden="true" /></a>
    </div>
   </section>
   <div className="hero-strip"><div className="hero-strip-track">WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦ PORTALS ✦ INTERACTIVE TOOLS ✦ BUSINESS SYSTEMS ✦ SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦</div></div>

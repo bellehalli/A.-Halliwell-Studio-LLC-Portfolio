@@ -23,8 +23,10 @@
 .opening-skip {
   top: 32px; right: clamp(32px,5vw,80px); border: 0; padding: 7px 0;
   border-bottom: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
 }
-.opening-skip span { font-size: 17px; vertical-align: middle; }
+.glitter-cursor { display: inline-block; object-fit: contain; flex: 0 0 auto; }
+.opening-skip .glitter-cursor { width: 22px; height: 22px; }
 .opening-counter { right: clamp(32px,5vw,80px); bottom: 35px; }
 .opening-center { position: relative; width: min(100%,1120px); text-align: center; }
 .opening-heart {
@@ -63,8 +65,8 @@
   font: 600 10px var(--font-sans),sans-serif; letter-spacing: .16em;
   white-space: nowrap; cursor: pointer; animation: ahs-enter .8s 3.7s both;
 }
-.opening-enter span { font-size: 18px; transition: transform .25s ease; }
-.opening-enter:hover span { transform: translate(3px,-3px); }
+.opening-enter .glitter-cursor { width: 30px; height: 30px; transition: transform .25s ease; }
+.opening-enter:hover .glitter-cursor { transform: translate(3px,-3px); }
 .opening-enter:focus-visible,.opening-skip:focus-visible { outline: 3px solid #60217d; outline-offset: 5px; }
 @keyframes ahs-name { from { opacity: 0; transform: translateY(35px); filter: blur(7px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 @keyframes ahs-enter { from { opacity: 0; margin-bottom: -14px; } to { opacity: 1; margin-bottom: 0; } }
@@ -133,7 +135,7 @@ vercel-live-feedback { display: none !important; }
   background: #371737; color: #fff; font: 700 10px var(--font-sans),sans-serif; letter-spacing: .12em;
   box-shadow: 5px 6px 0 rgba(191,89,168,.26);
 }
-.home-hero-actions .button span { margin-left: 20px; font-size: 17px; }
+.home-hero-actions .button .glitter-cursor { width: 25px; height: 25px; margin-left: 16px; }
 .home-hero-actions .button:hover { background: #a12c78; }
 .home-hero-text-link { display: none; padding-block: 8px; border-bottom: 1px solid currentColor; text-decoration: none; font: 700 10px var(--font-sans),sans-serif; letter-spacing: .1em; }
 .home-hero-text-link span { margin-left: 8px; }
@@ -153,14 +155,14 @@ vercel-live-feedback { display: none !important; }
   box-shadow: 0 2px 12px rgba(86,40,97,.15);
 }
 .home-star-link {
-  position: absolute; z-index: 5; left: 68%; top: 81%; width: 18%; height: 10%;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
+  position: absolute; z-index: 5; left: 67.5%; top: 85%; width: 18.5%; height: 9%;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
   color: #401745; text-align: center; text-decoration: none;
-  font: italic 600 clamp(11px,1.65vw,24px)/1 var(--font-fashion),Georgia,serif;
-  letter-spacing: -.04em; transform: rotate(7deg); text-shadow: 0 1px rgba(255,255,255,.6);
+  font: 800 clamp(8px,1.05vw,15px)/1 var(--font-sans),Arial,sans-serif;
+  letter-spacing: .085em; transform: rotate(7deg); text-shadow: 0 1px rgba(255,255,255,.6);
   transition: transform .25s ease;
 }
-.home-star-link > span:last-child { font: normal 500 .7em/1 var(--font-sans),Arial,sans-serif; }
+.home-star-link .glitter-cursor { width: clamp(15px,2.15vw,30px); height: auto; }
 .home-star-link:hover { transform: rotate(7deg) scale(1.06); }
 .home-star-link:focus-visible,.home-hero-text-link:focus-visible { outline: 3px solid #43166c; outline-offset: 5px; }
 .home-world .hero-strip { background: #241621; color: #ffcee2; }
@@ -184,9 +186,9 @@ vercel-live-feedback { display: none !important; }
   .home-hero-description { margin-top: 10px; font-size: clamp(10px,1.45vw,13px); }
   .home-hero-actions { margin-top: 10px; }
   .home-hero-actions .button { min-height: 34px; padding-inline: 11px; font-size: 8px; }
-  .home-hero-actions .button span { margin-left: 8px; font-size: 12px; }
+  .home-hero-actions .button .glitter-cursor { width: 18px; height: 18px; margin-left: 8px; }
   .home-hero-investment { margin-top: 9px; font-size: 7px; }
-  .home-star-link { font-size: clamp(10px,1.65vw,16px); gap: 3px; }
+  .home-star-link { font-size: clamp(7px,1.05vw,11px); gap: 3px; }
   .home-monitor-logo span { font-size: clamp(12px,2.7vw,25px); }
 }
 @media (max-width: 600px) {
@@ -220,7 +222,8 @@ vercel-live-feedback { display: none !important; }
   .home-hero-actions .button { min-height: 43px; padding-inline: 15px; font-size: 9px; }
   .home-hero-text-link { display: inline-flex; font-size: 9px; }
   .home-hero-investment { margin-top: 16px; font-size: 8px; }
-  .home-star-link { top: 45.5vw; height: 6vw; font-size: 10px; }
+  .home-star-link { top: 47.8vw; height: 5vw; font-size: 7px; gap: 2px; }
+  .home-star-link .glitter-cursor { width: 11px; }
   .home-star-optional { display: none; }
   .home-monitor-logo { top: 29.8vw; height: 9vw; }
   .home-monitor-logo span { font-size: 12px; }

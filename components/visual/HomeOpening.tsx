@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+
 /** A short, non-scrolling opening scene. The site becomes usable after the curtain lifts. */
 export default function HomeOpening() {
   const [phase, setPhase] = useState<"open" | "leaving" | "done">("open");
@@ -59,7 +61,7 @@ export default function HomeOpening() {
 
   return (
     <section className={`home-opening ${phase === "leaving" ? "is-leaving" : ""}`} aria-label="A. Halliwell Studio opening" aria-live="off">
-      <button className="opening-skip" type="button" onClick={leave}>SKIP INTRO <span aria-hidden="true">↗</span></button>
+      <button className="opening-skip" type="button" onClick={leave}>SKIP INTRO <Image className="glitter-cursor" src={CURSOR} alt="" width={28} height={28} aria-hidden="true" /></button>
       <span className="opening-edition" aria-hidden="true">A. HALLIWELL STUDIO<br />DETROIT / EST. 2026</span>
       <div className="opening-center">
         <div className="opening-heart" aria-hidden="true">
@@ -68,7 +70,7 @@ export default function HomeOpening() {
         <h2 className="opening-brand"><span>A. HALLIWELL</span><em>Studio</em></h2>
         <p className="opening-caption">DESIGN WITH A PULSE.</p>
       </div>
-      <button className="opening-enter" type="button" onClick={leave}>ENTER THE STUDIO <span aria-hidden="true">↗</span></button>
+      <button className="opening-enter" type="button" onClick={leave}>ENTER THE STUDIO <Image className="glitter-cursor" src={CURSOR} alt="" width={34} height={34} aria-hidden="true" /></button>
       <span className="opening-counter" aria-hidden="true">01 / 01</span>
     </section>
   );
