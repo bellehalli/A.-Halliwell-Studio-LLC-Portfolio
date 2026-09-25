@@ -1,63 +1,73 @@
-/* Home art direction. Kept separate so the other routes and working interfaces retain their styles. */
-.home-world .home-skip {
-  position: fixed; z-index: 300; top: 12px; left: 12px; padding: 12px 18px;
-  background: #fffaf5; color: #20101c; transform: translateY(-150%);
-}
-.home-world .home-skip:focus { transform: none; }
+/* A full-screen editorial curtain. It owns scroll until the reveal completes. */
 .home-opening {
-  position: relative; z-index: 5; display: grid; place-items: center; isolation: isolate;
-  min-height: 100svh; padding: 46px 24px 82px; overflow: hidden;
-  background: #dfbff3 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 120.PNG') center / cover no-repeat;
-  color: #26151f;
+  position: fixed; z-index: 250; inset: 0; display: grid; place-items: center;
+  min-height: 100svh; padding: 28px; overflow: hidden; isolation: isolate;
+  background: #e7b5d1 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 120.PNG') center / cover no-repeat;
+  color: #260d22; transition: transform .85s cubic-bezier(.74,0,.21,1);
 }
+.home-opening.is-leaving { transform: translateY(-102%); }
 .home-opening::before {
   content: ''; position: absolute; z-index: -1; inset: 0;
-  background: linear-gradient(90deg,rgba(217,194,250,.58),transparent 16% 84%,rgba(217,194,250,.58));
+  background: radial-gradient(ellipse at 49% 48%,rgba(255,217,229,.48),transparent 40%),
+    linear-gradient(90deg,rgba(206,185,250,.56),transparent 19% 81%,rgba(206,185,250,.56));
   pointer-events: none;
 }
-.opening-meta {
-  position: absolute; top: clamp(24px,4vw,48px); left: max(24px,5vw); right: max(24px,5vw);
-  display: flex; justify-content: space-between; gap: 20px;
-  font: 700 9px/1.5 var(--font-mono),monospace; letter-spacing: .14em;
+.home-opening::after {
+  content: ''; position: absolute; inset: 12px; border: 1px solid rgba(75,18,59,.27);
+  pointer-events: none;
 }
-.opening-center { width: min(100%, 1000px); text-align: center; }
+.opening-skip,.opening-edition,.opening-counter {
+  position: absolute; z-index: 5; font: 600 10px/1.65 var(--font-sans),sans-serif; letter-spacing: .12em;
+}
+.opening-edition { top: 34px; left: clamp(32px,5vw,80px); }
+.opening-skip {
+  top: 32px; right: clamp(32px,5vw,80px); border: 0; padding: 7px 0;
+  border-bottom: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer;
+}
+.opening-skip span { font-size: 17px; vertical-align: middle; }
+.opening-counter { right: clamp(32px,5vw,80px); bottom: 35px; }
+.opening-center { position: relative; width: min(100%,1120px); text-align: center; }
 .opening-heart {
-  position: relative; width: clamp(235px,37vw,470px); aspect-ratio: 1;
-  margin: -18px auto -26px; filter: drop-shadow(0 24px 24px rgba(61,15,52,.17));
+  position: relative; width: clamp(310px,47vw,610px); aspect-ratio: 1;
+  margin: -62px auto -84px;
+  filter: drop-shadow(0 38px 28px rgba(66,8,53,.21));
+  animation: ahs-heart-arrive 3.5s cubic-bezier(.17,.7,.2,1) both;
 }
 .opening-heart img { object-fit: contain; }
-.opening-heart-whole { animation: ahs-heart-whole 1.7s cubic-bezier(.16,.7,.28,1) both; }
-.opening-heart-open { animation: ahs-heart-open 1.7s cubic-bezier(.16,.7,.28,1) both; }
-@keyframes ahs-heart-whole {
-  0% { opacity: 0; transform: scale(.55) rotate(-14deg); }
-  25%,48% { opacity: 1; transform: scale(.85) rotate(0); }
-  70%,100% { opacity: 0; transform: scale(1.08) rotate(4deg); }
-}
-@keyframes ahs-heart-open {
-  0%,38% { opacity: 0; transform: scale(.72) rotate(-7deg); }
-  60% { opacity: 1; transform: scale(1.07) rotate(2deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0); }
+@keyframes ahs-heart-arrive {
+  0% { opacity: 0; transform: translateY(95px) scale(.43) rotate(-13deg); filter: blur(15px); }
+  29% { opacity: 1; filter: blur(0); }
+  55% { transform: translateY(-13px) scale(1.13) rotate(4deg); }
+  72% { transform: translateY(5px) scale(.97) rotate(-1deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: blur(0); }
 }
 .opening-brand {
-  margin: 0; font: 500 clamp(38px,5.45vw,86px)/.95 var(--font-fashion),Georgia,serif;
-  letter-spacing: -.055em; text-wrap: balance; animation: ahs-name 1s 1.05s both;
+  position: relative; display: grid; justify-items: center; margin: 0;
+  font: 400 clamp(57px,9.2vw,148px)/.81 var(--font-fashion),Georgia,serif;
+  letter-spacing: -.072em; white-space: nowrap; text-shadow: 0 2px 0 rgba(255,255,255,.25);
+  animation: ahs-name 1.35s 2.05s both;
+}
+.opening-brand em {
+  margin-top: -.1em; margin-left: min(31vw,400px); padding-right: .12em;
+  font-size: .69em; line-height: 1.2; font-weight: 400;
+  letter-spacing: -.075em; text-transform: none; color: #8c205b;
 }
 .opening-caption {
-  margin: 26px 0 0; font: 700 clamp(8px,.7vw,11px)/1.6 var(--font-mono),monospace;
-  letter-spacing: .23em; animation: ahs-name .8s 1.35s both;
+  margin: 5px 0 0; font: 600 clamp(10px,1vw,14px)/1.5 var(--font-sans),sans-serif;
+  letter-spacing: .34em; animation: ahs-name 1s 2.7s both;
 }
 .opening-enter {
-  position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%);
-  display: inline-flex; align-items: center; gap: 22px; padding: 12px 4px;
-  border-bottom: 1px solid currentColor; text-decoration: none;
-  font: 700 10px var(--font-mono),monospace; letter-spacing: .12em;
-  white-space: nowrap; animation: ahs-enter .8s 1.55s both;
+  position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 16px; padding: 8px 0;
+  border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit;
+  font: 600 10px var(--font-sans),sans-serif; letter-spacing: .16em;
+  white-space: nowrap; cursor: pointer; animation: ahs-enter .8s 3.7s both;
 }
-.opening-enter span { font-size: 20px; line-height: .5; transition: transform .25s ease; }
-.opening-enter:hover span { transform: translateY(4px); }
-.opening-enter:focus-visible { outline: 3px solid #60217d; outline-offset: 5px; }
-@keyframes ahs-name { from { opacity: 0; transform: translateY(22px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-@keyframes ahs-enter { from { opacity: 0; margin-bottom: -10px; } to { opacity: 1; margin-bottom: 0; } }
+.opening-enter span { font-size: 18px; transition: transform .25s ease; }
+.opening-enter:hover span { transform: translate(3px,-3px); }
+.opening-enter:focus-visible,.opening-skip:focus-visible { outline: 3px solid #60217d; outline-offset: 5px; }
+@keyframes ahs-name { from { opacity: 0; transform: translateY(35px); filter: blur(7px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes ahs-enter { from { opacity: 0; margin-bottom: -14px; } to { opacity: 1; margin-bottom: 0; } }
 
 /* The patterned world begins immediately after the opening scene. */
 .home-world .site-background {
@@ -113,11 +123,13 @@
   .home-ornament-bow { bottom: 9%; right: 3%; opacity: .7; }
 }
 @media (max-width: 600px) {
-  .opening-meta { justify-content: center; font-size: 8px; }
-  .opening-meta span:last-child { display: none; }
-  .opening-heart { width: min(78vw,340px); margin-bottom: -10px; }
-  .opening-brand { font-size: clamp(38px,9.7vw,58px); }
-  .opening-caption { margin-top: 16px; letter-spacing: .12em; }
+  .opening-edition { top: 29px; left: 30px; font-size: 8px; }
+  .opening-skip { top: 27px; right: 30px; font-size: 8px; }
+  .opening-counter { right: 30px; bottom: 32px; font-size: 8px; }
+  .opening-heart { width: min(85vw,375px); margin: -20px auto -28px; }
+  .opening-brand { font-size: clamp(37px,10.2vw,62px); }
+  .opening-brand em { margin-left: 22vw; font-size: .81em; }
+  .opening-caption { margin-top: 14px; font-size: 9px; letter-spacing: .2em; }
   .home-world .hero { width: calc(100% - 24px); margin-top: 12px; padding: 64px 24px 46px; box-shadow: 7px 9px 0 rgba(71,30,58,.2); }
   .home-world .hero .eyebrow { max-width: 245px; line-height: 1.5; font-size: 8px; }
   .home-world .hero-title > span,.home-world .hero-title > em { font-size: clamp(52px,12.2vw,76px); }
@@ -132,6 +144,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .home-opening *, .home-world .home-ornament, .home-world .hero-strip-track { animation: none !important; }
-  .opening-heart-whole { display: none; }
-  .opening-heart-open,.opening-brand,.opening-caption,.opening-enter { opacity: 1; transform: none; filter: none; }
+  .home-opening { transition: none; }
+  .opening-heart,.opening-brand,.opening-caption,.opening-enter { opacity: 1; filter: none; }
 }

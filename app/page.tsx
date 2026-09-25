@@ -3,6 +3,7 @@ import CapabilityPlayground from "@/components/lab/CapabilityPlayground";
 import ProjectShowcase from "@/components/projects/ProjectShowcase";
 import StartProject from "@/components/forms/StartProject";
 import Navigation from "@/components/navigation/Navigation";
+import HomeOpening from "@/components/visual/HomeOpening";
 import SceneProps from "@/components/visual/SceneProps";
 import { projects } from "@/data/projects";
 
@@ -15,20 +16,8 @@ const offers=[
 export default function Home(){
  return <main id="top" className="full-picture home-world">
   <div className="site-background" aria-hidden="true"/>
-  <a className="home-skip" href="#home-content">Skip introduction</a>
-  <section className="home-opening" aria-label="A. Halliwell Studio introduction">
-   <div className="opening-meta" aria-hidden="true"><span>INDEPENDENT CREATIVE STUDIO</span><span>DETROIT · AVAILABLE EVERYWHERE</span></div>
-   <div className="opening-center">
-    <div className="opening-heart" aria-hidden="true">
-     <Image className="opening-heart-whole" src="/assets/hearts/Portfolio Assets A.Halliwell  - 1.PNG" alt="" fill sizes="(max-width: 700px) 70vw, 420px" priority />
-     <Image className="opening-heart-open" src="/assets/hearts/Portfolio Assets A.Halliwell  - 119.PNG" alt="" fill sizes="(max-width: 700px) 70vw, 420px" priority />
-    </div>
-    <p className="opening-brand">A. Halliwell Studio</p>
-    <p className="opening-caption">STRATEGY · DESIGN · DEVELOPMENT</p>
-   </div>
-   <a className="opening-enter" href="#home-content">ENTER THE STUDIO <span aria-hidden="true">↓</span></a>
-  </section>
-  <div id="home-content"><Navigation/></div>
+  <HomeOpening/>
+  <div id="home-content"><Navigation/>
   <section className="hero shell" aria-labelledby="home-heading">
    <div className="home-hero-ornaments" aria-hidden="true">
     <Image className="home-ornament home-ornament-butterfly" src="/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 31.PNG" alt="" width={180} height={180}/>
@@ -36,7 +25,7 @@ export default function Home(){
     <Image className="home-ornament home-ornament-bow" src="/assets/objects/Portfolio Assets A.Halliwell  - 10.PNG" alt="" width={160} height={160}/>
    </div>
    <div className="eyebrow"><span className="status-dot"/>WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</div>
-   <div className="hero-title-wrap"><h1 id="home-heading" className="hero-title"><span>Websites that</span><span>actually</span><em>do things.♥</em></h1><p className="hero-margin-note">PRETTY IS ONLY THE BEGINNING.</p></div>
+   <div className="hero-title-wrap"><h1 id="home-heading" tabIndex={-1} className="hero-title"><span>Websites that</span><span>actually</span><em>do things.♥</em></h1><p className="hero-margin-note">PRETTY IS ONLY THE BEGINNING.</p></div>
    <div className="hero-bottom"><p className="hero-description">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage. One-page projects start at $1,000 + scope. Custom multi-page websites start at $5,000 + scope.</p><div className="hero-actions"><a className="button button-primary" href="#start">START A PROJECT ↗</a><a className="button" href="#capabilities">TRY THE LAB ↘</a></div></div>
    <div className="hero-specialty-note"><span>CURRENT SPECIALTY</span><strong>Hospitality + experience-driven businesses</strong><p>Specialty, not exclusivity. If your business needs the web to sell, book, organize, explain or automate, I want to hear about it.</p></div>
   </section>
@@ -57,5 +46,6 @@ export default function Home(){
    <section className="start-world"><SceneProps scene="start"/><StartProject/></section>
   </div>
   <footer className="world-footer"><SceneProps scene="footer"/><div className="footer-paper"><div className="footer-brand"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></div><p>Custom websites and digital systems built around what the business actually needs the internet to do.</p><nav className="footer-links" aria-label="Footer"><a href="/work">WORK ↗</a><a href="/services">SERVICES ↗</a><a href="/studio">STUDIO ↗</a><a href="/lab">LAB ↗</a><a href="/resources">RESOURCES ↗</a><a href="/start">START A PROJECT ↗</a><a href="mailto:hello@ahalliwellstudio.com">EMAIL THE STUDIO ↗</a><a href="/card">DIGITAL CARD ↗</a><a href="#top">BACK TO TOP ↑</a></nav></div></footer>
+  </div>
  </main>
 }
