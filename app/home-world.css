@@ -224,82 +224,100 @@ vercel-live-feedback { display: none !important; }
 .work-intro-link .glitter-cursor { width: 24px; height: 24px; }
 .work-intro-link:hover { color: #d52c86; transform: translateY(-3px); }
 .work-intro-link:focus-visible { outline: 3px solid #67277a; outline-offset: 5px; }
-/* The next two templates become an interactive index to the existing case files. */
+/* Templates 5 and 6 frame the original scrollable venue builds and their three screen studies. */
 .work-gallery-collection { width: 100%; }
 .work-gallery {
-  position: relative; isolation: isolate; width: 100%; aspect-ratio: 1366 / 768;
-  overflow: hidden; background-position: center; background-size: 100% 100%; background-repeat: no-repeat;
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(68px,7vw,112px) 24px clamp(44px,5vw,80px);
+  color: #381b41;
+  background: radial-gradient(ellipse at 50% 12%,#fff 0%,#f8e9fa 34%,#dcc7ff 100%);
 }
-.work-gallery-one { background-color: #ece0ff; background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG'); }
-.work-gallery-two { background-color: #f7d3e8; background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
-.work-gallery-inner { position: absolute; inset: 0; }
-.work-gallery-heading { position: absolute; top: 7.4%; left: 14%; width: 72%; text-align: center; color: #391a40; }
-.work-gallery-kicker {
-  display: flex; justify-content: center; gap: 14px; margin: 0;
-  font: 750 clamp(9px,.78vw,12px)/1.2 var(--font-sans),sans-serif; letter-spacing: .15em;
+.work-gallery-maison {
+  background: radial-gradient(ellipse at 50% 10%,#fff6f2 0%,#f7d2e7 45%,#dec4e6 100%);
 }
-.work-gallery-kicker span + span::before { content: '✦'; margin-right: 14px; color: #d93591; }
+.work-gallery::before {
+  content: ''; position: absolute; inset: 0 0 auto; z-index: -1;
+  height: clamp(220px,35vw,420px); pointer-events: none;
+  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center top / 100% auto no-repeat;
+  -webkit-mask-image: linear-gradient(#000,transparent 90%);
+  mask-image: linear-gradient(#000,transparent 90%);
+}
+.work-gallery-maison::before { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
+.work-gallery-heading { position: relative; width: min(780px,100%); margin: 0 auto 42px; text-align: center; }
+.work-gallery-kicker { margin: 0; font: 750 10px/1.4 var(--font-sans),sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+.work-gallery-kicker span { margin: 0 10px; color: #da328d; }
 .work-gallery-heading h2 {
-  margin: 16px 0 0; font: 700 clamp(45px,5.5vw,76px)/.86 var(--font-editorial),Georgia,serif;
-  letter-spacing: -.075em;
+  margin: 20px 0 18px; font: 700 clamp(64px,8vw,118px)/.9 var(--font-editorial),Georgia,serif;
+  letter-spacing: -.065em;
 }
-.work-gallery-heading h2 em { font-family: var(--font-fashion),Georgia,serif; font-weight: 500; color: #c23183; }
-.work-gallery-heading > p:last-child { margin: 17px 0 0; font: 500 clamp(13px,1.05vw,16px)/1.4 var(--font-sans),sans-serif; }
-.work-gallery-window {
-  position: absolute; top: 60.4%; width: 12.8%; height: 26.1%;
-  display: block; overflow: hidden; color: #fff; text-decoration: none;
-  border-radius: 4px; box-shadow: 0 0 0 2px rgba(255,255,255,.6);
-  transition: transform .25s ease,box-shadow .25s ease;
+.work-gallery-maison .work-gallery-heading h2 { font-style: italic; color: #a22b79; }
+.work-gallery-description { max-width: 680px; margin: 0 auto; font: 500 clamp(16px,1.5vw,20px)/1.55 var(--font-sans),sans-serif; }
+.work-gallery-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 26px; }
+.work-gallery-links a { color: #4e2250; border-bottom: 1px solid currentColor; padding: 7px 0; text-decoration: none; font: 800 10px/1.4 var(--font-sans),sans-serif; letter-spacing: .1em; }
+.work-gallery-links a:hover { color: #d12685; }
+.work-gallery-links a:focus-visible { outline: 3px solid #67277a; outline-offset: 4px; }
+.work-gallery-media { position: relative; width: min(1160px,100%); margin: 0 auto; }
+.work-gallery .project-media-stack { display: grid; gap: 26px; }
+.work-gallery .project-evidence { margin: 0; box-shadow: 14px 16px 0 rgba(114,54,135,.13); }
+.work-gallery .project-live-preview { border: 2px solid #5c2e68; border-radius: 12px; }
+.work-gallery .project-evidence-bar { background: #f6daef; color: #4c244f; }
+.work-gallery .project-browser-bar { background: #e6e1f1; }
+.work-gallery .project-live-preview iframe { height: clamp(480px,58vw,720px); min-height: 0; }
+.work-gallery .project-preview-note { background: #fff8fc; }
+.work-gallery .project-evidence:not(.project-live-preview) { border: 0; background: transparent; box-shadow: none; }
+.work-gallery .project-evidence:not(.project-live-preview) > .project-evidence-bar { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.work-gallery .project-evidence-gallery {
+  position: relative; display: block; width: 100%; aspect-ratio: 1366 / 390; padding: 0;
+  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center bottom / 100% auto no-repeat;
 }
-.work-gallery-window:nth-child(1) { left: 5.9%; }
-.work-gallery-window:nth-child(2) { left: 43.6%; }
-.work-gallery-window:nth-child(3) { left: 81.1%; }
-.work-gallery-two .work-gallery-window { top: 63.5%; width: 11.15%; height: 22.4%; }
-.work-gallery-two .work-gallery-window:nth-child(1) { left: 6.9%; }
-.work-gallery-two .work-gallery-window:nth-child(2) { left: 44.55%; }
-.work-gallery-two .work-gallery-window:nth-child(3) { left: 82%; }
-.work-gallery-window:hover { transform: translateY(-7px) scale(1.05); box-shadow: 0 15px 30px rgba(78,20,79,.3),0 0 0 3px white; }
-.work-gallery-window:focus-visible { outline: 3px solid #4e1967; outline-offset: 6px; }
-.work-gallery-art { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; }
-.work-gallery-art img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .45s ease; }
-.work-gallery-window:hover .work-gallery-art img { transform: scale(1.08); }
-.work-gallery-window-vanta .work-gallery-art { background: radial-gradient(circle at 72% 30%,#9d57a1,#1c1329 70%); }
-.work-gallery-window-elan .work-gallery-art { background: radial-gradient(circle at 35% 20%,#ffdce2,#c3869f 65%,#572c53); }
-.work-gallery-window-northstar .work-gallery-art { background: radial-gradient(circle at 24% 20%,#b5cbd7,#354d65 70%); }
-.work-gallery-window-restaurant .work-gallery-art { background: radial-gradient(circle at 70% 16%,#f0c594,#754126 75%); }
-.work-gallery-monogram { font: italic 700 clamp(60px,8vw,116px)/1 var(--font-fashion),Georgia,serif; color: rgba(255,255,255,.75); }
-.work-gallery-window-title {
-  position: absolute; inset: auto 0 0; z-index: 2; min-height: 43%; padding: 28px 8px 8px;
-  display: grid; align-content: end; gap: 3px; text-align: center;
-  background: linear-gradient(transparent,rgba(35,14,39,.9));
+.work-gallery-maison .project-evidence-gallery { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
+.work-gallery .project-evidence-gallery figure {
+  position: absolute; top: 22.3%; left: 5.8%; width: 12.8%; height: 50%;
+  overflow: hidden; border-radius: 4px; background: #fff;
+  transition: transform .3s ease,box-shadow .3s ease;
 }
-.work-gallery-window-title strong { font: 700 clamp(12px,1.25vw,18px)/1.05 var(--font-editorial),Georgia,serif; }
-.work-gallery-window-title small { font: 750 clamp(6px,.55vw,8px)/1.2 var(--font-sans),sans-serif; letter-spacing: .07em; }
+.work-gallery .project-evidence-gallery figure:nth-child(2) { left: 43.6%; }
+.work-gallery .project-evidence-gallery figure:nth-child(3) { left: 81.1%; }
+.work-gallery .project-evidence-gallery figure:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(67,25,80,.24); }
+.work-gallery .project-evidence-gallery img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top center; }
+.work-gallery .project-evidence-gallery figcaption {
+  position: absolute; inset: auto 0 0; padding: 17px 4px 5px; color: #fff;
+  text-align: center; background: linear-gradient(transparent,rgba(44,23,50,.86));
+  font: 700 clamp(6px,.65vw,9px)/1.2 var(--font-sans),sans-serif;
+}
+.work-gallery-maison .project-evidence-gallery figure { top: 28.7%; left: 6.8%; width: 11.5%; height: 43%; }
+.work-gallery-maison .project-evidence-gallery figure:nth-child(2) { left: 44.45%; }
+.work-gallery-maison .project-evidence-gallery figure:nth-child(3) { left: 82%; }
+.work-gallery-details { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px 30px; width: min(1160px,100%); margin: 23px auto 0; }
+.work-gallery-details > span { font: 800 9px var(--font-sans),sans-serif; letter-spacing: .1em; }
+.work-gallery-details .project-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.work-gallery-details > p { flex-basis: 100%; margin: 0; font: 500 12px/1.5 var(--font-sans),sans-serif; }
 @media (max-width: 700px) {
-  .work-gallery { aspect-ratio: auto; min-height: 0; padding: 60px 20px 72px; background-image: none; }
-  .work-gallery-one { background: radial-gradient(circle at 50% 15%,#fff8ff,#e8d5ff 55%,#f9ddf3); }
-  .work-gallery-two { background: radial-gradient(circle at 55% 12%,#fff6f0,#edc2e3 62%,#f4d9ea); }
-  .work-gallery::before {
-    content: ''; position: absolute; inset: 0 0 auto; height: 48vw; pointer-events: none;
-    background-position: center top; background-size: 100% auto; background-repeat: no-repeat;
-    mask-image: linear-gradient(#000 30%,transparent 95%);
+  .work-gallery { padding: 66px 16px 52px; }
+  .work-gallery::before { height: 230px; background-size: auto 230px; }
+  .work-gallery-heading { margin-bottom: 32px; }
+  .work-gallery-kicker { font-size: 8px; }
+  .work-gallery-heading h2 { font-size: clamp(54px,13vw,76px); }
+  .work-gallery-description { font-size: 15px; }
+  .work-gallery-links { gap: 6px 18px; }
+  .work-gallery .project-live-preview iframe { height: 570px; }
+  .work-gallery .project-evidence-gallery {
+    display: flex; gap: 16px; overflow-x: auto; aspect-ratio: auto; min-height: 380px;
+    padding: 40px 24px 35px; scroll-snap-type: x mandatory;
+    background-position: center top; background-size: auto 100%;
   }
-  .work-gallery-one::before { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG'); }
-  .work-gallery-two::before { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
-  .work-gallery-inner { position: relative; inset: auto; }
-  .work-gallery-heading { position: relative; top: auto; left: auto; width: min(100%,520px); margin: 0 auto; }
-  .work-gallery-kicker { flex-wrap: wrap; font-size: 9px; }
-  .work-gallery-heading h2 { margin-top: 22px; font-size: clamp(42px,10vw,61px); }
-  .work-gallery-heading > p:last-child { max-width: 280px; margin: 19px auto 0; font-size: 14px; }
-  .work-gallery-windows { display: grid; gap: 24px; width: min(100%,410px); margin: 43px auto 0; }
-  .work-gallery-window,.work-gallery-two .work-gallery-window {
-    position: relative; top: auto; left: auto !important; width: 100%; height: 220px;
-    border: 9px solid #e9edff; border-top-width: 32px; border-bottom-width: 31px;
-    border-radius: 14px; box-shadow: 0 0 0 3px #b9c5e1,0 13px 23px rgba(93,48,93,.15);
+  .work-gallery .project-evidence-gallery figure,
+  .work-gallery-maison .project-evidence-gallery figure,
+  .work-gallery .project-evidence-gallery figure:nth-child(2),
+  .work-gallery .project-evidence-gallery figure:nth-child(3) {
+    position: relative; top: auto; left: auto; flex: 0 0 215px; width: 215px; height: 275px;
+    border: 8px solid #e1e8f6; border-top-width: 30px; border-bottom-width: 33px;
+    border-radius: 13px; box-shadow: 0 0 0 3px #b2c0de;
+    scroll-snap-align: center;
   }
-  .work-gallery-window::before { content: '♥ ♥ ♥'; position: absolute; top: -27px; left: 4px; color: #f58cad; font-size: 12px; letter-spacing: 2px; }
-  .work-gallery-window-title strong { font-size: 22px; }
-  .work-gallery-window-title small { font-size: 9px; }
+  .work-gallery .project-evidence-gallery figure::before { content: '♥ ♥ ♥'; position: absolute; z-index: 2; top: -25px; left: 0; color: #f48fb3; font: 13px var(--font-sans),sans-serif; letter-spacing: 2px; }
+  .work-gallery .project-evidence-gallery figcaption { font-size: 9px; }
+  .work-gallery-details { align-items: flex-start; }
 }
 @media (max-width: 920px) {
   .home-world .intro-sheet { min-height: 670px; background-position: center top; background-size: auto 670px; }
