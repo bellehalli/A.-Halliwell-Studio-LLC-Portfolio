@@ -5,6 +5,7 @@ import "./credibility.css";
 import "./reposition.css";
 import "./final-pass.css";
 import "./visual-polish.css";
+import "./home-world.css";
 const fraunces=Fraunces({subsets:["latin"],variable:"--font-editorial",display:"swap"});
 const bodoni=Bodoni_Moda({subsets:["latin"],variable:"--font-fashion",display:"swap"});
 const inter=Inter({subsets:["latin"],variable:"--font-sans",display:"swap"});

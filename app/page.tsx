@@ -13,11 +13,30 @@ const offers=[
 ];
 
 export default function Home(){
- return <main id="top" className="full-picture">
-  <div className="site-background" aria-hidden="true"/><Navigation/>
-  <section className="hero shell">
+ return <main id="top" className="full-picture home-world">
+  <div className="site-background" aria-hidden="true"/>
+  <a className="home-skip" href="#home-content">Skip introduction</a>
+  <section className="home-opening" aria-label="A. Halliwell Studio introduction">
+   <div className="opening-meta" aria-hidden="true"><span>INDEPENDENT CREATIVE STUDIO</span><span>DETROIT · AVAILABLE EVERYWHERE</span></div>
+   <div className="opening-center">
+    <div className="opening-heart" aria-hidden="true">
+     <Image className="opening-heart-whole" src="/assets/hearts/Portfolio Assets A.Halliwell  - 1.PNG" alt="" fill sizes="(max-width: 700px) 70vw, 420px" priority />
+     <Image className="opening-heart-open" src="/assets/hearts/Portfolio Assets A.Halliwell  - 119.PNG" alt="" fill sizes="(max-width: 700px) 70vw, 420px" priority />
+    </div>
+    <p className="opening-brand">A. Halliwell Studio</p>
+    <p className="opening-caption">STRATEGY · DESIGN · DEVELOPMENT</p>
+   </div>
+   <a className="opening-enter" href="#home-content">ENTER THE STUDIO <span aria-hidden="true">↓</span></a>
+  </section>
+  <div id="home-content"><Navigation/></div>
+  <section className="hero shell" aria-labelledby="home-heading">
+   <div className="home-hero-ornaments" aria-hidden="true">
+    <Image className="home-ornament home-ornament-butterfly" src="/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 31.PNG" alt="" width={180} height={180}/>
+    <Image className="home-ornament home-ornament-star" src="/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.PNG" alt="" width={110} height={110}/>
+    <Image className="home-ornament home-ornament-bow" src="/assets/objects/Portfolio Assets A.Halliwell  - 10.PNG" alt="" width={160} height={160}/>
+   </div>
    <div className="eyebrow"><span className="status-dot"/>WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</div>
-   <div className="hero-title-wrap"><h1 className="hero-title"><span>Websites that</span><span>actually</span><em>do things.♥</em></h1><p className="hero-margin-note">PRETTY IS ONLY THE BEGINNING.</p></div>
+   <div className="hero-title-wrap"><h1 id="home-heading" className="hero-title"><span>Websites that</span><span>actually</span><em>do things.♥</em></h1><p className="hero-margin-note">PRETTY IS ONLY THE BEGINNING.</p></div>
    <div className="hero-bottom"><p className="hero-description">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage. One-page projects start at $1,000 + scope. Custom multi-page websites start at $5,000 + scope.</p><div className="hero-actions"><a className="button button-primary" href="#start">START A PROJECT ↗</a><a className="button" href="#capabilities">TRY THE LAB ↘</a></div></div>
    <div className="hero-specialty-note"><span>CURRENT SPECIALTY</span><strong>Hospitality + experience-driven businesses</strong><p>Specialty, not exclusivity. If your business needs the web to sell, book, organize, explain or automate, I want to hear about it.</p></div>
   </section>
