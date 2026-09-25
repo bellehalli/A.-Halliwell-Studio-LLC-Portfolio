@@ -73,38 +73,98 @@
 .home-world .site-background {
   background: #fff8ef url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.PNG') center top / min(620px,90vw) repeat;
 }
-.home-world .hero {
-  width: min(1320px,calc(100% - 48px)); min-height: min(850px,calc(100svh - 120px));
-  margin-top: 24px; margin-bottom: 34px; padding: clamp(64px,8vw,112px) clamp(28px,7vw,110px);
-  background: linear-gradient(110deg,rgba(255,250,246,.97),rgba(255,245,250,.92) 64%,rgba(249,232,255,.9));
-  border: 1px solid rgba(53,28,45,.27); box-shadow: 18px 22px 0 rgba(71,30,58,.18),0 28px 80px rgba(76,30,57,.12);
-  overflow: hidden;
+/* Page two: an editorial invitation, grounded by one clear offer and a layered floral still life. */
+.home-world .home-hero {
+  width: min(1380px,calc(100% - 44px)); min-height: min(780px,calc(100svh - 126px));
+  margin-top: 23px; margin-bottom: 36px; padding: clamp(52px,6vw,88px) clamp(40px,6.4vw,96px);
+  display: grid; grid-template-columns: minmax(0,1.08fr) minmax(300px,.92fr); gap: clamp(20px,3vw,54px);
+  align-items: center; overflow: hidden; isolation: isolate;
+  background: #fff9f4;
+  border: 1px solid rgba(63,25,46,.29);
+  box-shadow: 12px 14px 0 rgba(76,35,58,.2),0 30px 80px rgba(82,35,59,.1);
 }
-.home-world .hero::before {
-  inset: auto -10% -34% 30%; height: 65%; z-index: 0; filter: none;
+.home-world .home-hero::before {
+  z-index: 0; inset: auto -8% -50% 20%; height: 70%; filter: none;
   background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG') center / cover;
-  opacity: .12; transform: rotate(-9deg);
+  opacity: .16; transform: rotate(-7deg);
 }
-.home-world .hero .eyebrow { color: #712b51; }
-.home-world .hero-title-wrap { margin-top: clamp(26px,5vw,64px); }
-.home-world .hero-title > span {
-  font-family: var(--font-fashion),Georgia,serif; font-weight: 500;
-  font-size: clamp(65px,9vw,142px); line-height: .9; letter-spacing: -.07em;
+.home-hero-copy { position: relative; z-index: 4; min-width: 0; }
+.home-hero-index {
+  margin: 0 0 clamp(36px,6vh,64px); font: 650 10px/1.6 var(--font-sans),sans-serif;
+  letter-spacing: .17em; color: #743352;
 }
-.home-world .hero-title > em {
-  font-family: var(--font-fashion),Georgia,serif; font-weight: 500;
-  font-size: clamp(65px,9vw,142px); line-height: .94; color: #b12b69;
+.home-hero-index span { padding: 0 9px; color: #af4776; }
+.home-hero-title {
+  position: relative; z-index: 3; margin: 0; width: 115%;
+  font: 500 clamp(70px,7.2vw,118px)/.87 var(--font-fashion),Georgia,serif;
+  letter-spacing: -.078em;
 }
-.home-world .hero-margin-note { right: 0; bottom: -34px; color: #702c52; }
-.home-world .hero-bottom { margin-top: clamp(56px,7vw,96px); align-items: end; }
-.home-world .hero-description { max-width: 580px; font-size: clamp(17px,1.48vw,21px); line-height: 1.5; }
-.home-world .hero-specialty-note { box-shadow: none; border-color: rgba(42,23,37,.2); background: rgba(255,250,246,.76); }
-.home-world .home-hero-ornaments { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.home-ornament { position: absolute; object-fit: contain; width: auto; height: auto; filter: drop-shadow(0 14px 12px rgba(67,22,46,.16)); }
-.home-ornament-butterfly { width: clamp(86px,12vw,172px); right: 5%; top: 10%; animation: ahs-float 7s ease-in-out infinite; }
-.home-ornament-star { width: clamp(56px,7vw,104px); right: 17%; top: 34%; animation: ahs-float 8s ease-in-out -2s infinite; }
-.home-ornament-bow { width: clamp(80px,11vw,146px); right: 5%; bottom: 15%; animation: ahs-float 9s ease-in-out -4s infinite; }
+.home-hero-title span,.home-hero-title em { display: block; }
+.home-hero-title span:nth-child(2) { padding-left: .42em; }
+.home-hero-title em {
+  margin: .04em 0 0 .13em; color: #ad2d72; font-weight: 500; font-style: italic;
+  white-space: nowrap;
+}
+.home-hero-description {
+  max-width: 505px; margin: clamp(35px,5vh,58px) 0 0;
+  font: 400 clamp(18px,1.65vw,23px)/1.48 var(--font-sans),Arial,sans-serif;
+  letter-spacing: -.025em; color: #321c29;
+}
+.home-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 23px; margin-top: 31px; }
+.home-hero-actions .button {
+  min-height: 55px; padding-inline: 26px; background: #271421; color: #fff8f5;
+  border-radius: 0; font: 650 11px var(--font-sans),sans-serif; letter-spacing: .13em;
+}
+.home-hero-actions .button:hover { background: #a82f70; }
+.home-hero-actions .button span { margin-left: 24px; font-size: 18px; line-height: .6; }
+.home-hero-text-link {
+  padding-block: 9px; border-bottom: 1px solid currentColor; text-decoration: none;
+  font: 650 10px var(--font-sans),sans-serif; letter-spacing: .12em;
+}
+.home-hero-text-link span { margin-left: 12px; font-size: 15px; }
+.home-hero-text-link:hover { color: #a82f70; }
+.home-hero-investment {
+  margin: clamp(34px,5vh,52px) 0 0; padding-top: 15px; width: fit-content;
+  border-top: 1px solid rgba(67,35,49,.37);
+  font: 650 10px/1.5 var(--font-sans),sans-serif; letter-spacing: .15em; color: #76415a;
+}
+.home-hero-art { position: relative; height: min(605px,72vh); min-height: 480px; pointer-events: none; }
+.home-art-frame {
+  position: absolute; inset: 3% 2% 2% 11%; overflow: hidden;
+  background: #ffd5e4 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG') center / cover;
+  border: 1px solid rgba(98,37,72,.24);
+  box-shadow: 17px 18px 0 rgba(235,157,192,.45);
+  transform: rotate(2deg);
+}
+.home-art-frame::after { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(144,61,100,.3); }
+.home-art-corner {
+  position: absolute; z-index: 2; font: 650 9px var(--font-sans),sans-serif; letter-spacing: .12em; color: #8b3a62;
+}
+.home-art-corner-top { top: 27px; left: 30px; }
+.home-art-corner-bottom { bottom: 27px; right: 30px; }
+.home-art-flower {
+  position: absolute; z-index: 2; width: 117%; height: auto; max-width: none;
+  left: -13%; top: 4%; filter: drop-shadow(15px 25px 18px rgba(92,30,65,.2));
+  animation: ahs-flower-breathe 9s ease-in-out infinite;
+}
+.home-art-butterfly {
+  position: absolute; z-index: 3; width: 38%; height: auto; right: -12%; top: -9%;
+  filter: drop-shadow(0 16px 13px rgba(50,27,46,.25)); animation: ahs-float 8s ease-in-out infinite;
+}
+.home-art-star {
+  position: absolute; z-index: 4; width: 18%; height: auto; left: 0; bottom: 3%;
+  filter: drop-shadow(0 12px 9px rgba(77,38,62,.15)); animation: ahs-float 7s ease-in-out -3s infinite;
+}
+.home-art-note {
+  position: absolute; z-index: 3; right: -2%; bottom: 9%; margin: 0;
+  padding: 17px 23px 20px; background: rgba(255,250,246,.96); border: 1px solid #75324f;
+  box-shadow: 7px 8px 0 rgba(118,47,82,.18);
+  font: 500 clamp(17px,1.8vw,26px)/1.1 var(--font-fashion),Georgia,serif;
+  transform: rotate(-3deg);
+}
+.home-art-note em { color: #aa3473; }
 @keyframes ahs-float { 50% { translate: 0 -10px; rotate: 3deg; } }
+@keyframes ahs-flower-breathe { 50% { transform: scale(1.035) rotate(-1.5deg); } }
 .home-world .hero-strip { background: #241621; color: #ffcee2; }
 .home-world .intro-sheet,.home-world .proof-world {
   background: linear-gradient(rgba(255,250,246,.91),rgba(255,250,246,.91)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG') center / cover;
@@ -116,11 +176,12 @@
   background: linear-gradient(rgba(252,249,255,.81),rgba(252,249,255,.81)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover;
 }
 @media (max-width: 920px) {
-  .home-world .hero { min-height: 0; }
-  .home-world .hero-bottom { align-items: start; flex-direction: column; }
-  .home-ornament-butterfly { right: -3%; top: 12%; opacity: .65; }
-  .home-ornament-star { right: 3%; top: 40%; opacity: .65; }
-  .home-ornament-bow { bottom: 9%; right: 3%; opacity: .7; }
+  .home-world .home-hero { min-height: 0; grid-template-columns: 1fr; gap: 45px; }
+  .home-hero-title { width: 100%; font-size: clamp(78px,10vw,110px); }
+  .home-hero-art { height: 460px; min-height: 0; width: min(100%,600px); margin-inline: auto; }
+  .home-art-flower { width: 88%; left: 0; top: -11%; }
+  .home-art-butterfly { width: 27%; right: -2%; }
+  .home-art-note { right: 0; }
 }
 @media (max-width: 600px) {
   .opening-edition { top: 29px; left: 30px; font-size: 8px; }
@@ -130,20 +191,24 @@
   .opening-brand { font-size: clamp(37px,10.2vw,62px); }
   .opening-brand em { margin-left: 22vw; font-size: .81em; }
   .opening-caption { margin-top: 14px; font-size: 9px; letter-spacing: .2em; }
-  .home-world .hero { width: calc(100% - 24px); margin-top: 12px; padding: 64px 24px 46px; box-shadow: 7px 9px 0 rgba(71,30,58,.2); }
-  .home-world .hero .eyebrow { max-width: 245px; line-height: 1.5; font-size: 8px; }
-  .home-world .hero-title > span,.home-world .hero-title > em { font-size: clamp(52px,12.2vw,76px); }
-  .home-world .hero-title > em { white-space: normal; }
-  .home-world .hero-margin-note { position: static; margin-top: 20px; }
-  .home-world .hero-bottom { margin-top: 34px; }
-  .home-world .hero-description { font-size: 16px; }
-  .home-world .hero-actions { width: 100%; }
-  .home-ornament-butterfly { width: 80px; top: 8%; right: -4%; opacity: .42; }
-  .home-ornament-star { width: 50px; top: 44%; right: -2%; opacity: .55; }
-  .home-ornament-bow { display: none; }
+  .home-world .home-hero { width: calc(100% - 24px); margin-top: 12px; padding: 54px 24px 42px; gap: 42px; box-shadow: 7px 9px 0 rgba(71,30,58,.2); }
+  .home-hero-index { margin-bottom: 34px; font-size: 8px; letter-spacing: .08em; }
+  .home-hero-index span { padding-inline: 3px; }
+  .home-hero-title { width: 100%; font-size: clamp(38px,11vw,60px); line-height: .95; }
+  .home-hero-title em { margin-left: .04em; }
+  .home-hero-description { margin-top: 35px; font-size: 17px; }
+  .home-hero-actions { gap: 21px; }
+  .home-hero-actions .button { width: 100%; justify-content: space-between; }
+  .home-hero-investment { font-size: 9px; }
+  .home-hero-art { height: 350px; width: 100%; }
+  .home-art-frame { inset: 3% 6% 3% 5%; box-shadow: 8px 9px 0 rgba(235,157,192,.45); }
+  .home-art-flower { width: 113%; left: -16%; top: -8%; }
+  .home-art-butterfly { width: 32%; top: -7%; right: -7%; }
+  .home-art-star { width: 21%; bottom: 1%; }
+  .home-art-note { right: -3%; bottom: 8%; padding: 10px 13px; font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home-opening *, .home-world .home-ornament, .home-world .hero-strip-track { animation: none !important; }
+  .home-opening *, .home-world .home-hero-art img, .home-world .hero-strip-track { animation: none !important; }
   .home-opening { transition: none; }
   .opening-heart,.opening-brand,.opening-caption,.opening-enter { opacity: 1; filter: none; }
 }

@@ -18,16 +18,21 @@ export default function Home(){
   <div className="site-background" aria-hidden="true"/>
   <HomeOpening/>
   <div id="home-content"><Navigation/>
-  <section className="hero shell" aria-labelledby="home-heading">
-   <div className="home-hero-ornaments" aria-hidden="true">
-    <Image className="home-ornament home-ornament-butterfly" src="/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 31.PNG" alt="" width={180} height={180}/>
-    <Image className="home-ornament home-ornament-star" src="/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.PNG" alt="" width={110} height={110}/>
-    <Image className="home-ornament home-ornament-bow" src="/assets/objects/Portfolio Assets A.Halliwell  - 10.PNG" alt="" width={160} height={160}/>
+  <section className="hero shell home-hero" aria-labelledby="home-heading">
+   <div className="home-hero-copy">
+    <p className="home-hero-index">A. HALLIWELL STUDIO <span aria-hidden="true">✦</span> WEB DESIGN + DEVELOPMENT</p>
+    <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Before</span><span>the tour,</span><em>the feeling.</em></h1>
+    <p className="home-hero-description">I build websites for wedding venues and hospitality businesses that turn browsing into bookings.</p>
+    <div className="home-hero-actions"><a className="button button-primary" href="#start">START A PROJECT <span aria-hidden="true">↗</span></a><a className="home-hero-text-link" href="#work">EXPLORE THE WORK <span aria-hidden="true">↘</span></a></div>
+    <p className="home-hero-investment">CUSTOM SITES START AT $5,000 + SCOPE</p>
    </div>
-   <div className="eyebrow"><span className="status-dot"/>WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</div>
-   <div className="hero-title-wrap"><h1 id="home-heading" tabIndex={-1} className="hero-title"><span>Websites that</span><span>actually</span><em>do things.♥</em></h1><p className="hero-margin-note">PRETTY IS ONLY THE BEGINNING.</p></div>
-   <div className="hero-bottom"><p className="hero-description">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage. One-page projects start at $1,000 + scope. Custom multi-page websites start at $5,000 + scope.</p><div className="hero-actions"><a className="button button-primary" href="#start">START A PROJECT ↗</a><a className="button" href="#capabilities">TRY THE LAB ↘</a></div></div>
-   <div className="hero-specialty-note"><span>CURRENT SPECIALTY</span><strong>Hospitality + experience-driven businesses</strong><p>Specialty, not exclusivity. If your business needs the web to sell, book, organize, explain or automate, I want to hear about it.</p></div>
+   <div className="home-hero-art" aria-hidden="true">
+    <div className="home-art-frame"><span className="home-art-corner home-art-corner-top">AH / 01</span><span className="home-art-corner home-art-corner-bottom">DETROIT · EVERYWHERE</span></div>
+    <Image className="home-art-flower" src="/assets/decorations/florals/Portfolio Assets A.Halliwell  - 33.PNG" alt="" width={580} height={580} priority/>
+    <Image className="home-art-butterfly" src="/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 31.PNG" alt="" width={220} height={220}/>
+    <Image className="home-art-star" src="/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.PNG" alt="" width={98} height={98}/>
+    <p className="home-art-note">A beautiful place<br/><em>deserves a beautiful arrival.</em></p>
+   </div>
   </section>
   <div className="hero-strip"><div className="hero-strip-track">WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦ PORTALS ✦ INTERACTIVE TOOLS ✦ BUSINESS SYSTEMS ✦ SUPPORT ✦ WEB DESIGN ✦ DEVELOPMENT ✦ E-COMMERCE ✦ BOOKING ✦</div></div>
 
