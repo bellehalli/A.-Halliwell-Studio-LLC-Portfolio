@@ -96,7 +96,7 @@
 }
 .home-world .home-hero::before { content: none; }
 .home-art-stage {
-  position: relative; width: min(100%,177.865svh); aspect-ratio: 1366 / 768;
+  position: relative; width: min(100vw,177.865svh); max-width: 100%; aspect-ratio: 1366 / 768;
   background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center / 100% 100% no-repeat;
 }
 .home-hero-copy { position: absolute; z-index: 4; left: 8.5%; top: 26%; width: 36%; color: #2b1233; }
