@@ -182,6 +182,67 @@ vercel-live-feedback { display: none !important; }
 .home-world .studio-section {
   background: linear-gradient(rgba(252,249,255,.81),rgba(252,249,255,.81)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover;
 }
+/* Page three: the supplied rainbow composition frames the existing Work introduction. */
+.home-world .studio-world { padding-top: 0; }
+.home-world .intro-sheet {
+  width: 100%; min-height: 100svh; margin: 0; padding: 0;
+  display: grid; align-items: center; overflow: hidden; transform: none;
+  border: 0; box-shadow: none;
+  background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.PNG') center / cover no-repeat;
+}
+.home-world .intro-sheet .content-shell {
+  position: relative; z-index: 2; width: min(440px,34vw);
+  margin: 17vw 0 0 34%; padding: 0 0 50px;
+  color: #36142f; text-align: center;
+}
+.home-world .intro-sheet .section-kicker {
+  justify-content: center; flex-wrap: wrap; column-gap: 9px; row-gap: 2px;
+  color: #8c296c; font: 750 clamp(8px,.72vw,10px)/1.3 var(--font-sans),sans-serif;
+  letter-spacing: .11em;
+}
+.home-world .intro-sheet .section-kicker span + span::before { content: '✦'; margin-right: 9px; color: #dc4c9a; }
+.home-world .intro-sheet h2 {
+  margin: 17px 0 0; font: 800 clamp(34px,3.35vw,48px)/.94 var(--font-editorial),Georgia,serif;
+  letter-spacing: -.063em;
+}
+.home-world .intro-sheet h2 em {
+  color: #be2f81; font: italic 500 1.12em/.94 var(--font-fashion),Georgia,serif;
+  white-space: nowrap;
+}
+.home-world .intro-sheet .world-lede {
+  max-width: 440px; margin: 18px auto 0;
+  font: 500 clamp(13px,1.05vw,15px)/1.48 var(--font-sans),sans-serif;
+  text-wrap: pretty;
+}
+.work-intro-link {
+  width: max-content; margin: 17px auto 0; padding-bottom: 4px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid currentColor; color: #632251;
+  font: 800 10px/1 var(--font-sans),sans-serif; letter-spacing: .11em;
+  text-decoration: none; transition: color .2s ease,transform .2s ease;
+}
+.work-intro-link .glitter-cursor { width: 24px; height: 24px; }
+.work-intro-link:hover { color: #d52c86; transform: translateY(-3px); }
+.work-intro-link:focus-visible { outline: 3px solid #67277a; outline-offset: 5px; }
+@media (max-width: 920px) {
+  .home-world .intro-sheet { min-height: 670px; background-position: center top; background-size: auto 670px; }
+  .home-world .intro-sheet .content-shell { width: min(390px,47%); margin: 155px 0 0 31%; }
+  .home-world .intro-sheet h2 { font-size: clamp(29px,4vw,39px); }
+  .home-world .intro-sheet .world-lede { font-size: 13px; }
+}
+@media (max-width: 600px) {
+  .home-world .intro-sheet {
+    min-height: 0; align-items: start; padding: 0 0 72px;
+    background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.PNG') center top / 100% auto no-repeat;
+  }
+  .home-world .intro-sheet .content-shell {
+    width: min(100% - 50px,420px); margin: 0 auto; padding: 55vw 0 0;
+  }
+  .home-world .intro-sheet .section-kicker { font-size: 8px; }
+  .home-world .intro-sheet h2 { margin-top: 20px; font-size: clamp(38px,10.1vw,54px); }
+  .home-world .intro-sheet .world-lede { max-width: 380px; margin-top: 20px; font-size: 15px; line-height: 1.48; }
+  .work-intro-link { margin-top: 21px; }
+}
 @media (max-width: 920px) {
   .home-world #home-content > .site-nav { position: relative; width: 100%; margin: 0; border-radius: 0; }
   .home-world .home-hero { display: block; min-height: 56.223vw; background: #f8effb; }
