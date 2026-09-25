@@ -164,3 +164,158 @@
   .scene-props { display: none; }
   .site-background { background-size: 320px; }
 }
+/* =====================================================
+   OFFER WORLD — ART DIRECTION INTEGRATION FIX
+   Turns the section from "background + cards"
+   into an immersive A. Halliwell room.
+===================================================== */
+
+.offer-world {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-block: clamp(90px, 12vw, 150px);
+}
+
+/* soft light layer so the artwork feels like a room */
+.offer-world::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,255,255,.45),
+      transparent 45%
+    );
+  pointer-events: none;
+}
+
+
+/* content becomes a floating paper object */
+.offer-world .content-shell {
+  position: relative;
+  z-index: 3;
+
+  padding:
+    clamp(32px, 5vw, 70px);
+
+  background:
+    rgba(255,250,245,.76);
+
+  backdrop-filter:
+    blur(16px);
+
+  border:
+    1px solid rgba(16,13,16,.12);
+
+  box-shadow:
+    0 35px 90px rgba(60,25,45,.16);
+}
+
+
+/* offer cards become physical objects */
+.offer-grid {
+  position: relative;
+  z-index: 3;
+}
+
+
+.offer-grid article {
+  position: relative;
+
+  background:
+    rgba(255,252,249,.84);
+
+  backdrop-filter:
+    blur(12px);
+
+  box-shadow:
+    0 25px 60px rgba(60,20,50,.14);
+
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+}
+
+
+/* scrapbook/editorial layering */
+.offer-grid article:nth-child(1) {
+  transform: rotate(-1.2deg);
+}
+
+.offer-grid article:nth-child(2) {
+  transform: rotate(.8deg);
+}
+
+.offer-grid article:nth-child(3) {
+  transform: rotate(-.5deg);
+}
+
+
+.offer-grid article:hover {
+  transform:
+    translateY(-8px)
+    rotate(0deg);
+
+  box-shadow:
+    0 35px 85px rgba(60,20,50,.2);
+}
+
+
+/* keep decorative objects above the room */
+.offer-world .scene-props {
+  z-index: 5;
+}
+
+
+/* add depth behind the room */
+.offer-world .offer-heading,
+.offer-world .offer-grid {
+  position: relative;
+}
+
+
+/* subtle floating feeling for props */
+.offer-world .scene-prop {
+  animation:
+    ahsFloat 6s ease-in-out infinite;
+}
+
+
+.offer-world .scene-prop:nth-child(2) {
+  animation-delay: -2s;
+}
+
+
+.offer-world .scene-prop:nth-child(3) {
+  animation-delay: -4s;
+}
+
+
+@keyframes ahsFloat {
+
+  0%,100% {
+    transform:
+      translateY(0)
+      rotate(0deg);
+  }
+
+  50% {
+    transform:
+      translateY(-14px)
+      rotate(4deg);
+  }
+
+}
+
+
+/* accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+  .offer-world .scene-prop {
+    animation: none;
+  }
+
+}
