@@ -443,7 +443,8 @@ vercel-live-feedback { display: none !important; }
   .home-hero-specialty p:first-child { display: grid; gap: 7px; }
 }
 
-/* The following three art scenes carry the existing proof, investment and Lab content. */
+/* Art and content occupy the same stage. The source images fade into the
+   section color while the real headings, links and controls sit inside them. */
 .home-world .proof-world,
 .home-world .offer-world,
 .home-world .lab-world {
@@ -451,71 +452,94 @@ vercel-live-feedback { display: none !important; }
   border: 0; box-shadow: none; overflow: hidden;
 }
 .home-world .proof-world {
-  padding: clamp(390px,43vw,600px) 24px clamp(70px,8vw,110px);
+  padding: clamp(48px,5vw,80px) 24px clamp(70px,8vw,110px);
   background: #f8b9e0;
 }
 .home-world .proof-world::before,
 .home-world .offer-world::before,
 .home-world .lab-world::before {
   content: ''; position: absolute; z-index: -1; inset: 0 0 auto;
-  height: min(56.22vw,768px); min-height: 390px;
-  background-position: center top; background-size: cover; background-repeat: no-repeat;
+  height: clamp(660px,70vw,980px);
+  background-position: center top; background-size: 100% auto; background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(#000 0%,#000 64%,transparent 100%);
+  mask-image: linear-gradient(#000 0%,#000 64%,transparent 100%);
   pointer-events: none;
 }
 .home-world .proof-world::before { background-image: url('/assets/art-direction/A. Halliwell Studio Website Design  - 7.PNG'); }
 .home-world .proof-world .content-shell {
-  width: min(1190px,100%); padding: clamp(34px,5vw,76px);
-  background: #fffaf5; border: 1px solid #38163a;
-  box-shadow: 15px 17px 0 rgba(66,16,61,.23);
+  width: min(1190px,100%); padding: 0; background: transparent;
+  border: 0; box-shadow: none;
 }
-.home-world .proof-world .section-kicker { color: #931360; }
-.home-world .proof-world h2 { margin-top: 24px; color: #32102e; }
+.home-world .proof-world .section-kicker { color: #531449; }
+.home-world .proof-world .section-kicker span { padding: 6px 9px; background: rgba(255,246,251,.87); }
+.home-world .proof-world .proof-heading {
+  display: block; width: min(610px,52%); margin-top: clamp(60px,7vw,110px);
+  padding: clamp(22px,3vw,42px); background: rgba(255,250,248,.94);
+  border: 1px solid #52204f; box-shadow: 9px 11px 0 rgba(85,13,79,.22);
+  transform: rotate(-1.3deg);
+}
+.home-world .proof-world h2 { margin: 0; color: #32102e; font-size: clamp(55px,6.5vw,88px); }
 .home-world .proof-world h2 em { color: #eb008b; }
-.home-world .proof-world .proof-grid { margin-top: clamp(34px,4vw,56px); border: 0; gap: 13px; }
+.home-world .proof-world .proof-heading > p { margin: 22px 0 0; font-size: clamp(15px,1.25vw,18px); }
+.home-world .proof-world .proof-grid { margin-top: clamp(160px,17vw,250px); border: 0; gap: 14px; }
 .home-world .proof-world .proof-grid article {
   min-height: 310px; padding: clamp(24px,2.8vw,38px);
   border: 1px solid #482448; background: #fff;
-  box-shadow: 6px 7px 0 #f3acd7;
+  box-shadow: 6px 7px 0 #df78b9;
 }
 .home-world .proof-world .proof-grid article:nth-child(2) { background: #fff1f9; }
 .home-world .proof-world .proof-grid article:nth-child(3) { background: #f8eeff; }
 .home-world .proof-world .proof-grid h3 { margin-top: 42px; }
+.home-world .proof-world .proof-disclosure { max-width: 100%; padding: 8px 12px; background: rgba(255,249,249,.7); }
 
 .home-world .offer-world {
-  padding: clamp(360px,41vw,560px) 24px clamp(70px,8vw,110px);
+  padding: clamp(46px,5vw,76px) 24px clamp(70px,8vw,110px);
   background: #f3d7e5;
 }
 .home-world .offer-world::before { background-image: url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG'); }
 .home-world .offer-world .content-shell {
-  width: min(1190px,100%); padding: clamp(34px,5vw,76px);
-  border: 1px solid rgba(110,55,83,.55); background: rgba(255,249,246,.96);
-  box-shadow: 16px 18px 0 rgba(201,121,158,.26);
+  width: min(1190px,100%); padding: 0; border: 0; background: transparent; box-shadow: none;
 }
-.home-world .offer-world .section-kicker { color: #8d4565; }
-.home-world .offer-world h2 { margin-top: 24px; }
+.home-world .offer-world .section-kicker { color: #713454; }
+.home-world .offer-world .section-kicker span { padding: 6px 9px; background: rgba(255,249,250,.82); }
+.home-world .offer-world .offer-heading {
+  display: block; width: min(600px,55%); margin: clamp(70px,9vw,130px) 0 0 8%;
+  padding: clamp(22px,3vw,42px); background: rgba(255,249,245,.9);
+  border: 1px solid rgba(131,74,93,.6); box-shadow: 8px 10px 0 rgba(177,94,135,.18);
+  transform: rotate(-2deg);
+}
+.home-world .offer-world h2 { margin: 0; font-size: clamp(49px,5.8vw,79px); }
 .home-world .offer-world h2 em { color: #ad4c81; }
-.home-world .offer-world .offer-grid { gap: 12px; margin-top: clamp(36px,5vw,70px); border: 0; }
+.home-world .offer-world .offer-heading > p { margin: 22px 0 0; font-size: clamp(15px,1.25vw,18px); }
+.home-world .offer-world .offer-grid { gap: 12px; margin-top: clamp(125px,14vw,210px); border: 0; }
 .home-world .offer-world .offer-grid article {
   min-height: 340px; border: 1px solid rgba(98,44,74,.55);
-  background: #fffaf8; box-shadow: 6px 7px 0 rgba(208,126,169,.25);
+  background: rgba(255,250,248,.96); box-shadow: 6px 7px 0 rgba(208,126,169,.35);
 }
-.home-world .offer-world .offer-grid article:nth-child(2) { background: #fff0fa; }
-.home-world .offer-world .offer-grid article:nth-child(3) { background: #f8f0ff; }
+.home-world .offer-world .offer-grid article:nth-child(2) { background: rgba(255,240,250,.96); }
+.home-world .offer-world .offer-grid article:nth-child(3) { background: rgba(248,240,255,.96); }
 .home-world .offer-world .offer-grid article > strong { font-size: 10px; line-height: 1.4; }
 
 .home-world .lab-world {
-  padding: clamp(400px,43vw,600px) 24px clamp(70px,8vw,110px);
+  padding: clamp(52px,6vw,88px) 24px clamp(70px,8vw,110px);
   background: #d8d4ff;
 }
 .home-world .lab-world::before { background-image: url('/assets/art-direction/A. Halliwell Studio Website Design  - 8.PNG'); }
 .home-world .lab-world .ahs-lab {
-  width: min(1190px,100%); margin: 0 auto; padding: clamp(38px,5vw,76px) 0;
-  transform: none; border: 1px solid #37253e; background: #faf7ff;
-  box-shadow: 16px 18px 0 rgba(62,46,133,.2);
+  width: min(1190px,100%); margin: 0 auto; padding: 0;
+  transform: none; border: 0; background: transparent; box-shadow: none;
 }
-.home-world .lab-world .ahs-lab .content-shell { width: min(100% - 70px,1060px); }
-.home-world .lab-world .ahs-lab h2 { margin-top: 24px; }
+.home-world .lab-world .ahs-lab .content-shell { width: 100%; }
+.home-world .lab-world .ahs-lab-head {
+  display: block; width: min(640px,55%); margin-top: clamp(65px,8vw,115px);
+  padding: clamp(22px,3vw,40px); background: rgba(250,248,255,.91);
+  border: 1px solid #593461; box-shadow: 9px 11px 0 rgba(110,81,162,.22);
+  transform: rotate(1.5deg);
+}
+.home-world .lab-world .ahs-lab h2 { margin: 20px 0 0; font-size: clamp(48px,5.7vw,78px); }
 .home-world .lab-world .ahs-lab h2 em { color: #872daf; }
+.home-world .lab-world .ahs-lab-head p { margin: 24px 0 0; font-size: clamp(15px,1.3vw,18px); }
+.home-world .lab-world .ahs-lab-grid { margin-top: clamp(145px,18vw,260px); }
 .home-world .lab-world .ahs-job-list { background: #f2eaff; }
 .home-world .lab-world .ahs-demo-shell { background: white; box-shadow: 9px 11px 0 rgba(144,96,180,.24); }
 .home-world .lab-world .ahs-job-list > button:hover,
@@ -525,6 +549,9 @@ vercel-live-feedback { display: none !important; }
   .home-world .proof-world,
   .home-world .offer-world,
   .home-world .lab-world { padding-inline: 16px; }
+  .home-world .proof-world .proof-heading,
+  .home-world .offer-world .offer-heading,
+  .home-world .lab-world .ahs-lab-head { width: min(620px,70%); }
   .home-world .proof-world .proof-grid,
   .home-world .offer-world .offer-grid { grid-template-columns: 1fr; }
   .home-world .proof-world .proof-grid article,
@@ -533,12 +560,21 @@ vercel-live-feedback { display: none !important; }
 @media (max-width: 600px) {
   .home-world .proof-world,
   .home-world .offer-world,
-  .home-world .lab-world { padding: 62vw 12px 56px; }
+  .home-world .lab-world { padding: 22vw 12px 56px; }
   .home-world .proof-world::before,
   .home-world .offer-world::before,
-  .home-world .lab-world::before { height: 74vw; min-height: 0; background-size: auto 100%; }
-  .home-world .proof-world .content-shell,
-  .home-world .offer-world .content-shell { padding: 30px 20px; box-shadow: 7px 9px 0 rgba(74,29,73,.2); }
+  .home-world .lab-world::before { height: 115vw; min-height: 0; background-size: auto 100%; }
+  .home-world .proof-world .section-kicker,
+  .home-world .offer-world .section-kicker { flex-wrap: wrap; gap: 5px; }
+  .home-world .proof-world .proof-heading,
+  .home-world .offer-world .offer-heading,
+  .home-world .lab-world .ahs-lab-head {
+    width: 100%; margin: 22vw 0 0; padding: 27px 23px;
+    transform: rotate(-.7deg); box-shadow: 6px 7px 0 rgba(74,29,73,.2);
+  }
+  .home-world .proof-world .proof-grid,
+  .home-world .offer-world .offer-grid,
+  .home-world .lab-world .ahs-lab-grid { margin-top: 22vw; }
   .home-world .proof-world .proof-heading,
   .home-world .offer-world .offer-heading { display: block; }
   .home-world .proof-world .proof-heading > p,
@@ -546,6 +582,6 @@ vercel-live-feedback { display: none !important; }
   .home-world .proof-world h2,
   .home-world .offer-world h2 { font-size: clamp(44px,12vw,68px); }
   .home-world .proof-world .proof-grid h3 { margin-top: 25px; }
-  .home-world .lab-world .ahs-lab { box-shadow: 7px 9px 0 rgba(62,46,133,.2); }
-  .home-world .lab-world .ahs-lab .content-shell { width: calc(100% - 40px); }
+  .home-world .lab-world .ahs-lab h2 { font-size: clamp(43px,11vw,65px); }
+  .home-world .lab-world .ahs-lab-head p { font-size: 16px; }
 }
