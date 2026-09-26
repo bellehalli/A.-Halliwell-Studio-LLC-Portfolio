@@ -443,145 +443,214 @@ vercel-live-feedback { display: none !important; }
   .home-hero-specialty p:first-child { display: grid; gap: 7px; }
 }
 
-/* Art and content occupy the same stage. The source images fade into the
-   section color while the real headings, links and controls sit inside them. */
-.home-world .proof-world,
-.home-world .offer-world,
-.home-world .lab-world {
-  position: relative; isolation: isolate; width: 100%; margin: 0; transform: none;
-  border: 0; box-shadow: none; overflow: hidden;
-}
-.home-world .proof-world {
-  padding: clamp(48px,5vw,80px) 24px clamp(70px,8vw,110px);
-  background: #f8b9e0;
+/* The Canva images are reference compositions; these sections use separate
+   studio assets, CSS surfaces, and their original live HTML content. */
+.home-world .proof-world,.home-world .offer-world,.home-world .lab-world {
+  position: relative; isolation: isolate; width: 100%; margin: 0;
+  border: 0; box-shadow: none; overflow: hidden; transform: none;
 }
 .home-world .proof-world::before,
 .home-world .offer-world::before,
-.home-world .lab-world::before {
-  content: ''; position: absolute; z-index: -1; inset: 0 0 auto;
-  height: clamp(660px,70vw,980px);
-  background-position: center top; background-size: 100% auto; background-repeat: no-repeat;
-  -webkit-mask-image: linear-gradient(#000 0%,#000 43%,transparent 78%);
-  mask-image: linear-gradient(#000 0%,#000 43%,transparent 78%);
-  pointer-events: none;
+.home-world .lab-world::before { content: none; }
+.home-world .composition-art { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.home-world .composition-piece { position: absolute; display: block; background-repeat: no-repeat; }
+.home-world .proof-world,
+.home-world .offer-world,
+.home-world .lab-world { padding: clamp(50px,5vw,78px) 24px clamp(70px,7vw,105px); }
+
+/* 07 — checkerboard, a masked halftone star, and independent florals. */
+.home-world .proof-world {
+  background-color: #ffbce5;
+  background-image: linear-gradient(to bottom,transparent 0%,transparent 46%,#f5c4e5 77%),
+    conic-gradient(from 90deg,#e60091 25%,#ffc0e8 0 50%,#e60091 0 75%,#ffc0e8 0);
+  background-size: 100% 100%,clamp(120px,13vw,190px) clamp(120px,13vw,190px);
 }
-.home-world .proof-world::before { background-image: url('/assets/art-direction/A. Halliwell Studio Website Design  - 7.PNG'); }
-.home-world .proof-world .content-shell {
-  width: min(1190px,100%); padding: 0; background: transparent;
-  border: 0; box-shadow: none;
+.home-world .composition-proof .piece-star {
+  top: 2%; left: 50%; width: min(76vw,980px); aspect-ratio: 1;
+  transform: translateX(-50%) rotate(-7deg); background: #fffafd;
+  -webkit-mask: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 111.PNG') center / contain no-repeat;
+  mask: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 111.PNG') center / contain no-repeat;
+  filter: drop-shadow(0 18px 0 rgba(88,14,75,.12));
 }
-.home-world .proof-world .section-kicker { color: #531449; }
-.home-world .proof-world .section-kicker span { padding: 6px 9px; background: rgba(255,246,251,.87); }
+.home-world .composition-proof .piece-star::after {
+  content: ''; position: absolute; inset: 0; opacity: .63;
+  background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 56.PNG') center / cover;
+}
+.home-world .composition-proof .piece-butterfly-one {
+  top: 2%; right: -3%; width: clamp(210px,28vw,400px); aspect-ratio: 1;
+  background: url('/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 54.PNG') center / contain;
+  transform: rotate(14deg); animation: ahs-float 8s ease-in-out infinite;
+}
+.home-world .composition-proof .piece-butterfly-two {
+  top: 33%; right: 1%; width: clamp(125px,18vw,260px); aspect-ratio: 1;
+  background: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 106.PNG') center / 205% no-repeat;
+  transform: rotate(-20deg);
+}
+.home-world .composition-proof .piece-flower-one {
+  bottom: 16%; left: -5%; width: clamp(170px,25vw,350px); aspect-ratio: 1;
+  background: url('/assets/decorations/florals/Portfolio Assets A.Halliwell  - 65.PNG') center / contain;
+}
+.home-world .composition-proof .piece-flower-two {
+  top: 42%; right: 0; width: clamp(130px,19vw,270px); aspect-ratio: 1;
+  background: url('/assets/decorations/florals/Portfolio Assets A.Halliwell  - 33.PNG') center / contain;
+}
+.home-world .composition-proof .piece-clip {
+  top: 1%; left: -2%; width: 110px; height: 130px; transform: rotate(-22deg);
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 28.PNG') center / contain;
+}
+.home-world .proof-world .content-shell { position: relative; z-index: 2; }
+.home-world .proof-world .section-kicker { color: #45113d; }
+.home-world .proof-world .section-kicker span { background: rgba(255,248,253,.82); }
 .home-world .proof-world .proof-heading {
-  display: block; width: min(610px,52%); margin-top: clamp(60px,7vw,110px);
-  padding: clamp(22px,3vw,42px); background: rgba(255,250,248,.94);
-  border: 1px solid #52204f; box-shadow: 9px 11px 0 rgba(85,13,79,.22);
-  transform: rotate(-1.3deg);
+  width: min(700px,73%); margin: clamp(102px,11vw,155px) auto 0;
+  padding: 0; border: 0; background: none; box-shadow: none; transform: none;
+  text-align: center;
 }
-.home-world .proof-world h2 { margin: 0; color: #32102e; font-size: clamp(55px,6.5vw,88px); }
-.home-world .proof-world h2 em { color: #eb008b; }
-.home-world .proof-world .proof-heading > p { margin: 22px 0 0; font-size: clamp(15px,1.25vw,18px); }
-.home-world .proof-world .proof-grid { margin-top: clamp(160px,17vw,250px); border: 0; gap: 14px; }
-.home-world .proof-world .proof-grid article {
-  min-height: 310px; padding: clamp(24px,2.8vw,38px);
-  border: 1px solid #482448; background: #fff;
-  box-shadow: 6px 7px 0 #df78b9;
+.home-world .proof-world h2 { font-size: clamp(60px,7vw,105px); line-height: .88; text-shadow: 0 1px 15px #fff,0 1px 15px #fff; }
+.home-world .proof-world h2 em { color: #cd1483; }
+.home-world .proof-world .proof-heading > p {
+  width: min(490px,100%); margin: 24px auto 0; padding: 8px;
+  color: #371b34; background: rgba(255,250,253,.68); line-height: 1.5;
 }
-.home-world .proof-world .proof-grid article:nth-child(2) { background: #fff1f9; }
-.home-world .proof-world .proof-grid article:nth-child(3) { background: #f8eeff; }
-.home-world .proof-world .proof-grid h3 { margin-top: 42px; }
-.home-world .proof-world .proof-disclosure { max-width: 100%; padding: 8px 12px; background: rgba(255,249,249,.7); }
+.home-world .proof-world .proof-grid { position: relative; z-index: 2; margin-top: clamp(170px,19vw,270px); }
+.home-world .proof-world .proof-grid article { background: rgba(255,251,253,.97); }
+.home-world .proof-world .proof-grid article:nth-child(2) { background: rgba(255,239,249,.97); }
+.home-world .proof-world .proof-grid article:nth-child(3) { background: rgba(247,237,255,.97); }
 
+/* 09 — real offer details typeset as an invoice on the glitter ground. */
 .home-world .offer-world {
-  padding: clamp(46px,5vw,76px) 24px clamp(70px,8vw,110px);
-  background: radial-gradient(ellipse at 80% 35%,#ffeaf2,#f3d7e5 70%);
+  background: #f6d4e7 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center / cover;
 }
-.home-world .offer-world::before { background-image: url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG'); }
-.home-world .offer-world .content-shell {
-  width: min(1190px,100%); padding: 0; border: 0; background: transparent; box-shadow: none;
+.home-world .offer-world .content-shell { position: relative; z-index: 2; }
+.home-world .offer-world .section-kicker { margin-bottom: 32px; }
+.home-world .offer-receipt {
+  width: min(900px,78%); margin: 0 0 0 5%; padding: clamp(34px,5vw,72px);
+  color: #5b3447; border: 1px solid rgba(142,83,115,.46);
+  background: linear-gradient(150deg,rgba(255,249,246,.98),rgba(255,232,238,.96));
+  box-shadow: 22px 28px 55px rgba(107,38,76,.22),9px 12px 0 rgba(255,255,255,.45);
+  transform: rotate(-2deg); position: relative;
 }
-.home-world .offer-world .section-kicker { color: #713454; }
-.home-world .offer-world .section-kicker span { padding: 6px 9px; background: rgba(255,249,250,.82); }
-.home-world .offer-world .offer-heading {
-  display: block; width: min(490px,44%); margin: clamp(92px,10vw,150px) 0 0 1%;
-  padding: clamp(22px,2.7vw,36px); background: rgba(255,249,245,.87);
-  border: 1px solid rgba(131,74,93,.47); box-shadow: 7px 9px 0 rgba(177,94,135,.14);
-  transform: rotate(-1deg);
+.home-world .offer-receipt::before {
+  content: ''; position: absolute; inset: 14px; border: 1px solid rgba(153,79,119,.28); pointer-events: none;
 }
-.home-world .offer-world h2 { margin: 0; font-size: clamp(45px,5.15vw,70px); }
-.home-world .offer-world h2 em { color: #ad4c81; }
-.home-world .offer-world .offer-heading > p { margin: 22px 0 0; font-size: clamp(15px,1.25vw,18px); }
-.home-world .offer-world .offer-grid { gap: 12px; margin-top: clamp(55px,6vw,90px); border: 0; }
-.home-world .offer-world .offer-grid article {
-  min-height: 340px; border: 1px solid rgba(98,44,74,.55);
-  background: rgba(255,250,248,.96); box-shadow: 6px 7px 0 rgba(208,126,169,.35);
+.home-world .receipt-masthead { display: flex; align-items: center; gap: 16px; padding-bottom: 24px; border-bottom: 1px solid #bb839e; }
+.home-world .receipt-masthead .receipt-monogram { font: italic 600 45px/.8 var(--font-fashion),Georgia,serif; }
+.home-world .receipt-masthead > span:nth-child(2) { font: 700 11px/1.3 var(--font-sans),sans-serif; letter-spacing: .22em; }
+.home-world .receipt-masthead small { margin-left: auto; font: 700 9px var(--font-mono),monospace; letter-spacing: .14em; }
+.home-world .offer-world .offer-heading { width: 100%; margin: 36px 0; padding: 0; border: 0; background: transparent; box-shadow: none; transform: none; }
+.home-world .offer-world h2 { font-size: clamp(48px,5vw,73px); line-height: .94; }
+.home-world .offer-world h2 em { color: #b42f79; }
+.home-world .offer-world .offer-heading > p { max-width: 610px; margin: 18px 0 0; }
+.home-world .receipt-columns { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid #bd89a1; border-bottom: 1px solid #bd89a1; font: 700 9px var(--font-mono),monospace; letter-spacing: .16em; }
+.home-world .offer-world .offer-grid { display: block; margin: 0; }
+.home-world .offer-world .offer-grid article,
+.home-world .offer-world .offer-grid article:nth-child(2),
+.home-world .offer-world .offer-grid article:nth-child(3) {
+  display: grid; grid-template-columns: 112px minmax(0,1fr) 160px; gap: 6px 18px;
+  min-height: 0; margin: 0; padding: 27px 0;
+  border: 0; border-bottom: 1px solid rgba(166,100,132,.37);
+  background: none; box-shadow: none;
 }
-.home-world .offer-world .offer-grid article:nth-child(2) { background: rgba(255,240,250,.96); }
-.home-world .offer-world .offer-grid article:nth-child(3) { background: rgba(248,240,255,.96); }
-.home-world .offer-world .offer-grid article > strong { font-size: 10px; line-height: 1.4; }
+.home-world .offer-world .offer-grid article::before,
+.home-world .offer-world .offer-grid article::after { content: none; }
+.home-world .offer-world .offer-grid small { align-self: start; padding-top: 7px; font-size: 8px; }
+.home-world .offer-world .offer-grid h3 { grid-column: 2; margin: 0; font-size: clamp(27px,2.5vw,38px); }
+.home-world .offer-world .offer-grid article > strong { grid-column: 3; justify-self: end; align-self: start; padding: 7px 0; border: 0; background: none; font-size: 10px; text-align: right; }
+.home-world .offer-world .offer-grid p { grid-column: 2 / 4; max-width: 600px; margin: 0; font-size: 13px; line-height: 1.5; }
+.home-world .receipt-signoff { display: flex; justify-content: space-between; gap: 14px; margin-top: 36px; font: italic 24px var(--font-fashion),Georgia,serif; }
+.home-world .receipt-signoff span { color: #c84c92; }
+.home-world .composition-offer .piece-diamond-heart {
+  top: 0; right: 0; width: min(29vw,380px); aspect-ratio: 1;
+  background: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 88.PNG') center / 250%;
+  transform: rotate(12deg); filter: drop-shadow(0 15px 20px rgba(140,63,97,.18));
+}
+.home-world .composition-offer .piece-foil-card {
+  right: -3%; top: 39%; width: min(39vw,560px); aspect-ratio: 1.56; border-radius: 26px;
+  border: 2px solid rgba(255,255,255,.9);
+  background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 52.PNG') center / cover;
+  transform: rotate(13deg); box-shadow: 12px 26px 36px rgba(119,45,88,.26),inset 0 0 24px #fff;
+}
+.home-world .composition-offer .piece-foil-card::before { content: 'AHS'; position: absolute; left: 11%; top: 20%; color: #9e477e; font: italic 600 clamp(36px,5vw,72px) var(--font-fashion),Georgia,serif; text-shadow: 0 1px 6px #fff; }
+.home-world .composition-offer .piece-foil-card::after { content: '✦'; position: absolute; right: 11%; bottom: 12%; color: #aa4e8d; font-size: 36px; }
+.home-world .composition-offer .piece-pearl-chain { top: -14%; left: 29%; width: min(65vw,850px); aspect-ratio: 1.7; background: url('/assets/objects/Portfolio Assets A.Halliwell  - 99.PNG') center / contain; transform: rotate(-9deg); }
+.home-world .composition-offer .piece-glint-one,
+.home-world .composition-offer .piece-glint-two { width: 160px; aspect-ratio: 1; background: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.PNG') center / contain; }
+.home-world .composition-offer .piece-glint-one { top: 24%; left: -4%; }
+.home-world .composition-offer .piece-glint-two { bottom: 4%; right: 5%; width: 100px; }
 
+/* 08 — the original disc, computer, folder and cursor assembled around the live demo. */
 .home-world .lab-world {
-  padding: clamp(52px,6vw,88px) 24px clamp(70px,8vw,110px);
-  background: radial-gradient(ellipse at 70% 40%,#fce9f7,#d8d4ff 72%);
+  background: linear-gradient(rgba(253,248,255,.24),rgba(225,209,255,.52)),
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 52.PNG') center / cover;
 }
-.home-world .lab-world::before { background-image: url('/assets/art-direction/A. Halliwell Studio Website Design  - 8.PNG'); }
+.home-world .composition-lab .piece-disc {
+  top: -3%; left: 42%; width: min(56vw,750px); aspect-ratio: 1;
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 105.PNG') center / contain;
+  animation: ahs-disc-breathe 12s ease-in-out infinite;
+}
+.home-world .composition-lab .piece-folder { top: 1%; right: 0; width: clamp(140px,18vw,270px); aspect-ratio: 1; background: url('/assets/ui/Portfolio Assets A.Halliwell  - 102.PNG') center / contain; transform: rotate(12deg); }
+.home-world .composition-lab .piece-laptop { top: 31%; left: -3%; width: clamp(165px,22vw,330px); aspect-ratio: 1; background: url('/assets/objects/Portfolio Assets A.Halliwell  - 101.PNG') center / contain; transform: rotate(-12deg); }
+.home-world .composition-lab .piece-cursor { top: 36%; right: 1%; width: clamp(120px,17vw,250px); aspect-ratio: 1; background: url('/assets/ui/Portfolio Assets A.Halliwell  - 103.PNG') center / contain; transform: rotate(-15deg); }
+.home-world .composition-lab .piece-chrome-star { top: 1%; left: 0; width: 140px; aspect-ratio: 1; background: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 18.PNG') center / contain; }
+.home-world .composition-lab .piece-music-window { bottom: 0; right: -5%; width: 290px; aspect-ratio: 1; opacity: .33; background: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 123.PNG') center / 180%; }
 .home-world .lab-world .ahs-lab {
-  width: min(1190px,100%); margin: 0 auto; padding: 0;
-  transform: none; border: 0; background: transparent; box-shadow: none;
+  position: relative; z-index: 2; width: min(1190px,100%); margin: 0 auto;
+  padding: 0; border: 0; background: transparent; box-shadow: none; transform: none;
 }
 .home-world .lab-world .ahs-lab .content-shell { width: 100%; }
 .home-world .lab-world .ahs-lab-head {
-  display: block; width: min(640px,55%); margin-top: clamp(65px,8vw,115px);
-  padding: clamp(22px,3vw,40px); background: rgba(250,248,255,.91);
-  border: 1px solid #593461; box-shadow: 9px 11px 0 rgba(110,81,162,.22);
-  transform: rotate(1.5deg);
+  width: min(600px,52%); margin: clamp(65px,8vw,110px) 0 0;
+  padding: 25px 30px; background: rgba(255,252,255,.76);
+  border: 0; box-shadow: none; transform: none;
 }
-.home-world .lab-world .ahs-lab h2 { margin: 20px 0 0; font-size: clamp(48px,5.7vw,78px); }
-.home-world .lab-world .ahs-lab h2 em { color: #872daf; }
-.home-world .lab-world .ahs-lab-head p { margin: 24px 0 0; font-size: clamp(15px,1.3vw,18px); }
-.home-world .lab-world .ahs-lab-grid { margin-top: clamp(28px,4vw,60px); }
-.home-world .lab-world .ahs-job-list { background: #f2eaff; }
-.home-world .lab-world .ahs-demo-shell { background: white; box-shadow: 9px 11px 0 rgba(144,96,180,.24); }
-.home-world .lab-world .ahs-job-list > button:hover,
-.home-world .lab-world .ahs-job-list > button:focus-visible { background: #e6d7f6; }
+.home-world .lab-world .ahs-lab h2 { font-size: clamp(49px,5vw,76px); }
+.home-world .lab-world .ahs-lab-grid { margin-top: clamp(100px,11vw,165px); }
+.home-world .lab-world .ahs-job-list { background: rgba(249,243,255,.94); }
+.home-world .lab-world .ahs-demo-shell { background: #fff; }
+@keyframes ahs-float { 50% { translate: 0 -12px; } }
+@keyframes ahs-disc-breathe { 50% { scale: 1.035; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-world .composition-piece { animation: none !important; }
+}
 
 @media (max-width: 900px) {
-  .home-world .proof-world,
-  .home-world .offer-world,
-  .home-world .lab-world { padding-inline: 16px; }
-  .home-world .proof-world .proof-heading,
-  .home-world .offer-world .offer-heading,
-  .home-world .lab-world .ahs-lab-head { width: min(620px,70%); }
-  .home-world .proof-world .proof-grid,
-  .home-world .offer-world .offer-grid { grid-template-columns: 1fr; }
-  .home-world .proof-world .proof-grid article,
-  .home-world .offer-world .offer-grid article { min-height: 0; }
+  .home-world .proof-world .proof-heading { width: min(680px,88%); }
+  .home-world .offer-receipt { width: min(760px,90%); margin-left: 0; }
+  .home-world .offer-world .offer-grid article { grid-template-columns: 90px minmax(0,1fr) 130px; }
+  .home-world .lab-world .ahs-lab-head { width: min(590px,68%); }
 }
 @media (max-width: 600px) {
-  .home-world .proof-world,
-  .home-world .offer-world,
-  .home-world .lab-world { padding: 22vw 12px 56px; }
-  .home-world .proof-world::before,
-  .home-world .offer-world::before,
-  .home-world .lab-world::before { height: 115vw; min-height: 0; background-size: auto 100%; }
-  .home-world .proof-world .section-kicker,
-  .home-world .offer-world .section-kicker { flex-wrap: wrap; gap: 5px; }
-  .home-world .proof-world .proof-heading,
-  .home-world .offer-world .offer-heading,
-  .home-world .lab-world .ahs-lab-head {
-    width: 100%; margin: 22vw 0 0; padding: 27px 23px;
-    transform: rotate(-.7deg); box-shadow: 6px 7px 0 rgba(74,29,73,.2);
-  }
-  .home-world .proof-world .proof-grid,
-  .home-world .offer-world .offer-grid,
-  .home-world .lab-world .ahs-lab-grid { margin-top: 24px; }
-  .home-world .proof-world .proof-heading,
-  .home-world .offer-world .offer-heading { display: block; }
-  .home-world .proof-world .proof-heading > p,
-  .home-world .offer-world .offer-heading > p { margin-top: 22px; font-size: 16px; }
-  .home-world .proof-world h2,
-  .home-world .offer-world h2 { font-size: clamp(44px,12vw,68px); }
-  .home-world .proof-world .proof-grid h3 { margin-top: 25px; }
-  .home-world .lab-world .ahs-lab h2 { font-size: clamp(43px,11vw,65px); }
-  .home-world .lab-world .ahs-lab-head p { font-size: 16px; }
+  .home-world .proof-world,.home-world .offer-world,.home-world .lab-world { padding: 36px 12px 56px; }
+  .home-world .proof-world { background-size: 100% 100%,90px 90px; }
+  .home-world .composition-proof .piece-star { width: 125vw; top: 6%; }
+  .home-world .composition-proof .piece-butterfly-one { width: 130px; top: 2%; right: -8%; }
+  .home-world .composition-proof .piece-butterfly-two { width: 130px; top: 36%; right: -10%; }
+  .home-world .composition-proof .piece-flower-one { bottom: 29%; width: 140px; }
+  .home-world .composition-proof .piece-flower-two { display: none; }
+  .home-world .proof-world .proof-heading { width: 100%; margin: 85px auto 0; padding: 0 12px; text-align: center; border: 0; background: none; box-shadow: none; transform: none; }
+  .home-world .proof-world h2 { font-size: clamp(48px,12vw,72px); }
+  .home-world .proof-world .proof-heading > p { margin-top: 18px; font-size: 15px; }
+  .home-world .proof-world .proof-grid { margin-top: 130px; }
+  .home-world .offer-receipt { width: 100%; padding: 28px 20px; margin: 0; transform: rotate(-.5deg); }
+  .home-world .receipt-masthead { gap: 8px; }
+  .home-world .receipt-masthead small { font-size: 7px; text-align: right; }
+  .home-world .offer-world .offer-heading { margin: 30px 0; padding: 0; }
+  .home-world .offer-world h2 { font-size: clamp(41px,10vw,62px); }
+  .home-world .offer-world .offer-grid { margin: 0; }
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3) { display: block; padding: 20px 0; }
+  .home-world .offer-world .offer-grid small,.home-world .offer-world .offer-grid h3,.home-world .offer-world .offer-grid article > strong,.home-world .offer-world .offer-grid p { display: block; text-align: left; }
+  .home-world .offer-world .offer-grid h3 { margin: 8px 0; font-size: 31px; }
+  .home-world .offer-world .offer-grid article > strong { margin: 0 0 9px; padding: 0; }
+  .home-world .composition-offer .piece-foil-card { width: 55vw; top: 8%; right: -18%; opacity: .55; }
+  .home-world .composition-offer .piece-diamond-heart { width: 160px; top: 2%; right: -16%; }
+  .home-world .composition-offer .piece-pearl-chain { width: 330px; top: -9%; }
+  .home-world .composition-lab .piece-disc { width: 100vw; top: 0; left: 23%; opacity: .86; }
+  .home-world .composition-lab .piece-folder { width: 100px; right: -4%; }
+  .home-world .composition-lab .piece-laptop { width: 120px; top: 26%; }
+  .home-world .composition-lab .piece-cursor { width: 110px; top: 31%; }
+  .home-world .composition-lab .piece-music-window { width: 170px; }
+  .home-world .lab-world .ahs-lab-head { width: 100%; margin: 64vw 0 0; padding: 22px 16px; background: rgba(255,252,255,.85); border: 0; box-shadow: none; transform: none; }
+  .home-world .lab-world .ahs-lab-grid { margin-top: 35px; }
 }
