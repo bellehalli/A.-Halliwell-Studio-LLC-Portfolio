@@ -503,15 +503,15 @@ vercel-live-feedback { display: none !important; }
 .home-world .offer-world .section-kicker { color: #713454; }
 .home-world .offer-world .section-kicker span { padding: 6px 9px; background: rgba(255,249,250,.82); }
 .home-world .offer-world .offer-heading {
-  display: block; width: min(600px,55%); margin: clamp(70px,9vw,130px) 0 0 8%;
-  padding: clamp(22px,3vw,42px); background: rgba(255,249,245,.9);
-  border: 1px solid rgba(131,74,93,.6); box-shadow: 8px 10px 0 rgba(177,94,135,.18);
-  transform: rotate(-2deg);
+  display: block; width: min(490px,44%); margin: clamp(92px,10vw,150px) 0 0 1%;
+  padding: clamp(22px,2.7vw,36px); background: rgba(255,249,245,.87);
+  border: 1px solid rgba(131,74,93,.47); box-shadow: 7px 9px 0 rgba(177,94,135,.14);
+  transform: rotate(-1deg);
 }
-.home-world .offer-world h2 { margin: 0; font-size: clamp(49px,5.8vw,79px); }
+.home-world .offer-world h2 { margin: 0; font-size: clamp(45px,5.15vw,70px); }
 .home-world .offer-world h2 em { color: #ad4c81; }
 .home-world .offer-world .offer-heading > p { margin: 22px 0 0; font-size: clamp(15px,1.25vw,18px); }
-.home-world .offer-world .offer-grid { gap: 12px; margin-top: clamp(125px,14vw,210px); border: 0; }
+.home-world .offer-world .offer-grid { gap: 12px; margin-top: clamp(155px,17vw,240px); border: 0; }
 .home-world .offer-world .offer-grid article {
   min-height: 340px; border: 1px solid rgba(98,44,74,.55);
   background: rgba(255,250,248,.96); box-shadow: 6px 7px 0 rgba(208,126,169,.35);
