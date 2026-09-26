@@ -461,9 +461,11 @@ vercel-live-feedback { display: none !important; }
 .home-world .proof-world .section-kicker span { background: rgba(255,235,249,.83); }
 .home-world .proof-world .proof-heading {
   width: min(610px,48vw); margin: clamp(180px,17vw,255px) auto 0;
+  display: block; grid-template-columns: none; gap: 0;
   padding: 0; border: 0; background: none; box-shadow: none; transform: none;
   text-align: center;
 }
+.home-world .proof-world .proof-heading::after { content: none; }
 .home-world .proof-world h2 {
   margin: 0; font-size: clamp(61px,5.6vw,83px); line-height: .94;
   text-shadow: 0 1px 12px #fff2fb,0 1px 26px #fff2fb;
