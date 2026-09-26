@@ -558,14 +558,14 @@ vercel-live-feedback { display: none !important; }
 }
 .home-world .lab-world .ahs-lab .content-shell { width: 100%; }
 .home-world .lab-world .ahs-lab-head {
-  display: block; grid-template-columns: none; width: min(490px,42vw);
-  margin: clamp(115px,13vw,190px) 0 0; padding: 24px 28px;
-  background: rgba(255,251,255,.62); border: 0; box-shadow: none;
-  -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); transform: none;
+  display: block; grid-template-columns: none; width: min(410px,35vw);
+  margin: clamp(110px,12vw,175px) 0 0; padding: 20px 22px;
+  background: rgba(255,251,255,.46); border: 0; border-left: 2px solid rgba(171,69,143,.55); box-shadow: none;
+  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); transform: none;
 }
-.home-world .lab-world .ahs-lab h2 { font-size: clamp(42px,4vw,58px); line-height: .96; }
-.home-world .lab-world .ahs-lab-head p { max-width: 420px; margin: 18px 0 0; font-size: 16px; }
-.home-world .lab-world .ahs-lab-grid { margin-top: clamp(170px,18vw,280px); }
+.home-world .lab-world .ahs-lab h2 { font-size: clamp(42px,3.65vw,53px); line-height: .96; }
+.home-world .lab-world .ahs-lab-head p { max-width: 360px; margin: 17px 0 0; font-size: 15px; }
+.home-world .lab-world .ahs-lab-grid { margin-top: clamp(145px,16vw,240px); }
 .home-world .lab-world .ahs-job-list { background: #faf4ff; }
 .home-world .lab-world .ahs-demo-shell { background: #fff; }
 @media (max-width: 900px) {
@@ -574,7 +574,7 @@ vercel-live-feedback { display: none !important; }
   .home-world .proof-world .proof-grid { margin-top: 16vw; }
   .home-world .offer-receipt { width: min(760px,93%); }
   .home-world .offer-world .offer-grid article { grid-template-columns: 85px minmax(0,1fr) 120px; }
-  .home-world .lab-world .ahs-lab-head { width: min(445px,53vw); }
+  .home-world .lab-world .ahs-lab-head { width: min(390px,50vw); }
   .home-world .lab-world .ahs-lab-grid { margin-top: clamp(95px,13vw,170px); }
 }
 @media (max-width: 600px) {
@@ -601,7 +601,7 @@ vercel-live-feedback { display: none !important; }
   .home-world .composition-offer .piece-pearl-chain { width: 310px; top: -9%; }
   .home-world .lab-world { padding: 0 14px 58px; }
   .home-world .lab-world::before { height: 560px; max-height: none; background-size: auto 560px; }
-  .home-world .lab-world .ahs-lab-head { width: 100%; margin: 140px auto 0; padding: 24px 20px; background: rgba(255,251,255,.76); }
+  .home-world .lab-world .ahs-lab-head { width: 100%; margin: 485px auto 0; padding: 24px 20px; background: rgba(255,251,255,.86); }
   .home-world .lab-world .ahs-lab h2 { font-size: clamp(41px,10vw,53px); }
-  .home-world .lab-world .ahs-lab-grid { margin-top: 75px; }
+  .home-world .lab-world .ahs-lab-grid { margin-top: 25px; }
 }
