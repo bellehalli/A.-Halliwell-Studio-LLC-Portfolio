@@ -605,3 +605,92 @@ vercel-live-feedback { display: none !important; }
   .home-world .lab-world .ahs-lab h2 { font-size: clamp(41px,10vw,53px); }
   .home-world .lab-world .ahs-lab-grid { margin-top: 25px; }
 }
+
+/* Investment: the glitter artwork is scenery; the entire receipt and card are crisp live layers. */
+.home-world .offer-world {
+  min-height: 1040px;
+  padding: 42px 24px 110px;
+  background: #f7d8df;
+}
+.home-world .offer-world::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(255,226,234,.04) 0 55%, #f7d8df 98%),
+    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG') center top / 100% auto no-repeat;
+}
+.home-world .offer-world .content-shell { width: min(1366px,100%); }
+.home-world .offer-world .section-kicker { position: relative; z-index: 4; margin-bottom: 28px; color: #572a42; }
+.home-world .offer-world .section-kicker span { background: rgba(255,245,247,.84); }
+.home-world .offer-receipt {
+  z-index: 2; width: min(800px,72%); margin: 0 auto 0 8%; padding: clamp(38px,4vw,58px);
+  color: #432b39; border: 1px solid #b77d94;
+  background: linear-gradient(148deg,#fff8f4 0%,#fff0ef 51%,#ffedf1 100%);
+  box-shadow: 0 25px 80px rgba(92,35,61,.27), 8px 9px 0 rgba(255,255,255,.45);
+  transform: rotate(-2.3deg);
+}
+.home-world .offer-receipt::before { inset: 12px; border: 1px solid #d4a9b8; }
+.home-world .offer-receipt::after {
+  content: '✧'; position: absolute; top: 18px; right: 25px;
+  color: #ab668b; font: 32px/1 Georgia,serif;
+}
+.home-world .receipt-masthead { justify-content: center; gap: 16px; padding: 5px 15px 23px; border-bottom: 1px solid #c896a9; }
+.home-world .receipt-masthead .receipt-monogram { font-size: 52px; }
+.home-world .receipt-masthead > span:nth-child(2) { font-size: 12px; letter-spacing: .25em; }
+.home-world .receipt-masthead small { font-size: 11px; letter-spacing: .09em; }
+.home-world .offer-world .offer-heading { margin: 35px 0 30px; }
+.home-world .offer-world h2 { font-size: clamp(43px,4vw,62px); color: #48253a; }
+.home-world .offer-world .offer-heading > p { color: #513e48; font-size: 16px; line-height: 1.5; }
+.home-world .receipt-columns { padding: 12px 0; border-color: #b77d94; color: #6c354f; font-size: 11px; }
+.home-world .offer-world .offer-grid article,
+.home-world .offer-world .offer-grid article:nth-child(2),
+.home-world .offer-world .offer-grid article:nth-child(3) { grid-template-columns: 112px minmax(0,1fr) 150px; gap: 7px 16px; padding: 26px 0; border-color: #d5a2b6; }
+.home-world .offer-world .offer-grid small { padding-top: 6px; font-size: 10px; line-height: 1.35; letter-spacing: .06em; }
+.home-world .offer-world .offer-grid h3 { font-size: clamp(27px,2.25vw,35px); }
+.home-world .offer-world .offer-grid article > strong { padding: 5px 0; font-size: 12px; line-height: 1.35; }
+.home-world .offer-world .offer-grid p { color: #59434e; font-size: 14px; line-height: 1.5; }
+.home-world .receipt-signoff { margin-top: 30px; padding-top: 4px; color: #78445e; font-size: 20px; }
+.home-world .offer-card {
+  position: absolute; z-index: 1; top: 50%; right: 1%; width: min(370px,31vw); aspect-ratio: 1.62;
+  border: 2px solid rgba(255,253,252,.89); border-radius: 18px;
+  background:
+    radial-gradient(circle at 72% 18%,rgba(255,255,255,.95),transparent 19%),
+    radial-gradient(ellipse at 22% 68%,rgba(249,149,184,.75),transparent 55%),
+    linear-gradient(121deg,#e4a4bd 0%,#fff0e8 33%,#eca5bf 65%,#f8e7f2 100%);
+  box-shadow: 0 16px 36px rgba(101,46,69,.3), inset 0 0 0 5px rgba(250,211,224,.62),inset 0 0 0 6px rgba(165,92,122,.5);
+  transform: rotate(11deg); color: #894962;
+}
+.home-world .offer-card::before { content: '✧'; position: absolute; top: 12px; right: 18px; font: 30px Georgia,serif; }
+.home-world .offer-card-chip { position: absolute; top: 25%; left: 12%; width: 14%; aspect-ratio: 1.28; border: 1px solid #a56e72; border-radius: 6px; background: repeating-linear-gradient(90deg,transparent 0 27%,#bd928b 28% 29%,transparent 30% 50%),linear-gradient(135deg,#f8e7d5,#e2b7b2); }
+.home-world .offer-card-monogram { position: absolute; top: 34%; left: 55%; font: italic 63px/.9 Georgia,serif; letter-spacing: -.18em; }
+.home-world .offer-card-monogram span { font-size: .65em; }
+.home-world .offer-card-number { position: absolute; bottom: 13%; left: 12%; font: 700 10px var(--font-mono),monospace; letter-spacing: .2em; }
+.home-world .offer-card-circles { position: absolute; bottom: 11%; right: 10%; width: 20%; aspect-ratio: 1.8; background: radial-gradient(circle at 31% 50%,rgba(153,72,98,.67) 0 40%,transparent 42%),radial-gradient(circle at 70% 50%,rgba(200,111,133,.67) 0 40%,transparent 42%); }
+@media (max-width: 900px) {
+  .home-world .offer-world { min-height: 0; }
+  .home-world .offer-receipt { width: min(740px,84%); margin-left: 2%; }
+  .home-world .offer-card { right: -2%; top: 58%; width: 29%; }
+  .home-world .offer-world .offer-grid article { grid-template-columns: 90px minmax(0,1fr) 120px; }
+}
+@media (max-width: 600px) {
+  .home-world .offer-world { padding: 22px 14px 76px; }
+  .home-world .offer-world::before { background-size: auto 480px; background-position: center top; }
+  .home-world .offer-world .section-kicker { margin-bottom: 65px; }
+  .home-world .offer-receipt { width: 100%; margin: 0; padding: 30px 24px; transform: rotate(-.5deg); }
+  .home-world .offer-receipt::before { inset: 8px; }
+  .home-world .receipt-masthead { justify-content: flex-start; gap: 8px; padding: 0 0 20px; }
+  .home-world .receipt-masthead .receipt-monogram { font-size: 43px; }
+  .home-world .receipt-masthead > span:nth-child(2) { font-size: 9px; letter-spacing: .14em; }
+  .home-world .receipt-masthead small { font-size: 8px; }
+  .home-world .offer-world .offer-heading { margin: 30px 0; }
+  .home-world .offer-world h2 { font-size: clamp(40px,10vw,55px); }
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3) { display: block; padding: 21px 0; }
+  .home-world .offer-world .offer-grid small { font-size: 10px; }
+  .home-world .offer-world .offer-grid h3 { margin: 8px 0; font-size: 29px; }
+  .home-world .offer-world .offer-grid article > strong { margin-bottom: 8px; padding: 0; font-size: 12px; }
+  .home-world .offer-world .offer-grid p { font-size: 14px; }
+  .home-world .receipt-signoff { font-size: 16px; }
+  .home-world .offer-card { position: relative; top: auto; right: auto; width: min(290px,80%); margin: -15px 0 0 auto; transform: rotate(7deg); }
+  .home-world .offer-card-monogram { font-size: 48px; }
+}
