@@ -588,6 +588,19 @@ vercel-live-feedback { display: none !important; }
   background: url('/assets/objects/Portfolio Assets A.Halliwell  - 105.PNG') center / contain;
   animation: ahs-disc-breathe 12s ease-in-out infinite;
 }
+.home-world .composition-lab .piece-disc::before,
+.home-world .composition-lab .piece-disc::after {
+  content: ''; position: absolute; display: block;
+  clip-path: polygon(50% 0,61% 34%,98% 35%,69% 57%,79% 94%,50% 72%,21% 94%,31% 57%,2% 35%,39% 34%);
+}
+.home-world .composition-lab .piece-disc::before {
+  width: 29%; height: 29%; top: 35.5%; left: 35.5%;
+  background: linear-gradient(135deg,#ff86cc 12%,#dd37bd 36%,#ffda79 51%,#8af1de 72%,#6c63d9 95%);
+  filter: drop-shadow(0 0 7px rgba(255,222,255,.7));
+}
+.home-world .composition-lab .piece-disc::after {
+  width: 9%; height: 9%; top: 45.5%; left: 45.5%; background: #1b0a24;
+}
 .home-world .composition-lab .piece-folder { top: 1%; right: 0; width: clamp(140px,18vw,270px); aspect-ratio: 1; background: url('/assets/ui/Portfolio Assets A.Halliwell  - 102.PNG') center / contain; transform: rotate(12deg); }
 .home-world .composition-lab .piece-laptop { top: 31%; left: -3%; width: clamp(165px,22vw,330px); aspect-ratio: 1; background: url('/assets/objects/Portfolio Assets A.Halliwell  - 101.PNG') center / contain; transform: rotate(-12deg); }
 .home-world .composition-lab .piece-cursor { top: 36%; right: 1%; width: clamp(120px,17vw,250px); aspect-ratio: 1; background: url('/assets/ui/Portfolio Assets A.Halliwell  - 103.PNG') center / contain; transform: rotate(-15deg); }
