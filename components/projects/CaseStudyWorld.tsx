@@ -54,7 +54,19 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
 
     <section className="case-world-screens" id="selected-screens" aria-labelledby="screens-heading">
       <div className="case-world-section-heading"><p>06 / Selected Screens</p><h2 id="screens-heading">A closer look.</h2><span>{study.screensIntro}</span></div>
-      <ProjectMedia project={project} mode="screens" />
+      {study.screenChapters ? <div className="case-world-screen-archive">
+        {study.screenChapters.map((chapter, chapterIndex) => <section className="case-world-screen-chapter" key={chapter.title} aria-labelledby={`case-chapter-${chapterIndex}`}>
+          <div className="case-world-screen-chapter-intro"><span>{String(chapterIndex + 1).padStart(2,"0")}</span><h3 id={`case-chapter-${chapterIndex}`}>{chapter.title}</h3><p>{chapter.description}</p></div>
+          <div className="case-world-screen-grid">{chapter.screens.map((screen, screenIndex) => {
+            const src = `/case-studies/${project.slug}/${screen.file}`;
+            return <figure className={screenIndex === 0 ? "case-world-screen-feature" : ""} key={screen.file}>
+              <a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size image: ${screen.caption}`}><img src={src} alt={`${project.name}: ${screen.caption}`} loading="lazy" /><span>View full size ↗</span></a>
+              <figcaption><span>{String(screenIndex + 1).padStart(2,"0")}</span>{screen.caption}</figcaption>
+            </figure>;
+          })}</div>
+        </section>)}
+        <p className="case-world-screen-disclosure">These are screens from a fictional venue demonstration. Venue prices, leads, analytics and payments shown in the build are illustrative; checkout uses test mode.</p>
+      </div> : <ProjectMedia project={project} mode="screens" />}
     </section>
 
     <section className="case-world-live" aria-labelledby="live-heading">

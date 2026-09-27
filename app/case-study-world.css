@@ -131,6 +131,23 @@
 .case-world-screens .project-evidence-gallery figure { background: #f5f1ed; }
 .case-world-screens .project-evidence-gallery img { aspect-ratio: 4/3; object-fit: cover; object-position: top; }
 .case-world-screens .project-evidence-gallery figcaption { padding: 13px; font: small-caps 15px 'Times New Roman',serif; }
+.case-world-screen-archive { margin-top: 48px; }
+.case-world-screen-chapter { padding: 45px 0 65px; border-top: 1px solid #a891a7; }
+.case-world-screen-chapter-intro { display: grid; grid-template-columns: 42px minmax(0,1fr) minmax(0,1fr); gap: 20px 30px; align-items: baseline; margin-bottom: 30px; }
+.case-world-screen-chapter-intro > span { color: #a43c82; font-size: 17px; font-style: italic; }
+.case-world-screen-chapter-intro h3 { margin: 0; font: 400 clamp(28px,3vw,46px)/1.05 var(--font-editorial),Georgia,serif; letter-spacing: -.035em; }
+.case-world-screen-chapter-intro p { max-width: 490px; margin: 0; font-size: clamp(17px,1.35vw,21px); line-height: 1.4; }
+.case-world-screen-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px 24px; }
+.case-world-screen-grid figure { min-width: 0; margin: 0; }
+.case-world-screen-grid .case-world-screen-feature { grid-column: 1/-1; }
+.case-world-screen-grid figure > a { position: relative; display: block; overflow: hidden; border: 1px solid #c4b8c2; background: #edeae5; }
+.case-world-screen-grid figure img { display: block; width: 100%; height: auto; }
+.case-world-screen-grid figure > a > span { position: absolute; right: 12px; bottom: 12px; padding: 9px 13px; background: #fffaf4; color: #39263c; font: italic 15px 'Times New Roman',serif; box-shadow: 0 3px 12px rgba(39,25,39,.12); }
+.case-world-screen-grid figure > a:hover > span { color: #a43c82; }
+.case-world-screen-grid figure > a:focus-visible { outline: 3px solid #7b3d97; outline-offset: 4px; }
+.case-world-screen-grid figcaption { display: flex; gap: 15px; padding: 13px 0; font-size: clamp(16px,1.3vw,19px); }
+.case-world-screen-grid figcaption span { color: #a43c82; font-style: italic; }
+.case-world-screen-disclosure { margin: 0; padding: 20px 0; border-top: 1px solid #a891a7; font-size: 17px; font-style: italic; line-height: 1.4; }
 .case-world-live .project-browser-bar { border-color: #a891a7; background: #f6f0ed; }
 .case-world-live .project-browser-bar span { font: italic 15px 'Times New Roman',serif; }
 .case-world-live .project-preview-scroll { max-height: min(740px,72vh); overflow: auto; overscroll-behavior: contain; }
@@ -179,6 +196,11 @@
   .case-world-scope-row li { flex-basis: 100%; }
   .case-world-screens .project-evidence-gallery { grid-template-columns: 1fr; padding: 10px; }
   .case-world-screens .project-evidence-gallery img { aspect-ratio: 16/10; }
+  .case-world-screen-chapter-intro { display: block; }
+  .case-world-screen-chapter-intro h3 { margin: 12px 0; }
+  .case-world-screen-grid { grid-template-columns: 1fr; gap: 22px; }
+  .case-world-screen-grid .case-world-screen-feature { grid-column: auto; }
+  .case-world-screen-grid figure > a > span { right: 6px; bottom: 6px; padding: 6px 9px; font-size: 13px; }
   .case-world-live .project-evidence-bar { align-items: center; }
   .case-world-end { margin: 90px -22px -25px; }
 }

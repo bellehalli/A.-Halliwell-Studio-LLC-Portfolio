@@ -14,6 +14,7 @@ export type CaseStudy = {
   journey: { title: string; description: string }[];
   scope: CaseStudyScope[];
   screensIntro: string;
+  screenChapters?: { title: string; description: string; screens: { file: string; caption: string }[] }[];
   liveIntro: string;
 };
 
@@ -44,6 +45,31 @@ export const caseStudies: Record<string, CaseStudy> = {
       { title: "Development", includes: ["Custom front-end", "Responsive implementation", "Interactive states"] },
     ],
     screensIntro: "A few moments from the build, from first impression to a more informed inquiry.",
+    screenChapters: [
+      { title: "Enter the estate", description: "A deliberate opening gives way to the place itself, then lets a couple explore its ceremony settings.", screens: [
+        { file: "willow-lily-desktop-entry-screen.jpg", caption: "The entry moment" },
+        { file: "willow-lily-desktop-hero-entry-screen.jpg", caption: "The estate introduction" },
+        { file: "willow-lily-desktop-digital-tour-map.jpg", caption: "The location guide" },
+      ] },
+      { title: "Make it theirs", description: "The wedding journey remembers choices, introduces date exploration and turns an imagined weekend into a specific plan.", screens: [
+        { file: "willow-lily-mobile-homepage-hero.jpg", caption: "Choosing a wedding date" },
+        { file: "willow-lily-desktop-availability-widget.jpg", caption: "A personalized wedding summary" },
+        { file: "willow-lily-mobile-availability-widget.jpg", caption: "The saved experience and next steps" },
+        { file: "willow-lily-desktop-wedding-builder-start.jpg", caption: "A tour request with the couple's context" },
+      ] },
+      { title: "Carry the decision forward", description: "A proposal, venue investment and test-mode deposit handoff show how the experience can support a booking conversation.", screens: [
+        { file: "willow-lily-desktop-investment-page.jpg", caption: "The personalized proposal" },
+        { file: "willow-lily-mobile-investment-page.jpg", caption: "The venue investment and decision path" },
+        { file: "willow-lily-desktop-inn-page.jpg", caption: "A test-mode payment handoff" },
+        { file: "willow-lily-desktop-planning-page.jpg", caption: "The Stripe test checkout" },
+      ] },
+      { title: "Behind the welcome", description: "The demonstration also shows a venue-facing workspace: tour leads, calendar activity, sales intelligence and an integration blueprint.", screens: [
+        { file: "willow-lily-mobile-wedding-builder-start.jpg", caption: "The demonstration workspace" },
+        { file: "willow-lily-mobile-wedding-builder-details.jpg", caption: "The venue calendar and lead pipeline" },
+        { file: "willow-lily-mobile-wedding-builder-date.jpg", caption: "Illustrative sales intelligence" },
+        { file: "willow-lily-desktop-wedding-builder-summary.jpg", caption: "The production integration blueprint" },
+      ] },
+    ],
     liveIntro: "Explore the working concept. The preview keeps the journey scrollable; the full site opens the complete experience.",
   },
 };
