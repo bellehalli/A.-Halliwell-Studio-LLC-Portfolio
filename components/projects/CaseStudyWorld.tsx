@@ -73,18 +73,11 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       <ol>{study.journey.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
     </section>
 
-    <section className="case-world-build" aria-labelledby="build-heading">
-      <div className="case-world-section-heading"><p>07 / The scope</p><h2 id="build-heading">The work behind<br /><em>the feeling.</em></h2><span>Scope included in this concept</span></div>
-      <div className="case-world-scope">{study.scope.map((item, index) => <div className="case-world-scope-row" key={item.title}>
-        <span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><ul>{item.includes.map(detail => <li key={detail}>{detail}</li>)}</ul>
-      </div>)}</div>
-    </section>
-
     <section className="case-world-end" aria-labelledby="case-end-heading">
-      <p>08 / Your next project</p><h2 id="case-end-heading">A beautiful site can<br /><em>do real work.</em></h2>
+      <p>07 / Your next project</p><h2 id="case-end-heading">A beautiful site can<br /><em>do real work.</em></h2>
       <span>Let&apos;s shape the experience your business needs.</span>
       <Link href="/start">Start a project <ArrowMark /></Link>
-      <small>Original studio concept. Scope shown as a demonstration, not a commissioned client result.</small>
+      <small>Original studio concept, not a commissioned client result.</small>
     </section>
   </article>;
 }
