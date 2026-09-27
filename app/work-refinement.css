@@ -671,6 +671,7 @@
 .home-world .offer-world h2{font-size:clamp(46px,5.3vw,76px);line-height:.96}
 .home-world .offer-world .offer-heading>p{max-width:300px;margin:0 0 5px;font-size:clamp(17px,1.5vw,21px);line-height:1.42}
 .home-world .receipt-columns{padding:0 0 18px;border-bottom:1px solid rgba(149,76,111,.4)}
+.home-world .offer-world .offer-grid{border:0}
 .home-world .offer-world .offer-grid article,
 .home-world .offer-world .offer-grid article:nth-child(2),
 .home-world .offer-world .offer-grid article:nth-child(3){
