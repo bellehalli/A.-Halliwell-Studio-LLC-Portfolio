@@ -83,6 +83,8 @@
   object-fit: contain; background: #23392e;
 }
 .project-maison .case-world-hero-art img { aspect-ratio: 2048/1332; background: #1b1c19; }
+.project-vanta .case-world-hero-art::before { background: #d8c4a8; border-color: #8e785b; }
+.project-vanta .case-world-hero-art img { aspect-ratio: 2048/1300; object-fit: cover; object-position: center bottom; background: #0b0b0d; }
 .case-world-hero-art figcaption { position: relative; display: flex; justify-content: space-between; margin-top: 13px; font-size: 15px; }
 .case-world-disclosure { margin: 0; padding-top: 18px; border-top: 1px solid #bda9b7; color: #746571; font-size: 14px; line-height: 1.4; }
 .case-world-story { margin-top: clamp(80px,10vw,150px); }

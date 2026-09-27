@@ -69,7 +69,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
     </section>
 
     <section className="case-world-journey" aria-labelledby="journey-heading">
-      <div className="case-world-section-heading"><p>06 / The visitor journey</p><h2 id="journey-heading">From first look<br />to first visit.</h2><span>A couple&apos;s path through the site</span></div>
+      <div className="case-world-section-heading"><p>06 / The visitor journey</p><h2 id="journey-heading">{study.journeyHeading ?? <>From first look<br />to first visit.</>}</h2><span>{study.journeyIntro ?? "A couple's path through the site"}</span></div>
       <ol>{study.journey.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
     </section>
 

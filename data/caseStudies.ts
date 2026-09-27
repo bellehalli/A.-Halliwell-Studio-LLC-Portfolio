@@ -17,6 +17,8 @@ export type CaseStudy = {
   screenChapters?: { title: string; description: string; screens: { file: string; caption: string }[] }[];
   screensDisclosure?: string;
   liveIntro: string;
+  journeyHeading?: string;
+  journeyIntro?: string;
 };
 
 // The public case files describe the work and its business purpose. Internal
@@ -101,5 +103,40 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     screensDisclosure: "Maison Rivière is a fictional venue demonstration. The wedding estimate is illustrative, and the tour form does not submit to a real venue.",
     liveIntro: "Explore the live website in the frame, including its navigation and wedding builder. Open the complete build for a full-screen visit.",
+  },
+  "vanta-social": {
+    positioning: "Nightlife Discovery + VIP Reservation Experience",
+    statement: "The night starts before the door.",
+    heroImage: "/case-studies/vanta-social/vanta-homepage.webp",
+    heroImageAlt: "Vanta Social website with Detroit nightlife imagery and direct paths to tonight's events and VIP",
+    brief: "Give a Detroit nightlife concept a home beyond the social feed. Guests need to discover the night, understand entry, join a list or compare a VIP section before they leave for the venue.",
+    problem: "Flyers can sell a mood while leaving the practical details scattered between posts, promoters and direct messages. That friction matters most when someone is ready to make plans with a group.",
+    strategy: "Treat the site like a digital front door: lead with the energy of the room, make events and arrival details easy to find, then let VIP guests compare placement and minimums before requesting a section.",
+    journeyHeading: "From the flyer to the floor.",
+    journeyIntro: "A guest's path through the night",
+    journey: [
+      { title: "Find the night", description: "Scan featured events and choose the music and date that fit." },
+      { title: "Know the details", description: "See entry, hours, age policy and arrival information before leaving." },
+      { title: "Choose a path", description: "Move toward tickets, a guest list or a VIP table." },
+      { title: "Plan the table", description: "Compare the floor plan and bottle service before a qualified request." },
+    ],
+    screensIntro: "Selected views that show the event, venue and VIP decisions working together.",
+    screenChapters: [
+      { title: "Find your night", description: "The opening sells the room, while a featured night and event lineup give guests a specific plan to act on.", screens: [
+        { file: "vanta-homepage.webp", caption: "The Detroit nightlife entrance" },
+        { file: "vanta-featured-night.webp", caption: "The featured night" },
+        { file: "vanta-events.webp", caption: "Event discovery for the weekend" },
+      ] },
+      { title: "Picture the room", description: "Atmosphere and table service sit in the same story, so the premium experience feels tangible before a guest inquires.", screens: [
+        { file: "vanta-atmosphere.webp", caption: "The room and its energy" },
+        { file: "vanta-vip-story.webp", caption: "The VIP proposition" },
+      ] },
+      { title: "Choose a section", description: "The interactive floor plan compares placement, capacity and minimums. An insider path keeps event drops and guest-list releases within reach.", screens: [
+        { file: "vanta-vip-map.webp", caption: "The VIP section selector" },
+        { file: "vanta-insiders.webp", caption: "The insider signup path" },
+      ] },
+    ],
+    screensDisclosure: "Vanta Social is a fictional nightlife demonstration. Events, section availability and pricing are illustrative; signup and reservation forms do not transmit to a real venue.",
+    liveIntro: "Explore the live site in the frame. Move through events and VIP to try the table selector and reservation path, or open the complete build.",
   },
 };
