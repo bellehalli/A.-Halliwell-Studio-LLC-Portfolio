@@ -1,0 +1,696 @@
+/* A full-screen editorial curtain. It owns scroll until the reveal completes. */
+.home-opening {
+  position: fixed; z-index: 250; inset: 0; display: grid; place-items: center;
+  min-height: 100svh; padding: 28px; overflow: hidden; isolation: isolate;
+  background: #e7b5d1 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 120.PNG') center / cover no-repeat;
+  color: #260d22; transition: transform .85s cubic-bezier(.74,0,.21,1);
+}
+.home-opening.is-leaving { transform: translateY(-102%); }
+.home-opening::before {
+  content: ''; position: absolute; z-index: -1; inset: 0;
+  background: radial-gradient(ellipse at 49% 48%,rgba(255,217,229,.48),transparent 40%),
+    linear-gradient(90deg,rgba(206,185,250,.56),transparent 19% 81%,rgba(206,185,250,.56));
+  pointer-events: none;
+}
+.home-opening::after {
+  content: ''; position: absolute; inset: 12px; border: 1px solid rgba(75,18,59,.27);
+  pointer-events: none;
+}
+.opening-skip,.opening-edition,.opening-counter {
+  position: absolute; z-index: 5; font: 600 10px/1.65 var(--font-sans),sans-serif; letter-spacing: .12em;
+}
+.opening-edition { top: 34px; left: clamp(32px,5vw,80px); }
+.opening-skip {
+  top: 32px; right: clamp(32px,5vw,80px); border: 0; padding: 7px 0;
+  border-bottom: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.glitter-cursor { display: inline-block; object-fit: contain; flex: 0 0 auto; }
+.opening-skip .glitter-cursor { width: 22px; height: 22px; }
+.opening-counter { right: clamp(32px,5vw,80px); bottom: 35px; }
+.opening-center { position: relative; width: min(100%,1120px); text-align: center; }
+.opening-heart {
+  position: relative; width: clamp(310px,47vw,610px); aspect-ratio: 1;
+  margin: -62px auto -84px;
+  filter: drop-shadow(0 38px 28px rgba(66,8,53,.21));
+  animation: ahs-heart-arrive 3.5s cubic-bezier(.17,.7,.2,1) both;
+}
+.opening-heart img { object-fit: contain; }
+@keyframes ahs-heart-arrive {
+  0% { opacity: 0; transform: translateY(95px) scale(.43) rotate(-13deg); filter: blur(15px); }
+  29% { opacity: 1; filter: blur(0); }
+  55% { transform: translateY(-13px) scale(1.13) rotate(4deg); }
+  72% { transform: translateY(5px) scale(.97) rotate(-1deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: blur(0); }
+}
+.opening-brand {
+  position: relative; display: grid; justify-items: center; margin: 0;
+  font: 400 clamp(57px,9.2vw,148px)/.81 var(--font-fashion),Georgia,serif;
+  letter-spacing: -.072em; white-space: nowrap; text-shadow: 0 2px 0 rgba(255,255,255,.25);
+  animation: ahs-name 1.35s 2.05s both;
+}
+.opening-brand em {
+  margin-top: -.1em; margin-left: min(31vw,400px); padding-right: .12em;
+  font-size: .69em; line-height: 1.2; font-weight: 400;
+  letter-spacing: -.075em; text-transform: none; color: #8c205b;
+}
+.opening-caption {
+  margin: 5px 0 0; font: 600 clamp(10px,1vw,14px)/1.5 var(--font-sans),sans-serif;
+  letter-spacing: .34em; animation: ahs-name 1s 2.7s both;
+}
+.opening-enter {
+  position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 16px; padding: 8px 0;
+  border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit;
+  font: 600 10px var(--font-sans),sans-serif; letter-spacing: .16em;
+  white-space: nowrap; cursor: pointer; animation: ahs-enter .8s 3.7s both;
+}
+.opening-enter .glitter-cursor { width: 30px; height: 30px; transition: transform .25s ease; }
+.opening-enter:hover .glitter-cursor { transform: translate(3px,-3px); }
+.opening-enter:focus-visible,.opening-skip:focus-visible { outline: 3px solid #60217d; outline-offset: 5px; }
+@keyframes ahs-name { from { opacity: 0; transform: translateY(35px); filter: blur(7px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes ahs-enter { from { opacity: 0; margin-bottom: -14px; } to { opacity: 1; margin-bottom: 0; } }
+
+/* The patterned world begins immediately after the opening scene. */
+.home-world .site-background {
+  background: #eee0fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+}
+/* Page two uses the approved Canva composition as a stage for real text and controls. */
+/* Vercel adds this control to previews; it is not part of the studio interface. */
+vercel-live-feedback { display: none !important; }
+.home-world #home-content > .site-nav {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 100;
+  background: transparent; border: 0; box-shadow: none; backdrop-filter: none;
+}
+@media (min-width: 821px) {
+  .home-world #home-content > .site-nav { width: min(1280px,calc(100% - 48px)); }
+}
+@media (min-width: 700px) and (max-width: 1180px) {
+  .home-world .site-nav .heart-menu-trigger { display: none !important; }
+  .home-world .site-nav .heart-dock {
+    position: static !important; inset: auto !important; z-index: auto !important;
+    display: flex !important; flex: 1; align-items: center; justify-content: flex-end !important;
+    gap: 0 !important; min-width: 0; padding: 0 !important; background: transparent !important;
+    opacity: 1 !important; visibility: visible !important; transform: none !important;
+  }
+  .home-world .site-nav .heart-dock .heart-nav-button {
+    width: clamp(57px,7.3vw,85px) !important; height: auto !important;
+    aspect-ratio: 1;
+  }
+  .home-world .site-nav .heart-dock .heart-start { width: clamp(67px,8.3vw,97px) !important; }
+}
+.home-world .home-hero {
+  position: relative; width: 100%; min-height: 100svh; margin: 0; padding: 0;
+  display: grid; place-items: center; overflow: hidden; isolation: isolate;
+  background: #eee0fa;
+  border: 0; box-shadow: none;
+}
+.home-world .home-hero::before { content: none; }
+.home-art-stage {
+  position: relative; width: min(100vw,177.865svh); max-width: 100%; aspect-ratio: 1366 / 768;
+  background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center / 100% 100% no-repeat;
+}
+.home-hero-copy { position: absolute; z-index: 4; left: 8.5%; top: 30%; width: 36%; color: #2b1233; }
+.home-hero-index {
+  margin: 0 0 20px; font: 750 clamp(7px,.67vw,10px)/1.5 var(--font-sans),sans-serif;
+  letter-spacing: .16em; color: #67286f;
+}
+.home-hero-index span { padding: 0 7px; }
+.home-hero-title {
+  margin: 0; font: 900 clamp(43px,4.3vw,62px)/.89 var(--font-editorial),Georgia,serif;
+  letter-spacing: -.07em; text-shadow: 0 1px 12px rgba(255,255,255,.35);
+}
+.home-hero-title span,.home-hero-title em { display: block; }
+.home-hero-title:focus { outline: none; }
+.home-hero-title span:nth-child(2) { padding-left: 0; }
+.home-hero-title em {
+  margin-left: .02em; color: #d62980; font-family: var(--font-fashion),Georgia,serif;
+  font-weight: 500; white-space: nowrap;
+}
+.home-hero-title em b {
+  display: inline-block; margin-left: .08em; color: #ec2f8d;
+  font: normal 800 .82em/1 Arial,sans-serif; vertical-align: .03em;
+}
+.home-hero-description {
+  max-width: 410px; margin: 18px 0 0;
+  font: 550 clamp(13px,1.23vw,18px)/1.35 var(--font-sans),Arial,sans-serif;
+  letter-spacing: -.02em; text-wrap: balance;
+}
+.home-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; margin-top: 17px; }
+.home-hero-actions .button {
+  min-height: 46px; padding-inline: 17px; border-radius: 0; border-color: #371737;
+  background: #371737; color: #fff; font: 700 10px var(--font-sans),sans-serif; letter-spacing: .12em;
+  box-shadow: 5px 6px 0 rgba(191,89,168,.26);
+}
+.home-hero-actions .button .glitter-cursor { width: 25px; height: 25px; margin-left: 16px; }
+.home-hero-actions .button:hover { background: #a12c78; }
+.home-hero-text-link { display: none; padding-block: 8px; border-bottom: 1px solid currentColor; text-decoration: none; font: 700 10px var(--font-sans),sans-serif; letter-spacing: .1em; }
+.home-hero-text-link span { margin-left: 8px; }
+.home-hero-investment {
+  margin: 19px 0 0; font: 750 clamp(8px,.75vw,10px)/1.5 var(--font-sans),sans-serif;
+  letter-spacing: .1em; color: #5c2863;
+}
+.home-monitor-logo {
+  position: absolute; z-index: 5; left: 77%; top: 53%; width: 10.3%; height: 16%;
+  display: grid; place-items: center; transform: rotate(12deg) skew(-4deg,-1deg);
+  pointer-events: none;
+}
+.home-monitor-logo span {
+  width: 45%; aspect-ratio: 1; display: grid; place-items: center;
+  border-radius: 50%; background: #321b3e; color: white;
+  font: italic 700 clamp(12px,2.7vw,38px)/1 var(--font-fashion),Georgia,serif;
+  box-shadow: 0 2px 12px rgba(86,40,97,.15);
+}
+.home-star-link {
+  position: absolute; z-index: 5; left: 67.5%; top: 85%; width: 18.5%; height: 9%;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: #401745; text-align: center; text-decoration: none;
+  font: 800 clamp(8px,1.05vw,15px)/1 var(--font-sans),Arial,sans-serif;
+  letter-spacing: .085em; transform: rotate(7deg); text-shadow: 0 1px rgba(255,255,255,.6);
+  transition: transform .25s ease;
+}
+.home-star-link .glitter-cursor { width: clamp(15px,2.15vw,30px); height: auto; }
+.home-star-link:hover { transform: rotate(7deg) scale(1.06); }
+.home-star-link:focus-visible,.home-hero-text-link:focus-visible { outline: 3px solid #43166c; outline-offset: 5px; }
+.home-world .hero-strip { background: #241621; color: #ffcee2; }
+.home-world .intro-sheet,.home-world .proof-world {
+  background: linear-gradient(rgba(255,250,246,.91),rgba(255,250,246,.91)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG') center / cover;
+}
+.home-world .offer-world {
+  background: linear-gradient(rgba(255,249,253,.7),rgba(255,249,253,.7)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center / cover;
+}
+.home-world .studio-section {
+  background: linear-gradient(rgba(252,249,255,.81),rgba(252,249,255,.81)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover;
+}
+/* Page three: the supplied rainbow composition frames the existing Work introduction. */
+.home-world .studio-world { padding-top: 0; }
+.home-world .intro-sheet {
+  width: 100%; min-height: 100svh; margin: 0; padding: 0;
+  display: grid; align-items: center; overflow: hidden; transform: none;
+  border: 0; box-shadow: none;
+  background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.PNG') center / cover no-repeat;
+}
+.home-world .intro-sheet .content-shell {
+  position: relative; z-index: 2; width: min(440px,34vw);
+  margin: 17vw 0 0 34%; padding: 0 0 50px;
+  color: #36142f; text-align: center;
+}
+.home-world .intro-sheet .section-kicker {
+  justify-content: center; flex-wrap: wrap; column-gap: 9px; row-gap: 2px;
+  color: #8c296c; font: 750 clamp(8px,.72vw,10px)/1.3 var(--font-sans),sans-serif;
+  letter-spacing: .11em;
+}
+.home-world .intro-sheet .section-kicker span + span::before { content: '✦'; margin-right: 9px; color: #dc4c9a; }
+.home-world .intro-sheet h2 {
+  margin: 17px 0 0; font: 800 clamp(34px,3.35vw,48px)/.94 var(--font-editorial),Georgia,serif;
+  letter-spacing: -.063em;
+}
+.home-world .intro-sheet h2 em {
+  color: #be2f81; font: italic 500 1.12em/.94 var(--font-fashion),Georgia,serif;
+  white-space: nowrap;
+}
+.home-world .intro-sheet .world-lede {
+  max-width: 440px; margin: 18px auto 0;
+  font: 500 clamp(13px,1.05vw,15px)/1.48 var(--font-sans),sans-serif;
+  text-wrap: pretty;
+}
+.work-intro-link {
+  width: max-content; margin: 17px auto 0; padding-bottom: 4px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid currentColor; color: #632251;
+  font: 800 10px/1 var(--font-sans),sans-serif; letter-spacing: .11em;
+  text-decoration: none; transition: color .2s ease,transform .2s ease;
+}
+.work-intro-link .glitter-cursor { width: 24px; height: 24px; }
+.work-intro-link:hover { color: #d52c86; transform: translateY(-3px); }
+.work-intro-link:focus-visible { outline: 3px solid #67277a; outline-offset: 5px; }
+/* Templates 5 and 6 frame the original scrollable venue builds and their three screen studies. */
+.work-gallery-collection { width: 100%; }
+.work-gallery {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(68px,7vw,112px) 24px clamp(44px,5vw,80px);
+  color: #381b41;
+  background: radial-gradient(ellipse at 50% 12%,#fff 0%,#f8e9fa 34%,#dcc7ff 100%);
+}
+.work-gallery-maison {
+  background: radial-gradient(ellipse at 50% 10%,#fff6f2 0%,#f7d2e7 45%,#dec4e6 100%);
+}
+.work-gallery::before {
+  content: ''; position: absolute; inset: 0 0 auto; z-index: -1;
+  height: clamp(220px,35vw,420px); pointer-events: none;
+  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center top / 100% auto no-repeat;
+  -webkit-mask-image: linear-gradient(#000,transparent 90%);
+  mask-image: linear-gradient(#000,transparent 90%);
+}
+.work-gallery-maison::before { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
+.work-gallery-heading { position: relative; width: min(780px,100%); margin: 0 auto 42px; text-align: center; }
+.work-gallery-kicker { margin: 0; font: 750 10px/1.4 var(--font-sans),sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+.work-gallery-kicker span { margin: 0 10px; color: #da328d; }
+.work-gallery-heading h2 {
+  margin: 20px 0 18px; font: 700 clamp(64px,8vw,118px)/.9 var(--font-editorial),Georgia,serif;
+  letter-spacing: -.065em;
+}
+.work-gallery-maison .work-gallery-heading h2 { font-style: italic; color: #a22b79; }
+.work-gallery-description { max-width: 680px; margin: 0 auto; font: 500 clamp(16px,1.5vw,20px)/1.55 var(--font-sans),sans-serif; }
+.work-gallery-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 26px; }
+.work-gallery-links a { color: #4e2250; border-bottom: 1px solid currentColor; padding: 7px 0; text-decoration: none; font: 800 10px/1.4 var(--font-sans),sans-serif; letter-spacing: .1em; }
+.work-gallery-links a:hover { color: #d12685; }
+.work-gallery-links a:focus-visible { outline: 3px solid #67277a; outline-offset: 4px; }
+.work-gallery-media { position: relative; width: min(1160px,100%); margin: 0 auto; }
+.work-gallery .project-media-stack { display: grid; gap: 26px; }
+.work-gallery .project-evidence { margin: 0; box-shadow: 14px 16px 0 rgba(114,54,135,.13); }
+.work-gallery .project-live-preview { border: 2px solid #5c2e68; border-radius: 12px; }
+.work-gallery .project-evidence-bar { background: #f6daef; color: #4c244f; }
+.work-gallery .project-browser-bar { background: #e6e1f1; }
+.work-gallery .project-live-preview iframe { height: clamp(480px,58vw,720px); min-height: 0; }
+.work-gallery .project-preview-scroll {
+  height: clamp(480px,58vw,720px); overflow-y: auto; overscroll-behavior: contain;
+  background: #173b2e; scrollbar-color: #d95b9d #f5d9eb;
+}
+.work-gallery .project-preview-scroll img { display: block; width: 100%; height: auto; }
+.work-gallery .project-preview-scroll:focus-visible { outline: 4px solid #e13291; outline-offset: -4px; }
+.work-gallery .project-preview-note { background: #fff8fc; }
+.work-gallery .project-evidence:not(.project-live-preview) { border: 0; background: transparent; box-shadow: none; }
+.work-gallery .project-evidence:not(.project-live-preview) > .project-evidence-bar { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.work-gallery .project-evidence-gallery {
+  position: relative; display: block; width: 100%; aspect-ratio: 1366 / 390; padding: 0;
+  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center bottom / 100% auto no-repeat;
+}
+.work-gallery-maison .project-evidence-gallery { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
+.work-gallery .project-evidence-gallery figure {
+  position: absolute; top: 22.3%; left: 5.8%; width: 12.8%; height: 50%;
+  overflow: hidden; border-radius: 4px; background: #fff;
+  transition: transform .3s ease,box-shadow .3s ease;
+}
+.work-gallery .project-evidence-gallery figure:nth-child(2) { left: 43.6%; }
+.work-gallery .project-evidence-gallery figure:nth-child(3) { left: 81.1%; }
+.work-gallery .project-evidence-gallery figure:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(67,25,80,.24); }
+.work-gallery .project-evidence-gallery img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top center; }
+.work-gallery .project-evidence-gallery figcaption {
+  position: absolute; inset: auto 0 0; padding: 17px 4px 5px; color: #fff;
+  text-align: center; background: linear-gradient(transparent,rgba(44,23,50,.86));
+  font: 700 clamp(6px,.65vw,9px)/1.2 var(--font-sans),sans-serif;
+}
+.work-gallery-maison .project-evidence-gallery figure { top: 28.7%; left: 6.8%; width: 11.5%; height: 43%; }
+.work-gallery-maison .project-evidence-gallery figure:nth-child(2) { left: 44.45%; }
+.work-gallery-maison .project-evidence-gallery figure:nth-child(3) { left: 82%; }
+.work-gallery-details { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px 30px; width: min(1160px,100%); margin: 23px auto 0; }
+.work-gallery-details > span { font: 800 9px var(--font-sans),sans-serif; letter-spacing: .1em; }
+.work-gallery-details .project-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.work-gallery-details > p { flex-basis: 100%; margin: 0; font: 500 12px/1.5 var(--font-sans),sans-serif; }
+@media (max-width: 700px) {
+  .work-gallery { padding: 66px 16px 52px; }
+  .work-gallery::before { height: 230px; background-size: auto 230px; }
+  .work-gallery-heading { margin-bottom: 32px; }
+  .work-gallery-kicker { font-size: 8px; }
+  .work-gallery-heading h2 { font-size: clamp(54px,13vw,76px); }
+  .work-gallery-description { font-size: 15px; }
+  .work-gallery-links { gap: 6px 18px; }
+  .work-gallery .project-live-preview iframe { height: 570px; }
+  .work-gallery .project-preview-scroll { height: 570px; }
+  .work-gallery .project-evidence-gallery {
+    display: flex; gap: 16px; overflow-x: auto; aspect-ratio: auto; min-height: 380px;
+    padding: 40px 24px 35px; scroll-snap-type: x mandatory;
+    background-position: center top; background-size: auto 100%;
+  }
+  .work-gallery .project-evidence-gallery figure,
+  .work-gallery-maison .project-evidence-gallery figure,
+  .work-gallery .project-evidence-gallery figure:nth-child(2),
+  .work-gallery .project-evidence-gallery figure:nth-child(3) {
+    position: relative; top: auto; left: auto; flex: 0 0 215px; width: 215px; height: 275px;
+    border: 8px solid #e1e8f6; border-top-width: 30px; border-bottom-width: 33px;
+    border-radius: 13px; box-shadow: 0 0 0 3px #b2c0de;
+    scroll-snap-align: center;
+  }
+  .work-gallery .project-evidence-gallery figure::before { content: '♥ ♥ ♥'; position: absolute; z-index: 2; top: -25px; left: 0; color: #f48fb3; font: 13px var(--font-sans),sans-serif; letter-spacing: 2px; }
+  .work-gallery .project-evidence-gallery figcaption { font-size: 9px; }
+  .work-gallery-details { align-items: flex-start; }
+}
+@media (max-width: 920px) {
+  .home-world .intro-sheet { min-height: 670px; background-position: center top; background-size: auto 670px; }
+  .home-world .intro-sheet .content-shell { width: min(390px,47%); margin: 155px 0 0 31%; }
+  .home-world .intro-sheet h2 { font-size: clamp(29px,4vw,39px); }
+  .home-world .intro-sheet .world-lede { font-size: 13px; }
+}
+@media (max-width: 600px) {
+  .home-world .intro-sheet {
+    min-height: 0; align-items: start; padding: 0 0 72px;
+    background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.PNG') center top / 100% auto no-repeat;
+  }
+  .home-world .intro-sheet .content-shell {
+    width: min(100% - 50px,420px); margin: 0 auto; padding: 55vw 0 0;
+  }
+  .home-world .intro-sheet .section-kicker { font-size: 8px; }
+  .home-world .intro-sheet h2 { margin-top: 20px; font-size: clamp(38px,10.1vw,54px); }
+  .home-world .intro-sheet .world-lede { max-width: 380px; margin-top: 20px; font-size: 15px; line-height: 1.48; }
+  .work-intro-link { margin-top: 21px; }
+}
+@media (max-width: 920px) {
+  .home-world #home-content > .site-nav { position: relative; width: 100%; margin: 0; border-radius: 0; }
+  .home-world .home-hero { display: block; min-height: 56.223vw; background: #f8effb; }
+  .home-art-stage { width: 100vw; max-width: 100%; height: 56.223vw; aspect-ratio: auto; }
+  .home-hero-copy { left: 7%; top: 29%; width: 39%; }
+  .home-hero-index { margin-bottom: 7px; font-size: clamp(6px,.85vw,8px); letter-spacing: .045em; }
+  .home-hero-index span { padding-inline: 2px; }
+  .home-hero-title { font-size: clamp(29px,4.9vw,45px); }
+  .home-hero-description { margin-top: 10px; font-size: clamp(10px,1.45vw,13px); }
+  .home-hero-actions { margin-top: 10px; }
+  .home-hero-actions .button { min-height: 34px; padding-inline: 11px; font-size: 8px; }
+  .home-hero-actions .button .glitter-cursor { width: 18px; height: 18px; margin-left: 8px; }
+  .home-hero-investment { margin-top: 9px; font-size: 7px; }
+  .home-star-link { font-size: clamp(7px,1.05vw,11px); gap: 3px; }
+  .home-monitor-logo span { font-size: clamp(12px,2.7vw,25px); }
+}
+@media (max-width: 600px) {
+  .opening-edition { top: 29px; left: 30px; font-size: 8px; }
+  .opening-skip { top: 27px; right: 30px; font-size: 8px; }
+  .opening-counter { right: 30px; bottom: 32px; font-size: 8px; }
+  .opening-heart { width: min(85vw,375px); margin: -20px auto -28px; }
+  .opening-brand { font-size: clamp(37px,10.2vw,62px); }
+  .opening-brand em { margin-left: 22vw; font-size: .81em; }
+  .opening-caption { margin-top: 14px; font-size: 9px; letter-spacing: .2em; }
+  .home-world .home-hero { min-height: 0; padding: 0; }
+  .home-art-stage {
+    height: auto; min-height: max(570px,calc(100svh - 76px)); aspect-ratio: auto; overflow: hidden;
+    background: #f6eafb url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+  }
+  .home-art-stage::before {
+    content: ''; position: absolute; inset: 0 0 auto; height: 56.223vw;
+    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center top / 100% auto no-repeat;
+    mask-image: linear-gradient(#000 75%,transparent 100%);
+  }
+  .home-art-stage::after {
+    content: ''; position: absolute; z-index: 1; left: -12%; top: 35vw; width: 88%; height: 70vw;
+    background: radial-gradient(ellipse,rgba(255,248,255,.55),transparent 70%); pointer-events: none;
+  }
+  .home-hero-copy { left: 6%; top: clamp(148px,39vw,225px); width: 88%; max-width: none; padding: 0; }
+  .home-hero-index { margin-bottom: 16px; font-size: 8px; letter-spacing: .07em; }
+  .home-hero-title { width: 100%; font-size: clamp(38px,10vw,53px); line-height: .95; }
+  .home-hero-title em { margin-left: .04em; }
+  .home-hero-description { max-width: 340px; margin-top: 19px; font-size: 15px; line-height: 1.4; }
+  .home-hero-actions { gap: 12px; margin-top: 17px; }
+  .home-hero-actions .button { min-height: 43px; padding-inline: 15px; font-size: 9px; }
+  .home-hero-text-link { display: inline-flex; font-size: 9px; }
+  .home-hero-investment { margin-top: 16px; font-size: 8px; }
+  .home-star-link { top: 47.8vw; height: 5vw; font-size: 7px; gap: 2px; }
+  .home-star-link .glitter-cursor { width: 11px; }
+  .home-star-optional { display: none; }
+  .home-monitor-logo { top: 29.8vw; height: 9vw; }
+  .home-monitor-logo span { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-opening *, .home-world .hero-strip-track { animation: none !important; }
+  .home-opening { transition: none; }
+  .opening-heart,.opening-brand,.opening-caption,.opening-enter { opacity: 1; filter: none; }
+}
+
+/* Keep the complete original introduction inside the approved art composition. */
+.home-art-stage { container-type: inline-size; }
+.home-hero-copy { left: 7%; top: 17%; width: 45%; }
+.home-hero-index { margin-bottom: 13px; font-size: clamp(9px,.8cqw,12px); letter-spacing: .1em; }
+.home-hero-title { font-size: clamp(44px,4.6cqw,68px); }
+.home-hero-tagline { margin: 17px 0 0; color: #872164; font: 800 clamp(10px,.85cqw,13px)/1.4 var(--font-sans),sans-serif; letter-spacing: .13em; }
+.home-hero-description { max-width: none; margin-top: 12px; font-size: clamp(14px,1.15cqw,17px); font-weight: 500; line-height: 1.45; text-wrap: pretty; }
+.home-hero-actions { margin-top: 18px; gap: 23px; }
+.home-hero-text-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
+.home-hero-specialty { margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(83,27,89,.35); }
+.home-hero-specialty p { margin: 0; font: 500 clamp(12px,.98cqw,15px)/1.4 var(--font-sans),sans-serif; }
+.home-hero-specialty p:first-child { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px 12px; margin-bottom: 7px; }
+.home-hero-specialty span { color: #902866; font-size: 9px; font-weight: 800; letter-spacing: .09em; }
+.home-hero-specialty strong { font-weight: 750; }
+@media (min-width: 601px) and (max-width: 1050px) {
+  .home-world .home-hero { min-height: 0; }
+  .home-art-stage { width: 100%; height: auto; min-height: 710px; aspect-ratio: auto;
+    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') top center / 100% auto no-repeat,
+      #eee0fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover; }
+  .home-hero-copy { position: relative; left: auto; top: auto; width: 53%; margin-left: 6%; padding: 110px 0 45px; }
+  .home-hero-title { font-size: clamp(40px,5.2vw,55px); }
+  .home-hero-description { font-size: 15px; }
+  .home-hero-specialty p { font-size: 13px; }
+  .home-monitor-logo { top: 29.8vw; height: 9vw; }
+  .home-star-link { top: 47.8vw; height: 5vw; }
+}
+@media (max-width: 600px) {
+  .home-art-stage { min-height: 0; }
+  .home-hero-copy { position: relative; left: auto; top: auto; width: 88%; margin: 0 auto; padding: 59vw 0 40px; }
+  .home-hero-index { font-size: 9px; margin-bottom: 16px; }
+  .home-hero-title { font-size: clamp(42px,11vw,62px); }
+  .home-hero-tagline { font-size: 10px; margin-top: 20px; }
+  .home-hero-description { max-width: none; font-size: 15px; line-height: 1.5; }
+  .home-hero-actions { gap: 18px; }
+  .home-hero-specialty { margin-top: 25px; }
+  .home-hero-specialty p { font-size: 13px; }
+  .home-hero-specialty p:first-child { display: grid; gap: 7px; }
+}
+
+/* Chapter artwork at the director's 1440 × 900 proportions. All copy and controls stay live. */
+.home-world .proof-world,.home-world .offer-world,.home-world .lab-world {
+  position: relative; isolation: isolate; width: 100%; margin: 0;
+  border: 0; box-shadow: none; overflow: hidden; transform: none;
+}
+.home-world .proof-world,.home-world .offer-world { padding: 52px 24px 90px; }
+.home-world .proof-world { background: #f6d4ed; }
+.home-world .proof-world::before {
+  content: ''; position: absolute; inset: 0 0 auto; z-index: 0;
+  height: 62.5vw; max-height: 900px;
+  background: url('/assets/art-direction/chapters/proof-1440.webp') center top / 100% auto no-repeat;
+  pointer-events: none;
+}
+.home-world .proof-world .content-shell { position: relative; z-index: 1; }
+.home-world .proof-world .section-kicker { color: #5e1b54; }
+.home-world .proof-world .section-kicker span { background: rgba(255,235,249,.83); }
+.home-world .proof-world .proof-heading {
+  width: min(610px,48vw); margin: clamp(180px,17vw,255px) auto 0;
+  display: block; grid-template-columns: none; gap: 0;
+  padding: 0; border: 0; background: none; box-shadow: none; transform: none;
+  text-align: center;
+}
+.home-world .proof-world .proof-heading::after { content: none; }
+.home-world .proof-world h2 {
+  margin: 0; font-size: clamp(61px,5.6vw,83px); line-height: .94;
+  text-shadow: 0 1px 12px #fff2fb,0 1px 26px #fff2fb;
+}
+.home-world .proof-world h2 em { color: #a72072; }
+.home-world .proof-world .proof-heading > p {
+  width: min(440px,100%); margin: 22px auto 0; padding: 8px 14px;
+  color: #402240; background: rgba(255,243,252,.83);
+  font-size: 16px; line-height: 1.5;
+}
+.home-world .proof-world .proof-grid {
+  position: relative; z-index: 1; margin-top: clamp(190px,18vw,275px);
+  box-shadow: 0 20px 45px rgba(82,31,74,.12);
+}
+.home-world .proof-world .proof-grid article { background: #fffafc; }
+.home-world .proof-world .proof-grid article:nth-child(2) { background: #ffedf7; }
+.home-world .proof-world .proof-grid article:nth-child(3) { background: #f6eafa; }
+.home-world .proof-world .proof-disclosure { position: relative; z-index: 1; }
+
+/* The offers remain selectable HTML line items on a quieter paper surface. */
+.home-world .offer-world {
+  background: #f4d4e3 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center / cover;
+}
+.home-world .offer-world .content-shell { position: relative; z-index: 2; }
+.home-world .offer-world .section-kicker { margin-bottom: 35px; color: #58284b; }
+.home-world .offer-receipt {
+  position: relative; width: min(830px,82%); margin: 0 auto; padding: clamp(36px,5vw,64px);
+  color: #5c3549; border: 1px solid rgba(168,110,138,.5);
+  background: linear-gradient(145deg,rgba(255,246,245,.96),rgba(255,230,238,.96));
+  box-shadow: 0 26px 70px rgba(111,44,79,.17),10px 12px 0 rgba(255,255,255,.35);
+  transform: rotate(-1deg);
+}
+.home-world .offer-receipt::before {
+  content: ''; position: absolute; inset: 14px; border: 1px solid rgba(169,109,139,.31); pointer-events: none;
+}
+.home-world .receipt-masthead { display: flex; align-items: center; gap: 14px; padding-bottom: 22px; border-bottom: 1px solid #c39bb0; }
+.home-world .receipt-masthead .receipt-monogram { font: italic 600 42px/.8 var(--font-fashion),Georgia,serif; }
+.home-world .receipt-masthead > span:nth-child(2) { font: 700 10px/1.3 var(--font-sans),sans-serif; letter-spacing: .2em; }
+.home-world .receipt-masthead small { margin-left: auto; font: 700 9px var(--font-mono),monospace; letter-spacing: .12em; }
+.home-world .offer-world .offer-heading { width: 100%; margin: 34px 0; padding: 0; border: 0; background: none; box-shadow: none; transform: none; }
+.home-world .offer-world h2 { font-size: clamp(42px,4.4vw,62px); line-height: .97; }
+.home-world .offer-world h2 em { color: #a9357b; }
+.home-world .offer-world .offer-heading > p { max-width: 590px; margin: 18px 0 0; font-size: 16px; }
+.home-world .receipt-columns { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #c59aaf; border-bottom: 1px solid #c59aaf; font: 700 9px var(--font-mono),monospace; letter-spacing: .15em; }
+.home-world .offer-world .offer-grid { display: block; margin: 0; }
+.home-world .offer-world .offer-grid article,
+.home-world .offer-world .offer-grid article:nth-child(2),
+.home-world .offer-world .offer-grid article:nth-child(3) {
+  display: grid; grid-template-columns: 100px minmax(0,1fr) 145px; gap: 5px 16px;
+  min-height: 0; margin: 0; padding: 24px 0;
+  border: 0; border-bottom: 1px solid rgba(166,100,132,.37); background: none; box-shadow: none;
+}
+.home-world .offer-world .offer-grid article::before,.home-world .offer-world .offer-grid article::after { content: none; }
+.home-world .offer-world .offer-grid small { align-self: start; padding-top: 7px; font-size: 8px; }
+.home-world .offer-world .offer-grid h3 { grid-column: 2; margin: 0; font-size: clamp(26px,2.45vw,36px); }
+.home-world .offer-world .offer-grid article > strong { grid-column: 3; justify-self: end; align-self: start; padding: 7px 0; border: 0; background: none; font-size: 10px; text-align: right; }
+.home-world .offer-world .offer-grid p { grid-column: 2 / 4; max-width: 590px; margin: 0; font-size: 13px; line-height: 1.5; }
+.home-world .receipt-signoff { display: flex; justify-content: space-between; gap: 14px; margin-top: 28px; font: italic 21px var(--font-fashion),Georgia,serif; }
+.home-world .receipt-signoff span { color: #c84c92; }
+.home-world .composition-art { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.home-world .composition-piece { position: absolute; display: block; background-repeat: no-repeat; }
+.home-world .composition-offer .piece-diamond-heart {
+  top: 4%; right: 2%; width: min(18vw,240px); aspect-ratio: 1;
+  background: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 88.PNG') center / 250%; opacity: .85;
+}
+.home-world .composition-offer .piece-pearl-chain {
+  top: -18%; left: 24%; width: min(58vw,800px); aspect-ratio: 1.7;
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 99.PNG') center / contain;
+}
+.home-world .composition-offer .piece-foil-card { display: none; }
+.home-world .composition-offer .piece-glint-one,.home-world .composition-offer .piece-glint-two {
+  width: 100px; aspect-ratio: 1; background: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.PNG') center / contain;
+}
+.home-world .composition-offer .piece-glint-one { top: 27%; left: 2%; }
+.home-world .composition-offer .piece-glint-two { bottom: 5%; right: 5%; width: 75px; }
+
+/* The faded artwork leaves room for live typography without hiding the disc. */
+.home-world .lab-world {
+  position: relative; padding: 0 24px 90px;
+  background: #ede2fa;
+}
+.home-world .lab-world::before {
+  content: ''; position: absolute; inset: 0 0 auto; z-index: 0;
+  height: 62.5vw; max-height: 900px; pointer-events: none;
+  background: url('/assets/art-direction/chapters/lab-1440.webp') center top / 100% auto no-repeat;
+}
+.home-world .lab-world .ahs-lab {
+  position: relative; z-index: 1; width: min(1190px,100%); margin: 0 auto;
+  padding: 0; border: 0; background: none; box-shadow: none; transform: none;
+}
+.home-world .lab-world .ahs-lab .content-shell { width: 100%; }
+.home-world .lab-world .ahs-lab-head {
+  display: block; grid-template-columns: none; width: min(410px,35vw);
+  margin: clamp(110px,12vw,175px) 0 0; padding: 20px 22px;
+  background: rgba(255,251,255,.46); border: 0; border-left: 2px solid rgba(171,69,143,.55); box-shadow: none;
+  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); transform: none;
+}
+.home-world .lab-world .ahs-lab h2 { font-size: clamp(42px,3.65vw,53px); line-height: .96; }
+.home-world .lab-world .ahs-lab-head p { max-width: 360px; margin: 17px 0 0; font-size: 15px; }
+.home-world .lab-world .ahs-lab-grid { margin-top: clamp(145px,16vw,240px); }
+.home-world .lab-world .ahs-job-list { background: #faf4ff; }
+.home-world .lab-world .ahs-demo-shell { background: #fff; }
+@media (max-width: 900px) {
+  .home-world .proof-world .proof-heading { width: min(540px,66vw); margin-top: 17vw; }
+  .home-world .proof-world h2 { font-size: clamp(50px,6.6vw,70px); }
+  .home-world .proof-world .proof-grid { margin-top: 16vw; }
+  .home-world .offer-receipt { width: min(760px,93%); }
+  .home-world .offer-world .offer-grid article { grid-template-columns: 85px minmax(0,1fr) 120px; }
+  .home-world .lab-world .ahs-lab-head { width: min(390px,50vw); }
+  .home-world .lab-world .ahs-lab-grid { margin-top: clamp(95px,13vw,170px); }
+}
+@media (max-width: 600px) {
+  .home-world .proof-world,.home-world .offer-world { padding: 26px 14px 58px; }
+  .home-world .proof-world::before { height: 560px; max-height: none; background-size: auto 560px; }
+  .home-world .proof-world .section-kicker span:last-child { display: none; }
+  .home-world .proof-world .proof-heading { width: 100%; margin: 130px auto 0; padding: 0 8px; }
+  .home-world .proof-world h2 { font-size: clamp(43px,11vw,58px); }
+  .home-world .proof-world .proof-heading > p { margin-top: 18px; font-size: 14px; }
+  .home-world .proof-world .proof-grid { margin-top: 165px; }
+  .home-world .offer-receipt { width: 100%; margin: 0; padding: 28px 21px; transform: none; }
+  .home-world .receipt-masthead { gap: 8px; }
+  .home-world .receipt-masthead small { font-size: 7px; text-align: right; }
+  .home-world .offer-world .offer-heading { margin: 30px 0; }
+  .home-world .offer-world h2 { font-size: clamp(40px,10vw,55px); }
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3) { display: block; padding: 20px 0; }
+  .home-world .offer-world .offer-grid small,.home-world .offer-world .offer-grid h3,
+  .home-world .offer-world .offer-grid article > strong,.home-world .offer-world .offer-grid p { display: block; text-align: left; }
+  .home-world .offer-world .offer-grid h3 { margin: 8px 0; font-size: 30px; }
+  .home-world .offer-world .offer-grid article > strong { margin-bottom: 8px; padding: 0; }
+  .home-world .composition-offer .piece-diamond-heart { width: 130px; right: -12%; }
+  .home-world .composition-offer .piece-pearl-chain { width: 310px; top: -9%; }
+  .home-world .lab-world { padding: 0 14px 58px; }
+  .home-world .lab-world::before { height: 560px; max-height: none; background-size: auto 560px; }
+  .home-world .lab-world .ahs-lab-head { width: 100%; margin: 485px auto 0; padding: 24px 20px; background: rgba(255,251,255,.86); }
+  .home-world .lab-world .ahs-lab h2 { font-size: clamp(41px,10vw,53px); }
+  .home-world .lab-world .ahs-lab-grid { margin-top: 25px; }
+}
+
+/* Investment: the glitter artwork is scenery; the entire receipt and card are crisp live layers. */
+.home-world .offer-world {
+  min-height: 1040px;
+  padding: 42px 24px 110px;
+  background: #f7d8df;
+}
+.home-world .offer-world::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(255,226,234,.04) 0 55%, #f7d8df 98%),
+    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG') center top / 100% auto no-repeat;
+}
+.home-world .offer-world .content-shell { width: min(1366px,100%); }
+.home-world .offer-world .section-kicker { position: relative; z-index: 4; margin-bottom: 28px; color: #572a42; }
+.home-world .offer-world .section-kicker span { background: rgba(255,245,247,.84); }
+.home-world .offer-receipt {
+  z-index: 2; width: min(800px,72%); margin: 0 auto 0 8%; padding: clamp(38px,4vw,58px);
+  color: #432b39; border: 1px solid #b77d94;
+  background: linear-gradient(148deg,#fff8f4 0%,#fff0ef 51%,#ffedf1 100%);
+  box-shadow: 0 25px 80px rgba(92,35,61,.27), 8px 9px 0 rgba(255,255,255,.45);
+  transform: rotate(-2.3deg);
+}
+.home-world .offer-receipt::before { inset: 12px; border: 1px solid #d4a9b8; }
+.home-world .offer-receipt::after {
+  content: '✧'; position: absolute; top: 18px; right: 25px;
+  color: #ab668b; font: 32px/1 Georgia,serif;
+}
+.home-world .receipt-masthead { justify-content: center; gap: 16px; padding: 5px 15px 23px; border-bottom: 1px solid #c896a9; }
+.home-world .receipt-masthead .receipt-monogram { font-size: 52px; }
+.home-world .receipt-masthead > span:nth-child(2) { font-size: 12px; letter-spacing: .25em; }
+.home-world .receipt-masthead small { font-size: 11px; letter-spacing: .09em; }
+.home-world .offer-world .offer-heading { margin: 35px 0 30px; }
+.home-world .offer-world h2 { font-size: clamp(43px,4vw,62px); color: #48253a; }
+.home-world .offer-world .offer-heading > p { color: #513e48; font-size: 16px; line-height: 1.5; }
+.home-world .receipt-columns { padding: 12px 0; border-color: #b77d94; color: #6c354f; font-size: 11px; }
+.home-world .offer-world .offer-grid article,
+.home-world .offer-world .offer-grid article:nth-child(2),
+.home-world .offer-world .offer-grid article:nth-child(3) { grid-template-columns: 112px minmax(0,1fr) 150px; gap: 7px 16px; padding: 26px 0; border-color: #d5a2b6; }
+.home-world .offer-world .offer-grid small { padding-top: 6px; font-size: 10px; line-height: 1.35; letter-spacing: .06em; }
+.home-world .offer-world .offer-grid h3 { font-size: clamp(27px,2.25vw,35px); }
+.home-world .offer-world .offer-grid article > strong { padding: 5px 0; font-size: 12px; line-height: 1.35; }
+.home-world .offer-world .offer-grid p { color: #59434e; font-size: 14px; line-height: 1.5; }
+.home-world .receipt-signoff { margin-top: 30px; padding-top: 4px; color: #78445e; font-size: 20px; }
+.home-world .offer-card {
+  position: absolute; z-index: 1; top: 50%; right: 1%; width: min(370px,31vw); aspect-ratio: 1.62;
+  border: 2px solid rgba(255,253,252,.89); border-radius: 18px;
+  background:
+    radial-gradient(circle at 72% 18%,rgba(255,255,255,.95),transparent 19%),
+    radial-gradient(ellipse at 22% 68%,rgba(249,149,184,.75),transparent 55%),
+    linear-gradient(121deg,#e4a4bd 0%,#fff0e8 33%,#eca5bf 65%,#f8e7f2 100%);
+  box-shadow: 0 16px 36px rgba(101,46,69,.3), inset 0 0 0 5px rgba(250,211,224,.62),inset 0 0 0 6px rgba(165,92,122,.5);
+  transform: rotate(11deg); color: #894962;
+}
+.home-world .offer-card::before { content: '✧'; position: absolute; top: 12px; right: 18px; font: 30px Georgia,serif; }
+.home-world .offer-card-chip { position: absolute; top: 25%; left: 12%; width: 14%; aspect-ratio: 1.28; border: 1px solid #a56e72; border-radius: 6px; background: repeating-linear-gradient(90deg,transparent 0 27%,#bd928b 28% 29%,transparent 30% 50%),linear-gradient(135deg,#f8e7d5,#e2b7b2); }
+.home-world .offer-card-monogram { position: absolute; top: 34%; left: 55%; font: italic 63px/.9 Georgia,serif; letter-spacing: -.18em; }
+.home-world .offer-card-monogram span { font-size: .65em; }
+.home-world .offer-card-number { position: absolute; bottom: 13%; left: 12%; font: 700 10px var(--font-mono),monospace; letter-spacing: .2em; }
+.home-world .offer-card-circles { position: absolute; bottom: 11%; right: 10%; width: 20%; aspect-ratio: 1.8; background: radial-gradient(circle at 31% 50%,rgba(153,72,98,.67) 0 40%,transparent 42%),radial-gradient(circle at 70% 50%,rgba(200,111,133,.67) 0 40%,transparent 42%); }
+@media (max-width: 900px) {
+  .home-world .offer-world { min-height: 0; }
+  .home-world .offer-receipt { width: min(740px,84%); margin-left: 2%; }
+  .home-world .offer-card { right: -2%; top: 58%; width: 29%; }
+  .home-world .offer-world .offer-grid article { grid-template-columns: 90px minmax(0,1fr) 120px; }
+}
+@media (max-width: 600px) {
+  .home-world .offer-world { padding: 22px 14px 76px; }
+  .home-world .offer-world::before { background-size: auto 480px; background-position: center top; }
+  .home-world .offer-world .section-kicker { margin-bottom: 65px; }
+  .home-world .offer-receipt { width: 100%; margin: 0; padding: 30px 24px; transform: rotate(-.5deg); }
+  .home-world .offer-receipt::before { inset: 8px; }
+  .home-world .receipt-masthead { justify-content: flex-start; gap: 8px; padding: 0 0 20px; }
+  .home-world .receipt-masthead .receipt-monogram { font-size: 43px; }
+  .home-world .receipt-masthead > span:nth-child(2) { font-size: 9px; letter-spacing: .14em; }
+  .home-world .receipt-masthead small { font-size: 8px; }
+  .home-world .offer-world .offer-heading { margin: 30px 0; }
+  .home-world .offer-world h2 { font-size: clamp(40px,10vw,55px); }
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3) { display: block; padding: 21px 0; }
+  .home-world .offer-world .offer-grid small { font-size: 10px; }
+  .home-world .offer-world .offer-grid h3 { margin: 8px 0; font-size: 29px; }
+  .home-world .offer-world .offer-grid article > strong { margin-bottom: 8px; padding: 0; font-size: 12px; }
+  .home-world .offer-world .offer-grid p { font-size: 14px; }
+  .home-world .receipt-signoff { font-size: 16px; }
+  .home-world .offer-card { position: relative; top: auto; right: auto; width: min(290px,80%); margin: -15px 0 0 auto; transform: rotate(7deg); }
+  .home-world .offer-card-monogram { font-size: 48px; }
+}

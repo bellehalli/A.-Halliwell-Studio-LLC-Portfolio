@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Status = "idle" | "sending" | "success" | "error";
+type LabScope = { projectType: string; needs: string[]; successGoal: string };
 
 type Draft = {
   projectType: string;
@@ -24,6 +25,7 @@ type Draft = {
 };
 
 const DRAFT_KEY = "ahs-project-inquiry-draft-v1";
+const LAB_SCOPE_KEY = "ahs-lab-scope-v1";
 
 const projectTypes = [
   "Small business / service",
@@ -170,6 +172,16 @@ export default function StartProject() {
         setBookingType(draft.bookingType || "");
         setGuestPain(draft.guestPain || "");
       }
+      const fromLab = sessionStorage.getItem(LAB_SCOPE_KEY);
+      if (fromLab) {
+        const scope = JSON.parse(fromLab) as LabScope;
+        if (scope.projectType && Array.isArray(scope.needs) && scope.successGoal) {
+          setProjectType(scope.projectType);
+          setNeeds(scope.needs);
+          setSuccessGoal(scope.successGoal);
+        }
+        sessionStorage.removeItem(LAB_SCOPE_KEY);
+      }
     } catch {
       localStorage.removeItem(DRAFT_KEY);
     } finally {
@@ -220,6 +232,19 @@ export default function StartProject() {
     bookingType,
     guestPain,
   ]);
+
+  useEffect(() => {
+    const receiveScope = (event: Event) => {
+      const scope = (event as CustomEvent<LabScope>).detail;
+      if (!scope || !Array.isArray(scope.needs)) return;
+      setProjectType(scope.projectType);
+      setNeeds(scope.needs);
+      setSuccessGoal(scope.successGoal);
+      sessionStorage.removeItem(LAB_SCOPE_KEY);
+    };
+    window.addEventListener("ahs:lab-scope", receiveScope);
+    return () => window.removeEventListener("ahs:lab-scope", receiveScope);
+  }, []);
 
   const toggleNeed = (x: string) =>
     setNeeds((current) =>
@@ -603,14 +628,14 @@ export default function StartProject() {
               <p className="builder-privacy">Your draft saves automatically on this device until you submit it.</p>
             </div>
             <button className="button button-primary" disabled={status === "sending"}>
-              {status === "sending" ? "Sending..." : "Send my project ↗"}
+              {status === "sending" ? "Sending..." : "Send my project"}
             </button>
           </div>
 
           {feedback && status === "error" && (
             <p className="builder-feedback builder-error">
               {feedback}{" "}
-              <a href="mailto:hello@ahalliwellstudio.com">Email the studio directly ↗</a>
+              <a href="mailto:hello@ahalliwellstudio.com">Email the studio directly</a>
             </p>
           )}
 

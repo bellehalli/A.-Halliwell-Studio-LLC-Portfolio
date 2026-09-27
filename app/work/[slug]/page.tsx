@@ -36,13 +36,23 @@ export default async function ProjectPage({ params }: Props) {
 
         <ProjectMedia project={project} />
 
+        {project.slug === "willow-lily" && <section className="case-journey" aria-label="The couple's journey">
+          <span>THE GUEST JOURNEY</span>
+          <ol>
+            <li><b>01</b><strong>Discover the estate</strong><p>Meet the setting and the feeling of a weekend here.</p></li>
+            <li><b>02</b><strong>Imagine the celebration</strong><p>Explore the spaces, stay and ceremony possibilities.</p></li>
+            <li><b>03</b><strong>Understand the offering</strong><p>Find planning details and investment before reaching out.</p></li>
+            <li><b>04</b><strong>Request a tour</strong><p>Move from inspiration to a clear inquiry path.</p></li>
+          </ol>
+        </section>}
+
         <section className="case-story">
           <div><small>01 / THE BRIEF</small><h2>Start with<br />the real job.</h2></div><div><p>{project.brief}</p></div>
-          <div><small>02 / THE CHALLENGE</small><h2>Find the<br />friction.</h2></div><div><p>{project.challenge}</p></div>
+          <div><small>02 / THE PROBLEM</small><h2>Find the<br />friction.</h2></div><div><p>{project.challenge}</p></div>
           <div><small>03 / THE STRATEGY</small><h2>Design the<br />decision.</h2></div><div><p>{project.strategy}</p></div>
-          <div><small>04 / THE BUILD</small><h2>Make the site<br />participate.</h2></div>
+          <div><small>04 / THE DIGITAL EXPERIENCE</small><h2>Make the site<br />participate.</h2></div>
           <div className="case-approach">{project.approach.map((item, i) => <div key={item}><span>{String(i + 1).padStart(2, "0")}</span><strong>{item}</strong></div>)}</div>
-          <div><small>05 / THE OUTCOME</small><h2>What the concept<br />proves.</h2></div><div><p>{project.outcome}</p></div>
+          <div><small>05 / THE BUSINESS PURPOSE</small><h2>What the concept<br />proves.</h2></div><div><p>{project.outcome}</p></div>
           <div className="case-capabilities"><small>06 / CAPABILITIES</small><div>{project.details.map((d) => <span key={d}>{d}</span>)}</div></div>
         </section>
 
