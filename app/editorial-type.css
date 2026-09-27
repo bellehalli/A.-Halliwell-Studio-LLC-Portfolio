@@ -124,3 +124,11 @@ button, input, select, textarea { font-family: inherit; }
 .home-world .work-gallery-details > span { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 13px; }
 .home-world .work-gallery-details > p { font-family: "Times New Roman",Times,serif; font-size: 14px; }
 .home-world .project-browser-bar span,.home-world .project-preview-note { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 12px; }
+.home-world .home-hero-description { font-size: clamp(17px,1.37vw,20px); line-height: 1.42; }
+.home-world .home-hero-specialty p { font-size: clamp(14px,1.08vw,17px); }
+.home-world .lab-world .ahs-job-list > button span,
+.home-world .lab-world .ahs-job-list > button b,
+.home-world .lab-world .ahs-live :is(small,header b,.ahs-label,label span),
+.home-world .lab-world .ahs-demo-shell footer,
+.home-world .lab-world .demo-window-top b { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 13px; letter-spacing: .04em; }
+.home-world .lab-world .ahs-job-list > button { min-height: 54px; }

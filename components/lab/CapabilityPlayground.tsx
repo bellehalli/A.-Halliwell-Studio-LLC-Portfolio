@@ -82,7 +82,7 @@ function Demo({job}:{job:Job}) {
 const discoveryOptions = {
   "Wedding venue": ["Inquiry system","Availability","Galleries","Planning tools"],
   Restaurant: ["Reservations","Menu","Events"],
-  "Small business": ["Focused landing page","Inquiry system","Booking"],
+  "Small business": ["Focused landing page","Inquiry system"],
   "Something else": ["Inquiry system","Commerce","Client portal","Events"]
 } as const;
 type Business = keyof typeof discoveryOptions;
