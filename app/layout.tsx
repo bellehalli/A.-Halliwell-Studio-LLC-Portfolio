@@ -7,6 +7,7 @@ import "./visual-polish.css";
 import "./home-world.css";
 import "./editorial-type.css";
 import "./lab-refinement.css";
+import "./work-refinement.css";
 export const metadata:Metadata={
  metadataBase:new URL("https://www.ahalliwellstudio.com"),
  title:{default:"A. Halliwell Studio | Web Design, Development & Digital Systems",template:"%s | A. Halliwell Studio"},
