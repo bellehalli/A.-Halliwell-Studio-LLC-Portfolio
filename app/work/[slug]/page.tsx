@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProjectMedia from "@/components/ProjectMedia";
+import CaseStudyWorld from "@/components/projects/CaseStudyWorld";
+import { caseStudies } from "@/data/caseStudies";
 import { getProject, projects } from "@/data/projects";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -21,11 +23,11 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
 
   return (
-    <main className="case-page">
+    <main className={`case-page ${caseStudies[project.slug] ? "case-page-editorial" : ""}`}>
       <div className="site-background" aria-hidden="true" />
       <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><Link href="/work">← Selected Work</Link></header>
 
-      <article className={`case-sheet project-${project.tone}`}>
+      {caseStudies[project.slug] ? <CaseStudyWorld project={project} study={caseStudies[project.slug]} /> : <article className={`case-sheet project-${project.tone}`}>
         <section className="case-hero">
           <div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div>
           <h1>{project.name}</h1>
@@ -57,7 +59,7 @@ export default async function ProjectPage({ params }: Props) {
         </section>
 
         <section className="case-end"><small>NEED A SITE WITH A JOB TO DO?</small><h2>Build around the<br />business problem.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
-      </article>
+      </article>}
     </main>
   );
 }
