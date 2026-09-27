@@ -192,9 +192,13 @@ button, input, select, textarea { font-family: inherit; }
 .ahs-discovery-result a { display: inline-flex; align-items: center; gap: 7px; }
 .ahs-discovery-result a img { width: 22px; height: 22px; object-fit: contain; }
 .lab-destination .ahs-lab { padding: 0; border: 0; background: transparent; box-shadow: none; transform: none; }
+.lab-destination { padding: clamp(26px,3vw,46px); }
 .lab-destination .destination-hero { padding-bottom: 20px; }
+.lab-destination .destination-hero h1 { max-width: 900px; margin-top: 13px; font-size: clamp(50px,5.3vw,78px); line-height: .94; }
+.lab-destination .destination-hero > p { max-width: 740px; margin-top: 16px; font-size: 18px; }
 .lab-destination .ahs-lab .content-shell { width: 100%; }
-.lab-destination .ahs-lab-head { margin-bottom: 0; }
+.lab-destination .ahs-lab-head { margin-bottom: 0; gap: 25px; }
+.lab-destination .ahs-lab-head h2 { font-size: clamp(34px,3.3vw,48px); }
 .lab-destination .ahs-demo-intro { margin-top: 24px; }
 .lab-destination .ahs-lab-grid { margin-top: 14px; grid-template-columns: minmax(210px,.25fr) minmax(0,.75fr); }
 .lab-destination .ahs-discovery { margin-top: 70px; }
