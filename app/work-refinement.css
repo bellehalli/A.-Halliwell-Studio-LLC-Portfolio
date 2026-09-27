@@ -528,3 +528,85 @@
 @media(max-width:440px){
   .home-world .world-footer .footer-links{grid-template-columns:1fr}
 }
+
+/* One heart follows the visitor. Its existing menu hearts open as a vertical ribbon. */
+.home-world #home-content>.site-nav.floating-heart-nav{
+  position:fixed!important;top:auto!important;left:auto!important;
+  right:clamp(12px,2vw,28px)!important;bottom:clamp(12px,2vw,28px)!important;
+  width:100px!important;min-height:100px!important;height:100px!important;
+  margin:0!important;padding:0!important;transform:none!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  backdrop-filter:none!important;z-index:190!important;
+}
+.home-world .floating-heart-nav .logo{display:none!important}
+.home-world .site-nav.floating-heart-nav .heart-menu-trigger{
+  display:grid!important;width:100px!important;height:100px!important;
+  filter:drop-shadow(0 8px 13px rgba(63,23,57,.2));
+}
+.home-world .site-nav.floating-heart-nav .heart-menu-trigger .heart-button-label{
+  width:70%;font-size:16px!important;line-height:1.05;
+  font-variant:small-caps;letter-spacing:.025em;
+}
+.home-world .site-nav.floating-heart-nav .heart-dock,
+.home-world .site-nav.floating-heart-nav .heart-dock.is-open{
+  position:absolute!important;inset:auto 0 calc(100% + 4px) auto!important;
+  display:grid!important;grid-template-columns:1fr!important;
+  justify-items:center!important;align-content:end!important;gap:0!important;
+  width:112px!important;height:auto!important;max-height:calc(100svh - 122px);
+  margin:0!important;padding:0!important;overflow-y:auto;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  transform-origin:bottom center!important;
+}
+.home-world .site-nav.floating-heart-nav .heart-dock{
+  opacity:0!important;visibility:hidden!important;pointer-events:none!important;
+  transform:translateY(14px) scale(.82)!important;
+}
+.home-world .site-nav.floating-heart-nav .heart-dock.is-open{
+  opacity:1!important;visibility:visible!important;pointer-events:auto!important;
+  transform:none!important;
+}
+.home-world .site-nav.floating-heart-nav .heart-nav-button,
+.home-world .site-nav.floating-heart-nav .heart-nav-button:nth-child(n),
+.home-world .site-nav.floating-heart-nav .heart-nav-button.heart-start{
+  position:relative!important;inset:auto!important;grid-column:auto!important;
+  width:102px!important;height:82px!important;justify-self:center!important;
+  filter:drop-shadow(0 5px 7px rgba(63,23,57,.16));
+}
+.home-world .site-nav.floating-heart-nav .heart-nav-button .heart-button-label,
+.home-world .site-nav.floating-heart-nav .heart-start .heart-button-label{
+  width:72%;font-size:14px!important;line-height:1.03;
+  font-variant:small-caps;letter-spacing:.015em;
+}
+.home-world .site-nav.floating-heart-nav .heart-start .heart-button-label{font-size:12px!important}
+@media(max-width:600px){
+  .home-world #home-content>.site-nav.floating-heart-nav{
+    right:10px!important;bottom:10px!important;
+    width:82px!important;height:82px!important;min-height:82px!important;
+  }
+  .home-world .site-nav.floating-heart-nav .heart-menu-trigger{
+    width:82px!important;height:82px!important;
+  }
+  .home-world .site-nav.floating-heart-nav .heart-menu-trigger .heart-button-label{
+    font-size:13px!important;
+  }
+  .home-world .site-nav.floating-heart-nav .heart-dock,
+  .home-world .site-nav.floating-heart-nav .heart-dock.is-open{
+    right:0!important;bottom:calc(100% + 3px)!important;width:94px!important;
+    max-height:calc(100svh - 100px);
+  }
+  .home-world .site-nav.floating-heart-nav .heart-nav-button,
+  .home-world .site-nav.floating-heart-nav .heart-nav-button:nth-child(n),
+  .home-world .site-nav.floating-heart-nav .heart-nav-button.heart-start{
+    width:90px!important;height:72px!important;
+  }
+  .home-world .site-nav.floating-heart-nav .heart-nav-button .heart-button-label{
+    font-size:12px!important;
+  }
+  .home-world .site-nav.floating-heart-nav .heart-start .heart-button-label{
+    font-size:10px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .home-world .site-nav.floating-heart-nav .heart-menu-trigger{animation:none}
+  .home-world .site-nav.floating-heart-nav .heart-dock{transition:none!important}
+}
