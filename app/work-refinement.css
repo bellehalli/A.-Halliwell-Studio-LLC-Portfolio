@@ -403,3 +403,128 @@
 @media(prefers-reduced-motion:reduce){
   .home-world .project-world-media .project-live-preview{scroll-behavior:auto}
 }
+
+/* The remaining five demos continue the Willow / Maison gallery rhythm.
+   Their live sites stay interactive; the illustrated three-screen shelf is reserved
+   for projects with actual screen studies. */
+.home-world .project-world.project-gallery{
+  min-height:0;padding:0;
+  --archive-ink:#381b41;--archive-rule:rgba(76,35,79,.34);
+  --archive-glaze:#fff8fc;
+  color:var(--archive-ink);
+  background:radial-gradient(ellipse at 50% 12%,#fff 0%,#f8e9fa 34%,#dcc7ff 100%);
+}
+.home-world .project-world.project-gallery.work-gallery-maison{
+  background:radial-gradient(ellipse at 50% 10%,#fff6f2 0%,#f7d2e7 45%,#dec4e6 100%);
+}
+.home-world .project-world.project-gallery::before{
+  content:""!important;position:absolute;inset:0 0 auto;z-index:-1;
+  height:clamp(220px,35vw,420px);pointer-events:none;
+  background:url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center top/100% auto no-repeat;
+  -webkit-mask-image:linear-gradient(#000,transparent 90%);
+  mask-image:linear-gradient(#000,transparent 90%);
+}
+.home-world .project-world.project-gallery.work-gallery-maison::before{
+  background-image:url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG');
+}
+.home-world .project-world.project-gallery .project-world-paper,
+.home-world .project-world.project-gallery:nth-child(even) .project-world-paper{
+  width:100%;padding:clamp(68px,7vw,112px) 24px clamp(44px,5vw,80px);
+}
+.home-world .project-world.project-gallery .project-world-title,
+.home-world .project-world.project-gallery:nth-child(even) .project-world-title{
+  width:min(780px,100%);margin:0 auto 42px;text-align:center;
+  text-shadow:none;
+}
+.home-world .project-world.project-gallery .work-gallery-kicker{
+  max-width:none;margin:0 auto;color:#4e2250;
+  font-size:clamp(12px,.95vw,14px);line-height:1.4;
+}
+.home-world .project-world.project-gallery .project-world-accent{
+  display:block;margin:20px auto 7px;color:#a22b79;font-style:italic;
+}
+.home-world .project-world.project-gallery .project-world-title h3{
+  font-size:clamp(64px,8vw,118px);line-height:.9;
+}
+.home-world .project-world.project-gallery.work-gallery-maison .project-world-title h3{
+  color:#a22b79;font-style:italic;
+}
+.home-world .project-world.project-gallery .project-world-title>p:not(.work-gallery-kicker),
+.home-world .project-world.project-gallery:nth-child(even) .project-world-title>p:not(.work-gallery-kicker){
+  max-width:680px;margin:18px auto 0;color:#381b41;
+  font-size:clamp(16px,1.5vw,20px);line-height:1.55;
+}
+.home-world .project-world.project-gallery .work-gallery-links{
+  justify-content:center;margin-top:26px;
+}
+.home-world .project-world.project-gallery .work-gallery-links a{
+  font-size:clamp(12px,.95vw,15px);
+}
+.home-world .project-world.project-gallery .project-world-media{
+  width:min(1160px,100%);margin:0 auto;filter:none;
+}
+.home-world .project-world.project-gallery .project-live-preview{
+  border:2px solid #5c2e68;border-radius:12px;background:#fff8fc;
+  box-shadow:0 20px 45px rgba(62,29,66,.15);
+}
+.home-world .project-world.project-gallery .project-browser-bar{
+  display:flex;background:#e6e1f1;
+}
+.home-world .project-world.project-gallery .project-live-preview iframe{
+  height:clamp(480px,58vw,720px);
+}
+.home-world .project-world.project-gallery .project-evidence-bar{
+  background:#f6daef;
+}
+.home-world .project-world.project-gallery .project-world-footer{
+  width:min(1160px,100%);margin:23px auto 0;
+  border-top:1px solid var(--archive-rule);
+}
+.home-world .project-world.project-gallery .project-world-colophon{
+  max-width:none;
+}
+
+/* Quiet close to the archive: the same soft palette, with every footer route intact. */
+.home-world .world-footer{
+  min-height:0;padding:clamp(65px,7vw,100px) 24px;
+  background:radial-gradient(ellipse at 52% 0%,#fff6f2 0%,#f7d2e7 48%,#dec4e6 100%);
+}
+.home-world .world-footer .scene-props{display:none}
+.home-world .world-footer .footer-paper{
+  width:min(1160px,100%);padding:34px 0 22px;
+  border-color:rgba(76,35,79,.4);
+}
+.home-world .world-footer .footer-paper>p{
+  max-width:730px;margin:22px 0 42px;
+}
+.home-world .world-footer .footer-links a{
+  padding:15px 18px 15px 0;font-size:clamp(14px,1.2vw,17px)!important;
+  letter-spacing:.02em;
+}
+@media(max-width:700px){
+  .home-world .project-world.project-gallery::before{
+    height:230px;background-size:auto 230px;
+  }
+  .home-world .project-world.project-gallery .project-world-paper,
+  .home-world .project-world.project-gallery:nth-child(even) .project-world-paper{
+    padding:66px 16px 52px;
+  }
+  .home-world .project-world.project-gallery .project-world-title,
+  .home-world .project-world.project-gallery:nth-child(even) .project-world-title{
+    margin-bottom:32px;
+  }
+  .home-world .project-world.project-gallery .project-world-title h3{
+    font-size:clamp(54px,13vw,76px);
+  }
+  .home-world .project-world.project-gallery .project-live-preview iframe{
+    height:570px;min-height:0;
+  }
+  .home-world .project-world.project-gallery .project-world-footer{
+    margin-top:23px;
+  }
+  .home-world .world-footer{padding:65px 20px 48px}
+  .home-world .world-footer .footer-links{grid-template-columns:1fr 1fr}
+}
+@media(max-width:440px){
+  .home-world .world-footer .footer-links{grid-template-columns:1fr}
+}

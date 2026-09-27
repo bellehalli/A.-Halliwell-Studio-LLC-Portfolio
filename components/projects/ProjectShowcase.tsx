@@ -16,22 +16,25 @@ export default function ProjectShowcase({ project }: { project: Project }) {
   const comingSoon = !project.livePreview;
   const external = project.url.startsWith("http");
   const world = direction[project.tone];
+  // The first two featured worlds are Willow (01) and Maison (02).
+  // Continue that visual rhythm through the rest of the archive.
+  const galleryTone = Number(project.number) % 2 ? "willow" : "maison";
 
   return (
-    <article className={`project-world project-world-${project.tone}`} aria-labelledby={`world-${project.slug}`}>
+    <article className={`project-world project-world-${project.tone} work-gallery work-gallery-${galleryTone} project-gallery`} aria-labelledby={`world-${project.slug}`}>
       <div className="project-world-paper">
-        <div className="project-world-index">
-          <span>Archive / {project.number}</span>
-          <span>{project.category}</span>
-        </div>
-
-        <div className="project-world-title">
+        <div className="project-world-title work-gallery-heading">
+          <p className="work-gallery-kicker">{project.number} — Selected Work <span aria-hidden="true">✦</span> {project.category}</p>
           <span className="project-world-accent">{world.line}</span>
           <h3 id={`world-${project.slug}`}>{project.name}</h3>
           <p>{project.description}</p>
+          <div className="project-links work-gallery-links">
+            <Link href={`/work/${project.slug}`}>Explore the case file <span aria-hidden="true">↗︎</span></Link>
+            {!comingSoon && <a href={project.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>Open the full site <span aria-hidden="true">↗︎</span></a>}
+          </div>
         </div>
 
-        <div className="project-world-media">
+        <div className="project-world-media work-gallery-media">
           {comingSoon ? (
             <div className="project-coming-soon" role="status">
               <div><span>Concept in development</span><strong>Coming Soon</strong><p>The case file is open while the live build takes shape.</p></div>
@@ -39,15 +42,11 @@ export default function ProjectShowcase({ project }: { project: Project }) {
           ) : <ProjectMedia project={project} />}
         </div>
 
-        <div className="project-world-footer">
+        <div className="project-world-footer work-gallery-details">
           <div className="project-world-colophon">
             <span>{world.purpose}</span>
             <div className="project-tags" aria-label="Project capabilities">{project.details.map(detail => <span key={detail}>{detail}</span>)}</div>
             <small>{project.disclosure}</small>
-          </div>
-          <div className="project-links">
-            <Link href={`/work/${project.slug}`}>Explore the case file <span aria-hidden="true">↗︎</span></Link>
-            {!comingSoon && <a href={project.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>Open the full site <span aria-hidden="true">↗︎</span></a>}
           </div>
         </div>
       </div>
