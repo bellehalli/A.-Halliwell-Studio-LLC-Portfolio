@@ -665,3 +665,49 @@
   .home-world .world-footer .footer-brand strong{font-size:clamp(23px,7vw,34px)}
   .home-world .world-footer .footer-links{gap:16px 24px}
 }
+
+/* An invitation to work together, with room for the words to breathe. */
+.home-world .offer-world .offer-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.58fr);align-items:end;gap:clamp(28px,5vw,72px);margin:54px 0 64px}
+.home-world .offer-world h2{font-size:clamp(46px,5.3vw,76px);line-height:.96}
+.home-world .offer-world .offer-heading>p{max-width:300px;margin:0 0 5px;font-size:clamp(17px,1.5vw,21px);line-height:1.42}
+.home-world .receipt-columns{padding:0 0 18px;border-bottom:1px solid rgba(149,76,111,.4)}
+.home-world .offer-world .offer-grid article,
+.home-world .offer-world .offer-grid article:nth-child(2),
+.home-world .offer-world .offer-grid article:nth-child(3){
+  grid-template-columns:minmax(0,1fr) minmax(145px,.32fr);gap:9px 24px;padding:36px 0 42px;
+}
+.home-world .offer-world .offer-grid small{grid-column:1/-1;padding:0;color:#ad397b;font-size:14px;letter-spacing:.035em;font-style:italic}
+.home-world .offer-world .offer-grid h3{grid-column:1;font-size:clamp(29px,2.7vw,41px)}
+.home-world .offer-world .offer-grid article>strong{grid-column:2;grid-row:2;justify-self:end;font-size:clamp(13px,1.15vw,16px);font-weight:500}
+.home-world .offer-world .offer-grid p{grid-column:1/-1;font-size:clamp(15px,1.3vw,18px)}
+
+/* The personal calling card is a heart, with a legible live text layer. */
+.home-world .founder-preview-visual{padding-bottom:160px}
+.home-world .founder-desk-note{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  left:-10%;bottom:-30px;width:min(410px,90%);max-width:none;aspect-ratio:1;
+  padding:15% 13% 23%;border:0;box-shadow:none;
+  background:url('/assets/hearts/Portfolio Assets A.Halliwell  - 1.PNG') center / contain no-repeat;
+  transform:rotate(-8deg);text-align:center;color:#421d3c;
+}
+.home-world .founder-desk-note small{font-size:clamp(12px,1.1vw,15px);letter-spacing:.08em}
+.home-world .founder-desk-note strong{margin:8px 0;font-size:clamp(27px,2.5vw,38px);line-height:.92}
+.home-world .founder-desk-note span{font-size:clamp(12px,1.05vw,15px);line-height:1.2}
+.home-world .founder-desk-note a{margin-top:9px;font-size:clamp(13px,1.08vw,16px);font-weight:700}
+
+.home-world .world-footer .footer-links a::after{content:'✦';display:inline-block;margin-left:5px;color:#ed4f9e;font-size:.75em;vertical-align:15%}
+@media(max-width:900px){
+  .home-world .offer-world .offer-heading{grid-template-columns:1fr;gap:22px}
+  .home-world .offer-world .offer-heading>p{max-width:530px}
+  .home-world .founder-desk-note{left:-3%;width:min(380px,78%)}
+}
+@media(max-width:600px){
+  .home-world .offer-world .offer-heading{margin:34px 0 45px}
+  .home-world .offer-world h2{font-size:clamp(40px,10vw,55px)}
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3){display:grid;grid-template-columns:1fr;padding:27px 0 32px}
+  .home-world .offer-world .offer-grid article>strong{grid-column:1;grid-row:auto;justify-self:start;text-align:left}
+  .home-world .founder-preview-visual{padding-bottom:110px}
+  .home-world .founder-desk-note{left:0;bottom:-25px;width:min(350px,82%)}
+}
