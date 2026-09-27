@@ -1,7 +1,7 @@
-/* Editorial type system. Bosque takes over automatically when its licensed webfont is supplied. */
+/* Approved editorial type system. */
 :root {
-  --font-editorial: "Bosque", "Times New Roman";
-  --font-fashion: "Bosque", "Times New Roman";
+  --font-editorial: "Times New Roman";
+  --font-fashion: "Times New Roman";
   --font-sans: "Times New Roman";
   --font-mono: "Times New Roman";
 }
