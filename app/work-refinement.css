@@ -712,3 +712,15 @@
   .home-world .founder-preview-visual{padding-bottom:110px}
   .home-world .founder-desk-note{left:0;bottom:-25px;width:min(350px,82%)}
 }
+
+/* Let the portrait breathe: the heart lands below and to its left. */
+.home-world .founder-preview-visual{padding-bottom:220px}
+.home-world .founder-desk-note{left:-28%;top:58%;bottom:auto}
+@media(max-width:900px){
+  .home-world .founder-preview-visual{padding-bottom:190px}
+  .home-world .founder-desk-note{left:-7%;top:60%;bottom:auto}
+}
+@media(max-width:600px){
+  .home-world .founder-preview-visual{padding-bottom:170px}
+  .home-world .founder-desk-note{left:-2%;top:61%;bottom:auto}
+}
