@@ -24,8 +24,8 @@ export const caseStudies: Record<string, CaseStudy> = {
   "willow-lily": {
     positioning: "Luxury Hospitality Experience + Wedding Planning System",
     statement: "The first tour begins before anyone arrives.",
-    heroImage: "/projects/willow-lily/estate-landscape-01%202.AVIF",
-    heroImageAlt: "The landscape of the Willow Lily estate",
+    heroImage: "/case-studies/willow-lily/willow-lily-desktop-hero-entry-screen.jpg",
+    heroImageAlt: "The Willow Lily website introducing the wedding estate",
     brief: "Give a couple the feeling of a weekend at Willow Lily while answering the questions that determine whether they are ready to visit. The estate, ceremony settings, inn, investment and planning details needed to belong to one considered journey.",
     problem: "A beautiful venue can still lose a couple in the gap between inspiration and information. When the stay, spaces, dates and next step live in separate places, they have to assemble the experience for themselves.",
     strategy: "Treat the website like a hosted first tour: establish the place, let couples picture their celebration, explain the practical choices, then invite a tour request with context already gathered.",
@@ -70,6 +70,6 @@ export const caseStudies: Record<string, CaseStudy> = {
         { file: "willow-lily-desktop-wedding-builder-summary.jpg", caption: "The production integration blueprint" },
       ] },
     ],
-    liveIntro: "Explore the working concept. The preview keeps the journey scrollable; the full site opens the complete experience.",
+    liveIntro: "Begin with the website itself. Scroll through the experience here, then open the full build to try the interactions.",
   },
 };

@@ -46,9 +46,9 @@
   color: #725777; font-size: clamp(13px,1.1vw,17px);
 }
 .case-world-hero-grid {
-  display: grid; grid-template-columns: minmax(0,.94fr) minmax(0,1.06fr);
+  display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr);
   gap: clamp(36px,5vw,88px); align-items: center;
-  min-height: min(750px,73vw); padding: clamp(50px,7vw,100px) 0 45px;
+  min-height: min(650px,64vw); padding: clamp(50px,7vw,100px) 0 45px;
 }
 .case-world-eyebrow { margin: 0 0 22px; color: #9d467f; font-size: 17px; }
 .case-world-hero-copy h1 {
@@ -69,6 +69,7 @@
 }
 .case-world-actions a:first-child { color: #8d285f; }
 .case-world-actions a:hover,.case-world-end a:hover { color: #c43281; }
+.case-world-arrow { width: 18px; height: 18px; flex: none; vertical-align: -.15em; }
 .case-world-actions a:focus-visible,.case-world-end a:focus-visible,
 .case-page-editorial .case-nav a:focus-visible { outline: 3px solid #7b3d97; outline-offset: 5px; }
 .case-world-hero-art { position: relative; margin: 0; padding: 22px 22px 0 0; transform: rotate(1.3deg); }
@@ -77,9 +78,9 @@
   background: #ead7ec; border: 1px solid #a283a7; transform: rotate(-3deg);
 }
 .case-world-hero-art img {
-  position: relative; display: block; width: 100%; aspect-ratio: .83;
+  position: relative; display: block; width: 100%; aspect-ratio: 2048/1437;
   border: 11px solid #fffdf8; box-shadow: 0 14px 37px rgba(38,30,36,.18);
-  object-fit: cover;
+  object-fit: contain; background: #23392e;
 }
 .case-world-hero-art figcaption { position: relative; display: flex; justify-content: space-between; margin-top: 13px; font-size: 15px; }
 .case-world-disclosure { margin: 0; padding-top: 18px; border-top: 1px solid #bda9b7; color: #746571; font-size: 14px; line-height: 1.4; }
@@ -96,6 +97,7 @@
 }
 .case-world-story-row > p:last-child { max-width: 620px; margin: 0; font-size: clamp(18px,1.5vw,23px); line-height: 1.5; }
 .case-world-journey,.case-world-build,.case-world-screens,.case-world-live { padding-top: clamp(85px,10vw,150px); }
+.case-world-live { padding-top: clamp(54px,6vw,95px); }
 .case-world-section-heading { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr); gap: 15px 40px; align-items: end; }
 .case-world-section-heading > p { grid-column: 1/-1; margin: 0; color: #955b87; font-size: 18px; }
 .case-world-section-heading h2 em,.case-world-end h2 em { color: #a43c82; font-weight: 400; }
@@ -143,6 +145,7 @@
 .case-world-screen-grid figure > a { position: relative; display: block; overflow: hidden; border: 1px solid #c4b8c2; background: #edeae5; }
 .case-world-screen-grid figure img { display: block; width: 100%; height: auto; }
 .case-world-screen-grid figure > a > span { position: absolute; right: 12px; bottom: 12px; padding: 9px 13px; background: #fffaf4; color: #39263c; font: italic 15px 'Times New Roman',serif; box-shadow: 0 3px 12px rgba(39,25,39,.12); }
+.case-world-screen-grid figure > a > span .case-world-arrow { width: 14px; height: 14px; margin-left: 3px; }
 .case-world-screen-grid figure > a:hover > span { color: #a43c82; }
 .case-world-screen-grid figure > a:focus-visible { outline: 3px solid #7b3d97; outline-offset: 4px; }
 .case-world-screen-grid figcaption { display: flex; gap: 15px; padding: 13px 0; font-size: clamp(16px,1.3vw,19px); }
@@ -167,7 +170,7 @@
 @media(max-width:850px) {
   .case-world-hero-grid { grid-template-columns: 1fr; min-height: 0; }
   .case-world-hero-art { width: min(100%,560px); margin: 0 auto; }
-  .case-world-hero-art img { aspect-ratio: 1.25; }
+  .case-world-hero-art img { aspect-ratio: 2048/1437; }
   .case-world-story-row { grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); }
   .case-world-story-row .case-world-number { grid-column: 1/-1; }
   .case-world-journey ol { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -182,7 +185,7 @@
   .case-world-hero-copy h1 { font-size: clamp(67px,16vw,92px); }
   .case-world-positioning { font-size: 29px; }
   .case-world-hero-art { padding: 15px 13px 0 0; }
-  .case-world-hero-art img { aspect-ratio: .95; }
+  .case-world-hero-art img { aspect-ratio: 2048/1437; }
   .case-world-story-row,.case-world-section-heading,.case-world-scope-row { display: block; }
   .case-world-story-row h2 { margin: 17px 0; }
   .case-world-section-heading h2 { margin: 20px 0; }
