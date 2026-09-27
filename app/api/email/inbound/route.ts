@@ -3,8 +3,6 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -18,14 +16,16 @@ export async function POST(request: Request) {
   try {
     const webhookSecret = process.env.RESEND_WEBHOOK_SECRET;
     const destination = process.env.INQUIRY_TO_EMAIL;
+    const apiKey = process.env.RESEND_API_KEY;
 
-    if (!webhookSecret || !destination) {
+    if (!webhookSecret || !destination || !apiKey) {
       return NextResponse.json(
         { error: "Inbound email is not fully configured." },
         { status: 500 }
       );
     }
 
+    const resend = new Resend(apiKey);
     const payload = await request.text();
 
     const event = resend.webhooks.verify({

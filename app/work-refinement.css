@@ -713,14 +713,21 @@
   .home-world .founder-desk-note{left:0;bottom:-25px;width:min(350px,82%)}
 }
 
-/* Let the portrait breathe: the heart lands below and to its left. */
+/* The heart rests over the lower left shoulder, clear of Arabella's face. */
 .home-world .founder-preview-visual{padding-bottom:220px}
-.home-world .founder-desk-note{left:-28%;top:58%;bottom:auto}
+.home-world .founder-desk-note{left:-5%;top:51%;bottom:auto;animation:founder-heart-float 7s ease-in-out infinite}
+@keyframes founder-heart-float{
+  0%,100%{transform:translateY(0) rotate(-8deg)}
+  50%{transform:translateY(-9px) rotate(-6deg)}
+}
 @media(max-width:900px){
   .home-world .founder-preview-visual{padding-bottom:190px}
-  .home-world .founder-desk-note{left:-7%;top:60%;bottom:auto}
+  .home-world .founder-desk-note{left:0;top:52%;bottom:auto}
 }
 @media(max-width:600px){
   .home-world .founder-preview-visual{padding-bottom:170px}
-  .home-world .founder-desk-note{left:-2%;top:61%;bottom:auto}
+  .home-world .founder-desk-note{left:0;top:54%;bottom:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .home-world .founder-desk-note{animation:none}
 }
