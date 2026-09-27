@@ -49,7 +49,7 @@ export const projects: Project[] = [
     category: "Hospitality / Events / Digital Presence",
     description: "An editorial hospitality concept designed to make the venue feel considered before a guest ever walks through the door, while keeping tours and inquiry easy to reach.",
     url: "https://www.maisonrivieredetroit.com",
-    embedUrl: "https://maison.ahalliwellstudio.com",
+    embedUrl: "https://www.maisonrivieredetroit.com",
     tone: "maison",
     details: ["Experience Design", "Development", "Hospitality UX"],
     desktopAsset: "/projects/maison-riviere/desktop/maison-homepage-hero.PNG",

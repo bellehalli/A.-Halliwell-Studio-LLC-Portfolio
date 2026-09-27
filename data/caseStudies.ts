@@ -12,9 +12,10 @@ export type CaseStudy = {
   problem: string;
   strategy: string;
   journey: { title: string; description: string }[];
-  scope: CaseStudyScope[];
+  scope?: CaseStudyScope[];
   screensIntro: string;
   screenChapters?: { title: string; description: string; screens: { file: string; caption: string }[] }[];
+  screensDisclosure?: string;
   liveIntro: string;
 };
 
@@ -71,5 +72,34 @@ export const caseStudies: Record<string, CaseStudy> = {
       ] },
     ],
     liveIntro: "Begin with the website itself. Scroll through the experience here, then open the full build to try the interactions.",
+  },
+  "maison-riviere": {
+    positioning: "Waterfront Wedding Venue Experience + Planning Journey",
+    statement: "A grand entrance, with every next step in view.",
+    heroImage: "/case-studies/maison-riviere/maison-riviere-desktop-homepage-hero.jpg",
+    heroImageAlt: "Maison Rivière website homepage with waterfront wedding positioning and tour invitation",
+    brief: "Make a Detroit waterfront venue feel as compelling online as it would in person, while giving couples a way to explore the estate, understand the investment and arrange a private tour.",
+    problem: "An atmospheric photograph can inspire, but a couple planning a wedding still needs to see the spaces, understand what is included and decide whether the venue fits their celebration. Those answers need to sit within the same experience.",
+    strategy: "Open with the romance of the place, then make the estate, planning choices and investment easy to explore. The wedding builder gives a couple a way to test their preferences before the tour inquiry turns that interest into a more useful conversation.",
+    journey: [
+      { title: "Arrive", description: "Meet the waterfront setting and the promise of the celebration." },
+      { title: "Explore", description: "See the estate, ballroom and hospitality experience in context." },
+      { title: "Shape the day", description: "Try guest count, season, spaces and services in the wedding builder." },
+      { title: "Request a tour", description: "Bring the important details into the first conversation." },
+    ],
+    screensIntro: "From the opening impression to a more informed private-tour inquiry.",
+    screenChapters: [
+      { title: "The invitation", description: "The opening lets the venue make an impression, then introduces the estate and its spaces without losing the way to schedule a visit.", screens: [
+        { file: "maison-riviere-desktop-homepage-hero.jpg", caption: "The waterfront wedding introduction" },
+        { file: "maison-riviere-desktop-estate-experience.jpg", caption: "The estate and ballroom experience" },
+        { file: "maison-riviere-desktop-entry-screen.jpg", caption: "The opening title moment" },
+      ] },
+      { title: "The decision", description: "A couple can shape a celebration, see an illustrative estimate and take those details into a private-tour request.", screens: [
+        { file: "maison-riviere-desktop-wedding-builder-estimate.jpg", caption: "The wedding builder and illustrative estimate" },
+        { file: "maison-riviere-desktop-tour-inquiry.jpg", caption: "The private-tour inquiry" },
+      ] },
+    ],
+    screensDisclosure: "Maison Rivière is a fictional venue demonstration. The wedding estimate is illustrative, and the tour form does not submit to a real venue.",
+    liveIntro: "Explore the live website in the frame, including its navigation and wedding builder. Open the complete build for a full-screen visit.",
   },
 };

@@ -52,7 +52,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
             </figure>;
           })}</div>
         </section>)}
-        <p className="case-world-screen-disclosure">These are screens from a fictional venue demonstration. Venue prices, leads, analytics and payments shown in the build are illustrative; checkout uses test mode.</p>
+        <p className="case-world-screen-disclosure">{study.screensDisclosure ?? "These are screens from a fictional venue demonstration. Venue prices, leads, analytics and payments shown in the build are illustrative; checkout uses test mode."}</p>
       </div> : <ProjectMedia project={project} mode="screens" />}
     </section>
 

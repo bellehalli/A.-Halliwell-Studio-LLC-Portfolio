@@ -82,6 +82,7 @@
   border: 11px solid #fffdf8; box-shadow: 0 14px 37px rgba(38,30,36,.18);
   object-fit: contain; background: #23392e;
 }
+.project-maison .case-world-hero-art img { aspect-ratio: 2048/1332; background: #1b1c19; }
 .case-world-hero-art figcaption { position: relative; display: flex; justify-content: space-between; margin-top: 13px; font-size: 15px; }
 .case-world-disclosure { margin: 0; padding-top: 18px; border-top: 1px solid #bda9b7; color: #746571; font-size: 14px; line-height: 1.4; }
 .case-world-story { margin-top: clamp(80px,10vw,150px); }
