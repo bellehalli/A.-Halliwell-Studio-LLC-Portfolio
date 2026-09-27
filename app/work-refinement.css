@@ -1,215 +1,246 @@
-/* A. Halliwell Studio — Work Worlds Art Direction Pass
-   Target branch: ahs-visual-world
-   Scope: selected-project archive only. No typography, copy, component, or functionality changes. */
+/* AHS PASS 02 — full-width project worlds + floating heart + closing footer
+   This file intentionally overrides the previous work-refinement pass.
+   Typography, Lab, Investment, and project functionality are untouched. */
 
-.home-world .project-worlds {
-  gap: clamp(72px, 8vw, 118px);
-  padding: clamp(72px, 8vw, 118px) max(26px, calc((100vw - 1320px) / 2));
-  background: #f7eaf2;
+.home-world .project-worlds{
+  display:block;
+  width:100%;
+  padding:0;
+  background:transparent;
 }
 
-/* Each project is its own visual world. The live build stays the hero object. */
-.home-world .project-world {
-  --world-image: none;
-  --world-wash: rgba(255, 247, 250, .58);
-  --world-ink: #5d3552;
-  isolation: isolate;
-  position: relative;
-  width: min(1260px, 100%);
-  margin: 0;
-  overflow: hidden;
-  border-radius: clamp(24px, 3vw, 44px);
-  background-color: #f6e6f0;
-  background-image:
-    linear-gradient(115deg, var(--world-wash), rgba(255,255,255,.12)),
-    var(--world-image);
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 24px 70px rgba(74, 35, 67, .14);
+/* Every project is a WORLD, never a card. */
+.home-world .project-world{
+  --world-image:none;
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  min-height:clamp(760px,82vw,1080px);
+  margin:0;
+  overflow:hidden;
+  border:0;
+  border-radius:0;
+  background-color:transparent;
+  background-image:var(--world-image);
+  background-size:cover;
+  background-position:center;
+  box-shadow:none;
 }
+.home-world .project-world-vanta{--world-image:url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 134.PNG")}
+.home-world .project-world-elan{--world-image:url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 137.PNG")}
+.home-world .project-world-northstar{--world-image:url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG")}
+.home-world .project-world-restaurant{--world-image:url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 135.PNG")}
+.home-world .project-world-commerce{--world-image:url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 138.PNG")}
 
-/* Vanta — electric night, not another checkerboard. */
-.home-world .project-world-vanta {
-  --world-image: url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 134.PNG");
-  --world-wash: rgba(246, 232, 255, .28);
-}
-
-/* Élan — glossy pink beauty world. */
-.home-world .project-world-elan {
-  --world-image: url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 137.PNG");
-  --world-wash: rgba(255, 240, 247, .38);
-}
-
-/* Northstar — softer contour world so the practical build can breathe. */
-.home-world .project-world-northstar {
-  --world-image: url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG");
-  --world-wash: rgba(255, 249, 250, .56);
-}
-
-/* Sable & Salt — fashion/editorial dinner energy. */
-.home-world .project-world-restaurant {
-  --world-image: url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 135.PNG");
-  --world-wash: rgba(255, 238, 246, .46);
-}
-
-/* Muse Room — dreamy fashion-commerce world. */
-.home-world .project-world-commerce {
-  --world-image: url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 138.PNG");
-  --world-wash: rgba(251, 240, 255, .34);
-}
-
-/* Soft reading field behind copy; deliberately irregular, not a card. */
-.home-world .project-world::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: -7%;
-  left: -12%;
-  width: 78%;
-  height: 78%;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at 45% 42%,
-    rgba(255, 252, 250, .97) 0%,
-    rgba(255, 248, 250, .91) 37%,
-    rgba(255, 248, 250, .62) 58%,
-    transparent 78%
-  );
-  pointer-events: none;
-}
-
-.home-world .project-world:nth-child(even)::before {
-  left: auto;
-  right: -12%;
-  background: radial-gradient(
-    ellipse at 58% 42%,
-    rgba(255, 252, 250, .97) 0%,
-    rgba(255, 248, 250, .91) 37%,
-    rgba(255, 248, 250, .62) 58%,
-    transparent 78%
-  );
-}
-
-.home-world .project-world::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,.14), transparent 25%, transparent 75%, rgba(255,255,255,.10)),
-    linear-gradient(180deg, rgba(255,255,255,.12), transparent 24%, transparent 76%, rgba(80,35,70,.05));
-}
+/* Absolutely no radial “moon”, blob or fake card overlay. */
+.home-world .project-world::before,
+.home-world .project-world::after{content:none!important}
 
 .home-world .project-world-paper,
-.home-world .project-world:nth-child(even) .project-world-paper {
-  position: relative;
-  z-index: 1;
-  overflow: visible;
-  padding: clamp(38px, 5vw, 68px) clamp(28px, 7vw, 92px) clamp(48px, 6vw, 78px);
-  border: 0;
-  background: transparent;
-  box-shadow: none;
+.home-world .project-world:nth-child(even) .project-world-paper{
+  position:relative;
+  z-index:1;
+  width:min(1180px,calc(100% - 48px));
+  margin:0 auto;
+  padding:clamp(78px,8vw,120px) 0 clamp(74px,8vw,118px);
+  border:0;
+  background:transparent;
+  box-shadow:none;
 }
 
-.home-world .project-world-index {
-  width: min(790px, 100%);
-  color: var(--world-ink);
-  border-bottom: 1px solid rgba(88, 41, 77, .42);
+.home-world .project-world-index{
+  width:min(790px,100%);
+  padding:0 0 12px;
+  color:#4e2445;
+  border-bottom:1px solid rgba(75,31,66,.48);
+  text-shadow:0 1px 10px rgba(255,250,252,.82);
 }
-
 .home-world .project-world:nth-child(even) .project-world-index,
-.home-world .project-world:nth-child(even) .project-world-title {
-  margin-left: auto;
+.home-world .project-world:nth-child(even) .project-world-title{margin-left:auto}
+
+.home-world .project-world-title{
+  width:min(790px,72%);
+  margin-top:clamp(28px,4vw,52px);
+  text-shadow:0 1px 14px rgba(255,248,252,.9),0 1px 28px rgba(255,248,252,.72);
 }
-
-.home-world .project-world-title {
-  max-width: 790px;
-  margin-top: clamp(32px, 4vw, 56px);
-}
-
-.home-world .project-world-title h3 { text-wrap: balance; }
-.home-world .project-world-title p { max-width: 680px; }
-.home-world .project-world:nth-child(even) .project-world-title { text-align: right; }
-
+.home-world .project-world-title h3{text-wrap:balance}
+.home-world .project-world-title p{max-width:680px}
+.home-world .project-world:nth-child(even) .project-world-title{text-align:right}
 .home-world .project-world:nth-child(even) .project-world-title p,
-.home-world .project-world:nth-child(even) .project-world-title small {
-  margin-left: auto;
+.home-world .project-world:nth-child(even) .project-world-title small{margin-left:auto}
+
+/* The browser/build remains the contained hero object. */
+.home-world .project-world-media{
+  position:relative;
+  z-index:2;
+  width:min(920px,82%);
+  margin-top:clamp(42px,5vw,70px);
+  filter:drop-shadow(13px 24px 22px rgba(48,19,43,.27));
+  transform:rotate(-.8deg);
+}
+.home-world .project-world:nth-child(even) .project-world-media{
+  margin-left:auto;
+  transform:rotate(.8deg);
+}
+.home-world .project-world-footer{
+  width:min(920px,82%);
+  margin:clamp(34px,4vw,52px) 0 0;
+  padding-top:17px;
+  border-top:1px solid rgba(72,30,64,.48);
+  text-shadow:0 1px 9px rgba(255,250,252,.75);
+}
+.home-world .project-world:nth-child(even) .project-world-footer{margin-left:auto}
+
+/* Willow + Maison already have their own art direction; make their sections unequivocally full-width. */
+.home-world .work-gallery{
+  width:100%;
+  margin:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
 }
 
-.home-world .project-world-media {
-  position: relative;
-  z-index: 2;
-  width: min(92%, 1040px);
-  margin-top: clamp(38px, 5vw, 66px);
-  filter: drop-shadow(12px 22px 22px rgba(50, 22, 48, .27));
-  transform: rotate(-1deg);
+/* Floating heart navigation follows the visitor. */
+.home-world #home-content>.site-nav{
+  position:fixed!important;
+  inset:auto 22px 22px auto!important;
+  z-index:180!important;
+  width:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  pointer-events:none;
 }
-
-.home-world .project-world:nth-child(even) .project-world-media {
-  margin-left: auto;
-  transform: rotate(1deg);
+.home-world .site-nav .logo{display:none!important}
+.home-world .site-nav .heart-menu-trigger{
+  pointer-events:auto;
+  position:relative!important;
+  inset:auto!important;
+  z-index:3;
+  display:grid!important;
+  place-items:center;
+  width:82px!important;
+  height:82px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  cursor:pointer;
+  filter:drop-shadow(0 10px 13px rgba(65,24,59,.24));
+  transition:transform .2s ease;
 }
-
-.home-world .project-world-footer {
-  width: min(1040px, 92%);
-  margin: clamp(38px, 4vw, 55px) auto 0;
-  padding-top: 19px;
-  border-top: 1px solid rgba(88, 41, 77, .5);
+.home-world .site-nav .heart-menu-trigger:hover{transform:translateY(-3px) rotate(-3deg)}
+.home-world .site-nav .heart-menu-trigger .heart-button-art{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.home-world .site-nav .heart-menu-trigger .heart-button-label{
+  position:relative;z-index:2;color:#4b1740;font-size:9px;font-weight:800;letter-spacing:.08em;
 }
+.home-world .site-nav .heart-dock{
+  pointer-events:auto;
+  position:absolute!important;
+  right:10px!important;
+  bottom:88px!important;
+  top:auto!important;
+  left:auto!important;
+  display:grid!important;
+  width:180px!important;
+  gap:7px!important;
+  padding:12px!important;
+  border:1px solid rgba(82,36,73,.35)!important;
+  background:rgba(255,243,249,.94)!important;
+  box-shadow:0 18px 42px rgba(67,26,59,.22)!important;
+  backdrop-filter:blur(12px);
+  transform:translateY(10px) scale(.96)!important;
+  transform-origin:bottom right;
+  opacity:0!important;
+  visibility:hidden!important;
+  transition:.2s ease!important;
+}
+.home-world .site-nav .heart-dock.is-open{
+  opacity:1!important;visibility:visible!important;transform:none!important;
+}
+.home-world .site-nav .heart-dock .heart-nav-button{
+  width:100%!important;height:auto!important;min-height:34px!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  padding:8px 10px!important;border:0!important;border-bottom:1px solid rgba(82,36,73,.15)!important;
+  background:transparent!important;text-decoration:none!important;
+}
+.home-world .site-nav .heart-dock .heart-button-art{display:none!important}
+.home-world .site-nav .heart-dock .heart-button-label{
+  position:static!important;color:#4b1740!important;font-size:10px!important;letter-spacing:.09em!important;
+}
+.home-world .site-nav .heart-dock .heart-start{border-bottom:0!important;color:#b82c78!important}
 
-.home-world .project-links a { text-underline-offset: 4px; }
-.home-world .project-links a:hover { color: #a32c77; }
+/* Footer becomes the closing scene, not a white utility card. */
+.home-world .world-footer{
+  position:relative;
+  isolation:isolate;
+  min-height:520px;
+  padding:90px 24px 70px;
+  overflow:hidden;
+  background:
+    linear-gradient(rgba(238,224,250,.48),rgba(255,218,238,.64)),
+    url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG") center/cover no-repeat;
+}
+.home-world .world-footer .footer-paper{
+  position:relative;
+  z-index:2;
+  width:min(1120px,100%);
+  margin:0 auto;
+  padding:54px 0 26px;
+  border:0;
+  border-top:1px solid rgba(74,30,65,.48);
+  border-bottom:1px solid rgba(74,30,65,.32);
+  background:transparent;
+  box-shadow:none;
+}
+.home-world .world-footer .footer-brand{font-size:clamp(18px,2vw,27px)}
+.home-world .world-footer .footer-paper>p{
+  max-width:560px;
+  margin:24px 0 42px;
+  font-size:clamp(16px,1.4vw,20px);
+  line-height:1.5;
+}
+.home-world .world-footer .footer-links{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0;
+  border-top:1px solid rgba(74,30,65,.28);
+}
+.home-world .world-footer .footer-links a{
+  padding:16px 10px 16px 0;
+  border-bottom:1px solid rgba(74,30,65,.2);
+  color:#431b3d;
+  text-decoration:none;
+}
+.home-world .world-footer .footer-links a:hover{color:#c02d7d}
 
-@media (max-width: 750px) {
-  .home-world .project-worlds {
-    gap: 58px;
-    padding: 58px 15px;
-  }
+/* No browser/OS emoji glyphs used as external-link icons in these surfaces. */
+.ahs-link-mark{font-family:Georgia,serif;font-style:normal;font-size:.9em;margin-left:.28em}
 
-  .home-world .project-world {
-    border-radius: 24px;
-    background-position: center;
-  }
-
-  .home-world .project-world::before,
-  .home-world .project-world:nth-child(even)::before {
-    top: -5%;
-    left: -20%;
-    right: auto;
-    width: 140%;
-    height: 66%;
-    background: radial-gradient(
-      ellipse at 50% 36%,
-      rgba(255, 250, 249, .97) 0%,
-      rgba(255, 248, 250, .88) 45%,
-      transparent 78%
-    );
-  }
-
+@media(max-width:700px){
+  .home-world .project-world{min-height:0;background-position:center}
   .home-world .project-world-paper,
-  .home-world .project-world:nth-child(even) .project-world-paper {
-    padding: 38px 18px 48px;
+  .home-world .project-world:nth-child(even) .project-world-paper{
+    width:calc(100% - 30px);padding:58px 0 66px;
   }
-
-  .home-world .project-world:nth-child(even) .project-world-title {
-    text-align: left;
-  }
-
+  .home-world .project-world-title{width:100%}
+  .home-world .project-world:nth-child(even) .project-world-title{text-align:left}
   .home-world .project-world-media,
-  .home-world .project-world-footer {
-    width: 100%;
+  .home-world .project-world:nth-child(even) .project-world-media{
+    width:100%;margin-left:0;transform:none;
   }
-
-  .home-world .project-world-media,
-  .home-world .project-world:nth-child(even) .project-world-media {
-    transform: none;
-  }
+  .home-world .project-world-footer,
+  .home-world .project-world:nth-child(even) .project-world-footer{width:100%;margin-left:0}
+  .home-world #home-content>.site-nav{right:12px!important;bottom:12px!important}
+  .home-world .site-nav .heart-menu-trigger{width:70px!important;height:70px!important}
+  .home-world .site-nav .heart-dock{right:4px!important;bottom:76px!important;width:170px!important}
+  .home-world .world-footer{min-height:0;padding:68px 20px 48px}
+  .home-world .world-footer .footer-paper{padding-top:38px}
+  .home-world .world-footer .footer-links{grid-template-columns:1fr 1fr}
 }
-
-@media (prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion:reduce){
   .home-world .project-world-media,
-  .home-world .project-world:nth-child(even) .project-world-media {
-    transform: none;
-  }
+  .home-world .project-world:nth-child(even) .project-world-media{transform:none}
 }
