@@ -132,3 +132,58 @@ button, input, select, textarea { font-family: inherit; }
 .home-world .lab-world .ahs-demo-shell footer,
 .home-world .lab-world .demo-window-top b { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 13px; letter-spacing: .04em; }
 .home-world .lab-world .ahs-job-list > button { min-height: 54px; }
+
+/* The archive, invitation and showroom share one continuous pastel environment. */
+.home-world .project-worlds {
+  position: relative; width: 100%; margin: 0; padding: clamp(50px,6vw,96px) max(24px,calc((100vw - 1320px)/2)) clamp(78px,8vw,120px);
+  gap: clamp(52px,6vw,90px);
+  background-color: #f8e9f3;
+  background-image: linear-gradient(45deg,#f0d8e9 25%,transparent 25%,transparent 75%,#f0d8e9 75%),linear-gradient(45deg,#f0d8e9 25%,transparent 25%,transparent 75%,#f0d8e9 75%);
+  background-position: 0 0,42px 42px; background-size: 84px 84px;
+}
+.home-world .project-worlds::before,.home-world .project-worlds::after {
+  content: ''; position: absolute; inset: 0 0 auto; height: 90px; pointer-events: none;
+  background: linear-gradient(#e8d3f5,transparent);
+}
+.home-world .project-worlds::after { inset: auto 0 0; background: linear-gradient(transparent,#f6d4ed); }
+.home-world .project-world { width: 100%; margin: 0; transform: none; }
+.home-world .project-world-paper {
+  border: 1px solid rgba(89,40,77,.28);
+  box-shadow: 18px 22px 0 rgba(102,48,89,.16),0 24px 58px rgba(66,26,59,.13);
+}
+.home-world .project-world:nth-child(even) .project-world-paper { box-shadow: -18px 22px 0 rgba(102,48,89,.14),0 24px 58px rgba(66,26,59,.13); }
+.home-world .project-world-media { width: min(92%,1040px); }
+.home-world .project-world-footer { border-top: 1px solid rgba(89,40,77,.3); padding-top: 22px; }
+.home-world .offer-world { border-top: 0; border-bottom: 0; }
+.home-world .offer-receipt { box-shadow: 0 28px 74px rgba(94,35,74,.24),12px 14px 0 rgba(255,255,255,.37); }
+.home-world .lab-world { background: linear-gradient(#f7d8df 0%,#ede2fa 160px,#ede2fa 85%,#f2e3f7 100%); }
+.home-world .lab-world .ahs-lab-head { margin-top: clamp(80px,9vw,125px); }
+.ahs-discovery { margin-top: clamp(100px,12vw,175px); background: rgba(255,248,253,.97); box-shadow: 18px 22px 0 rgba(82,37,88,.16),0 25px 60px rgba(73,35,85,.12); }
+.ahs-discovery-grid { gap: 26px 38px; }
+.ahs-demo-intro { margin-top: clamp(55px,6vw,82px); }
+.home-world .lab-world .ahs-lab-grid { grid-template-columns: minmax(225px,.24fr) minmax(0,.76fr); }
+.home-world .lab-world .ahs-demo-shell { min-height: 0; box-shadow: 18px 20px 0 rgba(94,47,112,.17),0 20px 45px rgba(66,28,81,.11); }
+.home-world .lab-world .ahs-live { min-height: 470px; padding: clamp(30px,4vw,54px); }
+.home-world .lab-world .ahs-job-list { box-shadow: 8px 12px 0 rgba(94,47,112,.12); }
+.home-world .lab-world .ahs-days button { min-height: 90px; }
+.case-journey { margin: clamp(45px,6vw,85px) 0 0; padding: clamp(24px,4vw,45px); border: 1px solid #aa7d9b; background: #fff1f7; box-shadow: 12px 14px 0 #ead0e2; }
+.case-journey > span { font-variant: small-caps; letter-spacing: .08em; color: #852e69; }
+.case-journey ol { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; margin: 24px 0 0; padding: 0; list-style: none; }
+.case-journey li { border-top: 1px solid #b384a5; padding-top: 14px; }
+.case-journey b { display: block; margin-bottom: 16px; color: #aa3e7c; font-size: 15px; }
+.case-journey strong { display: block; font-size: clamp(21px,2vw,30px); line-height: 1.05; }
+.case-journey p { margin: 12px 0 0; font-size: 16px; line-height: 1.4; }
+@media(max-width:900px) {
+  .home-world .lab-world .ahs-lab-grid { grid-template-columns: 1fr; }
+  .case-journey ol { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+  .home-world .project-worlds { padding: 45px 18px 72px; background-size: 56px 56px; background-position: 0 0,28px 28px; }
+  .home-world .project-world-paper,.home-world .project-world:nth-child(even) .project-world-paper { box-shadow: 7px 10px 0 rgba(102,48,89,.17); }
+  .home-world .project-world-media { width: 100%; }
+  .home-world .lab-world .ahs-lab-head { margin-top: 45px; }
+  .ahs-discovery { margin-top: 35px; box-shadow: 8px 10px 0 rgba(82,37,88,.14); }
+  .home-world .lab-world .ahs-demo-shell { box-shadow: 8px 10px 0 rgba(94,47,112,.17); }
+  .home-world .lab-world .ahs-live { min-height: 0; padding: 24px 18px; }
+  .case-journey ol { grid-template-columns: 1fr; gap: 20px; }
+}

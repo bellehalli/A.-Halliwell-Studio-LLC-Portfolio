@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Status = "idle" | "sending" | "success" | "error";
+type LabScope = { projectType: string; needs: string[]; successGoal: string };
 
 type Draft = {
   projectType: string;
@@ -220,6 +221,18 @@ export default function StartProject() {
     bookingType,
     guestPain,
   ]);
+
+  useEffect(() => {
+    const receiveScope = (event: Event) => {
+      const scope = (event as CustomEvent<LabScope>).detail;
+      if (!scope || !Array.isArray(scope.needs)) return;
+      setProjectType(scope.projectType);
+      setNeeds(scope.needs);
+      setSuccessGoal(scope.successGoal);
+    };
+    window.addEventListener("ahs:lab-scope", receiveScope);
+    return () => window.removeEventListener("ahs:lab-scope", receiveScope);
+  }, []);
 
   const toggleNeed = (x: string) =>
     setNeeds((current) =>
