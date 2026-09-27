@@ -1,0 +1,77 @@
+/* The checkerboard archive holds actual working sites on individual folio leaves. */
+.home-world .project-worlds {
+  gap: clamp(76px, 8vw, 128px);
+  padding-inline: max(40px, calc((100vw - 1320px) / 2));
+  background-color: #f8e9f3;
+  background-image:
+    linear-gradient(45deg, #efd9e9 25%, transparent 25%, transparent 75%, #efd9e9 75%),
+    linear-gradient(45deg, #efd9e9 25%, transparent 25%, transparent 75%, #efd9e9 75%);
+}
+.home-world .project-world {
+  isolation: isolate;
+  width: min(1210px, calc(100% - 42px));
+  margin: 0;
+}
+.home-world .project-world:nth-child(odd) { justify-self: start; }
+.home-world .project-world:nth-child(even) { justify-self: end; }
+.home-world .project-world::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 10px -12px -13px 13px;
+  border: 1px solid rgba(81, 39, 77, .23);
+  background: #ead6ec;
+  box-shadow: 0 20px 42px rgba(69, 28, 65, .16);
+  transform: rotate(.35deg);
+  pointer-events: none;
+}
+.home-world .project-world:nth-child(even)::before {
+  inset: 11px 13px -13px -12px;
+  background: #f1d5df;
+  transform: rotate(-.35deg);
+}
+.home-world .project-world:first-child::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  top: -60px;
+  right: 10%;
+  width: 86px;
+  height: 86px;
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 29.PNG') center / contain no-repeat;
+  filter: drop-shadow(2px 5px 4px rgba(75, 31, 67, .19));
+  pointer-events: none;
+}
+.home-world .project-world-paper,
+.home-world .project-world:nth-child(even) .project-world-paper {
+  border: 1px solid rgba(75, 35, 68, .38);
+  background: linear-gradient(145deg, #fffaf2 0%, #fff7ef 65%, #fdf1ee 100%);
+  box-shadow: 0 12px 37px rgba(56, 22, 51, .11);
+}
+.home-world .project-world:nth-child(even) .project-world-paper {
+  background: linear-gradient(145deg, #fffaf5 0%, #fff8f0 70%, #fdf0f3 100%);
+}
+.home-world .project-world-index {
+  color: #693e5f;
+  border-bottom-color: rgba(77, 37, 70, .42);
+}
+.home-world .project-world-title { margin-top: clamp(36px, 4vw, 60px); }
+.home-world .project-world-title h3 { text-wrap: balance; }
+.home-world .project-world-title p { max-width: 700px; }
+.home-world .project-world-media { margin-top: clamp(42px, 5vw, 72px); }
+.home-world .project-world-footer { border-top-color: rgba(77, 37, 70, .28); }
+.home-world .project-links a { text-underline-offset: 4px; }
+.home-world .project-links a:hover { color: #a32c77; }
+@media (max-width: 750px) {
+  .home-world .project-worlds { gap: 70px; padding-inline: 22px; }
+  .home-world .project-world { width: calc(100% - 13px); }
+  .home-world .project-world::before { inset: 7px -7px -8px 7px; }
+  .home-world .project-world:nth-child(even)::before { inset: 7px 7px -8px -7px; }
+  .home-world .project-world:first-child::after { top: -42px; right: 10%; width: 62px; height: 62px; }
+  .home-world .project-world-paper,
+  .home-world .project-world:nth-child(even) .project-world-paper { box-shadow: 0 9px 23px rgba(56, 22, 51, .12); }
+}
+@media (max-width: 600px) {
+  .home-world .project-worlds { background-size: 56px 56px; background-position: 0 0, 28px 28px; }
+  .home-world .project-world-media { margin-top: 32px; }
+}
