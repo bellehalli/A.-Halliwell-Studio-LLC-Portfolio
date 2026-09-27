@@ -79,16 +79,61 @@ function Demo({job}:{job:Job}) {
   return <Leads/>;
 }
 
+const discoveryOptions = {
+  "Wedding venue": ["Inquiry system","Availability","Galleries","Planning tools"],
+  Restaurant: ["Reservations","Menu","Events"],
+  "Small business": ["Focused landing page","Inquiry system","Booking"],
+  "Something else": ["Inquiry system","Commerce","Client portal","Events"]
+} as const;
+type Business = keyof typeof discoveryOptions;
+const goals = ["More inquiries","More bookings","Sell online","Smoother operations"];
+
+function ScopeDiscovery() {
+  const [business,setBusiness] = useState<Business>("Wedding venue");
+  const [selectedGoals,setSelectedGoals] = useState<string[]>(["More inquiries"]);
+  const [features,setFeatures] = useState<string[]>([...discoveryOptions["Wedding venue"]]);
+  const availableFeatures = [...new Set<string>([...discoveryOptions[business],"Commerce","Client portal","Booking","Events"])];
+  const needsLargerBuild = features.some(x => ["Booking","Commerce","Client portal","Planning tools"].includes(x)) || selectedGoals.some(x=>["Sell online","Smoother operations"].includes(x));
+  const recommendation = business === "Wedding venue"
+    ? ["Custom Website","Starting at $5,000 + scope"]
+    : business === "Restaurant" || business === "Something else" || needsLargerBuild
+      ? ["Custom Scope","Priced by scope"]
+      : ["One Page","Starting at $1,000 + scope"];
+  const toggle = (item:string,current:string[],set:(value:string[])=>void) =>
+    set(current.includes(item) ? current.filter(x=>x!==item) : [...current,item]);
+
+  return <div className="ahs-discovery" aria-labelledby="discovery-heading">
+    <div className="ahs-discovery-head"><h3 id="discovery-heading">Tell me what the site<br/>needs to do.</h3><span>01 — Scope Discovery</span></div>
+    <div className="ahs-discovery-grid">
+      <fieldset><legend>Your business</legend><div className="ahs-discovery-options">
+        {(Object.keys(discoveryOptions) as Business[]).map(option=><button type="button" key={option} aria-pressed={business===option} onClick={()=>{setBusiness(option);setFeatures([...discoveryOptions[option]])}}>{option}</button>)}
+      </div></fieldset>
+      <fieldset><legend>Your goals</legend><div className="ahs-discovery-options">
+        {goals.map(option=><button type="button" key={option} aria-pressed={selectedGoals.includes(option)} onClick={()=>toggle(option,selectedGoals,setSelectedGoals)}>{option}</button>)}
+      </div></fieldset>
+      <fieldset className="ahs-discovery-functions"><legend>Functionality worth building</legend><div className="ahs-discovery-options">
+        {availableFeatures.map(option=><button type="button" key={option} aria-pressed={features.includes(option)} onClick={()=>toggle(option,features,setFeatures)}>{option}</button>)}
+      </div></fieldset>
+    </div>
+    <div className="ahs-discovery-result" aria-live="polite">
+      <div><small>A starting direction{selectedGoals.length ? ` · ${selectedGoals.join(" · ")}` : ""}</small><h4>{recommendation[0]}</h4><p>{recommendation[1]}. The final scope comes from a conversation about your business.</p><ul>{features.map(feature=><li key={feature}>{feature}</li>)}</ul></div>
+      <a href="#start">Bring this idea to the studio ↗</a>
+    </div>
+  </div>
+}
+
 export default function CapabilityPlayground(){
   const [job,setJob]=useState<Job>("Book appointments");
   return <section className="sheet sheet-lavender capability ahs-lab" id="capabilities">
     <div className="content-shell">
       <div className="ahs-lab-head">
-        <div><span className="section-kicker-text">03 / THE LAB</span><h2>What does your business<br/><em>need the internet to do?</em></h2></div>
-        <p>Pick a job. The interface changes in front of you. These are functioning mini demos, not a list of claims.</p>
+        <div><span className="section-kicker-text">03 — The Lab</span><h2>What does your business<br/><em>need the internet to do?</em></h2></div>
+        <p>Shape a starting scope, then try the kinds of interfaces that can make it real.</p>
       </div>
+      <ScopeDiscovery/>
+      <div className="ahs-demo-intro"><h3>Step inside the showroom.</h3><p>Choose a capability and try its interface. Every window below responds to you.</p></div>
       <div className="ahs-lab-grid">
-        <nav className="ahs-job-list"><small>CHOOSE A CAPABILITY</small>{jobs.map((x,i)=><button key={x} className={job===x?"on":""} onClick={()=>setJob(x)}><span>0{i+1}</span><strong>{x}</strong><b>↗</b></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
+        <nav className="ahs-job-list" aria-label="Interactive capabilities"><small>Choose a capability</small>{jobs.map((x,i)=><button key={x} type="button" aria-current={job===x?"true":undefined} className={job===x?"on":""} onClick={()=>setJob(x)}><span>0{i+1}</span><strong>{x}</strong><b>↗</b></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
         <div className="ahs-demo-shell"><div className="demo-window-top"><span/><span/><span/><b>A. HALLIWELL / FUNCTIONING DEMO</b></div><Demo job={job}/><footer>DEMO ONLY · NO REAL BOOKING, PURCHASE, QUOTE, TICKET OR MESSAGE IS SUBMITTED.</footer></div>
       </div>
     </div>

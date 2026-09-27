@@ -1,0 +1,126 @@
+/* Editorial type system. Bosque takes over automatically when its licensed webfont is supplied. */
+:root {
+  --font-editorial: "Bosque", "Times New Roman";
+  --font-fashion: "Bosque", "Times New Roman";
+  --font-sans: "Times New Roman";
+  --font-mono: "Times New Roman";
+}
+
+body { font-family: "Times New Roman", Times, serif; }
+button, input, select, textarea { font-family: inherit; }
+
+/* Keep scale and layout, soften the type's posture. */
+.full-picture :is(h1,h2,h3),
+.destination :is(h1,h2,h3),
+.case-study :is(h1,h2,h3) {
+  font-family: var(--font-editorial), Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+.full-picture :is(p,.world-lede,.work-gallery-description,.project-world-description,.ahs-live aside),
+.destination :is(p,li) { font-family: "Times New Roman", Times, serif; }
+
+/* These are editorial credits, not interface telemetry. */
+.full-picture :is(.eyebrow,.section-kicker,.section-kicker-text,.project-world-index,.project-tags,.studio-note,.start-kicker,.work-gallery-kicker,.work-gallery-details,.project-browser-bar,.project-evidence-bar,.project-preview-note,.proof-disclosure,.receipt-columns),
+.full-picture :is(.ahs-job-list > small,.ahs-live small,.ahs-live header b,.ahs-label,.ahs-live label span,.ahs-demo-shell footer),
+.full-picture :is(.founder-photo-label,.founder-desk-note small,.footer-links a) {
+  font-family: "Times New Roman", Times, serif;
+  font-variant: small-caps;
+  text-transform: none;
+  font-size: clamp(12px,.95vw,14px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: .055em;
+}
+.full-picture :is(.button,.home-hero-text-link,.work-intro-link,.work-gallery-links a,.proof-links a,.proof-single-link,.ahs-main-action,.ahs-job-list > button,.home-star-link) {
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(12px,.95vw,15px);
+  font-weight: 700;
+  letter-spacing: .065em;
+}
+.full-picture :is(.heart-button-label,.home-hero-index,.home-hero-tagline,.home-hero-specialty p:first-child span,.receipt-masthead small,.offer-grid small,.offer-grid article > strong,.offer-card-number) {
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(11px,.9vw,13px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .035em;
+}
+.full-picture .heart-start .heart-button-label { font-size: clamp(10px,.8vw,12px); }
+.full-picture .hero-strip-track { font-family: "Times New Roman", Times, serif; font-size: 13px; font-variant: small-caps; letter-spacing: .1em; }
+.full-picture .ahs-live :is(button,select,label),
+.full-picture .ahs-job-list > button strong { font-family: "Times New Roman", Times, serif; }
+.full-picture .ahs-demo-shell footer { padding: 14px 20px; }
+
+/* The invitation is crisp; glitter stays outside the reading area. */
+.home-world .offer-world::before {
+  background:
+    radial-gradient(ellipse 42% 42% at 83% 58%,#f7d8df 58%,rgba(247,216,223,.88) 78%,transparent 100%),
+    linear-gradient(to bottom,rgba(255,226,234,.04) 0 55%,#f7d8df 98%),
+    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG') center top / 100% auto no-repeat;
+}
+.home-world .offer-world .offer-grid article { border-left: 0; border-right: 0; }
+.home-world .offer-receipt { background: linear-gradient(148deg,#fffaf7 0%,#fff2f0 51%,#ffedf1 100%); }
+.home-world .offer-world .offer-grid small { align-self: start; }
+
+/* The live demos take the width of the showroom, with discovery at its entrance. */
+.home-world .lab-world .ahs-lab { width: min(1320px,100%); }
+.home-world .lab-world .ahs-lab-grid { grid-template-columns: minmax(230px,.28fr) minmax(0,.72fr); gap: 24px; }
+.home-world .lab-world .ahs-demo-shell { min-height: 650px; }
+.home-world .lab-world .ahs-live { min-height: 570px; padding: clamp(30px,4vw,58px); }
+.home-world .lab-world .ahs-live h3 { font-size: clamp(42px,4.5vw,70px); }
+.ahs-discovery {
+  position: relative; margin: clamp(155px,17vw,250px) auto 0; padding: clamp(28px,4vw,54px);
+  border: 1px solid rgba(76,31,69,.48);
+  background: rgba(255,248,253,.94);
+  box-shadow: 14px 18px 0 rgba(82,37,88,.14);
+}
+.ahs-discovery-head { display: flex; justify-content: space-between; gap: 24px; align-items: end; padding-bottom: 26px; border-bottom: 1px solid #c3a0bc; }
+.ahs-discovery-head > span { font-variant: small-caps; font-size: 14px; letter-spacing: .08em; }
+.ahs-discovery h3 { margin: 0; font-family: var(--font-editorial), Georgia, serif; font-size: clamp(38px,4vw,60px); line-height: .95; }
+.ahs-discovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 38px; margin-top: 30px; }
+.ahs-discovery fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.ahs-discovery legend { margin-bottom: 13px; font-variant: small-caps; font-weight: 700; font-size: 15px; letter-spacing: .05em; }
+.ahs-discovery-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.ahs-discovery-options button { padding: 10px 14px; border: 1px solid #9f7998; border-radius: 100px; background: #fffafd; color: #3f223d; cursor: pointer; font: 17px/1.2 "Times New Roman",serif; }
+.ahs-discovery-options button[aria-pressed="true"] { background: #482343; border-color: #482343; color: white; }
+.ahs-discovery-options button:focus-visible { outline: 3px solid #bd3a86; outline-offset: 2px; }
+.ahs-discovery-result { display: grid; grid-template-columns: 1.2fr .8fr; gap: 30px; margin-top: 32px; padding: 24px 0 0; border-top: 1px solid #c3a0bc; }
+.ahs-discovery-result small { font-variant: small-caps; font-size: 14px; letter-spacing: .07em; }
+.ahs-discovery-result h4 { margin: 7px 0 9px; font-family: var(--font-editorial),Georgia,serif; font-size: clamp(30px,3vw,44px); line-height: 1; }
+.ahs-discovery-result p { margin: 0; font-size: 18px; line-height: 1.4; }
+.ahs-discovery-result ul { display: flex; flex-wrap: wrap; gap: 7px; margin: 13px 0 0; padding: 0; list-style: none; }
+.ahs-discovery-result li { padding: 6px 10px; border: 1px solid #b98fac; font-size: 15px; }
+.ahs-discovery-result a { align-self: end; justify-self: end; border-bottom: 1px solid currentColor; padding-bottom: 5px; font-variant: small-caps; font-size: 18px; text-decoration: none; }
+.ahs-demo-intro { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin: 90px 0 20px; }
+.ahs-demo-intro h3 { margin: 0; font-family: var(--font-editorial),Georgia,serif; font-size: clamp(32px,3vw,46px); }
+.ahs-demo-intro p { max-width: 400px; margin: 0; font-size: 17px; line-height: 1.4; }
+.home-world .lab-world .ahs-lab-grid { margin-top: 0; }
+@media(max-width:900px) {
+  .home-world .lab-world .ahs-lab-grid { grid-template-columns: 1fr; }
+  .ahs-discovery { margin-top: 90px; }
+}
+@media(max-width:600px) {
+  .full-picture :is(.heart-button-label,.home-hero-index,.home-hero-tagline) { font-size: 11px; }
+  .home-world .lab-world .ahs-lab-head { margin-bottom: 0; }
+  .ahs-discovery { margin-top: 25px; padding: 24px 18px; }
+  .ahs-discovery-head,.ahs-discovery-result,.ahs-demo-intro { display: block; }
+  .ahs-discovery-head > span { display: block; margin-top: 12px; }
+  .ahs-discovery-grid { grid-template-columns: 1fr; gap: 25px; }
+  .ahs-discovery-result a { display: inline-block; margin-top: 20px; }
+  .ahs-demo-intro { margin-top: 60px; }
+  .ahs-demo-intro p { margin-top: 10px; }
+  .home-world .lab-world .ahs-live { min-height: 0; padding: 24px 18px; }
+}
+
+/* Keep long reading copy light against the ornament. */
+.home-world :is(.home-hero-description,.world-lede,.work-gallery-description,.proof-heading > p,.offer-heading > p,.offer-grid p,.ahs-lab-head p,.founder-preview-copy p),
+.full-picture .ahs-discovery-result p { font-weight: 400; letter-spacing: 0; }
+.home-world .offer-world .offer-grid small { font-size: 12px; line-height: 1.3; }
+.home-world .offer-world .receipt-masthead small { font-size: 12px; }
+.home-world .offer-world .offer-grid article > strong { font-size: 14px; }
+.home-world .offer-world .receipt-columns { font-size: 12px; }
+.home-world .proof-world .proof-grid article > span { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 13px; letter-spacing: .05em; }
+.home-world .proof-world .proof-disclosure { font-family: "Times New Roman",Times,serif; font-size: 13px; }
+.home-world .work-gallery-details > span { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 13px; }
+.home-world .work-gallery-details > p { font-family: "Times New Roman",Times,serif; font-size: 14px; }
+.home-world .project-browser-bar span,.home-world .project-preview-note { font-family: "Times New Roman",Times,serif; font-variant: small-caps; font-size: 12px; }
