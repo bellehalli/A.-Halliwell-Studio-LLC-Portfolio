@@ -173,6 +173,34 @@ button, input, select, textarea { font-family: inherit; }
 .case-journey b { display: block; margin-bottom: 16px; color: #aa3e7c; font-size: 15px; }
 .case-journey strong { display: block; font-size: clamp(21px,2vw,30px); line-height: 1.05; }
 .case-journey p { margin: 12px 0 0; font-size: 16px; line-height: 1.4; }
+
+/* The Lab opens on working controls; the supplied artwork remains scenery behind them. */
+.home-world .lab-world .ahs-lab-head { width: min(650px,100%); margin: 34px 0 0; background: rgba(255,251,255,.84); }
+.home-world .lab-world .ahs-lab-head p { max-width: 520px; }
+.home-world .lab-world .ahs-lab-grid { margin-top: 0; }
+.home-world .lab-world .ahs-demo-intro { margin: 25px 0 14px; padding: 13px 18px; background: rgba(255,248,253,.9); }
+.home-world .lab-world .ahs-discovery { margin-top: clamp(55px,6vw,85px); }
+.home-world .lab-world .ahs-live { min-height: 0; }
+.ahs-job-list > button { grid-template-columns: 28px 1fr; }
+.ahs-bag { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 5px 18px; }
+.ahs-bag small,.ahs-bag p { grid-column: 1 / -1; }
+.ahs-bag strong { margin: 0; }
+.ahs-bag button,.ahs-events button,.ahs-live aside button,.ahs-portal-compose button { min-height: 38px; border: 1px solid currentColor; background: transparent; padding: 7px 12px; cursor: pointer; }
+.ahs-portal-compose { margin-top: 22px; }
+.ahs-portal-compose textarea,.ahs-live input:not([type=range]) { width: 100%; min-height: 46px; border: 1px solid #6a4864; background: #fff; padding: 10px 12px; }
+.ahs-portal-compose button:disabled { opacity: .5; cursor: not-allowed; }
+.ahs-discovery-result a { display: inline-flex; align-items: center; gap: 7px; }
+.ahs-discovery-result a img { width: 22px; height: 22px; object-fit: contain; }
+.lab-destination .ahs-lab { padding: 0; border: 0; background: transparent; box-shadow: none; transform: none; }
+.lab-destination .destination-hero { padding-bottom: 20px; }
+.lab-destination .ahs-lab .content-shell { width: 100%; }
+.lab-destination .ahs-lab-head { margin-bottom: 0; }
+.lab-destination .ahs-demo-intro { margin-top: 24px; }
+.lab-destination .ahs-lab-grid { margin-top: 14px; grid-template-columns: minmax(210px,.25fr) minmax(0,.75fr); }
+.lab-destination .ahs-discovery { margin-top: 70px; }
+@media(max-width:900px) {
+  .lab-destination .ahs-lab-grid { grid-template-columns: 1fr; }
+}
 @media(max-width:900px) {
   .home-world .lab-world .ahs-lab-grid { grid-template-columns: 1fr; }
   .case-journey ol { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -182,6 +210,10 @@ button, input, select, textarea { font-family: inherit; }
   .home-world .project-world-paper,.home-world .project-world:nth-child(even) .project-world-paper { box-shadow: 7px 10px 0 rgba(102,48,89,.17); }
   .home-world .project-world-media { width: 100%; }
   .home-world .lab-world .ahs-lab-head { margin-top: 45px; }
+  .home-world .lab-world .ahs-demo-intro { margin-top: 18px; }
+  .home-world .lab-world .ahs-discovery,.lab-destination .ahs-discovery { margin-top: 40px; }
+  .ahs-bag { display: block; }
+  .ahs-bag button { margin: 12px 0; }
   .ahs-discovery { margin-top: 35px; box-shadow: 8px 10px 0 rgba(82,37,88,.14); }
   .home-world .lab-world .ahs-demo-shell { box-shadow: 8px 10px 0 rgba(94,47,112,.17); }
   .home-world .lab-world .ahs-live { min-height: 0; padding: 24px 18px; }

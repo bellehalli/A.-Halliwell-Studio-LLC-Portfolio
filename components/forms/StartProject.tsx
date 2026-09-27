@@ -25,6 +25,7 @@ type Draft = {
 };
 
 const DRAFT_KEY = "ahs-project-inquiry-draft-v1";
+const LAB_SCOPE_KEY = "ahs-lab-scope-v1";
 
 const projectTypes = [
   "Small business / service",
@@ -171,6 +172,16 @@ export default function StartProject() {
         setBookingType(draft.bookingType || "");
         setGuestPain(draft.guestPain || "");
       }
+      const fromLab = sessionStorage.getItem(LAB_SCOPE_KEY);
+      if (fromLab) {
+        const scope = JSON.parse(fromLab) as LabScope;
+        if (scope.projectType && Array.isArray(scope.needs) && scope.successGoal) {
+          setProjectType(scope.projectType);
+          setNeeds(scope.needs);
+          setSuccessGoal(scope.successGoal);
+        }
+        sessionStorage.removeItem(LAB_SCOPE_KEY);
+      }
     } catch {
       localStorage.removeItem(DRAFT_KEY);
     } finally {
@@ -229,6 +240,7 @@ export default function StartProject() {
       setProjectType(scope.projectType);
       setNeeds(scope.needs);
       setSuccessGoal(scope.successGoal);
+      sessionStorage.removeItem(LAB_SCOPE_KEY);
     };
     window.addEventListener("ahs:lab-scope", receiveScope);
     return () => window.removeEventListener("ahs:lab-scope", receiveScope);

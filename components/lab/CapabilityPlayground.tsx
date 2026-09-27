@@ -1,5 +1,9 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
+
+const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+const SCOPE_KEY = "ahs-lab-scope-v1";
 
 const jobs = ["Book appointments","Sell products","Request quotes","Client portal","Manage events","Capture leads"] as const;
 type Job = typeof jobs[number];
@@ -7,37 +11,45 @@ type Job = typeof jobs[number];
 function Booking() {
   const [day,setDay]=useState("WED 14");
   const [time,setTime]=useState("1:00 PM");
+  const [held,setHeld]=useState(false);
   return <div className="ahs-live">
-    <header><div><small>BOOKING / SCHEDULING</small><h3>Choose a time</h3></div><b>LIVE UI</b></header>
-    <div className="ahs-days">{["MON 12","TUE 13","WED 14","THU 15","FRI 16"].map(x=><button key={x} className={day===x?"on":""} onClick={()=>setDay(x)}>{x}</button>)}</div>
-    <div className="ahs-pills">{["10:00 AM","11:30 AM","1:00 PM","3:30 PM"].map(x=><button key={x} className={time===x?"on":""} onClick={()=>setTime(x)}>{x}</button>)}</div>
-    <aside><small>SELECTED</small><strong>{day} · {time}</strong><p>This could connect to live staff availability, deposits, reminders and confirmation emails.</p></aside>
+    <header><div><small>BOOKING / SCHEDULING</small><h3>Choose a time</h3></div><b>INTERACTIVE</b></header>
+    <div className="ahs-days">{["MON 12","TUE 13","WED 14","THU 15","FRI 16"].map(x=><button type="button" key={x} aria-pressed={day===x} className={day===x?"on":""} onClick={()=>{setDay(x);setHeld(false)}}>{x}</button>)}</div>
+    <div className="ahs-pills">{["10:00 AM","11:30 AM","1:00 PM","3:30 PM"].map(x=><button type="button" key={x} aria-pressed={time===x} className={time===x?"on":""} onClick={()=>{setTime(x);setHeld(false)}}>{x}</button>)}</div>
+    <button type="button" className="ahs-main-action" onClick={()=>setHeld(value=>!value)}>{held?"Release the demo hold":"Hold this demo time"}</button>
+    <aside aria-live="polite"><small>{held?"DEMO HOLD CREATED":"YOUR SELECTION"}</small><strong>{day} · {time}</strong><p>{held?"This local hold demonstrates confirmation state. No availability is changed and no booking is sent.":"Select another day or time, then try the confirmation state."}</p></aside>
   </div>
 }
 
 function Shop() {
   const [item,setItem]=useState("Silk Set");
-  const [cart,setCart]=useState(false);
+  const [cart,setCart]=useState<string[]>([]);
+  const prices:Record<string,number>={"Silk Set":148,"Crystal Bag":92,"Pink Mule":124};
   return <div className="ahs-live">
-    <header><div><small>E-COMMERCE</small><h3>Shop the edit</h3></div><b>{cart?"1 ITEM":"0 ITEMS"}</b></header>
-    <div className="ahs-products">{["Silk Set","Crystal Bag","Pink Mule"].map((x,i)=><button key={x} className={item===x?"on":""} onClick={()=>{setItem(x);setCart(false)}}><i>{["✦","♡","✿"][i]}</i><strong>{x}</strong><span>${[148,92,124][i]}</span></button>)}</div>
-    <button className="ahs-main-action" onClick={()=>setCart(true)}>{cart?`${item} added ♥`:`Add ${item} to cart`}</button>
+    <header><div><small>E-COMMERCE</small><h3>Shop the edit</h3></div><b>{cart.length} {cart.length===1?"ITEM":"ITEMS"}</b></header>
+    <div className="ahs-products">{["Silk Set","Crystal Bag","Pink Mule"].map((x,i)=><button type="button" key={x} aria-pressed={item===x} className={item===x?"on":""} onClick={()=>setItem(x)}><i>{["✦","♡","✿"][i]}</i><strong>{x}</strong><span>${prices[x]}</span></button>)}</div>
+    <button type="button" className="ahs-main-action" onClick={()=>setCart(current=>[...current,item])}>Add {item} to the demo bag</button>
+    <aside className="ahs-bag" aria-live="polite"><small>YOUR DEMO BAG</small><strong>{cart.length ? `${cart.length} ${cart.length===1?"piece":"pieces"} · $${cart.reduce((sum,x)=>sum+prices[x],0)}` : "Nothing in the bag yet"}</strong>{cart.length>0&&<button type="button" onClick={()=>setCart(current=>current.slice(0,-1))}>Remove last item</button>}<p>No purchase or payment is possible in this demonstration.</p></aside>
   </div>
 }
 
 function Quote() {
   const [service,setService]=useState("Website redesign");
   const [pages,setPages]=useState(5);
+  const [priority,setPriority]=useState("Clearer inquiries");
   return <div className="ahs-live">
-    <header><div><small>SMART QUOTE BUILDER</small><h3>Build the request</h3></div><b>CONDITIONAL</b></header>
+    <header><div><small>PROJECT ROUTING</small><h3>Build the request</h3></div><b>CONDITIONAL</b></header>
     <label><span>WHAT DO YOU NEED?</span><select value={service} onChange={e=>setService(e.target.value)}><option>Website redesign</option><option>Custom feature</option><option>Brand refresh</option></select></label>
     {service==="Website redesign"&&<label><span>APPROXIMATE PAGES</span><input type="range" min="1" max="12" value={pages} onChange={e=>setPages(+e.target.value)}/><strong>{pages} pages</strong></label>}
-    <aside><small>READY TO ROUTE</small><strong>{service}{service==="Website redesign"?` · ${pages} pages`:""}</strong><p>A real build could calculate ranges or trigger different follow-ups.</p></aside>
+    <label><span>FIRST PRIORITY</span><select value={priority} onChange={e=>setPriority(e.target.value)}><option>Clearer inquiries</option><option>More bookings</option><option>Less manual work</option><option>Better storytelling</option></select></label>
+    <aside aria-live="polite"><small>REQUEST ROUTED</small><strong>{service}{service==="Website redesign"?` · ${pages} pages`:""}</strong><p>{priority} is the first job. {service==="Custom feature"?"This calls for a scoped feature brief.":service==="Brand refresh"?"The visual identity and digital experience should be scoped together.":pages<=1?"A focused page may be enough; the brief will decide.":"A multi-page journey needs content and interaction planning."} This is guidance, not a quote.</p></aside>
   </div>
 }
 
 function Portal() {
   const [tab,setTab]=useState("Overview");
+  const [message,setMessage]=useState("");
+  const [draft,setDraft]=useState("");
   const data:Record<string,string[]>={
     Overview:["Website redesign","In progress","Next review: Friday"],
     Files:["Brand-assets.zip","Homepage-v3.pdf","Copy-notes.docx"],
@@ -45,28 +57,32 @@ function Portal() {
   };
   return <div className="ahs-live ahs-portal">
     <nav><strong>CLIENT SPACE</strong>{Object.keys(data).map(x=><button key={x} className={tab===x?"on":""} onClick={()=>setTab(x)}>{x}</button>)}</nav>
-    <section><small>WELCOME BACK</small><h3>{tab}</h3>{data[tab].map((x,i)=><div className="ahs-card" key={x}><span>0{i+1}</span><strong>{x}</strong></div>)}</section>
+    <section><small>WELCOME BACK</small><h3>{tab}</h3>{data[tab].map((x,i)=><div className="ahs-card" key={x}><span>0{i+1}</span><strong>{x}</strong></div>)}{tab==="Messages"&&<div className="ahs-portal-compose"><label><span>LEAVE A DEMO NOTE</span><textarea value={draft} onChange={e=>setDraft(e.target.value)} placeholder="A note for the project thread" rows={2}/></label><button type="button" disabled={!draft.trim()} onClick={()=>{setMessage(draft.trim());setDraft("")}}>Post to this demo</button>{message&&<p role="status">Your local note: {message}</p>}</div>}</section>
   </div>
 }
 
 function Events() {
   const [filter,setFilter]=useState("All");
+  const [selected,setSelected]=useState("");
   const events=[["Workshop","CERAMICS AFTER DARK","OCT 04"],["Dinner","CHEF'S TABLE","OCT 12"],["Music","MIDNIGHT LISTENING ROOM","OCT 18"]];
   return <div className="ahs-live">
     <header><div><small>EVENTS / TICKETING</small><h3>What&apos;s happening</h3></div></header>
     <div className="ahs-pills">{["All","Workshop","Dinner","Music"].map(x=><button key={x} className={filter===x?"on":""} onClick={()=>setFilter(x)}>{x}</button>)}</div>
-    <div className="ahs-events">{events.filter(e=>filter==="All"||e[0]===filter).map(e=><article key={e[1]}><span>{e[2]}</span><div><small>{e[0]}</small><strong>{e[1]}</strong></div><button>TICKETS ↗</button></article>)}</div>
+    <div className="ahs-events">{events.filter(e=>filter==="All"||e[0]===filter).map(e=><article key={e[1]}><span>{e[2]}</span><div><small>{e[0]}</small><strong>{e[1]}</strong></div><button type="button" aria-pressed={selected===e[1]} onClick={()=>setSelected(e[1])}>{selected===e[1]?"Selected":"Explore event"}</button></article>)}</div>
+    {selected&&<aside aria-live="polite"><small>EVENT PATHWAY</small><strong>{selected}</strong><p>From an event listing, a real build could show details, availability and a ticketing partner. This demo makes no reservation.</p><button type="button" onClick={()=>setSelected("")}>Clear selection</button></aside>}
   </div>
 }
 
 function Leads() {
   const [goal,setGoal]=useState("Book a consultation");
   const [budget,setBudget]=useState("$5k–$10k");
+  const [context,setContext]=useState("");
   return <div className="ahs-live">
     <header><div><small>LEAD QUALIFICATION</small><h3>Start with context</h3></div><b>SMART FORM</b></header>
     <p className="ahs-label">WHAT&apos;S THE GOAL?</p><div className="ahs-pills">{["Book a consultation","Get a proposal","Ask a question"].map(x=><button key={x} className={goal===x?"on":""} onClick={()=>setGoal(x)}>{x}</button>)}</div>
     <p className="ahs-label">PROJECT RANGE</p><div className="ahs-pills">{["$1k–$5k","$5k–$10k","$10k+"].map(x=><button key={x} className={budget===x?"on":""} onClick={()=>setBudget(x)}>{x}</button>)}</div>
-    <aside><small>LEAD CONTEXT</small><strong>{goal} · {budget}</strong><p>The business starts the conversation with useful information instead of a blank email.</p></aside>
+    <label><span>ONE THING WE SHOULD KNOW</span><input value={context} onChange={e=>setContext(e.target.value)} maxLength={120} placeholder="What are you trying to change?"/></label>
+    <aside aria-live="polite"><small>LIVE INTAKE SUMMARY</small><strong>{goal} · {budget}</strong><p>{context.trim() || "Add context to see a more useful project brief take shape."} Nothing is sent from this demo.</p></aside>
   </div>
 }
 
@@ -91,7 +107,7 @@ type Business = keyof typeof discoveryOptions;
 const goals = ["More inquiries","More bookings","Sell online","Smoother operations"];
 const experiences = ["Editorial & immersive","Warm & welcoming","Fast & focused","High-touch & guided"];
 
-function ScopeDiscovery() {
+function ScopeDiscovery({inHome}:{inHome:boolean}) {
   const [business,setBusiness] = useState<Business>("Wedding venue");
   const [selectedGoals,setSelectedGoals] = useState<string[]>(["More inquiries"]);
   const [features,setFeatures] = useState<string[]>([...discoveryOptions["Wedding venue"]]);
@@ -112,10 +128,12 @@ function ScopeDiscovery() {
       : business === "Service business" ? "Small business / service" : business === "Local business" ? "Small business / service" : "Something else";
     const needs = [recommendation[0] === "Focused Page" ? "One-page website" : "Multi-page website",
       ...features.flatMap(feature => ({"Booking":"Booking or scheduling","Reservations":"Booking or scheduling","Inquiry system":"Quote or lead flow","Commerce":"E-commerce","Client portal":"Client portal","Events":"Events or ticketing","Planning tools":"Custom interactive feature"} as Record<string,string>)[feature] || [])];
-    window.dispatchEvent(new CustomEvent("ahs:lab-scope", { detail: {
+    const scope = {
       projectType, needs: [...new Set(needs)],
       successGoal: `From The Lab: ${business}. Goals: ${selectedGoals.join(", ") || "to discuss"}. Functionality: ${features.join(", ") || "to discuss"}. Desired experience: ${experience}. Starting direction: ${recommendation[0]} (${recommendation[1]}).`
-    }}));
+    };
+    sessionStorage.setItem(SCOPE_KEY, JSON.stringify(scope));
+    window.dispatchEvent(new CustomEvent("ahs:lab-scope", { detail: scope }));
   };
 
   return <div className="ahs-discovery" aria-labelledby="discovery-heading">
@@ -136,12 +154,12 @@ function ScopeDiscovery() {
     </div>
     <div className="ahs-discovery-result" aria-live="polite">
       <div><small>Your direction · {experience}</small><h4>{recommendation[0]}</h4><p>{recommendation[1]}. {business === "Wedding venue" ? "A journey from discovery and galleries to planning and tour inquiry." : "Built around the actions your visitors need to take."} Final scope follows a conversation about your business.</p><ul>{features.map(feature=><li key={feature}>{feature}</li>)}</ul></div>
-      <a href="#start" onClick={bringToInquiry}>Bring this direction to the studio ↗</a>
+      <a href={inHome ? "#start" : "/start"} onClick={bringToInquiry}>Bring this direction to the studio <Image src={CURSOR} alt="" width={22} height={22} aria-hidden="true" /></a>
     </div>
   </div>
 }
 
-export default function CapabilityPlayground(){
+export default function CapabilityPlayground({inHome=false}:{inHome?:boolean}){
   const [job,setJob]=useState<Job>("Book appointments");
   return <section className="sheet sheet-lavender capability ahs-lab" id="capabilities">
     <div className="content-shell">
@@ -149,12 +167,12 @@ export default function CapabilityPlayground(){
         <div><span className="section-kicker-text">03 — The Lab</span><h2>What does your business<br/><em>need the internet to do?</em></h2></div>
         <p>Shape a starting scope, then try the kinds of interfaces that can make it real.</p>
       </div>
-      <ScopeDiscovery/>
       <div className="ahs-demo-intro"><h3>Step inside the showroom.</h3><p>Choose a capability and try its interface. Every window below responds to you.</p></div>
       <div className="ahs-lab-grid">
-        <nav className="ahs-job-list" aria-label="Interactive capabilities"><small>Choose a capability</small>{jobs.map((x,i)=><button key={x} type="button" aria-current={job===x?"true":undefined} className={job===x?"on":""} onClick={()=>setJob(x)}><span>0{i+1}</span><strong>{x}</strong><b>↗</b></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
+        <nav className="ahs-job-list" aria-label="Interactive capabilities"><small>Choose a capability</small>{jobs.map((x,i)=><button key={x} type="button" aria-current={job===x?"true":undefined} className={job===x?"on":""} onClick={()=>setJob(x)}><span>0{i+1}</span><strong>{x}</strong></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
         <div className="ahs-demo-shell"><div className="demo-window-top"><span/><span/><span/><b>A. HALLIWELL / FUNCTIONING DEMO</b></div><Demo job={job}/><footer>DEMO ONLY · NO REAL BOOKING, PURCHASE, QUOTE, TICKET OR MESSAGE IS SUBMITTED.</footer></div>
       </div>
+      <ScopeDiscovery inHome={inHome}/>
     </div>
   </section>
 }
