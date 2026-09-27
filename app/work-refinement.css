@@ -610,3 +610,58 @@
   .home-world .site-nav.floating-heart-nav .heart-menu-trigger{animation:none}
   .home-world .site-nav.floating-heart-nav .heart-dock{transition:none!important}
 }
+
+/* The investment guide is a piece of stationery, not a table in a box. */
+.home-world .offer-receipt{
+  border:0;border-radius:46% 46% 12px 12px / 34px 34px 12px 12px;
+  background:linear-gradient(150deg,rgba(255,250,248,.97),rgba(255,237,244,.95));
+  box-shadow:0 23px 62px rgba(95,42,68,.19),0 2px 0 rgba(255,255,255,.65) inset;
+}
+.home-world .offer-receipt::before{content:none}
+.home-world .receipt-columns{border:0;border-bottom:1px solid rgba(149,76,111,.42)}
+.home-world .offer-world .offer-grid article,
+.home-world .offer-world .offer-grid article:nth-child(2),
+.home-world .offer-world .offer-grid article:nth-child(3){
+  padding-block:31px;border-color:rgba(149,76,111,.23);
+}
+
+/* Founder portrait and note sit alongside the story rather than overwhelming it. */
+.home-world .founder-preview{grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:clamp(30px,5vw,76px)}
+.home-world .founder-photo-card{width:min(100%,365px)}
+.home-world .founder-desk-note{max-width:330px}
+
+/* A closing signature and a loose site index replace the footer grid. */
+.home-world .world-footer .footer-paper{
+  display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);
+  align-items:center;column-gap:clamp(30px,6vw,100px);row-gap:55px;
+  padding:30px 0 0;border:0;border-top:1px solid rgba(76,35,79,.35);
+}
+.home-world .world-footer .footer-paper::before{content:none}
+.home-world .world-footer .footer-brand{align-items:baseline;gap:18px}
+.home-world .world-footer .footer-brand .logo-mark{width:52px;height:52px;flex:0 0 auto;font-size:25px}
+.home-world .world-footer .footer-brand strong{
+  font-size:clamp(26px,3.2vw,48px);font-weight:400;line-height:1;letter-spacing:-.045em;
+}
+.home-world .world-footer .footer-paper>p{
+  max-width:360px;margin:0;font-size:clamp(21px,2vw,30px);line-height:1.15;font-style:italic;
+}
+.home-world .world-footer .footer-links{
+  grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;
+  gap:15px clamp(22px,3vw,52px);padding-top:25px;border:0;
+  border-top:1px solid rgba(76,35,79,.28);
+}
+.home-world .world-footer .footer-links a{
+  padding:0;border:0;font-size:clamp(14px,1.15vw,17px)!important;
+  font-weight:600;letter-spacing:.02em;text-decoration:none;
+}
+.home-world .world-footer .footer-links a:hover{text-decoration:underline;text-underline-offset:5px}
+@media(max-width:900px){
+  .home-world .founder-preview{grid-template-columns:1fr}
+  .home-world .founder-preview-visual{width:min(100%,480px)}
+  .home-world .world-footer .footer-paper{grid-template-columns:1fr;row-gap:26px}
+  .home-world .world-footer .footer-links{grid-column:auto;margin-top:10px}
+}
+@media(max-width:600px){
+  .home-world .world-footer .footer-brand strong{font-size:clamp(23px,7vw,34px)}
+  .home-world .world-footer .footer-links{gap:16px 24px}
+}
