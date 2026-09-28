@@ -1,1 +1,1 @@
-
+export default function Accessibility(){return <main><h1>Accessibility Statement</h1><p>A. Halliwell Studio aims to create digital experiences that are usable and accessible. If you encounter an accessibility barrier, please contact the studio so improvements can be made.</p></main>}
