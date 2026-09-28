@@ -322,7 +322,7 @@ export default function StartProject() {
         <div className="start-project start-project-success">
           <span className="start-kicker">INQUIRY RECEIVED</span>
           <div className="start-success-heart">♥</div>
-          <h2>It&apos;s officially<br />in my inbox.</h2>
+          <h1>It&apos;s officially<br />in my inbox.</h1>
           <p>{feedback}</p>
           <div className="start-success-summary">
             <span>BUSINESS</span><strong>{projectType}</strong>
@@ -343,7 +343,7 @@ export default function StartProject() {
         <div className="start-project-header">
           <div>
             <span className="start-kicker">A CONVERSATION BEFORE THE BUILD</span>
-            <h2>Tell me what<br />you have in mind.</h2>
+            <h1>Tell me what<br />you have in mind.</h1>
           </div>
           <p>
             The exciting part, the frustrating part, and the thing the website needs to do next.
