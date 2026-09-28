@@ -17,6 +17,7 @@ export type Project = {
   outcome: string;
   evidence: string[];
   livePreview?: boolean;
+  inDevelopment?: boolean;
   disclosure: string;
 };
 
@@ -133,6 +134,7 @@ export const projects: Project[] = [
     outcome: "A compact live concept that demonstrates restaurant-specific interaction without requiring a full fictional operations stack.",
     evidence: [],
     livePreview: true,
+    inDevelopment: true,
     disclosure: "Original studio concept. Fictional restaurant. Reservations and menu items are demonstration content."
   },
   {
@@ -151,6 +153,7 @@ export const projects: Project[] = [
     outcome: "A live e-commerce concept showing product discovery and cart behavior inside a deliberately small, polished prototype.",
     evidence: [],
     livePreview: true,
+    inDevelopment: true,
     disclosure: "Original studio concept. Fictional fashion shop. No real purchases are processed."
   }
 ];

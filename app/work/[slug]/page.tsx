@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return { title: "Project Not Found", robots: { index: false, follow: false } };
-  return { title: `${project.name} Case Study`, description: project.description, alternates: { canonical: `/work/${project.slug}` } };
+  return { title: project.inDevelopment?`${project.name} · Coming Soon`:`${project.name} Case Study`, description: project.description, robots: project.inDevelopment?{index:false,follow:true}:undefined, alternates: { canonical: `/work/${project.slug}` } };
 }
 
 export default async function ProjectPage({ params }: Props) {
@@ -27,7 +27,10 @@ export default async function ProjectPage({ params }: Props) {
       <div className="site-background" aria-hidden="true" />
       <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><Link href="/work">← Selected Work</Link></header>
 
-      {caseStudies[project.slug] ? <CaseStudyWorld project={project} study={caseStudies[project.slug]} /> : <article className={`case-sheet project-${project.tone}`}>
+      {project.inDevelopment ? <article className={`case-sheet project-${project.tone}`}>
+        <section className="case-hero"><div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div><h1>{project.name}</h1><p>{project.description}</p><p className="demo-disclosure">Concept in development · The complete website and case file are coming soon.</p></section>
+        <ProjectMedia project={project} mode="live" />
+      </article> : caseStudies[project.slug] ? <CaseStudyWorld project={project} study={caseStudies[project.slug]} /> : <article className={`case-sheet project-${project.tone}`}>
         <section className="case-hero">
           <div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div>
           <h1>{project.name}</h1>

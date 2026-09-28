@@ -37,10 +37,10 @@ export default function WorkPage() {
               <h2>{project.name}</h2>
               <p>{project.description}</p>
               <ProjectMedia project={project} />
-              <div className="case-actions">
+              {project.inDevelopment ? <p className="work-index-pending">Coming soon · The full case file and site are in development.</p> : <div className="case-actions">
                 <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>
                 <a className="button" href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noreferrer" : undefined}>Visit live build ↗</a>
-              </div>
+              </div>}
             </article>
           ))}
         </div>
