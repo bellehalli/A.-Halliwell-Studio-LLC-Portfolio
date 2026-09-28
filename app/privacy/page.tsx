@@ -1,1 +1,1 @@
-
+export default function Privacy(){return <main><h1>Privacy Policy</h1><p>A. Halliwell Studio respects your privacy. Information submitted through project inquiries is used only to respond to requests, prepare proposals, and provide services.</p><p>We do not sell personal information. Questions can be directed through the studio contact channels.</p></main>}
