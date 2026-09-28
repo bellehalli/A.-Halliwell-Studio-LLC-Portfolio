@@ -53,7 +53,7 @@
 .studio-route .destination-hero .founder-profile-photo::after {
   content: ''; position: absolute; z-index: 3; width: 112px; height: 112px;
   top: -48px; left: -45px; pointer-events: none;
-  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 29.PNG') center / contain no-repeat;
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 29.webp') center / contain no-repeat;
   filter: drop-shadow(0 5px 5px rgba(55,32,56,.16));
 }
 .studio-route .founder-profile-photo > span {

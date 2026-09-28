@@ -35,9 +35,16 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       <p className="case-world-disclosure">{project.disclosure}</p>
     </section>
 
+    <dl className="case-world-metadata" aria-label="Project details">
+      <div><dt>Industry</dt><dd>{project.category.split("/")[0].trim()}</dd></div>
+      <div><dt>Services</dt><dd>{project.details.join(" · ")}</dd></div>
+      <div><dt>Goal</dt><dd>{project.slug === "willow-lily" ? "Guide couples from discovery to a confident tour inquiry" : project.brief}</dd></div>
+    </dl>
+
     <section className="case-world-summary" aria-labelledby="case-summary-heading">
       <p>01 / Project summary</p><h2 id="case-summary-heading">More than a<br /><em>pretty homepage.</em></h2>
       <div><span>{project.category}</span><p>{study.summary}</p></div>
+      {project.slug === "willow-lily" && <p className="case-world-decision">Designed around the moment a couple decides: “This could be our place.”</p>}
     </section>
 
     <section className="case-world-story" aria-label="The thinking behind the project">
@@ -51,6 +58,8 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
         <p>{copy}</p>
       </div>)}
     </section>
+
+    <section className="case-world-outcome" aria-labelledby="outcome-heading"><p>THE BUSINESS PURPOSE</p><h2 id="outcome-heading">What the experience supports.</h2><p>{project.outcome}</p><small>Concept objective; no measured client result is claimed.</small></section>
 
     <section className="case-world-journey" aria-labelledby="journey-heading">
       <div className="case-world-section-heading"><p>05 / Experience map</p><h2 id="journey-heading">{study.journeyHeading ?? <>From first look<br />to first visit.</>}</h2><span>{study.journeyIntro ?? "A couple's path through the site"}</span></div>
