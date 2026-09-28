@@ -4,7 +4,7 @@ import FaxClient from "./FaxClient";
 import FaxSignIn from "./FaxSignIn";
 import "./fax.css";
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Private Fax Desk | A. Halliwell Studio", robots: { index: false, follow: false } };
+export const metadata = { title: "Private Fax Desk", robots: { index: false, follow: false } };
 export default async function FaxPage() {
   const session = (await cookies()).get(SESSION_COOKIE)?.value;
   return hasFaxSession(session) ? <FaxClient /> : <FaxSignIn />;

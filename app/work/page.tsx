@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import WorkIndex from "@/components/projects/WorkIndex";
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "Selected Work",
   description: "Selected A. Halliwell Studio concept work across hospitality, nightlife, wellness, local services, restaurants and e-commerce.",
   alternates: { canonical: "/work" },
+  ...socialMetadata("/work", "Selected Work", "Selected A. Halliwell Studio concept work across hospitality, nightlife, wellness, local services, restaurants and e-commerce."),
 };
 
 export default function WorkPage() {

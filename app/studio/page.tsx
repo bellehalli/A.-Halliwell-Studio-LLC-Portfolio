@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "Studio",
   description: "Meet Arabella Halliwell, founder, designer and developer of A. Halliwell Studio, an independent web design, development and digital systems studio.",
   alternates: { canonical: "/studio" },
+  ...socialMetadata("/studio", "Studio", "Meet Arabella Halliwell, founder, designer and developer of A. Halliwell Studio, an independent web design, development and digital systems studio."),
 };
 
 const blocks: string[][] = [

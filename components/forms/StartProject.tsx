@@ -90,7 +90,8 @@ const referralOptions = [
 
 const productCountOptions = ["1–10", "11–50", "51–200", "200+", "Not sure yet"];
 
-export default function StartProject() {
+export default function StartProject({ inHome = false }: { inHome?: boolean }) {
+  const Heading = inHome ? "h2" : "h1";
   const [projectType, setProjectType] = useState("");
   const [needs, setNeeds] = useState<string[]>([]);
   const [timing, setTiming] = useState("");
@@ -324,7 +325,7 @@ export default function StartProject() {
         <div className="start-project start-project-success">
           <span className="start-kicker">INQUIRY RECEIVED</span>
           <div className="start-success-heart">♥</div>
-          <h1>It&apos;s officially<br />in my inbox.</h1>
+          <Heading>It&apos;s officially<br />in my inbox.</Heading>
           <p>{feedback}</p>
           <p>I&apos;ll review your project details and respond within 1–2 business days.</p>
           <div className="start-success-summary">
@@ -346,7 +347,7 @@ export default function StartProject() {
         <div className="start-project-header">
           <div>
             <span className="start-kicker">A CONVERSATION BEFORE THE BUILD</span>
-            <h1>Tell me what<br />you have in mind.</h1>
+            <Heading>Tell me what<br />you have in mind.</Heading>
           </div>
           <p>
             The exciting part, the frustrating part, and the thing the website needs to do next.

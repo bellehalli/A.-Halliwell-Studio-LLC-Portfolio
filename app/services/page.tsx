@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SceneProps from "@/components/visual/SceneProps";
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
   title: "Web Design, Development & Digital Systems",
   description: "Custom web design, development and digital systems for businesses that need the website to sell, book, explain, organize or automate.",
   alternates: { canonical: "/services" },
+  ...socialMetadata("/services", "Web Design, Development & Digital Systems", "Custom web design, development and digital systems for businesses that need the website to sell, book, explain, organize or automate."),
 };
 
 const blocks: string[][] = [

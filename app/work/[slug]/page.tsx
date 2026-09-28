@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(aliases[slug] ?? slug);
   if (!project) return { title: "Project Not Found", robots: { index: false, follow: false } };
-  return { title: project.inDevelopment?`${project.name} · Coming Soon`:`${project.name} Case Study`, description: project.description, robots: project.inDevelopment?{index:false,follow:true}:undefined, alternates: { canonical: `/work/${project.slug}` }, openGraph: { title: `${project.name} | A. Halliwell Studio`, description: project.description, url: `/work/${project.slug}`, images: [{url:"/og-image.png",width:1200,height:630,alt:"A. Halliwell Studio portfolio case study"}] } };
+  return { title: project.inDevelopment?`${project.name} · Coming Soon`:`${project.name} Case Study`, description: project.description, robots: project.inDevelopment?{index:false,follow:true}:undefined, alternates: { canonical: `/work/${project.slug}` }, openGraph: { title: `${project.name} | A. Halliwell Studio`, description: project.description, url: `/work/${project.slug}`, images: [{url:"/og-image.png",width:1200,height:630,alt:"A. Halliwell Studio portfolio case study"}] }, twitter: {card:"summary_large_image",title:`${project.name} | A. Halliwell Studio`,description:project.description,images:["/og-image.png"]} };
 }
 
 export default async function ProjectPage({ params }: Props) {
