@@ -139,4 +139,38 @@ export const caseStudies: Record<string, CaseStudy> = {
     screensDisclosure: "Vanta Social is a fictional nightlife demonstration. Events, section availability and pricing are illustrative; signup and reservation forms do not transmit to a real venue.",
     liveIntro: "Explore the live site in the frame. Move through events and VIP to try the table selector and reservation path, or open the complete build.",
   },
+  "northstar-heating-home": {
+    positioning: "Homeowner Service Journey + Local Lead System",
+    statement: "Comfort begins with a clear next step.",
+    heroImage: "/case-studies/northstar-heating-home/northstar-home.webp",
+    heroImageAlt: "Northstar Heating & Home website opening with a Michigan home and clear service and estimate paths",
+    brief: "Make a local home-service concept useful in two very different moments: when a homeowner needs help now, and when they are researching maintenance or a new system. Each path needs a clear reason to trust the business and an obvious next action.",
+    problem: "A homeowner with no heat should not have to know which service page to open. Someone considering replacement needs time to compare repair history, comfort and cost. A single generic contact button treats those decisions as though they are the same.",
+    strategy: "Organize the website by homeowner intent. Lead urgent visitors toward the relevant service and call path; give planned projects a decision guide, replacement process and financing context; and present maintenance as a continuing relationship rather than a one-time sale.",
+    journeyHeading: "From concern to a confident call.",
+    journeyIntro: "A homeowner's path through the site",
+    journey: [
+      { title: "Name the problem", description: "Start with the symptom, not contractor terminology." },
+      { title: "Find the right route", description: "Move to a service, urgent call or planned estimate with less guesswork." },
+      { title: "Weigh the options", description: "Use the repair-or-replace guide and process detail to frame the decision." },
+      { title: "Take the next step", description: "Request service, explore an estimate or consider ongoing care." },
+    ],
+    screensIntro: "Selected moments show how immediate service, considered decisions and ongoing care fit together.",
+    screenChapters: [
+      { title: "Start with the homeowner", description: "A local, familiar opening leads into problem-first routing and the full service map, so the visitor does not have to diagnose an HVAC system to find help.", screens: [
+        { file: "northstar-home.webp", caption: "The Michigan home-service entrance" },
+        { file: "northstar-service-routing.webp", caption: "Urgent needs and service discovery" },
+      ] },
+      { title: "Make replacement understandable", description: "The replacement journey gives an estimate path, a five-question decision guide and a plain-language view of the process and financing considerations.", screens: [
+        { file: "northstar-replacement.webp", caption: "The replacement pathway" },
+        { file: "northstar-decision-guide.webp", caption: "The repair-or-replace decision guide" },
+        { file: "northstar-replacement-process.webp", caption: "The process and financing context" },
+      ] },
+      { title: "Keep the relationship", description: "The maintenance experience turns seasonal care into a clear membership proposition, with the service benefits and illustrative rate visible together.", screens: [
+        { file: "northstar-maintenance.webp", caption: "The year-round maintenance experience" },
+      ] },
+    ],
+    screensDisclosure: "Northstar is a fictional home-service demonstration. Phone number, ratings, membership rates and financing details are illustrative. The decision guide offers general information, not a diagnosis or quote.",
+    liveIntro: "Explore the working site in the frame. Follow an urgent service route or open Replacement to try the decision guide, then visit the complete build for the full experience.",
+  },
 };

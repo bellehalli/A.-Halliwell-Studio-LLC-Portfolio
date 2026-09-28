@@ -85,6 +85,8 @@
 .project-maison .case-world-hero-art img { aspect-ratio: 2048/1332; background: #1b1c19; }
 .project-vanta .case-world-hero-art::before { background: #d8c4a8; border-color: #8e785b; }
 .project-vanta .case-world-hero-art img { aspect-ratio: 2048/1300; object-fit: cover; object-position: center bottom; background: #0b0b0d; }
+.project-northstar .case-world-hero-art::before { background: #e5d4b4; border-color: #af9568; }
+.project-northstar .case-world-hero-art img { aspect-ratio: 2048/1380; object-fit: cover; object-position: center bottom; background: #f5f1e7; }
 .case-world-hero-art figcaption { position: relative; display: flex; justify-content: space-between; margin-top: 13px; font-size: 15px; }
 .case-world-disclosure { margin: 0; padding-top: 18px; border-top: 1px solid #bda9b7; color: #746571; font-size: 14px; line-height: 1.4; }
 .case-world-story { margin-top: clamp(80px,10vw,150px); }
@@ -148,6 +150,7 @@
 .case-world-screen-grid figure > a { position: relative; display: block; overflow: hidden; border: 1px solid #c4b8c2; background: #edeae5; }
 .case-world-screen-grid figure img { display: block; width: 100%; height: auto; }
 .project-vanta .case-world-screen-grid figure img { aspect-ratio: 2048/1380; object-fit: cover; object-position: center bottom; }
+.project-northstar .case-world-screen-grid figure img { aspect-ratio: 2048/1380; object-fit: cover; object-position: center bottom; }
 .case-world-screen-grid figure > a > span { position: absolute; right: 12px; bottom: 12px; padding: 9px 13px; background: #fffaf4; color: #39263c; font: italic 15px 'Times New Roman',serif; box-shadow: 0 3px 12px rgba(39,25,39,.12); }
 .case-world-screen-grid figure > a > span .case-world-arrow { width: 14px; height: 14px; margin-left: 3px; }
 .case-world-screen-grid figure > a:hover > span { color: #a43c82; }
