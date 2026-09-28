@@ -346,7 +346,8 @@ export default function StartProject() {
             <h1>Tell me what<br />you have in mind.</h1>
           </div>
           <p>
-            The exciting part, the frustrating part, and the thing the website needs to do next.
+            Every project starts with understanding what your business needs the website to accomplish.
+            Tell me the exciting part, the frustrating part, and the thing it needs to do next.
             Share what you know; we can shape the rest together.
           </p>
         </div>

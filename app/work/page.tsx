@@ -2,12 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import { projects } from "@/data/projects";
+import { caseStudies } from "@/data/caseStudies";
 import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Selected Work",
   description: "Selected A. Halliwell Studio concept work across hospitality, nightlife, wellness, local services, restaurants and e-commerce.",
   alternates: { canonical: "/work" },
+};
+
+const businessPurposes: Record<string, string> = {
+  "willow-lily": "Turn venue discovery into a prepared tour inquiry.",
+  "maison-riviere": "Move couples from a romantic first impression to an informed visit.",
+  "vanta-social": "Connect event interest with guest-list and VIP action.",
+  "elan-aesthetics": "Build confidence before a consultation request.",
+  "northstar-heating-home": "Help homeowners choose the right service or estimate path.",
 };
 
 export default function WorkPage() {
@@ -35,9 +44,10 @@ export default function WorkPage() {
               <h2>{project.name}</h2>
               <p>{project.description}</p>
               {!project.inDevelopment && <div className="work-index-context">
-                <p><span>Business problem</span>{project.challenge}</p>
-                <p><span>Experience built</span>{project.approach.slice(0, 3).join(" · ")}</p>
-                <p><span>Scope</span>{project.details.join(" · ")}</p>
+                <p><span>Industry</span>{project.category.split(" / ")[0]}</p>
+                <p><span>Project type</span>{caseStudies[project.slug]?.positioning ?? project.category}</p>
+                <p><span>Business purpose</span>{businessPurposes[project.slug] ?? project.outcome}</p>
+                <p><span>Core systems</span>{project.approach.slice(0, 3).join(" · ")}</p>
               </div>}
               <ProjectMedia project={project} />
               {project.inDevelopment ? <p className="work-index-pending">Coming soon · The full case file and site are in development.</p> : <div className="case-actions">

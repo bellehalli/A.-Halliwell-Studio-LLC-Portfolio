@@ -1,4 +1,4 @@
-export type CaseStudyScope = { strategy: string[]; experience: string[]; development: string[] };
+export type CaseStudyScope = { strategy: string[]; experience: string[]; interactive: string[]; development: string[] };
 
 export type CaseStudy = {
   positioning: string;
@@ -39,8 +39,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     scope: {
       strategy: ["Luxury hospitality positioning and guest research", "Couple journey mapping and information architecture", "Estate, Weddings, Weekend, Inn, Investment, Planning and Visit pathways"],
-      experience: ["Editorial venue discovery and interactive map", "Wedding builder and date exploration", "Tour inquiry with preference capture"],
-      development: ["Custom responsive multi-page front end", "Interactive planning and availability states", "Inquiry handoff and test-mode payment demonstration"],
+      experience: ["Editorial venue storytelling and discovery", "A connected journey from estate to tour inquiry"],
+      interactive: ["Estate map, wedding builder and date exploration", "Tour inquiry with preference capture"],
+      development: ["Custom responsive multi-page front end", "Planning and availability states", "Test-mode payment handoff demonstration"],
     },
     screensIntro: "A few moments from the build, from first impression to a more informed inquiry.",
     screenChapters: [
@@ -71,7 +72,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     liveIntro: "Begin with the website itself. Scroll through the experience here, then open the full build to try the interactions.",
   },
   "maison-riviere": {
-    positioning: "Waterfront Wedding Venue Experience + Planning Journey",
+    positioning: "Luxury Wedding Venue Brand Experience + Investment Conversion System",
     statement: "A grand entrance, with every next step in view.",
     summary: "A waterfront wedding venue story that turns romance into a practical path through the estate, investment, wedding builder and private-tour request.",
     heroImage: "/case-studies/maison-riviere/maison-riviere-desktop-homepage-hero.jpg",
@@ -81,8 +82,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     strategy: "Open with the romance of the place, then make the estate, planning choices and investment easy to explore. The wedding builder gives a couple a way to test their preferences before the tour inquiry turns that interest into a more useful conversation.",
     scope: {
       strategy: ["Luxury venue positioning and couple decision research", "Estate-to-investment information architecture", "Private-tour conversion path"],
-      experience: ["Waterfront storytelling and curated venue discovery", "Guest-count and celebration planning interactions", "Illustrative investment and inquiry journey"],
-      development: ["Responsive multi-page front end", "Interactive wedding builder states", "Tour inquiry interface"],
+      experience: ["Waterfront storytelling and curated venue discovery", "Investment and inquiry journey"],
+      interactive: ["Guest-count and celebration planning builder", "Illustrative investment estimate"],
+      development: ["Responsive multi-page front end", "Wedding builder states", "Tour inquiry interface"],
     },
     journey: [
       { title: "Arrive", description: "Meet the waterfront setting and the promise of the celebration." },
@@ -106,7 +108,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     liveIntro: "Explore the live website in the frame, including its navigation and wedding builder. Open the complete build for a full-screen visit.",
   },
   "vanta-social": {
-    positioning: "Nightlife Discovery + VIP Reservation Experience",
+    positioning: "Nightlife Brand Experience + Revenue Conversion Platform",
     statement: "The night starts before the door.",
     summary: "A digital front door for a Detroit nightlife concept, connecting the event calendar, arrival details, insider access and VIP section discovery.",
     heroImage: "/case-studies/vanta-social/vanta-homepage.webp",
@@ -116,7 +118,8 @@ export const caseStudies: Record<string, CaseStudy> = {
     strategy: "Treat the site like a digital front door: lead with the energy of the room, make events and arrival details easy to find, then let VIP guests compare placement and minimums before requesting a section.",
     scope: {
       strategy: ["Nightlife audience and group-planning decisions", "Event, guest-list and VIP information architecture", "Pathways from flyer discovery to qualified inquiry"],
-      experience: ["Event discovery and detail views", "Insider signup and social return path", "Interactive VIP floor plan and bottle-service exploration"],
+      experience: ["Event discovery and detail views", "Insider signup and social return path"],
+      interactive: ["VIP floor plan and section comparison", "Bottle-service exploration and reservation pathway"],
       development: ["Responsive multi-page front end", "Interactive section and event states", "Illustrative list and reservation forms"],
     },
     journeyHeading: "From the flyer to the floor.",
@@ -147,7 +150,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     liveIntro: "Explore the live site in the frame. Move through events and VIP to try the table selector and reservation path, or open the complete build.",
   },
   "elan-aesthetics": {
-    positioning: "Wellness Discovery + Consultation Journey",
+    positioning: "Luxury Med Spa Website + Consultation Journey",
     statement: "A more considered way to begin.",
     summary: "An aesthetics experience that earns trust before asking for a booking, helping visitors understand treatments, meet the practice and choose a consultation path.",
     heroImage: "/case-studies/elan-aesthetics/elan-home.jpg",
@@ -157,8 +160,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     strategy: "Begin with a client's goals, explain the care behind each option and offer a guided route toward consultation. Let editorial space and clear language support confidence without promising clinical outcomes.",
     scope: {
       strategy: ["Concern-led positioning and prospective-client research", "Treatments, results, memberships and booking architecture", "Trust and consultation decision mapping"],
-      experience: ["Treatment discovery and educational pathways", "Provider, results and membership presentation", "Consultation-first booking journey"],
-      development: ["Responsive multi-page front end", "Interactive treatment and booking states", "Illustrative consultation and membership interfaces"],
+      experience: ["Treatment education and trust-building pathways", "Provider, results and membership presentation"],
+      interactive: ["Concern-led treatment finder", "Consultation-first booking journey"],
+      development: ["Responsive multi-page front end", "Treatment and booking states", "Illustrative consultation and membership interfaces"],
     },
     journeyHeading: "From curiosity to consultation.",
     journeyIntro: "A prospective client's path through the experience",
@@ -184,7 +188,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     liveIntro: "Explore the working concept below. Follow treatment discovery and consultation paths, or open the complete build in a new tab.",
   },
   "northstar-heating-home": {
-    positioning: "Homeowner Service Journey + Local Lead System",
+    positioning: "Service Business Website + Lead Generation System",
     statement: "Comfort begins with a clear next step.",
     summary: "A local-service system that helps homeowners distinguish urgent service from planned replacement, then find a call, estimate or maintenance path.",
     heroImage: "/case-studies/northstar-heating-home/northstar-home.webp",
@@ -194,7 +198,8 @@ export const caseStudies: Record<string, CaseStudy> = {
     strategy: "Organize the website by homeowner intent. Lead urgent visitors toward the relevant service and call path; give planned projects a decision guide, replacement process and financing context; and present maintenance as a continuing relationship rather than a one-time sale.",
     scope: {
       strategy: ["Homeowner intent and service-positioning research", "Urgent versus planned journey architecture", "Local trust and service-content structure"],
-      experience: ["Problem-first service routing", "Repair-or-replace decision guide", "Estimate, service and maintenance pathways"],
+      experience: ["Problem-first service routing", "Estimate, service and maintenance pathways"],
+      interactive: ["Repair-or-replace decision guide", "Quote and service request flows"],
       development: ["Responsive multi-page front end", "Interactive decision states", "Illustrative inquiry and scheduling interfaces"],
     },
     journeyHeading: "From concern to a confident call.",

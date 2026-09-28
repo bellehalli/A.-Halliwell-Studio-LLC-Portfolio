@@ -1,8 +1,9 @@
 import type { CaseStudyScope } from "@/data/caseStudies";
 
 const groups = [
-  ["Strategy", "The thinking", "strategy"],
+  ["Creative Direction & Strategy", "The thinking", "strategy"],
   ["Experience Design", "The journey", "experience"],
+  ["Interactive Systems", "The moving parts", "interactive"],
   ["Development", "The working system", "development"],
 ] as const;
 

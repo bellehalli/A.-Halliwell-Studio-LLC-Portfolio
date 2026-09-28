@@ -1,6 +1,8 @@
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import ScopeBreakdown from "@/components/projects/ScopeBreakdown";
+import ProjectSummary from "@/components/projects/ProjectSummary";
+import ExperienceMap from "@/components/projects/ExperienceMap";
 import type { Project } from "@/data/projects";
 import type { CaseStudy } from "@/data/caseStudies";
 
@@ -35,10 +37,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       <p className="case-world-disclosure">{project.disclosure}</p>
     </section>
 
-    <section className="case-world-summary" aria-labelledby="case-summary-heading">
-      <p>01 / Project summary</p><h2 id="case-summary-heading">More than a<br /><em>pretty homepage.</em></h2>
-      <div><span>{project.category}</span><p>{study.summary}</p></div>
-    </section>
+    <ProjectSummary project={project} study={study} />
 
     <section className="case-world-story" aria-label="The thinking behind the project">
       {([
@@ -52,10 +51,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       </div>)}
     </section>
 
-    <section className="case-world-journey" aria-labelledby="journey-heading">
-      <div className="case-world-section-heading"><p>05 / Experience map</p><h2 id="journey-heading">{study.journeyHeading ?? <>From first look<br />to first visit.</>}</h2><span>{study.journeyIntro ?? "A couple's path through the site"}</span></div>
-      <ol>{study.journey.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
-    </section>
+    <ExperienceMap study={study} />
 
     <section className="case-world-build" aria-labelledby="build-heading">
       <div className="case-world-section-heading"><p>06 / Inside the build</p><h2 id="build-heading">The work behind<br />the world.</h2><span>Scope demonstrated in this original studio concept. No fictional client fee or business result is claimed.</span></div>

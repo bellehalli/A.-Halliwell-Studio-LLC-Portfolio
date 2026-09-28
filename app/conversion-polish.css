@@ -26,6 +26,10 @@
 .case-world-summary > div { align-self: end; max-width: 470px; }
 .case-world-summary > div span { font-variant: small-caps; color: #8c477d; letter-spacing: .07em; }
 .case-world-summary > div p { margin: 17px 0 0; font-size: clamp(20px,1.75vw,27px); line-height: 1.35; }
+.case-world-summary-details dl { display: grid; gap: 10px; margin: 0 0 28px; padding: 0 0 24px; border-bottom: 1px solid #d8c4d2; }
+.case-world-summary-details dl > div { display: grid; grid-template-columns: 105px 1fr; gap: 14px; align-items: baseline; }
+.case-world-summary-details dt { color: #8c477d; font-variant: small-caps; letter-spacing: .05em; font-size: 15px; }
+.case-world-summary-details dd { margin: 0; font-size: clamp(16px,1.25vw,19px); line-height: 1.32; }
 .case-world-story { margin-top: clamp(35px,5vw,80px); }
 .case-world-build { margin-top: 0; }
 .case-world-scope-row small { color: #9d467f; font-variant: small-caps; letter-spacing: .07em; }
@@ -38,12 +42,13 @@
 }
 .project-elan .case-world-hero-art iframe { aspect-ratio: 2048/1437; }
 .work-index-context {
-  display: grid; grid-template-columns: repeat(3,minmax(0,1fr));
+  display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
   gap: clamp(22px,3vw,50px); margin: 35px 0 40px;
   padding: 25px 0; border-top: 1px solid #a7839b; border-bottom: 1px solid #a7839b;
 }
 .work-index-context p { margin: 0; font-size: clamp(16px,1.35vw,20px); line-height: 1.42; }
 .work-index-context span { display: block; margin-bottom: 12px; color: #8d285f; font-variant: small-caps; letter-spacing: .07em; }
+.work-index-context p { overflow-wrap: anywhere; }
 
 /* The portrait is a placed studio artifact, held by the existing binder clip. */
 .studio-route .destination-hero .founder-profile-photo {
@@ -66,6 +71,15 @@
 .lab-route .ahs-demo-shell { box-shadow: 15px 20px 0 rgba(148,94,156,.17); }
 .lab-route .ahs-demo-intro h3 { font-style: italic; }
 
+/* Keep the pink invitation, but let the three offers read as an investment guide. */
+.home-world .offer-receipt { width: min(980px,100%); margin-inline: auto; transform: rotate(-.5deg); }
+.home-world .offer-receipt::after { content: none; }
+.home-world .offer-world .offer-grid article { grid-template-columns: 125px minmax(0,1fr) 165px; }
+.home-world .offer-world-cta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 25px; margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(149,76,111,.42); font-size: 17px; }
+.home-world .offer-world-cta > span { font-style: italic; }
+.home-world .offer-world-cta a { color: #7e315d; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.home-world .offer-world-cta a:hover { color: #bd367d; }
+
 /* Special-purpose pages retain their content while sharing the studio entrance. */
 :is(.portal-page,.digital-card-page) > .site-nav:not(.floating-heart-nav) {
   position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
@@ -83,7 +97,10 @@
   .case-world-summary { padding: 55px 0; }
   .case-world-summary h2 { font-size: clamp(50px,12vw,70px); }
   .case-world-summary > div p { font-size: 21px; }
+  .case-world-summary-details dl > div { grid-template-columns: 1fr; gap: 3px; }
   .work-index-context { grid-template-columns: 1fr; gap: 22px; }
   .studio-route .destination-hero .founder-profile-photo::after { width: 86px; height: 86px; top: -35px; left: -28px; }
   .portal-page .portal-card,.digital-card-page .digital-card { margin-top: 95px; }
+  .home-world .offer-receipt { transform: none; }
+  .home-world .offer-world-cta { font-size: 16px; }
 }
