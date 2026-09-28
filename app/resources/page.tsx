@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SceneProps from "@/components/visual/SceneProps";
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
   title: "Resources",
   description: "Practical notes from A. Halliwell Studio about websites, digital experiences and business systems.",
   alternates: { canonical: "/resources" },
+  ...socialMetadata("/resources", "Resources", "Practical notes from A. Halliwell Studio about websites, digital experiences and business systems."),
 };
 
 const resources = [

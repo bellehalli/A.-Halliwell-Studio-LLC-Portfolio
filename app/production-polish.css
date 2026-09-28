@@ -53,3 +53,14 @@ body { overflow-x: clip; }
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+/* Mobile previews load on request so the selected work stays compact. */
+.project-preview-facade { min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 30px; text-align: center; background: #fbf2fa; color: #42253d; }
+.project-preview-facade span { font: 700 11px var(--font-mono),monospace; letter-spacing: .1em; }
+.project-preview-facade p { margin: 0; }
+.project-preview-facade button { padding: 12px 18px; border: 1px solid currentColor; background: #42253d; color: #fff; cursor: pointer; font: 700 12px var(--font-mono),monospace; }
+.project-preview-facade a { color: inherit; text-underline-offset: 4px; }
+.project-preview-facade :is(button,a):focus-visible { outline: 3px solid #a01769; outline-offset: 4px; }
+@media (max-width: 700px) { .project-preview-facade { min-height: 220px; } }
+@media (max-width: 700px) {
+  .work-page .case-hero h1 { font-size: clamp(42px, 11vw, 56px); overflow-wrap: anywhere; }
+}

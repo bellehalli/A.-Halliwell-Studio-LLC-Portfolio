@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import StartProject from "@/components/forms/StartProject";
 import SceneProps from "@/components/visual/SceneProps";
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
   title: "Start a Project",
   description: "Start a custom website, redesign, e-commerce, booking, portal or digital-system project with A. Halliwell Studio.",
   alternates: { canonical: "/start" },
+  ...socialMetadata("/start", "Start a Project", "Start a custom website, redesign, e-commerce, booking, portal or digital-system project with A. Halliwell Studio."),
 };
 
 export default function Page() {

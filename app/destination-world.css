@@ -26,7 +26,7 @@
 .work-page .work-index-project:nth-child(even) { background: linear-gradient(90deg,transparent,#fff0f5 50%,transparent); }
 
 .services-route .site-background {
-  background: #f7d8df url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center / cover no-repeat;
+  background: #f7d8df url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.webp') center / cover no-repeat;
 }
 .services-route .services-destination {
   overflow: hidden;
@@ -53,7 +53,7 @@
 .services-route .destination-block:nth-child(3)::after { content: none; }
 
 .studio-route .site-background {
-  background: #e8d5fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+  background: #e8d5fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover no-repeat;
 }
 .studio-route .studio-destination {
   overflow: hidden;
@@ -64,7 +64,7 @@
 .studio-route .studio-destination::before {
   content: ''; position: absolute; inset: 0 0 auto; height: clamp(280px,48vw,630px);
   background: linear-gradient(to bottom,rgba(237,222,251,.12),rgba(255,250,246,.98)),
-    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center top / cover no-repeat;
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center top / cover no-repeat;
   pointer-events: none;
 }
 .studio-route .destination-hero { padding-bottom: clamp(45px,7vw,85px); }
@@ -75,7 +75,7 @@
 .studio-route .destination-block:nth-child(4n + 3) { background: rgba(255,250,246,.72); }
 
 .lab-route .site-background {
-  background: #ede2fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+  background: #ede2fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover no-repeat;
 }
 .lab-route .lab-destination {
   overflow: hidden; background: #f5edfc; border-color: #b9a0ce;
@@ -92,7 +92,7 @@
 .lab-route .destination-hero > p { background: rgba(255,250,255,.9); }
 
 .start-route .site-background {
-  background: #e8d5fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+  background: #e8d5fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover no-repeat;
 }
 .destination-page .case-nav,.work-page .case-nav {
   background: rgba(255,248,251,.88); border-color: rgba(95,45,81,.27);

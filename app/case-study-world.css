@@ -7,7 +7,7 @@
 .case-page-editorial .site-background {
   inset: 0;
   z-index: -1;
-  background: #e8d8fb url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center top / min(1300px, 110vw) auto repeat-y;
+  background: #e8d8fb url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center top / min(1300px, 110vw) auto repeat-y;
   opacity: .74;
 }
 .case-page-editorial .site-background::after {

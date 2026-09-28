@@ -14,16 +14,16 @@
 .offer-world {
   margin-top: clamp(40px,7vw,86px);
   background: linear-gradient(rgba(255,248,251,.38),rgba(255,248,251,.38)),
-    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center / cover no-repeat;
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.webp') center / cover no-repeat;
   transform: rotate(-.12deg);
 }
 .studio-section {
   background: linear-gradient(rgba(250,246,255,.28),rgba(250,246,255,.28)),
-    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover no-repeat;
 }
 .sheet-lavender {
   background: linear-gradient(rgba(242,234,255,.24),rgba(242,234,255,.24)),
-    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover no-repeat;
 }
 .proof-grid article { background: rgba(255,252,248,.89); }
 .proof-grid article:nth-child(2) { background: rgba(255,236,245,.88); }
@@ -47,10 +47,10 @@
 
 /* Destination pages share the same material system with distinct identities. */
 .destination-sheet { background: #fffaf5 linear-gradient(#fffaf5,#fffaf5) center / 850px repeat; }
-.services-destination { background: linear-gradient(rgba(255,250,247,.43),rgba(255,250,247,.43)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center top / cover no-repeat; }
-.studio-destination { background: linear-gradient(rgba(250,247,255,.32),rgba(250,247,255,.32)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center top / cover no-repeat; }
+.services-destination { background: linear-gradient(rgba(255,250,247,.43),rgba(255,250,247,.43)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.webp') center top / cover no-repeat; }
+.studio-destination { background: linear-gradient(rgba(250,247,255,.32),rgba(250,247,255,.32)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center top / cover no-repeat; }
 .lab-destination { background: #fffaf5 linear-gradient(#fffaf5,#fffaf5) center / 800px repeat; }
-.resources-destination { background: linear-gradient(rgba(255,250,247,.46),rgba(255,250,247,.46)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center top / cover no-repeat; }
+.resources-destination { background: linear-gradient(rgba(255,250,247,.46),rgba(255,250,247,.46)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.webp') center top / cover no-repeat; }
 .article-sheet { background: linear-gradient(rgba(255,250,245,.56),rgba(255,250,245,.56)),linear-gradient(#fffaf5,#fffaf5) center / 780px repeat; }
 .article-body { position: relative; z-index: 2; padding: clamp(24px,4vw,56px); background: rgba(255,252,249,.87); border: 1px solid rgba(16,13,16,.18); }
 .destination-sheet > :not(.scene-props) { position: relative; z-index: 2; }
@@ -69,7 +69,7 @@
 .services-destination .destination-block:nth-child(3)::after,
 .resources-destination .resource-link:first-child::after {
   content: ''; position: absolute; width: 70px; height: 70px; right: 12px; top: 10px;
-  background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 47.PNG') center / cover;
+  background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 47.webp') center / cover;
   clip-path: circle(47%); opacity: .85; pointer-events: none;
 }
 .resources-destination .resource-link:first-child::after { background-image: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 42.webp'); }

@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Navigation from "@/components/navigation/Navigation";
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
   description: "A. Halliwell Studio editorial letters. Subscription is not yet open.",
   alternates: { canonical: "/newsletter" },
   robots: { index: false, follow: true },
+  ...socialMetadata("/newsletter", "A. Halliwell Letters", "A. Halliwell Studio editorial letters. Subscription is not yet open."),
 };
 
 export default function NewsletterPage() {

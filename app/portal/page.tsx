@@ -1,3 +1,4 @@
+import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Navigation from "@/components/navigation/Navigation";
@@ -5,7 +6,9 @@ import Navigation from "@/components/navigation/Navigation";
 export const metadata: Metadata = {
   title: "Client Portal",
   description: "Private client workspace access for active A. Halliwell Studio projects.",
+  alternates: { canonical: "/portal" },
   robots: { index: false, follow: false },
+  ...socialMetadata("/portal", "Client Portal", "Private client workspace access for active A. Halliwell Studio projects."),
 };
 
 export default function PortalPage(){

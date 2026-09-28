@@ -1,5 +1,6 @@
 import type { Project } from "@/data/projects";
 import WillowPreview from "@/components/projects/WillowPreview";
+import ResponsivePreview from "@/components/projects/ResponsivePreview";
 type Props={project:Project;previewFallback?:boolean;mode?:"all"|"screens"|"live"};
 export default function ProjectMedia({project,previewFallback=false,mode="all"}:Props){
  const hasEvidence=project.evidence.length>0,previewUrl=project.embedUrl||project.url;
@@ -11,7 +12,7 @@ export default function ProjectMedia({project,previewFallback=false,mode="all"}:
    <div className="project-evidence-bar"><span>{project.inDevelopment?"CONCEPT PREVIEW":useWillowTour?"WEBSITE TOUR":"LIVE BUILD PREVIEW"}</span>{project.inDevelopment?<span>IN DEVELOPMENT</span>:<a href={project.url} target={project.url.startsWith("http")?"_blank":undefined} rel={project.url.startsWith("http")?"noreferrer":undefined}>OPEN FULL SITE <span className="ahs-link-mark" aria-hidden="true">→</span></a>}</div>
    <div className="project-browser-bar" aria-hidden="true"><i/><i/><i/><span>{(useWillowTour?project.url:previewUrl).replace(/^https?:\/\//,"")}</span></div>
    <div className={`project-preview-window${project.inDevelopment?" project-preview-window-pending":""}`} inert={project.inDevelopment || undefined}>
-    {useWillowTour?<WillowPreview url={project.url} />:<iframe src={previewUrl} title={`${project.name} ${project.inDevelopment?"concept":"live website"} preview`} loading="lazy" tabIndex={project.inDevelopment?-1:undefined}/>}
+    {project.inDevelopment ? (useWillowTour?<WillowPreview url={project.url}/>:<iframe src={previewUrl} title={`${project.name} concept preview`} loading="lazy" tabIndex={-1}/>) : <ResponsivePreview url={useWillowTour?project.url:previewUrl} title={`${project.name} live website preview`} willow={useWillowTour}/>}
    </div>
    {project.inDevelopment&&<div className="project-preview-coming-soon" role="status"><span>Studio concept · in development</span><strong>Coming soon.</strong><span>The full case file and site will open when the build is ready.</span></div>}
    <p className="project-preview-note">{project.inDevelopment?"A first look at the visual direction. The working site and case study are still in development.":useWillowTour?"Explore Willow Lily here, or open the complete build in a new tab.":"Scroll, click and explore the live build here. Open full site launches the standalone project."}</p>

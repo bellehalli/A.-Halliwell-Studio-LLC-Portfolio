@@ -46,11 +46,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       title: article.title,
       description: article.dek,
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "A. Halliwell Studio resources" }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.dek,
+      images: ["/og-image.png"],
     },
   };
 }
