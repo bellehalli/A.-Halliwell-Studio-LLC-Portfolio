@@ -19,7 +19,7 @@ const blocks: string[][] = [
 
 export default function Page() {
   return (
-    <main className="destination-page">
+    <main className="destination-page services-route">
       <div className="site-background" aria-hidden="true" />
       <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><nav className="destination-nav"><Link href="/work">Work</Link><Link href="/services">Services</Link><Link href="/studio">Studio</Link><Link href="/lab">Lab</Link></nav><Link href="/start">Start a project ↗</Link></header>
 
