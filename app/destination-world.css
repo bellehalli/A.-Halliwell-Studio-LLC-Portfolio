@@ -10,7 +10,14 @@
   border-color: #9d527e;
   box-shadow: 16px 19px 0 rgba(88,34,75,.18),0 30px 75px rgba(61,24,56,.2);
 }
-.work-page .case-hero { padding: 12px 0 38px; }
+.work-page .case-sheet::before {
+  content: ''; position: absolute; inset: 0 0 auto; height: 128px; pointer-events: none;
+  background-image: linear-gradient(rgba(246,180,215,.72),rgba(246,180,215,.72)),
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.PNG');
+  background-position: center; background-size: auto,240px;
+  border-bottom: 1px solid #bd7ca4;
+}
+.work-page .case-hero { padding: 122px 0 38px; }
 .work-page .work-proof-strip { border-color: #ba7b9b; }
 .work-page .work-index-project { padding-block: clamp(58px,7vw,100px); }
 .work-page .work-index-project .project-media {
@@ -94,6 +101,8 @@
 @media (max-width: 800px) {
   .work-page .site-background { background-size: auto,200px; }
   .work-page .case-sheet { box-shadow: 7px 9px 0 rgba(88,34,75,.18); }
+  .work-page .case-sheet::before { height: 95px; background-size: auto,180px; }
+  .work-page .case-hero { padding-top: 93px; }
   .services-route .services-destination::before { background-size: auto,auto 100%; }
   .services-route .destination-hero { padding-top: 205px; }
   .lab-route .destination-hero { padding-top: 210px; }
