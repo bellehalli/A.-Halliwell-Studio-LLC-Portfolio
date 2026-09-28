@@ -147,6 +147,7 @@
 .case-world-screen-grid .case-world-screen-feature { grid-column: 1/-1; }
 .case-world-screen-grid figure > a { position: relative; display: block; overflow: hidden; border: 1px solid #c4b8c2; background: #edeae5; }
 .case-world-screen-grid figure img { display: block; width: 100%; height: auto; }
+.project-vanta .case-world-screen-grid figure img { aspect-ratio: 2048/1380; object-fit: cover; object-position: center bottom; }
 .case-world-screen-grid figure > a > span { position: absolute; right: 12px; bottom: 12px; padding: 9px 13px; background: #fffaf4; color: #39263c; font: italic 15px 'Times New Roman',serif; box-shadow: 0 3px 12px rgba(39,25,39,.12); }
 .case-world-screen-grid figure > a > span .case-world-arrow { width: 14px; height: 14px; margin-left: 3px; }
 .case-world-screen-grid figure > a:hover > span { color: #a43c82; }
