@@ -1,17 +1,12 @@
 import Link from "next/link";
+import Navigation from "@/components/navigation/Navigation";
 
 export default function NotFound() {
   return (
     <main className="destination-page">
       <div className="site-background" aria-hidden="true" />
 
-      <header className="case-nav shell">
-        <Link className="logo" href="/">
-          <span className="logo-mark">A.</span>
-          <span>HALLIWELL</span>
-        </Link>
-        <Link href="/work">Selected Work</Link>
-      </header>
+      <Navigation />
 
       <article className="destination-sheet">
         <section className="destination-hero">

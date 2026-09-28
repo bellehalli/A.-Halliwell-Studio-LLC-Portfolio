@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SceneProps from "@/components/visual/SceneProps";
+import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -27,10 +28,7 @@ export default function ResourcesPage() {
   return (
     <main className="destination-page">
       <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell">
-        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
-        <Link href="/start">Start a project ↗</Link>
-      </header>
+      <Navigation />
       <article className="destination-sheet resources-destination"><SceneProps scene="resources"/>
         <section className="destination-hero">
           <small>JOURNAL + RESOURCES</small>
@@ -47,6 +45,7 @@ export default function ResourcesPage() {
             </Link>
           ))}
         </section>
+        <section className="case-end"><small>NEED MORE THAN A CHECKLIST?</small><h2>Let&apos;s talk about<br />the actual project.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
       </article>
     </main>
   );

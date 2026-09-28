@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
+import ScopeBreakdown from "@/components/projects/ScopeBreakdown";
 import type { Project } from "@/data/projects";
 import type { CaseStudy } from "@/data/caseStudies";
 
@@ -27,20 +28,42 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
           </div>
         </div>
         <figure className="case-world-hero-art">
-          <img src={study.heroImage} alt={study.heroImageAlt} />
+          {study.heroImage ? <img src={study.heroImage} alt={study.heroImageAlt} /> : <iframe src={project.embedUrl || project.url} title={study.heroImageAlt} loading="lazy" />}
           <figcaption>{project.name} <span>Website / Studio concept</span></figcaption>
         </figure>
       </div>
       <p className="case-world-disclosure">{project.disclosure}</p>
     </section>
 
-    <section className="case-world-live" id="live-experience" aria-labelledby="live-heading">
-      <div className="case-world-section-heading"><p>01 / The website</p><h2 id="live-heading">Step inside {project.name}.</h2><span>{study.liveIntro}</span></div>
-      <ProjectMedia project={project} mode="live" previewFallback={project.slug === "willow-lily"} />
+    <section className="case-world-summary" aria-labelledby="case-summary-heading">
+      <p>01 / Project summary</p><h2 id="case-summary-heading">More than a<br /><em>pretty homepage.</em></h2>
+      <div><span>{project.category}</span><p>{study.summary}</p></div>
+    </section>
+
+    <section className="case-world-story" aria-label="The thinking behind the project">
+      {([
+        ["02", "The Brief", study.brief],
+        ["03", "The Problem", study.problem],
+        ["04", "The Strategy", study.strategy],
+      ] as const).map(([number, title, copy]) => <div className="case-world-story-row" key={number}>
+        <p className="case-world-number">{number} / {title}</p>
+        <h2>{title}</h2>
+        <p>{copy}</p>
+      </div>)}
+    </section>
+
+    <section className="case-world-journey" aria-labelledby="journey-heading">
+      <div className="case-world-section-heading"><p>05 / Experience map</p><h2 id="journey-heading">{study.journeyHeading ?? <>From first look<br />to first visit.</>}</h2><span>{study.journeyIntro ?? "A couple's path through the site"}</span></div>
+      <ol>{study.journey.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
+    </section>
+
+    <section className="case-world-build" aria-labelledby="build-heading">
+      <div className="case-world-section-heading"><p>06 / Inside the build</p><h2 id="build-heading">The work behind<br />the world.</h2><span>Scope demonstrated in this original studio concept. No fictional client fee or business result is claimed.</span></div>
+      <ScopeBreakdown scope={study.scope} />
     </section>
 
     <section className="case-world-screens" id="selected-screens" aria-labelledby="screens-heading">
-      <div className="case-world-section-heading"><p>02 / Inside the experience</p><h2 id="screens-heading">A closer look.</h2><span>{study.screensIntro}</span></div>
+      <div className="case-world-section-heading"><p>07 / Selected screens</p><h2 id="screens-heading">A closer look.</h2><span>{study.screensIntro}</span></div>
       {study.screenChapters ? <div className="case-world-screen-archive">
         {study.screenChapters.map((chapter, chapterIndex) => <section className="case-world-screen-chapter" key={chapter.title} aria-labelledby={`case-chapter-${chapterIndex}`}>
           <div className="case-world-screen-chapter-intro"><span>{String(chapterIndex + 1).padStart(2,"0")}</span><h3 id={`case-chapter-${chapterIndex}`}>{chapter.title}</h3><p>{chapter.description}</p></div>
@@ -56,25 +79,13 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       </div> : <ProjectMedia project={project} mode="screens" />}
     </section>
 
-    <section className="case-world-story" aria-label="The thinking behind the project">
-      {([
-        ["03", "The Brief", study.brief],
-        ["04", "The Problem", study.problem],
-        ["05", "The Strategy", study.strategy],
-      ] as const).map(([number, title, copy]) => <div className="case-world-story-row" key={number}>
-        <p className="case-world-number">{number} / {title}</p>
-        <h2>{title}</h2>
-        <p>{copy}</p>
-      </div>)}
-    </section>
-
-    <section className="case-world-journey" aria-labelledby="journey-heading">
-      <div className="case-world-section-heading"><p>06 / The visitor journey</p><h2 id="journey-heading">{study.journeyHeading ?? <>From first look<br />to first visit.</>}</h2><span>{study.journeyIntro ?? "A couple's path through the site"}</span></div>
-      <ol>{study.journey.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
+    <section className="case-world-live" id="live-experience" aria-labelledby="live-heading">
+      <div className="case-world-section-heading"><p>08 / Live experience</p><h2 id="live-heading">Step inside {project.name}.</h2><span>{study.liveIntro}</span></div>
+      <ProjectMedia project={project} mode="live" previewFallback={project.slug === "willow-lily"} />
     </section>
 
     <section className="case-world-end" aria-labelledby="case-end-heading">
-      <p>07 / Your next project</p><h2 id="case-end-heading">A beautiful site can<br /><em>do real work.</em></h2>
+      <p>09 / Your next project</p><h2 id="case-end-heading">A beautiful site can<br /><em>do real work.</em></h2>
       <span>Let&apos;s shape the experience your business needs.</span>
       <Link href="/start">Start a project <ArrowMark /></Link>
       <small>Original studio concept, not a commissioned client result.</small>

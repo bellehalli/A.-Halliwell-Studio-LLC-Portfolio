@@ -281,7 +281,7 @@ img { max-width: 100%; }
 .start-sheet { padding: clamp(70px,8vw,112px) clamp(24px,5vw,74px); background: rgba(14,12,14,.97); color: #fffaf5; }
 .start-project { width: min(1180px,100%); margin: auto; }
 .start-project-header { display: grid; grid-template-columns: 1.3fr .7fr; gap: 50px; align-items: end; }
-.start-project-header h2, .start-project-success h2 { margin: 18px 0 0; font-family: var(--font-editorial), Georgia, serif; font-size: clamp(52px,6.6vw,102px); line-height: .88; letter-spacing: -.06em; }
+.start-project-header h1, .start-project-success h1 { margin: 18px 0 0; font-family: var(--font-editorial), Georgia, serif; font-size: clamp(52px,6.6vw,102px); line-height: .88; letter-spacing: -.06em; }
 .start-project-header p { margin: 0; max-width: 420px; line-height: 1.6; color: rgba(255,250,245,.72); }
 .start-kicker { font-size: 9px; font-weight: 700; letter-spacing: .08em; }
 .project-builder { margin-top: 62px; }
@@ -420,7 +420,7 @@ img { max-width: 100%; }
   .phone-card { min-width: 90px; bottom: -8px; }
   .sheet-lavender, .start-sheet { padding-block: 58px; }
   .demo-screen { padding: 24px 18px; }
-  .start-project-header h2, .start-project-success h2 { font-size: clamp(48px,14vw,72px); }
+  .start-project-header h1, .start-project-success h1 { font-size: clamp(48px,14vw,72px); }
   .footer-paper { padding: 24px 20px; }
 }
 

@@ -1,35 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import ProjectMedia from "@/components/ProjectMedia";
 import CaseStudyWorld from "@/components/projects/CaseStudyWorld";
 import { caseStudies } from "@/data/caseStudies";
 import { getProject, projects } from "@/data/projects";
+import Navigation from "@/components/navigation/Navigation";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() { return projects.map((p) => ({ slug: p.slug })); }
+const aliases: Record<string, string> = { vanta: "vanta-social", elan: "elan-aesthetics", northstar: "northstar-heating-home" };
+export function generateStaticParams() { return [...projects.map((p) => ({ slug: p.slug })), ...Object.keys(aliases).map(slug => ({ slug }))]; }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = getProject(aliases[slug] ?? slug);
   if (!project) return { title: "Project Not Found", robots: { index: false, follow: false } };
   return { title: project.inDevelopment?`${project.name} · Coming Soon`:`${project.name} Case Study`, description: project.description, robots: project.inDevelopment?{index:false,follow:true}:undefined, alternates: { canonical: `/work/${project.slug}` } };
 }
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
+  if (aliases[slug]) permanentRedirect(`/work/${aliases[slug]}`);
   const project = getProject(slug);
   if (!project) notFound();
 
   return (
     <main className={`case-page ${caseStudies[project.slug] ? "case-page-editorial" : ""}`}>
       <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><Link href="/work">← Selected Work</Link></header>
+      <Navigation />
 
       {project.inDevelopment ? <article className={`case-sheet project-${project.tone}`}>
         <section className="case-hero"><div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div><h1>{project.name}</h1><p>{project.description}</p><p className="demo-disclosure">Concept in development · The complete website and case file are coming soon.</p></section>
         <ProjectMedia project={project} mode="live" />
+        <section className="case-end"><small>MORE OF THE STUDIO</small><h2>See what is<br />ready to explore.</h2><Link className="button" href="/work">Explore the work ↗</Link><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
       </article> : caseStudies[project.slug] ? <CaseStudyWorld project={project} study={caseStudies[project.slug]} /> : <article className={`case-sheet project-${project.tone}`}>
         <section className="case-hero">
           <div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div>

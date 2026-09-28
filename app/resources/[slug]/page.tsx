@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Navigation from "@/components/navigation/Navigation";
 import { notFound } from "next/navigation";
 import SceneProps from "@/components/visual/SceneProps";
 
@@ -62,10 +63,7 @@ export default async function ResourcePage({ params }: Props) {
   return (
     <main className="destination-page">
       <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell">
-        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
-        <Link href="/resources">← Resources</Link>
-      </header>
+      <Navigation />
       <article className="destination-sheet article-sheet">
         <SceneProps scene="resources" />
         <section className="destination-hero">
@@ -81,6 +79,7 @@ export default async function ResourcePage({ params }: Props) {
             </section>
           ))}
         </div>
+        <section className="case-end"><small>KEEP EXPLORING</small><h2>Bring the idea<br />into the studio.</h2><Link className="button" href="/resources">More resources ↗</Link><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
       </article>
     </main>
   );
