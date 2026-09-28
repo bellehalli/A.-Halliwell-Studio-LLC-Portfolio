@@ -68,7 +68,12 @@
 
 /* Services: the pink world is the page; scope reads like an editorial index. */
 .services-route .services-destination {
-  overflow: visible; background: #f9dfeb url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG') center top / 1400px auto repeat-y;
+  overflow: visible;
+  background-color: #f9dfeb;
+  background-image: linear-gradient(to bottom, transparent 0%, rgba(249,216,235,0) 18%, #f9d8eb 48%, #f6d9f2 73%, #fec0dd 100%), url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.PNG');
+  background-position: center top, center top;
+  background-size: 100% 100%, 1400px auto;
+  background-repeat: no-repeat;
   box-shadow: none; border: 1px solid rgba(107,40,83,.28);
 }
 .services-route .services-destination::before { content: none; }
@@ -186,7 +191,7 @@
   :is(.destination-page,.work-page) > .site-nav.floating-heart-nav .heart-nav-button:nth-child(n) { width: 90px !important; height: 72px !important; }
   :is(.destination-page,.work-page) > .site-nav.floating-heart-nav .heart-nav-button .heart-button-label { font-size: 12px !important; }
   .work-page .case-sheet::after { top: 30px; left: 20px; max-width: calc(100% - 40px); }
-  .services-route .services-destination { background-size: 650px auto; }
+  .services-route .services-destination { background-size: 100% 100%, 650px auto; }
   .services-route .destination-hero { padding-top: 38px; }
   .services-route .destination-hero h1 { font-size: clamp(52px,12vw,76px); }
   .studio-route .destination-hero h1 { font-size: clamp(56px,12vw,85px); }
