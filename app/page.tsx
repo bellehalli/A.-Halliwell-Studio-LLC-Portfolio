@@ -27,7 +27,7 @@ export default function Home(){
      <p className="home-hero-index">Web Design · Development · Digital Systems</p>
      <h1 id="home-heading" tabIndex={-1} className="home-hero-title"><span>Websites</span><span>that actually</span><em>do things.<b aria-hidden="true">♥︎</b></em></h1>
      <p className="home-hero-tagline">PRETTY IS ONLY THE BEGINNING.</p>
-     <p className="home-hero-description">A. Halliwell Studio designs and develops custom websites, interactive experiences and business tools for companies that need more than a pretty homepage. One-page projects start at $1,000 + scope. Custom multi-page websites start at $5,000 + scope.</p>
+     <p className="home-hero-description">Custom websites, interactive experiences, and digital systems designed to help businesses grow.</p>
      <div className="home-hero-actions">
       <a className="button button-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={26} height={26} aria-hidden="true" /></a>
       <a className="home-hero-text-link" href="#capabilities">TRY THE LAB <Image className="glitter-cursor" src={CURSOR} alt="" width={24} height={24} aria-hidden="true" /></a>
