@@ -1,0 +1,89 @@
+/* The case files use the same heart navigation and material palette as the studio. */
+.case-page-editorial .site-background {
+  background-color: #e8d8fb;
+  background-image: linear-gradient(to bottom, rgba(232,216,251,.1), #e8d8fb 1300px),
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG');
+  background-position: center top;
+  background-size: 100% 100%, min(1300px,110vw) auto;
+  background-repeat: no-repeat;
+}
+.case-page-editorial > .site-nav { width: min(1320px,calc(100% - 32px)); }
+.case-page-editorial .case-study-world { margin-top: 35px; }
+.case-world-summary {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.75fr);
+  gap: 22px clamp(28px,6vw,90px); padding: clamp(55px,7vw,100px) 0;
+  border-bottom: 1px solid #a897a6;
+}
+.case-world-summary > p {
+  grid-column: 1/-1; margin: 0; color: #955b87;
+  font-variant: small-caps; letter-spacing: .07em; font-size: 18px;
+}
+.case-world-summary h2 {
+  margin: 0; font: 400 clamp(52px,6vw,92px)/.93 var(--font-editorial),Georgia,serif;
+  letter-spacing: -.052em;
+}
+.case-world-summary h2 em { color: #a43c82; font-weight: 400; }
+.case-world-summary > div { align-self: end; max-width: 470px; }
+.case-world-summary > div span { font-variant: small-caps; color: #8c477d; letter-spacing: .07em; }
+.case-world-summary > div p { margin: 17px 0 0; font-size: clamp(20px,1.75vw,27px); line-height: 1.35; }
+.case-world-story { margin-top: clamp(35px,5vw,80px); }
+.case-world-build { margin-top: 0; }
+.case-world-scope-row small { color: #9d467f; font-variant: small-caps; letter-spacing: .07em; }
+.case-world-scope-row li { font-size: clamp(17px,1.3vw,21px); }
+.case-world-live { padding-bottom: 35px; }
+.case-world-hero-art iframe {
+  position: relative; display: block; width: 100%; aspect-ratio: 2048/1437;
+  border: 11px solid #fffdf8; background: #fffaf7;
+  box-shadow: 0 14px 37px rgba(38,30,36,.18);
+}
+.project-elan .case-world-hero-art iframe { aspect-ratio: 2048/1437; }
+.work-index-context {
+  display: grid; grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: clamp(22px,3vw,50px); margin: 35px 0 40px;
+  padding: 25px 0; border-top: 1px solid #a7839b; border-bottom: 1px solid #a7839b;
+}
+.work-index-context p { margin: 0; font-size: clamp(16px,1.35vw,20px); line-height: 1.42; }
+.work-index-context span { display: block; margin-bottom: 12px; color: #8d285f; font-variant: small-caps; letter-spacing: .07em; }
+
+/* The portrait is a placed studio artifact, held by the existing binder clip. */
+.studio-route .destination-hero .founder-profile-photo {
+  border: 12px solid #fffaf7; transform: rotate(-2deg);
+  box-shadow: 12px 15px 0 #f1badc, 0 24px 48px rgba(60,30,62,.19);
+}
+.studio-route .destination-hero .founder-profile-photo::after {
+  content: ''; position: absolute; z-index: 3; width: 112px; height: 112px;
+  top: -48px; left: -45px; pointer-events: none;
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 29.PNG') center / contain no-repeat;
+  filter: drop-shadow(0 5px 5px rgba(55,32,56,.16));
+}
+.studio-route .founder-profile-photo > span {
+  left: -12px; bottom: 10px; background: #fffaf7; box-shadow: 3px 4px 0 rgba(86,49,86,.15);
+}
+
+/* The standalone Lab remains a work surface with room for the interactive artifact. */
+.lab-route .ahs-lab .content-shell { width: min(1230px,calc(100% - 44px)); }
+.lab-route .ahs-discovery { padding: clamp(35px,5vw,70px) 0; border: 0; border-top: 1px solid #a992b3; border-bottom: 1px solid #a992b3; background: transparent; box-shadow: none; }
+.lab-route .ahs-demo-shell { box-shadow: 15px 20px 0 rgba(148,94,156,.17); }
+.lab-route .ahs-demo-intro h3 { font-style: italic; }
+
+/* Special-purpose pages retain their content while sharing the studio entrance. */
+:is(.portal-page,.digital-card-page) > .site-nav:not(.floating-heart-nav) {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  width: min(1280px,calc(100% - 32px));
+}
+.portal-page .portal-card,.digital-card-page .digital-card { margin-top: 130px; }
+.digital-card-page {
+  background: #e8d8fb url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.PNG') center / cover no-repeat;
+}
+@media(max-width:850px) {
+  .case-world-summary { grid-template-columns: 1fr; }
+  .work-index-context { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:600px) {
+  .case-world-summary { padding: 55px 0; }
+  .case-world-summary h2 { font-size: clamp(50px,12vw,70px); }
+  .case-world-summary > div p { font-size: 21px; }
+  .work-index-context { grid-template-columns: 1fr; gap: 22px; }
+  .studio-route .destination-hero .founder-profile-photo::after { width: 86px; height: 86px; top: -35px; left: -28px; }
+  .portal-page .portal-card,.digital-card-page .digital-card { margin-top: 95px; }
+}

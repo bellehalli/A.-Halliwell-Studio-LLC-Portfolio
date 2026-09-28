@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "A. Halliwell Letters",
@@ -12,10 +13,7 @@ export default function NewsletterPage() {
   return (
     <main className="destination-page">
       <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell">
-        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
-        <Link href="/">Return home</Link>
-      </header>
+      <Navigation />
 
       <article className="destination-sheet">
         <section className="destination-hero">

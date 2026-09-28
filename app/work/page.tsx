@@ -34,6 +34,11 @@ export default function WorkPage() {
               <small>PROJECT {project.number} / {project.category}</small>
               <h2>{project.name}</h2>
               <p>{project.description}</p>
+              {!project.inDevelopment && <div className="work-index-context">
+                <p><span>Business problem</span>{project.challenge}</p>
+                <p><span>Experience built</span>{project.approach.slice(0, 3).join(" · ")}</p>
+                <p><span>Scope</span>{project.details.join(" · ")}</p>
+              </div>}
               <ProjectMedia project={project} />
               {project.inDevelopment ? <p className="work-index-pending">Coming soon · The full case file and site are in development.</p> : <div className="case-actions">
                 <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>

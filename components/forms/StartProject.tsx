@@ -342,12 +342,12 @@ export default function StartProject() {
       <div className="start-project">
         <div className="start-project-header">
           <div>
-            <span className="start-kicker">05 / START A PROJECT</span>
-            <h2>What are we<br />building?</h2>
+            <span className="start-kicker">A CONVERSATION BEFORE THE BUILD</span>
+            <h2>Tell me what<br />you have in mind.</h2>
           </div>
           <p>
-            A one-page site, a full custom build and one missing feature are all valid projects.
-            Tell me what the business needs the internet to do.
+            The exciting part, the frustrating part, and the thing the website needs to do next.
+            Share what you know; we can shape the rest together.
           </p>
         </div>
 
