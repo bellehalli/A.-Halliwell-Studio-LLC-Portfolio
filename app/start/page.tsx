@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import StartProject from "@/components/forms/StartProject";
 import SceneProps from "@/components/visual/SceneProps";
+import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Start a Project",
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <main className="destination-page start-route"><div className="site-background" aria-hidden="true"/><header className="case-nav shell"><Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link><Link href="/work">Selected Work</Link></header><div className="start-route-wrap"><SceneProps scene="start"/><StartProject /></div></main>;
+  return <main className="destination-page start-route"><div className="site-background" aria-hidden="true"/><Navigation /><div className="start-route-wrap"><SceneProps scene="start"/><StartProject /></div></main>;
 }
