@@ -168,7 +168,7 @@ img { max-width: 100%; }
 }
 .project-world-maison .project-world-paper {
   color: #fffaf4;
-  background: linear-gradient(rgba(17,15,16,.95),rgba(17,15,16,.95)), url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 42.PNG");
+  background: linear-gradient(rgba(17,15,16,.95),rgba(17,15,16,.95)), url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 42.webp");
   background-size: cover, 540px; background-position: center, right top;
 }
 .project-world-index { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 16px; border-bottom: 1px solid currentColor; font-size: 8px; font-weight: 700; letter-spacing: .08em; }

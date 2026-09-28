@@ -28,6 +28,7 @@ export default function ProjectShowcase({ project }: { project: Project }) {
           <span className="project-world-accent">{world.line}</span>
           <h3 id={`world-${project.slug}`}>{project.name}</h3>
           <p>{project.description}</p>
+          {!comingSoon && <div className="project-context"><p><strong>Challenge</strong>{project.challenge}</p><p><strong>Built for</strong>{project.approach.slice(0,2).join(" · ")}</p></div>}
           <div className="project-links work-gallery-links">
             {!comingSoon && <Link href={`/work/${project.slug}`}>Explore the case file <span aria-hidden="true">↗︎</span></Link>}
             {!comingSoon && <a href={project.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>Open the full site <span aria-hidden="true">↗︎</span></a>}

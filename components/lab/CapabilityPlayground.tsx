@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { track } from "@vercel/analytics";
 
 const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
 const SCOPE_KEY = "ahs-lab-scope-v1";
@@ -161,16 +162,17 @@ function ScopeDiscovery({inHome}:{inHome:boolean}) {
 
 export default function CapabilityPlayground({inHome=false}:{inHome?:boolean}){
   const [job,setJob]=useState<Job>("Book appointments");
+  const [demoKey,setDemoKey]=useState(0);
   return <section className="sheet sheet-lavender capability ahs-lab" id="capabilities">
     <div className="content-shell">
       <div className="ahs-lab-head">
         <div><span className="section-kicker-text">03 — The Lab</span><h2>What does your business<br/><em>need the internet to do?</em></h2></div>
         <p>Shape a starting scope, then try the kinds of interfaces that can make it real.</p>
       </div>
-      <div className="ahs-demo-intro"><h3>Step inside the showroom.</h3><p>Choose a capability and try its interface. Every window below responds to you.</p></div>
+      <div className="ahs-demo-intro"><h3>Step inside the showroom.</h3><p>These are examples of systems your website can include. Choose a capability and try its interface. Every window below responds to you.</p></div>
       <div className="ahs-lab-grid">
-        <nav className="ahs-job-list" aria-label="Interactive capabilities"><small>Choose a capability</small>{jobs.map((x,i)=><button key={x} type="button" aria-current={job===x?"true":undefined} className={job===x?"on":""} onClick={()=>setJob(x)}><span>0{i+1}</span><strong>{x}</strong></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
-        <div className="ahs-demo-shell"><div className="demo-window-top"><span/><span/><span/><b>A. HALLIWELL / FUNCTIONING DEMO</b></div><Demo job={job}/><footer>DEMO ONLY · NO REAL BOOKING, PURCHASE, QUOTE, TICKET OR MESSAGE IS SUBMITTED.</footer></div>
+        <nav className="ahs-job-list" aria-label="Interactive capabilities"><small>Choose a capability</small>{jobs.map((x,i)=><button key={x} type="button" aria-current={job===x?"true":undefined} className={job===x?"on":""} onClick={()=>{setJob(x);track("Lab interaction",{capability:x})}}><span>0{i+1}</span><strong>{x}</strong></button>)}<p>Need something else? If it belongs on the web, ask.</p></nav>
+        <div className="ahs-demo-shell"><div className="demo-window-top"><span/><span/><span/><b>A. HALLIWELL / FUNCTIONING DEMO</b><button type="button" className="demo-reset" onClick={()=>setDemoKey(value=>value+1)} aria-label={`Reset ${job} demonstration`}>RESET DEMO</button></div><Demo key={`${job}-${demoKey}`} job={job}/><footer>DEMO ONLY · NO REAL BOOKING, PURCHASE, QUOTE, TICKET OR MESSAGE IS SUBMITTED.</footer></div>
       </div>
       <ScopeDiscovery inHome={inHome}/>
     </div>

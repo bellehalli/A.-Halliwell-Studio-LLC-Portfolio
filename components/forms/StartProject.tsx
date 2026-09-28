@@ -1,4 +1,5 @@
 "use client";
+import { track } from "@vercel/analytics";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
@@ -305,6 +306,7 @@ export default function StartProject() {
       localStorage.removeItem(DRAFT_KEY);
       setConfirmationSent(Boolean(result.confirmationSent));
       setStatus("success");
+      track("Form completion", { projectType });
       setFeedback(
         result.confirmationSent
           ? "Your project is officially in my inbox, and a confirmation copy is headed to your email. ♥"
@@ -324,6 +326,7 @@ export default function StartProject() {
           <div className="start-success-heart">♥</div>
           <h1>It&apos;s officially<br />in my inbox.</h1>
           <p>{feedback}</p>
+          <p>I&apos;ll review your project details and respond within 1–2 business days.</p>
           <div className="start-success-summary">
             <span>BUSINESS</span><strong>{projectType}</strong>
             <span>INVESTMENT</span><strong>{investment}</strong>

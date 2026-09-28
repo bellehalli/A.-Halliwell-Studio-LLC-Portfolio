@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ProjectMedia from "@/components/ProjectMedia";
+import WorkIndex from "@/components/projects/WorkIndex";
 import { projects } from "@/data/projects";
 import Navigation from "@/components/navigation/Navigation";
 
@@ -28,25 +28,7 @@ export default function WorkPage() {
           <span>LIVE BUILDS</span><span>CASE-STUDY THINKING</span><span>WORKING INTERACTIONS</span><span>NO INVENTED METRICS</span>
         </div>
 
-        <div className="case-story">
-          {projects.map((project) => (
-            <article key={project.slug} className="work-index-project">
-              <small>PROJECT {project.number} / {project.category}</small>
-              <h2>{project.name}</h2>
-              <p>{project.description}</p>
-              {!project.inDevelopment && <div className="work-index-context">
-                <p><span>Business problem</span>{project.challenge}</p>
-                <p><span>Experience built</span>{project.approach.slice(0, 3).join(" · ")}</p>
-                <p><span>Scope</span>{project.details.join(" · ")}</p>
-              </div>}
-              <ProjectMedia project={project} />
-              {project.inDevelopment ? <p className="work-index-pending">Coming soon · The full case file and site are in development.</p> : <div className="case-actions">
-                <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>
-                <a className="button" href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noreferrer" : undefined}>Visit live build ↗</a>
-              </div>}
-            </article>
-          ))}
-        </div>
+        <WorkIndex projects={projects} />
 
         <section className="case-end">
           <small>HAVE A DIGITAL PROBLEM TO SOLVE?</small>

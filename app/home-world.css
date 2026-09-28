@@ -537,7 +537,7 @@ vercel-live-feedback { display: none !important; }
 }
 .home-world .composition-offer .piece-foil-card { display: none; }
 .home-world .composition-offer .piece-glint-one,.home-world .composition-offer .piece-glint-two {
-  width: 100px; aspect-ratio: 1; background: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.PNG') center / contain;
+  width: 100px; aspect-ratio: 1; background: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.webp') center / contain;
 }
 .home-world .composition-offer .piece-glint-one { top: 27%; left: 2%; }
 .home-world .composition-offer .piece-glint-two { bottom: 5%; right: 5%; width: 75px; }
