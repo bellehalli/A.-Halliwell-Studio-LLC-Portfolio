@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import { projects } from "@/data/projects";
+import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Selected Work",
@@ -13,10 +14,7 @@ export default function WorkPage() {
   return (
     <main className="case-page work-page">
       <div className="site-background" aria-hidden="true" />
-      <header className="case-nav shell">
-        <Link className="logo" href="/"><span className="logo-mark">A.</span><span>HALLIWELL</span></Link>
-        <Link href="/start">Start a project ↗</Link>
-      </header>
+      <Navigation />
 
       <section className="case-sheet">
         <div className="case-hero">
