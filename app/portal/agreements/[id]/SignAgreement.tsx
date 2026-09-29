@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, PointerEvent, useRef, useState } from "react";
+import { FormEvent, PointerEvent, useEffect, useRef, useState } from "react";
 
 export default function SignAgreement({ documentId, email, studio, pending = false }: { documentId: string; email: string; studio: boolean; pending?: boolean }) {
   const [busy, setBusy] = useState(false);
@@ -8,8 +8,13 @@ export default function SignAgreement({ documentId, email, studio, pending = fal
   const [typedName, setTypedName] = useState("");
   const [signatureStyle, setSignatureStyle] = useState<"draw" | "type">("draw");
   const [hasDrawing, setHasDrawing] = useState(false);
+  const [signingDate, setSigningDate] = useState("");
   const canvas = useRef<HTMLCanvasElement>(null);
   const drawing = useRef(false);
+
+  useEffect(() => {
+    setSigningDate(new Intl.DateTimeFormat("en-US", { timeZone: "America/Detroit", year: "numeric", month: "long", day: "numeric" }).format(new Date()));
+  }, []);
 
   function point(event: PointerEvent<HTMLCanvasElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -59,6 +64,8 @@ export default function SignAgreement({ documentId, email, studio, pending = fal
     {!studio && <label>Business you are signing for<input name="businessName" maxLength={150} required placeholder="Vale Royal Barn" /></label>}
     <fieldset className="portal-signature-choice"><legend>Your electronic signature</legend><label><input type="radio" name="signatureStyle" checked={signatureStyle === "draw"} onChange={() => setSignatureStyle("draw")}/> Draw my signature</label><label><input type="radio" name="signatureStyle" checked={signatureStyle === "type"} onChange={() => setSignatureStyle("type")}/> Use my typed name</label></fieldset>
     {signatureStyle === "draw" ? <div className="portal-signature-pad"><p>Draw with your finger, mouse, or stylus.</p><canvas ref={canvas} width={600} height={180} role="img" aria-label="Draw your signature here" onPointerDown={startDrawing} onPointerMove={continueDrawing} onPointerUp={() => { drawing.current = false; }} onPointerCancel={() => { drawing.current = false; }}/><button type="button" className="portal-signature-clear" onClick={clearDrawing}>Clear signature</button></div> : <div className="portal-signature-typed" aria-label="Signature preview">{typedName.trim() || "Your name will appear here"}</div>}
+    <label>Date of signature<input value={signingDate || "Fills automatically"} readOnly aria-describedby="portal-signing-date-note" /></label>
+    <small id="portal-signing-date-note">The signed copy records the exact time when you select Sign agreement.</small>
     <label className="portal-check"><input type="checkbox" name="reviewed" required /><span>I have read the entire agreement displayed above.</span></label>
     <label className="portal-check"><input type="checkbox" name="consent" required /><span>I agree to use electronic records and signatures. By selecting Sign agreement, I intend to sign this agreement with the signature shown above.</span></label>
     <button disabled={busy || pending}>{pending ? "Available after studio signature" : busy ? "Recording signature…" : "Sign agreement"}</button>
