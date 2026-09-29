@@ -11,7 +11,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const { id } = await params;
     if (!/^[a-f0-9-]{36}$/.test(id)) return NextResponse.json({ ok: false }, { status: 404, headers });
     const query = new URLSearchParams();
-    for (const key of ["version", "original"]) { const value = url.searchParams.get(key); if (value) query.set(key, value); }
+    for (const key of ["version", "original", "attachment"]) { const value = url.searchParams.get(key); if (value) query.set(key, value); }
     return NextResponse.redirect(new URL(`/portal/documents/${id}${query.size ? `?${query}` : ""}`, request.url));
   }
   if (!portalEnabled()) return NextResponse.json({ ok: false }, { status: 404, headers });
@@ -38,6 +38,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
         AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1)
       LIMIT 1`;
     if (!agreements.length && !samples.length) return NextResponse.json({ ok: false }, { status: 403, headers });
+  }
+  const attachmentId = url.searchParams.get("attachment");
+  if (attachmentId) {
+    if (rows[0].kind !== "invoice" || !/^[a-f0-9-]{36}$/.test(attachmentId)) return NextResponse.json({ ok: false }, { status: 404, headers });
+    const attachments = await portalDb()`SELECT file_name, blob_url FROM portal_invoice_attachments
+      WHERE id = ${attachmentId} AND document_id = ${id} AND (${isPortalStudio(client)} OR shared_at IS NOT NULL) LIMIT 1`;
+    if (!attachments.length) return NextResponse.json({ ok: false }, { status: 404, headers });
+    rows[0].display_url = attachments[0].blob_url;
+    rows[0].file_name = attachments[0].file_name;
   }
   const versionId = new URL(request.url).searchParams.get("version");
   if (versionId) {

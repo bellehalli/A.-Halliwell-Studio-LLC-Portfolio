@@ -6,10 +6,11 @@ import EmbeddedStripePayment from "./EmbeddedStripePayment";
 type Method = "zelle" | "ach" | "chase" | "card" | "check";
 const methods: Method[] = ["zelle", "ach", "chase", "card", "check"];
 
-export default function PaymentOptions({ documentId, amount, invoiceNumber, zelleId, bankLink, achUrl, stripeUrl, checkAddress, selectedMethod, preview = false, readonly = false }: {
-  documentId: string; amount: string; invoiceNumber: string; zelleId: string; bankLink: string | null; achUrl: string; stripeUrl: string | null; checkAddress: string; selectedMethod: string; preview?: boolean; readonly?: boolean;
+export default function PaymentOptions({ documentId, amount, invoiceNumber, zelleId, bankLink, achUrl, stripeUrl, checkAddress, selectedMethod, submitted = false, preview = false, readonly = false }: {
+  documentId: string; amount: string; invoiceNumber: string; zelleId: string; bankLink: string | null; achUrl: string; stripeUrl: string | null; checkAddress: string; selectedMethod: string; submitted?: boolean; preview?: boolean; readonly?: boolean;
 }) {
   const [selected, setSelected] = useState<Method | null>(methods.includes(selectedMethod as Method) ? selectedMethod as Method : null);
+  const [reported, setReported] = useState(submitted);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
   const [copied, setCopied] = useState(false);
@@ -32,6 +33,17 @@ export default function PaymentOptions({ documentId, amount, invoiceNumber, zell
     } catch (error) { setNotice(error instanceof Error ? error.message : "The choice could not be saved."); }
     finally { setSaving(false); }
   }
+  async function reportPayment() {
+    if (!selected || readonly || preview || selected === "card") return;
+    setSaving(true); setNotice("");
+    try {
+      const response = await fetch("/api/portal/payment-choice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ documentId, method: selected, action: "reportPayment" }) });
+      const data = await response.json();
+      if (!response.ok) throw Error(data.message || "Could not report payment.");
+      setReported(true); setNotice(data.message);
+    } catch (error) { setNotice(error instanceof Error ? error.message : "Could not report payment."); }
+    finally { setSaving(false); }
+  }
   async function copyRecipient() {
     try { await navigator.clipboard.writeText(zelleId); setCopied(true); window.setTimeout(() => setCopied(false), 2500); }
     catch { setCopied(false); }
@@ -40,7 +52,7 @@ export default function PaymentOptions({ documentId, amount, invoiceNumber, zell
     <h3>Choose how to pay</h3>
     <p>{readonly ? "Preview the available methods. No choice is submitted from this view." : "Selecting a method shares your choice with the studio. It does not charge you or mark the invoice paid."}</p>
     <div className="portal-payment-methods" role="group" aria-label="Payment method">
-      {options.map(option => <button key={option.id} type="button" disabled={!option.available || saving} aria-pressed={selected === option.id} onClick={() => void choose(option.id)}><strong>{option.name}</strong><span>{option.detail}</span>{!option.available && <small>Not available yet</small>}</button>)}
+      {options.map(option => <button key={option.id} type="button" disabled={!option.available || saving || reported} aria-pressed={selected === option.id} onClick={() => void choose(option.id)}><strong>{option.name}</strong><span>{option.detail}</span>{!option.available && <small>Not available yet</small>}</button>)}
     </div>
     {saving && <p role="status">Saving your choice…</p>}
     {notice && <p className="portal-payment-notice" role="status" aria-live="polite">{notice}</p>}
@@ -51,5 +63,6 @@ export default function PaymentOptions({ documentId, amount, invoiceNumber, zell
     {selected === "chase" && <div className="portal-payment-detail"><h4>Pay through the Chase invoice</h4><p>Open the issued Chase invoice for <strong>{amount}</strong>. Use this option only if you have not paid by another method.</p>{preview || readonly ? <button type="button" disabled>Open Chase invoice payment page</button> : bankLink && <a className="portal-payment-button" href={bankLink} target="_blank" rel="noopener noreferrer">Open Chase invoice payment page</a>}</div>}
     {selected === "card" && <div className="portal-payment-detail"><h4>Pay with Stripe</h4><p>Enter your payment details here for <strong>{amount}</strong>. Use this option only if you have not paid by another method. Stripe securely handles the payment fields.</p>{preview ? <button type="button" disabled>Embedded Stripe payment preview</button> : stripeUrl && <EmbeddedStripePayment documentId={documentId} stripeUrl={stripeUrl} preview={readonly}/>}</div>}
     {selected === "check" && <div className="portal-payment-detail"><h4>Pay by check</h4><p>Make the check payable to <strong>A. Halliwell Studio LLC</strong> for <strong>{amount}</strong>. Write <strong>{invoiceNumber}</strong> on the memo line.</p><p className="portal-payment-address">{preview ? "Mailing address appears once the studio supplies it" : checkAddress}</p><small>The studio updates the invoice after the check arrives and clears.</small></div>}
+    {reported ? <p>Payment submitted. Awaiting studio approval.</p> : selected && selected !== "card" && !readonly && !preview && <button type="button" disabled={saving} onClick={() => void reportPayment()}>I have sent this payment</button>}
   </div>;
 }

@@ -24,7 +24,7 @@ export default function PortalLogin({ projectId = "", returnTo = "" }: { project
       const response = await fetch("/api/portal/auth/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ challenge, code }) });
       const result = await response.json();
       if (!response.ok) throw Error(result.message || "Sign-in could not complete.");
-      window.location.replace(/^\/portal\/documents\/[a-f0-9-]{36}$/.test(returnTo) ? returnTo : result.redirectTo || "/portal");
+      window.location.replace(/^\/portal\/documents\/[a-f0-9-]{36}(\?attachment=[a-f0-9-]{36})?$/.test(returnTo) ? returnTo : result.redirectTo || "/portal");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Sign-in could not complete."); }
     finally { setBusy(false); }
   }

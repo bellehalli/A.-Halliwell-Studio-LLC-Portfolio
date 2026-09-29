@@ -35,6 +35,13 @@ export async function POST(request: Request) {
       WHERE d.id = ${documentId} LIMIT 1`;
     if (!rows.length) return fail(404, "Invoice not found.");
     const item = rows[0];
+    if (item) {
+      const settled = await portalDb()`SELECT 1 FROM portal_invoices other JOIN portal_documents od ON od.id = other.document_id
+        JOIN portal_invoices current ON current.document_id = ${documentId}
+        WHERE od.project_id = ${item.project_id} AND (other.status = 'paid' OR other.submitted_at IS NOT NULL)
+          AND (other.milestone_number = 0 OR current.milestone_number = 0) LIMIT 1`;
+      if (settled.length) return fail(409, "An alternative payment was submitted or received. Refresh your workspace to see the remaining balance.");
+    }
     const preview = String(item.title).startsWith("TEST") && String(item.invoice_number).startsWith("TEST-") && item.status === "void";
     if (!preview && (item.status !== "issued" || !item.shared_at || !item.agreement_signed)) return fail(409, "This invoice is not ready for payment selection.");
     if (!preview) {
@@ -51,6 +58,11 @@ export async function POST(request: Request) {
         const invoice = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(String(item.stripe_invoice_id));
         if (invoice.status !== "open" || invoice.amount_remaining !== Number(item.amount_cents) || invoice.customer_email?.toLowerCase() !== client.email.toLowerCase() || !invoice.hosted_invoice_url) return fail(409, "Card payment is not available for this invoice.");
       }
+    }
+    if (data.action === "reportPayment") {
+      if (preview || method === "card") return fail(409, "Stripe reports card payments securely. This action is for payments sent through your bank or by check.");
+      await sql`UPDATE portal_invoices SET submitted_at = coalesce(submitted_at, now()) WHERE document_id = ${documentId} AND status = 'issued'`;
+      return NextResponse.json({ ok: true, message: "Payment reported. The studio will verify receipt before approving it." }, { headers });
     }
     await sql`INSERT INTO portal_payment_options(document_id, client_id, selected_method, selected_at)
       VALUES (${documentId}, ${client.id}, ${method}, now())

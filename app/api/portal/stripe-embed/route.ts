@@ -33,6 +33,13 @@ export async function POST(request: Request) {
       LEFT JOIN portal_payment_options o ON o.document_id = d.id
       WHERE d.id = ${documentId} AND d.kind = 'invoice' LIMIT 1`;
     const item = rows[0];
+    if (item) {
+      const settled = await portalDb()`SELECT 1 FROM portal_invoices other JOIN portal_documents od ON od.id = other.document_id
+        JOIN portal_invoices current ON current.document_id = ${documentId}
+        WHERE od.project_id = ${item.project_id} AND (other.status = 'paid' OR other.submitted_at IS NOT NULL)
+          AND (other.milestone_number = 0 OR current.milestone_number = 0) LIMIT 1`;
+      if (settled.length) return fail(409, "An alternative payment was submitted or received. Refresh your workspace to see the remaining balance.");
+    }
     if (!item || item.status !== "issued" || !item.shared_at || !item.agreement_signed || item.selected_method !== "card" || !item.stripe_invoice_id) return fail(409, "This invoice is not ready for embedded payment.");
     const invoice = await new Stripe(secretKey).invoices.retrieve(String(item.stripe_invoice_id), { expand: ["confirmation_secret"] });
     if (invoice.status !== "open" || invoice.currency !== "usd" || invoice.amount_remaining !== Number(item.amount_cents) || invoice.customer_email?.toLowerCase() !== client.email.toLowerCase() || (invoice.payment_settings?.payment_method_types != null && !invoice.payment_settings.payment_method_types.includes("card"))) return fail(409, "The Stripe invoice no longer matches this payment. Refresh the page.");

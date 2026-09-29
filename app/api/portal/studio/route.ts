@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { closeAlternativeInvoices } from "@/lib/portal-payments";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { del } from "@vercel/blob";
@@ -119,7 +120,7 @@ export async function POST(request: Request) {
       }
       const attached = await sql`SELECT i.milestone_number, i.amount_cents FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
         WHERE d.project_id = ${id} AND i.status != 'void'`;
-      if (attached.some(invoice => Number(invoice.amount_cents) !== amounts[Number(invoice.milestone_number) - 1])) return fail(409, "An attached invoice has a different amount. Correct or void that invoice before changing its milestone.");
+      if (attached.some(invoice => Number(invoice.amount_cents) !== (Number(invoice.milestone_number) === 0 ? total : amounts[Number(invoice.milestone_number) - 1]))) return fail(409, "An attached invoice has a different amount. Correct or void that invoice before changing its milestone.");
       await sql`UPDATE portal_projects SET investment_cents = ${total}, milestone_1_cents = ${amounts[0]}, milestone_2_cents = ${amounts[1]}, milestone_3_cents = ${amounts[2]} WHERE id = ${id}`;
       return NextResponse.json({ ok: true }, { headers });
     }
@@ -219,7 +220,7 @@ export async function POST(request: Request) {
       if (error || !sent?.id) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "The email provider did not accept the invitation. Check the sender configuration and try again."); }
       await sql`UPDATE portal_projects SET invited_at = coalesce(invited_at, now()) WHERE id = ${id}`;
       await sql`UPDATE portal_invoices i SET shared_at = coalesce(i.shared_at, now()), notification_status = 'included_in_invitation', notification_attempted_at = now(), notification_email_id = ${sent.id}
-        FROM portal_documents d WHERE i.document_id = d.id AND d.project_id = ${id} AND i.status = 'issued' AND i.milestone_number = 1 AND i.shared_at IS NULL`;
+        FROM portal_documents d WHERE i.document_id = d.id AND d.project_id = ${id} AND i.status = 'issued' AND i.milestone_number IN (0, 1) AND i.shared_at IS NULL`;
       return NextResponse.json({ ok: true, recipient: String(client.email), emailId: sent.id, status: "accepted" }, { headers });
     }
     if (data.action === "updateInvoice") {
@@ -296,8 +297,36 @@ export async function POST(request: Request) {
       const id = String(data.documentId || "");
       if (!/^[a-f0-9-]{36}$/.test(id) || data.confirm !== "yes") return fail(400, "Confirm the Chase invoice was closed or marked paid in Chase.");
       const rows = await sql`UPDATE portal_invoices SET chase_closed_at = now()
-        WHERE document_id = ${id} AND status = 'paid' AND invoice_number NOT LIKE 'TEST-%' AND chase_closed_at IS NULL RETURNING document_id`;
+        WHERE document_id = ${id} AND status IN ('paid', 'void') AND invoice_number NOT LIKE 'TEST-%' AND chase_closed_at IS NULL RETURNING document_id`;
       if (!rows.length) return fail(409, "No Chase closure is pending for this paid invoice.");
+      return NextResponse.json({ ok: true }, { headers });
+    }
+    if (data.action === "retryPaymentCloseout") {
+      const documentId = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(documentId)) return fail(400, "Choose an invoice.");
+      const paid = await sql`SELECT 1 FROM portal_invoices WHERE document_id = ${documentId} AND status = 'paid' LIMIT 1`;
+      if (!paid.length) return fail(409, "Approve receipt before closing the alternative plan.");
+      try { await closeAlternativeInvoices(documentId); }
+      catch { return fail(409, "An alternative Stripe invoice still needs attention. Check whether it also received a payment or is still processing."); }
+      return NextResponse.json({ ok: true }, { headers });
+    }
+    if (data.action === "clearPaymentReport") {
+      const documentId = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(documentId)) return fail(400, "Choose an invoice.");
+      const rows = await sql`UPDATE portal_invoices SET submitted_at = NULL WHERE document_id = ${documentId} AND status = 'issued' RETURNING document_id`;
+      if (!rows.length) return fail(409, "Only a pending payment report can be cleared.");
+      return NextResponse.json({ ok: true }, { headers });
+    }
+    if (data.action === "useFullInvoice") {
+      const documentId = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(documentId)) return fail(400, "Choose an invoice.");
+      const updated = await sql`UPDATE portal_invoices i SET milestone_number = 0 FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
+        WHERE i.document_id = ${documentId} AND d.id = i.document_id AND i.status = 'issued'
+          AND i.stripe_invoice_id IS NULL AND i.amount_cents = p.investment_cents
+          AND NOT EXISTS (SELECT 1 FROM portal_invoices other JOIN portal_documents od ON od.id = other.document_id
+            WHERE od.project_id = p.id AND other.document_id != i.document_id AND other.status != 'void' AND (other.milestone_number = 0 OR other.status = 'paid'))
+        RETURNING i.document_id`;
+      if (!updated.length) return fail(409, "Use an unconnected unpaid invoice for the full project amount. Check existing full-payment and paid invoices first.");
       return NextResponse.json({ ok: true }, { headers });
     }
     if (data.action === "invoiceStatus") {
@@ -313,14 +342,18 @@ export async function POST(request: Request) {
         if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe status is unavailable. Try again later.");
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
         const live = await stripe.invoices.retrieve(String(item.stripe_invoice_id));
-        if (live.status === "paid" || live.amount_paid > 0) return fail(409, "Stripe records a payment. Refresh the invoice to reconcile its actual status.");
-        if (live.status === "open") await stripe.invoices.voidInvoice(String(item.stripe_invoice_id));
+        if (live.status === "paid") {
+          if (status !== "paid" || live.currency !== "usd" || live.amount_paid !== Number(item.amount_cents)) return fail(409, "Stripe records a payment. Approve only a matching completed receipt; paid invoices cannot be voided here.");
+        } else if (live.amount_paid > 0) return fail(409, "Stripe records a partial payment. Review the receipt before approving.");
+        else if (live.status === "open") await stripe.invoices.voidInvoice(String(item.stripe_invoice_id));
         else if (live.status !== "void") return fail(409, "Stripe is still processing this invoice. Wait for its final status.");
       }
       const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END, chase_closed_at = CASE WHEN ${needsChaseCloseout} THEN now() ELSE chase_closed_at END
         WHERE document_id = ${documentId} AND status = 'issued' RETURNING document_id`;
       if (!rows.length) return fail(409, "Invoice status changed. Refresh before trying again.");
       if (status === "paid") {
+        try { await closeAlternativeInvoices(documentId); }
+        catch { return fail(409, "Payment was recorded, but an alternative Stripe invoice could not be closed. Review its live status and close any remaining Chase links."); }
         const recipient = await sql`SELECT c.email, c.first_name, i.invoice_number FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
           JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE i.document_id = ${documentId} LIMIT 1`;
         if (recipient.length && !String(recipient[0].email).endsWith(".invalid")) {

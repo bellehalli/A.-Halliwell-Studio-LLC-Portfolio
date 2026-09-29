@@ -31,10 +31,10 @@ export async function POST(request: Request) {
     if (!rows.length) return fail(404, "Invoice not found.");
     const item = rows[0], stripe = new Stripe(secret);
     const originalAmount = Number(item.amount_cents);
-    const planAmount = projectMilestoneAmounts(item)[Number(item.milestone_number || 1) - 1];
+    const planAmount = Number(item.milestone_number ?? 1) === 0 ? Number(item.investment_cents) : projectMilestoneAmounts(item)[Number(item.milestone_number ?? 1) - 1];
     // Older uploads stored the full project value on the deposit payment record.
     // Repair only this recognized shape, after verifying the exact Stripe invoice.
-    const repairAmount = action === "connect" && item.status === "issued" && Number(item.milestone_number || 1) === 1 && originalAmount === Number(item.investment_cents) && planAmount > 0 && planAmount < originalAmount && !item.stripe_invoice_id;
+    const repairAmount = action === "connect" && item.status === "issued" && Number(item.milestone_number ?? 1) === 1 && originalAmount === Number(item.investment_cents) && planAmount > 0 && planAmount < originalAmount && !item.stripe_invoice_id;
     const paymentAmount = repairAmount ? planAmount : originalAmount;
     const matches = (invoice: Stripe.Invoice) => invoice.customer_email?.trim().toLowerCase() === String(item.email).trim().toLowerCase() && invoice.currency === "usd" && invoice.amount_due === paymentAmount;
     let stripeId = action === "connect" && suppliedId ? suppliedId : String(item.stripe_invoice_id || "");
