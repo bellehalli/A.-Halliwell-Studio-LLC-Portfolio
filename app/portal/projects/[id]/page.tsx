@@ -50,7 +50,7 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
       <Link className="portal-brand" href="/portal"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>
       <small>PRIVATE PROJECT {project.stage.toUpperCase().replaceAll("_", " ")}</small>
       <h1>{project.title}</h1>
-      {studioPreview && <div className="portal-preview-safety"><strong>Studio preview</strong><p>This is read only. The client has no access to a held draft, and previewing it sends no email.</p><Link href="/portal/studio">Return to manager portal</Link></div>}
+      {studioPreview && <div className="portal-preview-safety"><strong>Studio preview</strong><p>This is read only. Previewing the workspace does not send an email or change the client&apos;s project.</p><Link href="/portal/studio">Return to manager portal</Link></div>}
       <div className="portal-welcome"><h2>Welcome, {projectClient.first_name}.</h2><p>{isVenueMap ? "We’re excited to create a custom illustrated experience map for Vale Royal Barn. The piece is designed to showcase your property, guide guests through the experience, and become part of your venue’s story." : `Welcome to your private workspace for ${project.client_business || project.title}.`}</p><p>Your project dashboard houses your agreement, payments, updates, and final deliverables throughout the creative process.</p></div>
       {project.summary && <p>{project.summary}</p>}
       {project.investment_cents && <p className="portal-investment"><span>PROJECT INVESTMENT</span><strong>{money(project.investment_cents)}</strong></p>}
