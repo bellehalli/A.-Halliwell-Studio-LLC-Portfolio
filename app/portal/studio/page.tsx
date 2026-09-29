@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import Navigation from "@/components/navigation/Navigation";
 import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 import StudioWorkspace from "./StudioWorkspace";
@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Studio workspace", robots: { index: false, follow: false } };
 
 export default async function StudioPage() {
-  if (!portalEnabled() || !isPortalStudio(await currentPortalClient())) notFound();
+  if (!portalEnabled() || !isPortalStudio(await currentPortalClient())) redirect("/portal?studio=1");
   const rows = await portalDb()`SELECT p.id, p.title, p.summary, p.stage, p.agreement_url, p.stripe_invoice_id, p.payment_instructions, p.client_business, p.investment_cents, c.first_name, c.email
     FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id ORDER BY p.created_at DESC`;
   const documents = await portalDb()`SELECT d.id, d.project_id, d.kind, d.title, d.created_at, i.invoice_number, i.amount_cents, i.status, i.payment_url, i.zelle_id, i.check_address,
