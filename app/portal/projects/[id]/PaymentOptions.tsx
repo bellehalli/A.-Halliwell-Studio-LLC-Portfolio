@@ -48,6 +48,7 @@ export default function PaymentOptions({ documentId, amount, invoiceNumber, zell
     try { await navigator.clipboard.writeText(zelleId); setCopied(true); window.setTimeout(() => setCopied(false), 2500); }
     catch { setCopied(false); }
   }
+  if (reported && !readonly) return <p className="portal-payment-notice">Payment submitted. Awaiting studio approval. No further payment is needed for this invoice while it is being reviewed.</p>;
   return <div className="portal-payment-chooser">
     <h3>Choose how to pay</h3>
     <p>{readonly ? "Preview the available methods. No choice is submitted from this view." : "Selecting a method shares your choice with the studio. It does not charge you or mark the invoice paid."}</p>
