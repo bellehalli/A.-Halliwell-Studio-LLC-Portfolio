@@ -86,6 +86,14 @@ CREATE TABLE IF NOT EXISTS portal_invoices (
   paid_at timestamptz
 );
 
+CREATE TABLE IF NOT EXISTS portal_payment_options (
+  document_id text PRIMARY KEY REFERENCES portal_invoices(document_id) ON DELETE CASCADE,
+  client_id text REFERENCES portal_clients(id) ON DELETE CASCADE,
+  ach_url text NOT NULL DEFAULT '',
+  selected_method text CHECK (selected_method IN ('zelle','ach','chase','card','check')),
+  selected_at timestamptz
+);
+
 CREATE TABLE IF NOT EXISTS portal_agreement_signatures (
   id text PRIMARY KEY,
   document_id text NOT NULL REFERENCES portal_documents(id) ON DELETE CASCADE,

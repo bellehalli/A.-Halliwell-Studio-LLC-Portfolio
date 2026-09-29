@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import Stripe from "stripe";
-import { currentPortalClient, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
+import { currentPortalClient, ensurePortalPaymentOptions, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -88,12 +88,16 @@ export async function POST(request: Request) {
       const projectId = String(data.projectId || "");
       const documentId = String(data.documentId || "");
       const paymentUrl = String(data.paymentUrl || "").trim();
+      const achUrl = String(data.achUrl || "").trim();
       const zelleId = String(data.zelleId || "").trim();
       const checkAddress = String(data.checkAddress || "").trim();
-      if (!/^[a-f0-9-]{36}$/.test(projectId) || !/^[a-f0-9-]{36}$/.test(documentId) || (paymentUrl && (!paymentUrl.startsWith("https://") || paymentUrl.length > 1000)) || zelleId.length > 254 || checkAddress.length > 500) return fail(400, "Check the invoice payment details.");
+      if (!/^[a-f0-9-]{36}$/.test(projectId) || !/^[a-f0-9-]{36}$/.test(documentId) || (paymentUrl && (!paymentUrl.startsWith("https://") || paymentUrl.length > 1000)) || (achUrl && (!achUrl.startsWith("https://") || achUrl.length > 1000)) || zelleId.length > 254 || checkAddress.length > 500) return fail(400, "Check the invoice payment details.");
       const rows = await sql`UPDATE portal_invoices i SET payment_url = ${paymentUrl || null}, zelle_id = ${zelleId}, check_address = ${checkAddress}
         FROM portal_documents d WHERE i.document_id = d.id AND d.id = ${documentId} AND d.project_id = ${projectId} AND i.status = 'issued' RETURNING i.document_id`;
       if (!rows.length) return fail(404, "Issued invoice not found.");
+      await ensurePortalPaymentOptions();
+      await sql`INSERT INTO portal_payment_options(document_id, ach_url) VALUES (${documentId}, ${achUrl})
+        ON CONFLICT (document_id) DO UPDATE SET ach_url = EXCLUDED.ach_url`;
       return NextResponse.json({ ok: true }, { headers });
     }
     if (data.action === "invoiceStatus") {

@@ -57,6 +57,7 @@
 .portal-payment-chooser { padding: 18px 0 0; overflow-wrap: anywhere; }
 .portal-payment-chooser h3 { margin: 0 0 7px; font: 400 26px Georgia,serif; }
 .portal-payment-chooser p { line-height: 1.5; }
+.portal-payment-notice { padding: 10px 13px; border: 1px solid #c79bb9; background: #f5ebf8; }
 .portal-payment-methods { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 16px 0; }
 .portal-payment-methods button { display: grid; gap: 5px; min-width: 0; padding: 14px; border: 1px solid #a77b9b; background: #fff; color: #27182a; text-align: left; cursor: pointer; }
 .portal-payment-methods button[aria-pressed="true"] { border: 2px solid #60217d; background: #f2e4f6; }
@@ -156,6 +157,7 @@
 .portal-studio-delivery li { padding: 13px 0; border-top: 1px solid #d8c6dd; }
 .portal-studio-delivery li strong { margin-right: 12px; text-transform: capitalize; }
 .portal-studio-delivery li span { color: #65566b; font-size: 13px; }
+.portal-studio-choice { display: block; margin-top: 8px; color: #4b325c; font-weight: 700; }
 .portal-studio-materials { margin-top: 22px; padding: 20px 24px; background: #f7eff8; }
 .portal-studio-materials p { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; line-height: 1.45; }
 .portal-studio-materials span { color: #65566b; }
