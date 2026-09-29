@@ -2,7 +2,7 @@
 
 import { FormEvent, PointerEvent, useRef, useState } from "react";
 
-export default function SignAgreement({ documentId, email, studio }: { documentId: string; email: string; studio: boolean }) {
+export default function SignAgreement({ documentId, email, studio, pending = false }: { documentId: string; email: string; studio: boolean; pending?: boolean }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [typedName, setTypedName] = useState("");
@@ -38,7 +38,9 @@ export default function SignAgreement({ documentId, email, studio }: { documentI
     setHasDrawing(false);
   }
   async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setBusy(true); setMessage("");
+    event.preventDefault();
+    if (pending) return;
+    setBusy(true); setMessage("");
     const data = new FormData(event.currentTarget);
     try {
       if (signatureStyle === "draw" && !hasDrawing) throw Error("Draw your signature or choose the typed signature option.");
@@ -51,15 +53,15 @@ export default function SignAgreement({ documentId, email, studio }: { documentI
     } catch (error) { setMessage(error instanceof Error ? error.message : "Please try again."); }
     finally { setBusy(false); }
   }
-  return <form className="portal-sign-form" onSubmit={submit}>
-    <h2>Sign this agreement</h2><p>You are signed in as <strong>{email}</strong>. Your signature, consent, and signing time will be added to this agreement. {studio ? "Sign for A. Halliwell Studio first." : "Sign only if you are authorized to accept the agreement for your business."}</p>
+  return <form id="signature" className="portal-sign-form" onSubmit={submit}>
+    <h2>{pending ? "Preview the signature field" : "Sign this agreement"}</h2><p>{pending ? "You can try drawing or typing here. This preview does not save a signature. The studio will sign the agreement first, then you can return to sign it." : <>You are signed in as <strong>{email}</strong>. Your signature, consent, and signing time will be added to this agreement. {studio ? "Sign for A. Halliwell Studio first." : "Sign only if you are authorized to accept the agreement for your business."}</>}</p>
     <label>Full legal name<input name="typedName" autoComplete="name" minLength={3} maxLength={120} value={typedName} onChange={event => setTypedName(event.target.value)} required /></label>
     {!studio && <label>Business you are signing for<input name="businessName" maxLength={150} required placeholder="Vale Royal Barn" /></label>}
     <fieldset className="portal-signature-choice"><legend>Your electronic signature</legend><label><input type="radio" name="signatureStyle" checked={signatureStyle === "draw"} onChange={() => setSignatureStyle("draw")}/> Draw my signature</label><label><input type="radio" name="signatureStyle" checked={signatureStyle === "type"} onChange={() => setSignatureStyle("type")}/> Use my typed name</label></fieldset>
     {signatureStyle === "draw" ? <div className="portal-signature-pad"><p>Draw with your finger, mouse, or stylus.</p><canvas ref={canvas} width={600} height={180} role="img" aria-label="Draw your signature here" onPointerDown={startDrawing} onPointerMove={continueDrawing} onPointerUp={() => { drawing.current = false; }} onPointerCancel={() => { drawing.current = false; }}/><button type="button" className="portal-signature-clear" onClick={clearDrawing}>Clear signature</button></div> : <div className="portal-signature-typed" aria-label="Signature preview">{typedName.trim() || "Your name will appear here"}</div>}
     <label className="portal-check"><input type="checkbox" name="reviewed" required /><span>I have read the entire agreement displayed above.</span></label>
     <label className="portal-check"><input type="checkbox" name="consent" required /><span>I agree to use electronic records and signatures. By selecting Sign agreement, I intend to sign this agreement with the signature shown above.</span></label>
-    <button disabled={busy}>{busy ? "Recording signature…" : "Sign agreement"}</button>
+    <button disabled={busy || pending}>{pending ? "Available after studio signature" : busy ? "Recording signature…" : "Sign agreement"}</button>
     {message && <p role="status">{message}</p>}
   </form>;
 }

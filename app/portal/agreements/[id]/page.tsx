@@ -30,9 +30,10 @@ export default async function AgreementPage({ params }: { params: Promise<{ id: 
       <small>PRIVATE AGREEMENT {doc.project_title}</small><h1>{doc.title}</h1>
       <p>Review every page before signing. The signed PDF will remain available here for both parties.</p>
       <p><strong>Studio</strong> {doc.studio_signed_at ? "signed" : "awaiting signature"} &nbsp; <strong>Client</strong> {doc.client_signed_at ? "signed" : "awaiting signature"}</p>
+      {(canSign || (!studio && !doc.studio_signed_at && !doc.client_signed_at && doc.latest_id === doc.id)) && <p><a href="#signature">View the electronic signature field</a></p>}
       <div className="portal-pdf-viewer"><iframe title={`Agreement: ${doc.title}`} src={`/api/portal/documents/${id}#toolbar=1`}/></div>
       <p><a href={`/api/portal/documents/${id}`} target="_blank" rel="noopener noreferrer">Open or download the agreement PDF</a></p>
-      {canSign ? <SignAgreement documentId={id} email={client.email} studio={studio}/> : <p>{doc.client_signed_at ? "Both signatures are recorded. Download the completed copy above." : studio ? "You have signed this version. Valerie can sign after opening her private link." : "The studio is preparing this agreement for signing."}</p>}
+      {canSign ? <SignAgreement documentId={id} email={client.email} studio={studio}/> : !studio && !doc.studio_signed_at && !doc.client_signed_at && doc.latest_id === doc.id ? <SignAgreement documentId={id} email={client.email} studio={false} pending/> : <p>{doc.client_signed_at ? "Both signatures are recorded. Download the completed copy above." : studio ? "You have signed this version. The client can sign after opening their private link." : "The studio is preparing this agreement for signing."}</p>}
       <p><Link href={studio ? "/portal/studio" : `/portal/projects/${doc.project_id}`}>Return to project</Link></p>
     </section>
   </main>;
