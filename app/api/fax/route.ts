@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { validTelnyxWebhook } from "@/lib/telnyx-webhook";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,17 +20,20 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const expectedSecret = process.env.TELNYX_FAX_WEBHOOK_SECRET;
-    const url = new URL(request.url);
-    const suppliedSecret = url.searchParams.get("secret");
-
-    if (!expectedSecret || suppliedSecret !== expectedSecret) {
-      return json({ ok: false }, 401);
-    }
-
     const raw = await request.text();
     if (Buffer.byteLength(raw, "utf8") > 100_000) {
       return json({ ok: false }, 413);
+    }
+
+    const publicKey = process.env.TELNYX_PUBLIC_KEY?.trim();
+    if (publicKey) {
+      if (!validTelnyxWebhook(raw, request.headers, publicKey)) return json({ ok: false }, 401);
+    } else {
+      // Keep the existing configured fax delivery working until the account's
+      // public key is added to Vercel. Once it is set, URL secrets are ignored.
+      const expectedSecret = process.env.TELNYX_FAX_WEBHOOK_SECRET;
+      const suppliedSecret = new URL(request.url).searchParams.get("secret");
+      if (!expectedSecret || suppliedSecret !== expectedSecret) return json({ ok: false }, 401);
     }
 
     let event: any;

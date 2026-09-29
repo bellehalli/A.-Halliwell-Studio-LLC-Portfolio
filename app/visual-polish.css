@@ -29,14 +29,14 @@
 .proof-grid article:nth-child(2) { background: rgba(255,236,245,.88); }
 .proof-grid article:nth-child(3) { background: rgba(240,230,255,.88); }
 .proof-heading { position: relative; }
-.proof-heading::after { content: ''; position: absolute; width: 86px; height: 86px; right: 0; top: -80px; background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 56.PNG') center / contain no-repeat; pointer-events: none; }
+.proof-heading::after { content: ''; position: absolute; width: 86px; height: 86px; right: 0; top: -80px; background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 56-small.webp') center / contain no-repeat; pointer-events: none; }
 .offer-grid article { position: relative; background: rgba(255,252,249,.88); }
 .offer-grid article:nth-child(2) { background: rgba(248,239,255,.9); }
 .offer-grid article:nth-child(3) { background: rgba(255,243,249,.91); }
 .offer-grid article::before { content: ''; display: block; width: 42px; height: 6px; background: #e93282; }
 .offer-grid article:nth-child(2)::before { background: #9e78d4; }
 .offer-grid article:nth-child(3)::before { background: #171318; }
-.offer-grid article:nth-child(3)::after { content: ''; position: absolute; width: 42px; height: 42px; right: 20px; top: 20px; background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.PNG') center / cover; transform: rotate(12deg); pointer-events: none; }
+.offer-grid article:nth-child(3)::after { content: ''; position: absolute; width: 42px; height: 42px; right: 20px; top: 20px; background: url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.webp') center / cover; transform: rotate(12deg); pointer-events: none; }
 .offer-grid article > strong { background: #ffd9e9; }
 .offer-grid article:nth-child(2) > strong { background: #e7dafa; }
 .ahs-job-list { background: rgba(255,252,249,.91); }
@@ -113,7 +113,7 @@
 .prop-chromeDrip { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 51.webp'); }
 .prop-globe { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 57.webp'); }
 .prop-disco { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 32.webp'); }
-.prop-tape { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 63.PNG'); }
+.prop-tape { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 63.webp'); }
 .prop-shine { background-image: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 23.webp'); }
 .scene-props .scene-prop:first-child { width: clamp(75px,9vw,145px); left: -32px; top: -43px; transform: rotate(-13deg); }
 .scene-props .scene-prop:nth-child(2) { width: clamp(58px,7vw,112px); right: -25px; top: 16%; transform: rotate(15deg); }

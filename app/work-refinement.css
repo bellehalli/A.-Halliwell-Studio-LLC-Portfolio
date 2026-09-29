@@ -420,12 +420,12 @@
 .home-world .project-world.project-gallery::before{
   content:""!important;position:absolute;inset:0 0 auto;z-index:-1;
   height:clamp(220px,35vw,420px);pointer-events:none;
-  background:url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center top/100% auto no-repeat;
+  background:url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.webp') center top/100% auto no-repeat;
   -webkit-mask-image:linear-gradient(#000,transparent 90%);
   mask-image:linear-gradient(#000,transparent 90%);
 }
 .home-world .project-world.project-gallery.work-gallery-maison::before{
-  background-image:url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG');
+  background-image:url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.webp');
 }
 .home-world .project-world.project-gallery .project-world-paper,
 .home-world .project-world.project-gallery:nth-child(even) .project-world-paper{

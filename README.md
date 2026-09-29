@@ -29,6 +29,19 @@ Keep the existing Vercel environment variables:
 - INQUIRY_TO_EMAIL
 - INQUIRY_FROM_EMAIL
 
+For signed inbound fax delivery, add `TELNYX_PUBLIC_KEY` from Telnyx Mission
+Control → Keys & Credentials → Public Key to the Vercel production environment.
+After it is available in the deployed function, remove the `?secret=...` query
+from the Telnyx inbound fax webhook URL. The receiver then requires Telnyx's
+Ed25519 signature and timestamp headers and ignores the legacy URL secret.
+The legacy `TELNYX_FAX_WEBHOOK_SECRET` remains a temporary fallback only until
+the public key has been configured, to avoid interrupting inbound faxes.
+
+Inquiry and fax sign-in-code requests have server-side per-IP limits. Vercel
+functions may have separate instances, so configure project-wide WAF rate-limit
+rules for `/api/inquiry` and `/api/fax/auth/request` for a shared limit across
+instances and regions.
+
 Never commit secret values.
 
 ## Deploy

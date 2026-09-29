@@ -4,18 +4,21 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+const SEEN_KEY = "ahs-opening-seen";
 
 /** A short, non-scrolling opening scene. The site becomes usable after the curtain lifts. */
 export default function HomeOpening() {
   const [phase, setPhase] = useState<"open" | "leaving" | "done">("open");
   const phaseRef = useRef(false);
   const finishRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const seenRef = useRef(false);
 
   const leave = useCallback(() => {
     if (phaseRef.current) return;
     phaseRef.current = true;
     setPhase("leaving");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    try { sessionStorage.setItem(SEEN_KEY, "1"); } catch { /* Storage may be disabled. */ }
     finishRef.current = setTimeout(() => {
       const content = document.getElementById("home-content");
       if (content) {
@@ -26,7 +29,7 @@ export default function HomeOpening() {
       document.documentElement.style.overflow = "";
       setPhase("done");
       document.getElementById("home-heading")?.focus({ preventScroll: true });
-    }, reduced ? 0 : 850);
+    }, reduced || seenRef.current ? 0 : 650);
   }, []);
 
   useEffect(() => {
@@ -39,7 +42,8 @@ export default function HomeOpening() {
     document.documentElement.style.overflow = "hidden";
     window.scrollTo(0, 0);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = setTimeout(leave, reduced ? 1400 : 5600);
+    try { seenRef.current = sessionStorage.getItem(SEEN_KEY) === "1"; } catch { /* Storage may be disabled. */ }
+    const timer = setTimeout(leave, seenRef.current ? 0 : reduced ? 900 : 1900);
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") leave();
     };
