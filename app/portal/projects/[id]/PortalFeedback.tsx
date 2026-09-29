@@ -17,5 +17,5 @@ export default function PortalFeedback({ deliverableId }: { deliverableId: strin
     } catch { setMessage("We couldn't save that decision. Please try again."); }
     finally { setBusy(false); }
   }
-  return <div className="portal-feedback"><label htmlFor={`note-${deliverableId}`}>Revision notes for this version</label><textarea id={`note-${deliverableId}`} value={note} maxLength={4000} onChange={event => setNote(event.target.value)} placeholder="What would you like adjusted?" /><button type="button" disabled={busy} onClick={() => send("changes_requested")}>Request revisions ↗</button><button type="button" disabled={busy} onClick={() => send("approved")}>Approve this version ✓</button>{message && <p role="status">{message}</p>}</div>;
+  return <div className="portal-feedback"><label htmlFor={`note-${deliverableId}`}>Revision notes for this version</label><textarea id={`note-${deliverableId}`} value={note} maxLength={4000} onChange={event => setNote(event.target.value)} placeholder="What would you like adjusted?" /><button type="button" disabled={busy} onClick={() => send("changes_requested")}>Request revisions</button><button type="button" disabled={busy} onClick={() => send("approved")}>Approve this version</button>{message && <p role="status">{message}</p>}</div>;
 }

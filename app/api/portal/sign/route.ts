@@ -11,7 +11,7 @@ import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
 const fail = (status: number, message: string) => NextResponse.json({ ok: false, message }, { status, headers });
-export const consentText = "I agree to use electronic records and signatures for this agreement. By typing my legal name and selecting Sign agreement, I intend to sign the agreement displayed above.";
+export const consentText = "I agree to use electronic records and signatures. By selecting Sign agreement, I intend to sign the agreement displayed above with my chosen signature.";
 const hash = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 const display = (value: string) => value.replace(/[\p{Cc}\p{Cf}]/gu, " ").slice(0, 68);
 
@@ -22,12 +22,15 @@ export async function POST(request: Request) {
   if (!signer) return fail(401, "Sign in again to continue.");
   try {
     const raw = await request.text();
-    if (raw.length > 2_000) return fail(413, "Request too large.");
+    if (raw.length > 180_000) return fail(413, "Request too large.");
     const data = JSON.parse(raw);
     const id = String(data.documentId || "");
     const typedName = String(data.typedName || "").trim();
     const businessName = String(data.businessName || "").trim();
-    if (!/^[a-f0-9-]{36}$/.test(id) || typedName.length < 3 || typedName.length > 120 || businessName.length > 150 || data.reviewed !== true || data.consent !== true) return fail(400, "Review the agreement, enter your legal name, and consent to electronic signing.");
+    const signatureStyle = data.signatureStyle;
+    const signatureImage = data.signatureImage;
+    if (!/^[a-f0-9-]{36}$/.test(id) || typedName.length < 3 || typedName.length > 120 || businessName.length > 150 || !["draw", "type"].includes(signatureStyle) || data.reviewed !== true || data.consent !== true) return fail(400, "Review the agreement, enter your legal name, and consent to electronic signing.");
+    if (signatureStyle === "draw" && (typeof signatureImage !== "string" || !/^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(signatureImage) || signatureImage.length > 150_000)) return fail(400, "Draw your signature again and try signing.");
     const sql = portalDb();
     const docs = await sql`SELECT d.id, d.project_id, d.blob_url, d.sha256, p.client_id, c.email AS client_email,
       ss.signed_pdf_url AS studio_pdf_url, ss.signed_pdf_sha256 AS studio_pdf_hash,
@@ -57,17 +60,27 @@ export async function POST(request: Request) {
     const font = await pdf.embedFont(await readFile(join(process.cwd(), "assets", "DejaVuSans.ttf")), { subset: true });
     const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
     const at = new Date();
-    page.drawText("A. HALLIWELL STUDIO / ELECTRONIC SIGNATURE RECORD", { x: 46, y: 730, size: 13, font: bold, color: rgb(.34,.21,.32) });
-    page.drawText("This page is attached to the agreement identified by its source SHA-256.", { x: 46, y: 693, size: 10, font });
+    page.drawText("A. HALLIWELL STUDIO", { x: 46, y: 730, size: 13, font: bold, color: rgb(.34,.21,.32) });
+    page.drawText("Electronic signature record", { x: 46, y: 707, size: 12, font: bold, color: rgb(.34,.21,.32) });
+    page.drawText("This page is attached to the agreement identified by its source SHA-256.", { x: 46, y: 677, size: 10, font });
+    if (signatureStyle === "draw") {
+      const embedded = await pdf.embedPng(Buffer.from(signatureImage.slice("data:image/png;base64,".length), "base64"));
+      if (embedded.width !== 600 || embedded.height !== 180) return fail(400, "Signature image dimensions are invalid.");
+      page.drawImage(embedded, { x: 46, y: 467, width: 400, height: 120 });
+    } else {
+      page.drawText(display(typedName), { x: 46, y: 510, size: 24, font, color: rgb(.2,.13,.2) });
+    }
+    page.drawLine({ start: { x: 46, y: 455 }, end: { x: 470, y: 455 }, thickness: .7, color: rgb(.5,.38,.48) });
+    page.drawText("Signature of " + (role === "studio" ? "studio representative" : "client representative"), { x: 46, y: 438, size: 9, font });
     const lines = [
-      `Signer: ${display(typedName)}`, `Role: ${role === "studio" ? "Studio" : "Client"}`,
-      `Business: ${display(role === "studio" ? "A. Halliwell Studio, LLC" : businessName)}`,
-      `Authenticated email: ${display(signer.email)}`, `Signed at: ${at.toISOString()}`,
-      `Source SHA-256: ${sourceHash.slice(0,32)}`, `                        ${sourceHash.slice(32)}`,
-      "Method: authenticated portal session + typed name + affirmative consent"
+      `Signer ${display(typedName)}`, `Role ${role === "studio" ? "Studio" : "Client"}`,
+      `Business ${display(role === "studio" ? "A. Halliwell Studio, LLC" : businessName)}`,
+      `Authenticated email ${display(signer.email)}`, `Signed at ${at.toISOString()}`,
+      `Source SHA-256 ${sourceHash.slice(0,32)}`, `                       ${sourceHash.slice(32)}`,
+      `Method ${signatureStyle === "draw" ? "drawn" : "typed"} signature with affirmative consent in an authenticated portal session`
     ];
-    lines.forEach((line, index) => page.drawText(line, { x: 46, y: 645 - index * 29, size: 10, font }));
-    page.drawText("The original signed PDF and signature events are retained privately by the studio.", { x: 46, y: 355, size: 9, font });
+    lines.forEach((line, index) => page.drawText(line, { x: 46, y: 405 - index * 29, size: 9, font }));
+    page.drawText("The signed PDF and signature events are retained privately by the studio.", { x: 46, y: 130, size: 9, font });
     const signed = new Uint8Array(await pdf.save());
     const signatureId = randomUUID();
     const signedBlob = await put(`portal/${doc.project_id}/signed/${id}-${role}-${signatureId}.pdf`, Buffer.from(signed), { access: "private", contentType: "application/pdf", addRandomSuffix: false });
