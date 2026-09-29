@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/data/projects";
+import { publicProjects } from "@/data/projects";
 
 const baseUrl = "https://www.ahalliwellstudio.com";
 
@@ -28,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             ? 0.7
             : 0.8,
     })),
-    ...projects.filter((project) => !project.inDevelopment).map((project) => ({
+    ...publicProjects.map((project) => ({
       url: `${baseUrl}/work/${project.slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

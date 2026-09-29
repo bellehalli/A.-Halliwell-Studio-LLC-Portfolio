@@ -6,7 +6,7 @@ import StartProject from "@/components/forms/StartProject";
 import Navigation from "@/components/navigation/Navigation";
 import HomeOpening from "@/components/visual/HomeOpening";
 import SceneProps from "@/components/visual/SceneProps";
-import { projects } from "@/data/projects";
+import { publicProjects } from "@/data/projects";
 
 const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
 
@@ -43,9 +43,9 @@ export default function Home(){
   <div className="hero-strip"><div className="hero-strip-track">STRATEGY ✦ DESIGN ✦ DEVELOPMENT ✦ DIGITAL SYSTEMS ✦ STRATEGY ✦ DESIGN ✦ DEVELOPMENT ✦ DIGITAL SYSTEMS ✦</div></div>
 
   <div className="studio-world">
-   <section className="world-sheet intro-sheet" id="work" aria-labelledby="work-heading"><div className="content-shell"><div className="section-kicker"><span>01 — Selected Work</span><span>Range with a reason.</span></div><h2 id="work-heading">Different businesses.<br/><em>Different jobs.</em></h2><p className="world-lede">Hospitality, nightlife, wellness, local services, restaurants and commerce. Each concept is built around a different customer decision so the portfolio shows range without becoming a pile of unrelated mockups.</p><a className="work-intro-link" href="#work-gallery">EXPLORE THE WORK <Image className="glitter-cursor" src={CURSOR} alt="" width={24} height={24} aria-hidden="true" /></a></div></section>
+   <section className="world-sheet intro-sheet" id="work" aria-labelledby="work-heading"><div className="content-shell"><div className="section-kicker"><span>01 — Selected Work</span><span>Range with a reason.</span></div><h2 id="work-heading">Different businesses.<br/><em>Different jobs.</em></h2><p className="world-lede">Hospitality, nightlife, wellness and local services. Each concept is built around a different customer decision so the portfolio shows range without becoming a pile of unrelated mockups.</p><a className="work-intro-link" href="#work-gallery">EXPLORE THE WORK <Image className="glitter-cursor" src={CURSOR} alt="" width={24} height={24} aria-hidden="true" /></a></div></section>
    <WorkWorldGallery/>
-   <div className="project-worlds" id="selected-projects">{projects.slice(2).map(p=><ProjectShowcase project={p} key={p.slug}/>)}</div>
+   <div className="project-worlds" id="selected-projects">{publicProjects.slice(2).map(p=><ProjectShowcase project={p} key={p.slug}/>)}</div>
 
    <section className="world-sheet proof-world"><div className="content-shell"><div className="section-kicker"><span>Proof — without the pretending</span><span>Inspect it yourself.</span></div><div className="proof-heading"><h2>The work<br/><em>is the proof.</em></h2><p>Explore the strategy, not just the screenshots. Read the thinking behind each build and use the interactive Lab yourself.</p></div><div className="proof-grid"><article><span>01 — Live Builds</span><h3>Not just mockups.</h3><p>Open finished and interactive concept builds across multiple industries.</p><div className="proof-links"><a href="/work">Explore all work</a></div></article><article><span>02 — Case Studies</span><h3>Strategy you can read.</h3><p>See the problem, reasoning, build decisions and what each concept is designed to demonstrate.</p><a className="proof-single-link" href="/work">Read the work</a></article><article><span>03 — Live Capabilities</span><h3>The interface proves it.</h3><p>Try booking, commerce, quote, portal, events and lead-generation interfaces below.</p><a className="proof-single-link" href="/lab">Use the Lab</a></article></div><p className="proof-disclosure">Portfolio brands shown are original studio concepts, not commissioned client work. I do not publish invented testimonials, logos or performance results.</p></div></section>
 
