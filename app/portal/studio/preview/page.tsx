@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 import Navigation from "@/components/navigation/Navigation";
 import { currentPortalClient, isPortalStudio, portalEnabled } from "@/lib/portal";
 import ClientJourneyPreview from "./ClientJourneyPreview";
-import "../../portal.css";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {

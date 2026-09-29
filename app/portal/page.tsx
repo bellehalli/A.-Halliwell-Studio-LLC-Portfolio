@@ -5,7 +5,6 @@ import Navigation from "@/components/navigation/Navigation";
 import { currentPortalClient, isPortalStudio, portalEnabled, portalProjects } from "@/lib/portal";
 import PortalLogin from "./PortalLogin";
 import PortalSignOut from "./PortalSignOut";
-import "./portal.css";
 
 export const metadata: Metadata = {
   title: "Client Portal",
