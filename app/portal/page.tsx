@@ -16,7 +16,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function PortalPage(){
+export default async function PortalPage({ searchParams }: { searchParams: Promise<{ studio?: string }> }){
+  const studioSignIn = (await searchParams).studio === "1";
   if (portalEnabled()) {
     const client = await currentPortalClient();
     const projects = client ? await portalProjects(client.id) : [];
@@ -32,7 +33,7 @@ export default async function PortalPage(){
           <div className="portal-project-list">{projects.length ? projects.map(project => <Link key={project.id} href={`/portal/projects/${project.id}`}><span>{project.stage.replaceAll("_", " ")}</span><strong>{project.title}</strong><span>Open project</span></Link>) : !isPortalStudio(client) && <p>Your workspace is being prepared. Arabella will email when the project is ready.</p>}</div>
         </> : <>
           <h1>Your project has<br/><em>a place to live.</em></h1>
-          <p>Enter the email address your studio invitation was sent to. We&apos;ll send a private, one-time link to your workspace.</p>
+          <p>{studioSignIn ? "Sign in with your studio email to open the client desk. Your private link will arrive by email." : "Enter the email address your studio invitation was sent to. We'll send a private, one-time link to your workspace."}</p>
           <PortalLogin />
         </>}
       </section>
