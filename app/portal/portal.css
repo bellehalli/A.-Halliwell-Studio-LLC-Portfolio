@@ -133,6 +133,8 @@
 .portal-studio-feature .portal-studio-eyebrow { color: #e6c9eb; }
 .portal-studio-feature h3 { max-width: 680px; margin: 10px 0 12px; font: 400 clamp(32px, 4.5vw, 58px)/1.03 var(--font-editorial), Georgia, serif; letter-spacing: -.04em; }
 .portal-studio-feature p { margin: 0; overflow-wrap: anywhere; }
+.portal-studio-feature a { display: inline-block; margin-top: 18px; padding: 10px 16px; border: 1px solid #e6c9eb; color: #fff9f7; text-decoration: none; font-weight: 700; }
+.portal-studio-feature a:hover,.portal-studio-feature a:focus-visible { background: #fff9f7; color: #4e365f; }
 .portal-studio-feature-side { display: grid; gap: 12px; justify-items: end; flex: 0 0 auto; }
 .portal-studio-feature-side span { padding: 6px 10px; border: 1px solid #d5b5df; border-radius: 99px; font-size: 12px; text-transform: capitalize; }
 .portal-studio-feature-side strong { font: 400 30px var(--font-editorial), Georgia, serif; }
