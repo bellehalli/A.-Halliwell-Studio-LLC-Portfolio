@@ -9,7 +9,12 @@ export async function POST(request: Request) {
   try {
     const raw = await request.text();
     if (raw.length > 1000) return fail(413, "Request too large.");
-    const { documentId, action } = JSON.parse(raw);
+    const { documentId, action, invoiceLink } = JSON.parse(raw);
+    let suppliedUrl: URL | null = null;
+    if (invoiceLink) {
+      try { suppliedUrl = new URL(String(invoiceLink)); } catch { return fail(400, "Paste the complete Stripe invoice link."); }
+      if (suppliedUrl.protocol !== "https:" || suppliedUrl.hostname !== "invoice.stripe.com" || suppliedUrl.username || suppliedUrl.password || !suppliedUrl.pathname.startsWith("/i/")) return fail(400, "Use a hosted invoice link from invoice.stripe.com.");
+    }
     if (!/^[a-f0-9-]{36}$/.test(documentId) || !["connect", "check", "preview"].includes(action)) return fail(400, "Choose an invoice and action.");
     const secret = process.env.STRIPE_SECRET_KEY || "";
     const publishable = process.env.STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
@@ -27,21 +32,23 @@ export async function POST(request: Request) {
     let stripeId = String(item.stripe_invoice_id || "");
     if (action === "connect") {
       if (item.status !== "issued" || item.archived_at) return fail(409, "Connect Stripe to an unpaid, active invoice.");
-      if (!stripeId) {
+      if (suppliedUrl || !stripeId) {
         const candidates: Stripe.Invoice[] = [];
         let examined = 0;
         for await (const invoice of stripe.invoices.list({ status: "open", limit: 100 })) {
-          if (matches(invoice) && invoice.amount_remaining === Number(item.amount_cents)) candidates.push(invoice);
+          const sameLink = suppliedUrl && invoice.hosted_invoice_url && new URL(invoice.hosted_invoice_url).pathname === suppliedUrl.pathname;
+          if (suppliedUrl ? sameLink : matches(invoice) && invoice.amount_remaining === Number(item.amount_cents)) candidates.push(invoice);
           if (++examined >= 1000) break;
         }
         if (examined >= 1000) return fail(409, "There are too many open invoices to choose safely. Enter the exact Stripe invoice ID under Edit payment details.");
+        if (suppliedUrl && candidates.length === 0) return fail(409, "This link was not found among open invoices in the connected Stripe account. Check that the invoice is open and the Vercel key belongs to the same live Stripe account.");
         if (candidates.length !== 1) return fail(409, candidates.length ? "More than one Stripe invoice matches. Enter the correct invoice ID under Edit payment details." : "No open Stripe invoice matches this client's email and milestone amount. Check the recipient and amount in Stripe, then try again. You can also enter its invoice ID under Edit payment details.");
         stripeId = candidates[0].id;
       }
     }
     if (!stripeId) return fail(409, "Stripe is not connected to this invoice. Choose Connect Stripe first.");
     const invoice = await stripe.invoices.retrieve(stripeId, { expand: ["confirmation_secret"] });
-    if (!matches(invoice)) return fail(409, "The connected Stripe invoice has a different recipient, amount, or currency. Check its billing details in Stripe.");
+    if (!matches(invoice)) return fail(409, `This Stripe invoice must match the portal recipient ${item.email} and milestone amount $${(Number(item.amount_cents) / 100).toFixed(2)} USD. Stripe currently lists ${invoice.customer_email || "no recipient email"} and $${(invoice.amount_due / 100).toFixed(2)} ${invoice.currency.toUpperCase()}. Correct the recipient or amount before connecting.`);
     if (action === "connect") {
       if (invoice.status !== "open" || invoice.amount_remaining !== Number(item.amount_cents)) return fail(409, "This Stripe invoice is no longer payable for the full milestone amount.");
       const used = await sql`SELECT 1 FROM portal_invoices WHERE stripe_invoice_id = ${stripeId} AND document_id != ${documentId} AND status != 'void' LIMIT 1`;
