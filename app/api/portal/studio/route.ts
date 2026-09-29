@@ -252,7 +252,7 @@ export async function POST(request: Request) {
       const id = String(data.documentId || data.deliverableId || "");
       if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a file.");
       const invoice = data.action === "shareInvoice";
-      const rows = invoice ? await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, p.archived_at, i.status, i.shared_at, i.notification_status
+      const rows = invoice ? await sql`SELECT d.project_id, d.sha256, c.email, c.first_name, p.invited_at, p.archived_at, i.status, i.shared_at, i.notification_status
         FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id JOIN portal_projects p ON p.id = d.project_id
         JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${id} LIMIT 1`
         : await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, p.archived_at, d.status, d.shared_at, d.version, d.notification_status
@@ -263,7 +263,8 @@ export async function POST(request: Request) {
       if (invoice && rows[0].status !== "issued") return fail(409, "Only issued invoices can be shared.");
       if (invoice || data.action === "shareReview") {
         const signed = await sql`SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id
-          WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement' AND s.signer_role = 'client' LIMIT 1`;
+          WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement' AND s.signer_role = 'client'
+            AND d.id = (SELECT id FROM portal_documents WHERE project_id = ${rows[0].project_id} AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;
         if (!signed.length) return fail(409, "The client must sign the agreement before this file is shared. The deposit invoice is released with the invitation.");
       }
       const claimed = invoice ? await sql`UPDATE portal_invoices SET shared_at = coalesce(shared_at, now()), notification_status = 'sending', notification_attempted_at = now()
@@ -278,7 +279,7 @@ export async function POST(request: Request) {
         const { data: sent, error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
           from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(rows[0].email)], subject,
           text: `Hi ${rows[0].first_name},\n\n${invoice ? "Your invoice" : `Version ${rows[0].version}`} is ready in your private project workspace.\n\nhttps://www.ahalliwellstudio.com/portal\n\nArabella`,
-        }, { idempotencyKey: `portal-share/${id}` });
+        }, { idempotencyKey: invoice ? `portal-share/${id}/${rows[0].sha256}` : `portal-share/${id}` });
         if (error || !sent?.id) throw new Error("Notification not accepted.");
         if (invoice) await sql`UPDATE portal_invoices SET notification_status = 'accepted', notification_email_id = ${sent.id} WHERE document_id = ${id}`;
         else await sql`UPDATE portal_deliverables SET notification_status = 'accepted', notification_email_id = ${sent.id} WHERE id = ${id}`;
