@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   if (request.headers.get("origin") !== new URL(request.url).origin) return fail(403, "Forbidden.");
   const client = await currentPortalClient();
   if (!client || client.role !== "client") return fail(401, "Sign in to pay this invoice.");
-  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY || "";
+  const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
   const secretKey = process.env.STRIPE_SECRET_KEY || "";
   if (!/^pk_(live|test)_/.test(publishableKey) || !/^sk_(live|test)_/.test(secretKey) || publishableKey.slice(3, 7) !== secretKey.slice(3, 7)) return fail(503, "Embedded payment is being configured. Use the Stripe invoice link for now.");
   try {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     const item = rows[0];
     if (!item || item.status !== "issued" || !item.shared_at || !item.agreement_signed || item.selected_method !== "card" || !item.stripe_invoice_id) return fail(409, "This invoice is not ready for embedded payment.");
     const invoice = await new Stripe(secretKey).invoices.retrieve(String(item.stripe_invoice_id), { expand: ["confirmation_secret"] });
-    if (invoice.status !== "open" || invoice.currency !== "usd" || invoice.amount_remaining !== Number(item.amount_cents) || invoice.customer_email?.toLowerCase() !== client.email.toLowerCase() || !invoice.payment_settings?.payment_method_types?.includes("card")) return fail(409, "The Stripe invoice no longer matches this payment. Refresh the page.");
+    if (invoice.status !== "open" || invoice.currency !== "usd" || invoice.amount_remaining !== Number(item.amount_cents) || invoice.customer_email?.toLowerCase() !== client.email.toLowerCase() || (invoice.payment_settings?.payment_method_types != null && !invoice.payment_settings.payment_method_types.includes("card"))) return fail(409, "The Stripe invoice no longer matches this payment. Refresh the page.");
     const clientSecret = invoice.confirmation_secret?.client_secret;
     if (!clientSecret) return fail(409, "Embedded payment is unavailable for this invoice. Use its secure Stripe invoice link.");
     return NextResponse.json({ publishableKey, clientSecret, projectId: item.project_id }, { headers });

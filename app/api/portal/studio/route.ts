@@ -237,6 +237,8 @@ export async function POST(request: Request) {
         const info = await sql`SELECT i.amount_cents, c.email FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
           JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${documentId} AND p.id = ${projectId} LIMIT 1`;
         if (!info.length) return fail(404, "Invoice not found.");
+        const used = await sql`SELECT 1 FROM portal_invoices WHERE stripe_invoice_id = ${stripeId} AND document_id != ${documentId} AND status != 'void' LIMIT 1`;
+        if (used.length) return fail(409, "This Stripe invoice is already connected to another portal payment.");
         const stripe = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(stripeId);
         if (stripe.customer_email?.toLowerCase() !== String(info[0].email).toLowerCase() || stripe.currency !== "usd" || stripe.amount_due !== Number(info[0].amount_cents) || !["open", "paid"].includes(stripe.status || "")) return fail(400, "Stripe must be issued to the same client for the same amount.");
       }
