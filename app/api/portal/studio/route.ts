@@ -50,14 +50,27 @@ export async function POST(request: Request) {
         if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe is not configured.");
         const invoice = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(invoiceId);
         if (invoice.customer_email?.toLowerCase() !== String(project[0].email).toLowerCase()) return fail(400, "The Stripe invoice must belong to this client email.");
+        const amounts = await sql`SELECT i.amount_cents FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+          WHERE d.project_id = ${id} AND i.status = 'issued' ORDER BY d.created_at DESC, d.id DESC LIMIT 1`;
+        if (!amounts.length || invoice.currency !== "usd" || invoice.amount_due !== Number(amounts[0].amount_cents) || !["open", "paid"].includes(invoice.status ?? "")) return fail(400, "The Stripe invoice must be issued in USD for the same amount as the current Chase invoice.");
       }
       await sql`UPDATE portal_projects SET stage = ${stage}, agreement_url = ${agreementUrl || null}, stripe_invoice_id = ${invoiceId || null}, payment_instructions = ${paymentInstructions} WHERE id = ${id}`;
       return NextResponse.json({ ok: true }, { headers });
     }
     if (data.action === "invite") {
       const id = String(data.projectId || "");
-      const rows = await sql`SELECT c.id, c.email, c.first_name FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
+      if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a project.");
+      const rows = await sql`SELECT c.id, c.email, c.first_name, p.title FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
       if (!rows.length) return fail(404, "Project not found.");
+      const signed = await sql`SELECT 1 FROM portal_documents d JOIN portal_agreement_signatures s ON s.document_id = d.id AND s.signer_role = 'studio'
+        WHERE d.project_id = ${id} AND d.kind = 'agreement'
+          AND d.id = (SELECT id FROM portal_documents WHERE project_id = ${id} AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;
+      if (!signed.length) return fail(409, "Sign the current agreement as the studio before inviting the client.");
+      const readyInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+        WHERE d.project_id = ${id} AND i.status = 'issued' LIMIT 1`;
+      const sample = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+        WHERE d.project_id = ${id} AND i.status = 'void' AND i.invoice_number LIKE 'TEST-%' LIMIT 1`;
+      if (!readyInvoice.length && !(String(rows[0].title).startsWith("TEST") && sample.length)) return fail(409, "Attach an issued invoice before inviting the client.");
       const client = rows[0];
       const recent = await sql`SELECT count(*)::int AS count FROM portal_login_links WHERE client_id = ${client.id} AND created_at > now() - interval '1 hour'`;
       if (Number(recent[0]?.count) >= 3) return fail(429, "Please wait before sending another invitation.");
@@ -66,18 +79,41 @@ export async function POST(request: Request) {
       const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
         from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(client.email)],
         subject: "Your A. Halliwell Studio project workspace",
-        text: `Hi ${client.first_name},\n\nYour project workspace is ready. Open this private link to see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis link expires in 15 minutes. You can request a fresh link any time at https://www.ahalliwellstudio.com/portal.\n\nArabella`,
+        text: `Hi ${client.first_name},\n\nYour private project workspace is ready. The agreement is signed by the studio and waiting for your review. Open your private link to sign and see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis link expires in 15 minutes. You can request a fresh link any time at https://www.ahalliwellstudio.com/portal.\n\nArabella`,
       });
       if (error) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "Invitation email could not be sent."); }
+      return NextResponse.json({ ok: true }, { headers });
+    }
+    if (data.action === "updateInvoice") {
+      const projectId = String(data.projectId || "");
+      const documentId = String(data.documentId || "");
+      const paymentUrl = String(data.paymentUrl || "").trim();
+      const zelleId = String(data.zelleId || "").trim();
+      const checkAddress = String(data.checkAddress || "").trim();
+      if (!/^[a-f0-9-]{36}$/.test(projectId) || !/^[a-f0-9-]{36}$/.test(documentId) || (paymentUrl && (!paymentUrl.startsWith("https://") || paymentUrl.length > 1000)) || zelleId.length > 254 || checkAddress.length > 500) return fail(400, "Check the invoice payment details.");
+      const rows = await sql`UPDATE portal_invoices i SET payment_url = ${paymentUrl || null}, zelle_id = ${zelleId}, check_address = ${checkAddress}
+        FROM portal_documents d WHERE i.document_id = d.id AND d.id = ${documentId} AND d.project_id = ${projectId} AND i.status = 'issued' RETURNING i.document_id`;
+      if (!rows.length) return fail(404, "Issued invoice not found.");
       return NextResponse.json({ ok: true }, { headers });
     }
     if (data.action === "invoiceStatus") {
       const documentId = String(data.documentId || "");
       const status = String(data.status || "");
-      if (!/^[a-f0-9-]{36}$/.test(documentId) || !["issued", "paid", "void"].includes(status)) return fail(400, "Check the invoice and status.");
+      if (!/^[a-f0-9-]{36}$/.test(documentId) || !["paid", "void"].includes(status)) return fail(400, "Check the invoice and status.");
       const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END
-        WHERE document_id = ${documentId} RETURNING document_id`;
-      if (!rows.length) return fail(404, "Invoice not found.");
+        WHERE document_id = ${documentId} AND status = 'issued' RETURNING document_id`;
+      if (!rows.length) return fail(409, "Only an issued invoice can be marked paid or void.");
+      if (status === "paid") {
+        const recipient = await sql`SELECT c.email, c.first_name, i.invoice_number FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+          JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE i.document_id = ${documentId} LIMIT 1`;
+        if (recipient.length) {
+          try { await new Resend(process.env.RESEND_API_KEY).emails.send({
+            from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(recipient[0].email)],
+            subject: "Your project payment is confirmed",
+            text: `Hi ${recipient[0].first_name},\n\nYour payment for invoice ${recipient[0].invoice_number} has been confirmed by the studio. Your project workspace now shows it as paid.\n\nhttps://www.ahalliwellstudio.com/portal\n\nArabella`,
+          }, { idempotencyKey: `portal-payment-confirmed/${documentId}` }); } catch { /* The paid status remains authoritative. */ }
+        }
+      }
       return NextResponse.json({ ok: true }, { headers });
     }
     return fail(400, "Unknown action.");

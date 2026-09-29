@@ -98,15 +98,15 @@ export async function POST(request: Request) {
       if (!rows.length) { await del(signedBlob.url); return fail(409, "This signature was already recorded."); }
     } catch (error) { await del(signedBlob.url).catch(() => {}); throw error; }
 
-    const issuedInvoices = role === "client" ? await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id WHERE d.project_id = ${doc.project_id} AND i.status = 'issued' LIMIT 1` : [];
-    const to = role === "client" ? [String(doc.client_email), process.env.PORTAL_STUDIO_EMAIL].filter((value): value is string => !!value) : [String(doc.client_email)];
-    const subject = role === "client" ? "Your agreement is signed" : "Your agreement is ready to sign";
+    if (role === "studio") return NextResponse.json({ ok: true, notified: true }, { headers });
+    const issuedInvoices = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id WHERE d.project_id = ${doc.project_id} AND i.status = 'issued' LIMIT 1`;
+    const to = [String(doc.client_email), process.env.PORTAL_STUDIO_EMAIL].filter((value): value is string => !!value);
     let notified = false;
     try { const result = await new Resend(process.env.RESEND_API_KEY).emails.send({
       from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to,
-      subject,
-      text: role === "client" ? `The agreement has both signatures. You can download the signed copy${issuedInvoices.length ? " and review your issued invoice" : ""} from your private project workspace: https://www.ahalliwellstudio.com/portal\n\nArabella` : `The studio has signed your project agreement. Please review and sign it in your private workspace: https://www.ahalliwellstudio.com/portal\n\nArabella`,
-    }, { idempotencyKey: `portal-signature/${id}/${role}` }); notified = !result.error; }
+      subject: "Your agreement is signed",
+      text: `The agreement has both signatures. You can download the signed copy${issuedInvoices.length ? " and review your issued invoice" : ""} from your private project workspace: https://www.ahalliwellstudio.com/portal\n\nArabella`,
+    }, { idempotencyKey: `portal-signature/${id}/client` }); notified = !result.error; }
     catch { /* The signature is recorded even if notification fails. */ }
     return NextResponse.json({ ok: true, notified }, { headers });
   } catch { return fail(500, "The signature could not be recorded. Please try again."); }
