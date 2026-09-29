@@ -234,11 +234,11 @@
 .portal-payment-celebration { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px; background: #eee1f3f2; text-align: center; animation: portal-receipt 4.8s ease-in-out both; }
 .portal-payment-celebration strong { font: 400 27px var(--font-editorial),Georgia,serif; }
 .portal-payment-celebration small { font-size: 12px; line-height: 1.35; }
-.portal-butterfly-flight { display: block; width: 52px; height: 48px; margin-bottom: 4px; animation: portal-butterfly-fly 2.4s cubic-bezier(.2,.6,.4,1) both; }
-.portal-butterfly-asset { display: block; width: 100%; height: 100%; background: url('/assets/decorations/butterflies/Portfolio%20Assets%20A.Halliwell%20%20-%2031.webp') center / contain no-repeat; animation: portal-butterfly-flutter .35s ease-in-out 7 alternate; }
+.portal-butterfly-flight { display: block; width: 52px; height: 48px; margin-bottom: 4px; will-change: transform; animation: portal-butterfly-fly 3s ease-in-out both; }
+.portal-butterfly-asset { display: block; width: 100%; height: 100%; background: url('/assets/decorations/butterflies/Portfolio%20Assets%20A.Halliwell%20%20-%2031.webp') center / contain no-repeat; transform-origin: center; animation: portal-butterfly-flutter 1.1s ease-in-out infinite alternate; }
 @keyframes portal-receipt { 0% { opacity: 0; transform: translateY(8px); } 12%,85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
-@keyframes portal-butterfly-fly { 0% { opacity: 0; transform: translate(-48px,30px) rotate(-20deg) scale(.65); } 20% { opacity: 1; } 55% { transform: translate(8px,-12px) rotate(12deg) scale(1); } 100% { opacity: 1; transform: translate(35px,-23px) rotate(18deg) scale(.82); } }
-@keyframes portal-butterfly-flutter { from { transform: scaleX(.88) rotate(-4deg); } to { transform: scaleX(1) rotate(4deg); } }
+@keyframes portal-butterfly-fly { 0% { opacity: 0; transform: translate3d(-35px,24px,0) rotate(-8deg) scale(.85); } 18% { opacity: 1; } 100% { opacity: 1; transform: translate3d(30px,-22px,0) rotate(9deg) scale(1); } }
+@keyframes portal-butterfly-flutter { from { transform: scaleX(.96) rotate(-2deg); } to { transform: scaleX(1) rotate(2deg); } }
 @media (max-width: 740px) { .portal-payment-journey ol { grid-template-columns: 1fr; } .portal-payment-journey li { min-height: 115px; } }
 @media (prefers-reduced-motion: reduce) { .portal-payment-celebration,.portal-butterfly-flight,.portal-butterfly-asset { animation: none; } }
 
