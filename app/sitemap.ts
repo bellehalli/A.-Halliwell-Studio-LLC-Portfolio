@@ -14,6 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources/wedding-venue-website",
     "/resources/website-redesign-checklist",
     "/start",
+    "/privacy",
+    "/cookies",
+    "/terms",
+    "/accessibility",
   ];
 
   return [
