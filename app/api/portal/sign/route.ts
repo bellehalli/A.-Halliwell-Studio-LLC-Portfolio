@@ -6,6 +6,8 @@ import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { alignedSignedCopy, privatePdf } from "@/lib/portal-signed-copy";
+import { validSignatureLayout } from "@/lib/portal-signature-layout";
 import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
     if (signatureStyle === "draw" && (typeof signatureImage !== "string" || !/^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(signatureImage) || signatureImage.length > 150_000)) return fail(400, "Draw your signature again and try signing.");
     await ensurePortalLifecycle();
     const sql = portalDb();
-    const docs = await sql`SELECT d.id, d.project_id, d.blob_url, d.sha256, p.client_id, p.invited_at, p.archived_at, c.email AS client_email,
+    const docs = await sql`SELECT d.id, d.project_id, d.blob_url, d.sha256, d.signature_layout, d.aligned_pdf_url, d.aligned_pdf_sha256, p.client_id, p.invited_at, p.archived_at, c.email AS client_email,
       ss.signed_pdf_url AS studio_pdf_url, ss.signed_pdf_sha256 AS studio_pdf_hash,
       ss.signed_at AS studio_signed_at, cs.signed_at AS client_signed_at
       FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
@@ -49,8 +51,9 @@ export async function POST(request: Request) {
     if (role === "client" && (doc.client_id !== signer.id || !doc.invited_at || doc.archived_at)) return fail(403, "Forbidden.");
     if ((role === "studio" && doc.studio_signed_at) || (role === "client" && (doc.client_signed_at || !doc.studio_signed_at))) return fail(409, "This agreement is not ready for your signature.");
     if (role === "client" && !businessName) return fail(400, "Enter the business you are authorized to sign for.");
-    const sourceUrl = role === "studio" ? String(doc.blob_url) : String(doc.studio_pdf_url);
-    const sourceHash = role === "studio" ? String(doc.sha256) : String(doc.studio_pdf_hash);
+    if (!validSignatureLayout(doc.signature_layout)) return fail(409, "The studio must place the signature and date fields on the agreement before signing. Open the agreement from the manager portal to set them.");
+    const sourceUrl = doc.aligned_pdf_url ? String(doc.aligned_pdf_url) : role === "studio" ? String(doc.blob_url) : String(doc.studio_pdf_url);
+    const sourceHash = doc.aligned_pdf_url ? String(doc.aligned_pdf_sha256) : role === "studio" ? String(doc.sha256) : String(doc.studio_pdf_hash);
     const blob = await get(sourceUrl, { access: "private" });
     if (!blob || blob.statusCode !== 200) return fail(502, "The agreement file is unavailable.");
     const bytes = new Uint8Array(await new Response(blob.stream).arrayBuffer());
@@ -70,7 +73,7 @@ export async function POST(request: Request) {
       if (embedded.width !== 600 || embedded.height !== 180) return fail(400, "Signature image dimensions are invalid.");
       page.drawImage(embedded, { x: 46, y: 467, width: 400, height: 120 });
     } else {
-      page.drawText(display(typedName), { x: 46, y: 510, size: 24, font, color: rgb(.2,.13,.2) });
+      page.drawText(display(typedName), { x: 46, y: 510, size: Math.min(24, 400 / font.widthOfTextAtSize(display(typedName), 1)), font, color: rgb(.2,.13,.2) });
     }
     page.drawLine({ start: { x: 46, y: 455 }, end: { x: 470, y: 455 }, thickness: .7, color: rgb(.5,.38,.48) });
     page.drawText("Signature of " + (role === "studio" ? "studio representative" : "client representative"), { x: 46, y: 438, size: 9, font });
@@ -83,7 +86,11 @@ export async function POST(request: Request) {
     ];
     lines.forEach((line, index) => page.drawText(line, { x: 46, y: 405 - index * 29, size: 9, font }));
     page.drawText("The signed PDF and signature events are retained privately by the studio.", { x: 46, y: 130, size: 9, font });
-    const signed = new Uint8Array(await pdf.save());
+    const certificatePdf = new Uint8Array(await pdf.save());
+    const records: { role: "studio" | "client"; bytes: Uint8Array; signedAt: string }[] = [];
+    if (role === "client") records.push({ role: "studio", bytes, signedAt: new Date(String(doc.studio_signed_at)).toISOString() });
+    records.push({ role, bytes: certificatePdf, signedAt: at.toISOString() });
+    const signed = await alignedSignedCopy(await privatePdf(String(doc.blob_url), String(doc.sha256)), doc.signature_layout, records);
     const signatureId = randomUUID();
     const signedBlob = await put(`portal/${doc.project_id}/signed/${id}-${role}-${signatureId}.pdf`, Buffer.from(signed), { access: "private", contentType: "application/pdf", addRandomSuffix: false });
     const ip = (request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unavailable").split(",")[0].trim().slice(0, 100);
@@ -93,12 +100,14 @@ export async function POST(request: Request) {
         (id, document_id, signer_role, signer_id, signer_email, typed_name, business_name, consent_text, signed_at, ip_address, user_agent, source_sha256, signed_pdf_url, signed_pdf_sha256)
         SELECT ${signatureId}, ${id}, ${role}, ${signer.id}, ${signer.email}, ${typedName}, ${businessName}, ${consentText}, ${at.toISOString()}, ${ip}, ${agent}, ${sourceHash}, ${signedBlob.url}, ${hash(signed)}
         WHERE NOT EXISTS (SELECT 1 FROM portal_agreement_signatures WHERE document_id = ${id} AND signer_role = ${role})
+          AND EXISTS (SELECT 1 FROM portal_documents WHERE id = ${id} AND signature_layout = ${JSON.stringify(doc.signature_layout)}::jsonb)
           AND ${id} = (SELECT id FROM portal_documents WHERE project_id = ${doc.project_id} AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
           AND (${role} = 'studio' OR EXISTS (SELECT 1 FROM portal_agreement_signatures WHERE document_id = ${id} AND signer_role = 'studio'))
         RETURNING id`;
       if (!rows.length) { await del(signedBlob.url); return fail(409, "This signature was already recorded."); }
     } catch (error) { await del(signedBlob.url).catch(() => {}); throw error; }
 
+    await sql`UPDATE portal_documents SET aligned_pdf_url = NULL, aligned_pdf_sha256 = NULL WHERE id = ${id}`;
     if (role === "studio") return NextResponse.json({ ok: true, notified: true }, { headers });
     const issuedInvoices = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id WHERE d.project_id = ${doc.project_id} AND i.status = 'issued' LIMIT 1`;
     const to = [String(doc.client_email), process.env.PORTAL_STUDIO_EMAIL].filter((value): value is string => !!value);
@@ -106,8 +115,9 @@ export async function POST(request: Request) {
     try { const result = await new Resend(process.env.RESEND_API_KEY).emails.send({
       from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to,
       subject: "Your agreement is signed",
-      text: `The agreement has both signatures. You can download the signed copy${issuedInvoices.length ? " and review your issued invoice" : ""} from your private project workspace: https://www.ahalliwellstudio.com/portal\n\nArabella`,
-    }, { idempotencyKey: `portal-signature/${id}/client` }); notified = !result.error; }
+      attachments: [{ filename: "completed-signed-agreement.pdf", content: Buffer.from(signed) }],
+      text: `The attached agreement has both signatures, dates on the agreement lines, and timestamped signature records. You can download the signed copy${issuedInvoices.length ? " and review your issued invoice" : ""} from your private project workspace: https://www.ahalliwellstudio.com/portal\n\nArabella`,
+    }, { idempotencyKey: `portal-signature/${id}/client` }); notified = !result.error && !!result.data?.id; if (notified) await sql`UPDATE portal_documents SET completed_email_id = ${result.data!.id} WHERE id = ${id}`; }
     catch { /* The signature is recorded even if notification fails. */ }
     return NextResponse.json({ ok: true, notified }, { headers });
   } catch { return fail(500, "The signature could not be recorded. Please try again."); }

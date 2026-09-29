@@ -263,3 +263,17 @@
 .portal-payment-plan .portal-plan-balance { padding: 10px 12px; border: 1px solid #ad7f91; background: #fff6f6; }
 .portal-payment-plan .portal-plan-balance.is-balanced { border-color: #8f78a0; background: #f8f2fa; }
 @media (max-width: 740px) { .portal-plan-parts { grid-template-columns: 1fr; } }
+
+.portal-payment-plan { margin-bottom: 28px; }
+.portal-plan-parts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+.portal-plan-balance.is-balanced { color: #4f3a61; font-weight: 700; }
+.portal-studio-form .portal-plan-split { justify-self: start; background: #fffdfa; color: #593e68; }
+@media(max-width:740px) { .portal-plan-parts { grid-template-columns: 1fr; } }
+
+.portal-signature-placement { padding: 20px; border: 1px solid #b69bc4; background: #f4ebf5; margin-bottom: 20px; }
+.portal-placement-fields { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.portal-placement-fields label { display: grid; gap: 6px; flex: 1 1 140px; }
+.portal-placement-fields input { width: 100%; min-width: 0; padding: 10px; }
+.portal-placement-fields button[aria-pressed="true"] { background: #604273; color: white; }
+.portal-signature-placement button { margin: 4px; padding: 10px 14px; }
+.portal-placement-marker { border-bottom: 2px solid #604273; background: #eee2f4d9; color: #382644; font: 11px sans-serif; text-align: left; }

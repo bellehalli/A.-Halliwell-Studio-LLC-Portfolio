@@ -5,7 +5,7 @@ import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, p
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" };
 
-export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!portalEnabled()) return NextResponse.json({ ok: false }, { status: 404, headers });
   const client = await currentPortalClient();
   if (!client) return NextResponse.json({ ok: false }, { status: 401, headers });
@@ -13,7 +13,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!/^[a-f0-9-]{36}$/.test(id)) return NextResponse.json({ ok: false }, { status: 404, headers });
   await ensurePortalLifecycle();
   const rows = await portalDb()`SELECT d.file_name, d.kind, d.project_id,
-    coalesce(cs.signed_pdf_url, ss.signed_pdf_url, d.blob_url) AS display_url
+    CASE WHEN ${isPortalStudio(client) && new URL(request.url).searchParams.get('original') === '1'} THEN d.blob_url ELSE coalesce(d.aligned_pdf_url, cs.signed_pdf_url, ss.signed_pdf_url, d.blob_url) END AS display_url
     FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
     LEFT JOIN portal_agreement_signatures ss ON ss.document_id = d.id AND ss.signer_role = 'studio'
     LEFT JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'

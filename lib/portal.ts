@@ -50,6 +50,10 @@ let lifecycleReady: Promise<unknown> | undefined;
 export async function ensurePortalLifecycle() {
   lifecycleReady ??= (async () => {
     const sql = portalDb();
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS signature_layout jsonb`;
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_url text`;
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_sha256 text`;
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS completed_email_id text`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS invited_at timestamptz`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS archived_at timestamptz`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_1_cents integer`;
