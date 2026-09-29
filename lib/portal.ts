@@ -54,6 +54,12 @@ export async function ensurePortalLifecycle() {
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS archived_at timestamptz`;
     await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
+    await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS notification_status text NOT NULL DEFAULT 'unknown'`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS notification_status text NOT NULL DEFAULT 'unknown'`;
+    await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS notification_attempted_at timestamptz`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS notification_attempted_at timestamptz`;
+    await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS notification_email_id text`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS notification_email_id text`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS milestone_number integer DEFAULT 1 CHECK (milestone_number BETWEEN 1 AND 3)`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS stripe_invoice_id text`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS chase_closed_at timestamptz`;

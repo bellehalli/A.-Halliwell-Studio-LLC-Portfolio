@@ -13,7 +13,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   if (!/^[a-f0-9-]{36}$/.test(id)) return NextResponse.json({ ok: false }, { status: 404, headers });
   await ensurePortalLifecycle();
   const rows = await portalDb()`SELECT d.blob_url, d.file_name FROM portal_deliverables d
-    JOIN portal_projects p ON p.id = d.project_id WHERE d.id = ${id} AND ((${isPortalStudio(client)}) OR (p.client_id = ${client.id} AND p.invited_at IS NOT NULL AND d.shared_at IS NOT NULL)) LIMIT 1`;
+    JOIN portal_projects p ON p.id = d.project_id WHERE d.id = ${id} AND ((${isPortalStudio(client)}) OR (p.client_id = ${client.id} AND p.invited_at IS NOT NULL AND p.archived_at IS NULL AND d.shared_at IS NOT NULL)) LIMIT 1`;
   if (!rows.length) return NextResponse.json({ ok: false }, { status: 404, headers });
   try {
     const blob = await get(String(rows[0].blob_url), { access: "private" });

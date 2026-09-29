@@ -161,7 +161,8 @@ export async function POST(request: Request) {
       });
       if (error || !sent?.id) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "The email provider did not accept the invitation. Check the sender configuration and try again."); }
       await sql`UPDATE portal_projects SET invited_at = coalesce(invited_at, now()) WHERE id = ${id}`;
-      await sql`UPDATE portal_invoices i SET shared_at = coalesce(i.shared_at, now()) FROM portal_documents d WHERE i.document_id = d.id AND d.project_id = ${id} AND i.status = 'issued' AND i.milestone_number = 1`;
+      await sql`UPDATE portal_invoices i SET shared_at = coalesce(i.shared_at, now()), notification_status = 'included_in_invitation', notification_attempted_at = now(), notification_email_id = ${sent.id}
+        FROM portal_documents d WHERE i.document_id = d.id AND d.project_id = ${id} AND i.status = 'issued' AND i.milestone_number = 1 AND i.shared_at IS NULL`;
       return NextResponse.json({ ok: true, recipient: String(client.email), emailId: sent.id, status: "accepted" }, { headers });
     }
     if (data.action === "updateInvoice") {
@@ -194,27 +195,42 @@ export async function POST(request: Request) {
       const id = String(data.documentId || data.deliverableId || "");
       if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a file.");
       const invoice = data.action === "shareInvoice";
-      const rows = invoice ? await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, i.status, i.shared_at
+      const rows = invoice ? await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, p.archived_at, i.status, i.shared_at, i.notification_status
         FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id JOIN portal_projects p ON p.id = d.project_id
         JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${id} LIMIT 1`
-        : await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, d.status, d.shared_at, d.version
+        : await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, p.archived_at, d.status, d.shared_at, d.version, d.notification_status
           FROM portal_deliverables d JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${id} LIMIT 1`;
-      if (!rows.length || rows[0].shared_at) return fail(409, "This file is already shared or unavailable.");
-      if (!rows[0].invited_at || String(rows[0].email).endsWith(".invalid")) return fail(409, "Invite the client before sharing a file.");
+      if (!rows.length) return fail(404, "This file is unavailable.");
+      if (rows[0].shared_at && ["accepted", "included_in_invitation"].includes(String(rows[0].notification_status))) return fail(409, "This file has already been shared and its email was accepted.");
+      if (!rows[0].invited_at || rows[0].archived_at || String(rows[0].email).endsWith(".invalid")) return fail(409, "Invite the client and keep the project active before sharing a file.");
       if (invoice && rows[0].status !== "issued") return fail(409, "Only issued invoices can be shared.");
       if (invoice || data.action === "shareReview") {
         const signed = await sql`SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id
           WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement' AND s.signer_role = 'client' LIMIT 1`;
         if (!signed.length) return fail(409, "The client must sign the agreement before this file is shared. The deposit invoice is released with the invitation.");
       }
-      if (invoice) await sql`UPDATE portal_invoices SET shared_at = now() WHERE document_id = ${id} AND shared_at IS NULL`;
-      else await sql`UPDATE portal_deliverables SET shared_at = now() WHERE id = ${id} AND shared_at IS NULL`;
+      const claimed = invoice ? await sql`UPDATE portal_invoices SET shared_at = coalesce(shared_at, now()), notification_status = 'sending', notification_attempted_at = now()
+        WHERE document_id = ${id} AND (notification_status != 'sending' OR notification_attempted_at < now() - interval '2 minutes')
+          AND notification_status NOT IN ('accepted', 'included_in_invitation') RETURNING document_id`
+        : await sql`UPDATE portal_deliverables SET shared_at = coalesce(shared_at, now()), notification_status = 'sending', notification_attempted_at = now()
+          WHERE id = ${id} AND (notification_status != 'sending' OR notification_attempted_at < now() - interval '2 minutes')
+            AND notification_status NOT IN ('accepted', 'included_in_invitation') RETURNING id`;
+      if (!claimed.length) return fail(409, "An email is already being sent. Refresh its status shortly.");
       const subject = invoice ? "Your project invoice is ready" : "A new version is ready for your review";
-      const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
-        from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(rows[0].email)], subject,
-        text: `Hi ${rows[0].first_name},\n\n${invoice ? "Your invoice" : `Version ${rows[0].version}`} is ready in your private project workspace.\n\nhttps://www.ahalliwellstudio.com/portal\n\nArabella`,
-      }, { idempotencyKey: `portal-share/${id}` });
-      return NextResponse.json({ ok: true, notified: !error }, { headers });
+      try {
+        const { data: sent, error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
+          from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(rows[0].email)], subject,
+          text: `Hi ${rows[0].first_name},\n\n${invoice ? "Your invoice" : `Version ${rows[0].version}`} is ready in your private project workspace.\n\nhttps://www.ahalliwellstudio.com/portal\n\nArabella`,
+        }, { idempotencyKey: `portal-share/${id}` });
+        if (error || !sent?.id) throw new Error("Notification not accepted.");
+        if (invoice) await sql`UPDATE portal_invoices SET notification_status = 'accepted', notification_email_id = ${sent.id} WHERE document_id = ${id}`;
+        else await sql`UPDATE portal_deliverables SET notification_status = 'accepted', notification_email_id = ${sent.id} WHERE id = ${id}`;
+        return NextResponse.json({ ok: true, notified: true, emailId: sent.id }, { headers });
+      } catch {
+        if (invoice) await sql`UPDATE portal_invoices SET notification_status = 'failed' WHERE document_id = ${id} AND notification_status = 'sending'`;
+        else await sql`UPDATE portal_deliverables SET notification_status = 'failed' WHERE id = ${id} AND notification_status = 'sending'`;
+        return fail(502, "The file is visible in the client workspace, but the email was not accepted. Retry the notification from this panel.");
+      }
     }
     if (data.action === "confirmChaseClosed") {
       const id = String(data.documentId || "");

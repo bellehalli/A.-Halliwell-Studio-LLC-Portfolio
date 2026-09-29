@@ -36,7 +36,8 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
     JOIN portal_documents d ON d.id = o.document_id WHERE d.project_id = ${project.id}`;
   const paymentOption = (documentId: string) => paymentOptions.find(option => option.document_id === documentId);
   const agreement = documents.find(doc => doc.kind === "agreement");
-  const chaseInvoices = documents.filter(doc => doc.kind === "invoice" && invoices.find(item => item.document_id === doc.id)?.status !== "void");
+  const visibleInvoiceIds = new Set(invoices.filter(item => item.status !== "void").map(item => item.document_id));
+  const chaseInvoices = documents.filter(doc => doc.kind === "invoice" && visibleInvoiceIds.has(doc.id));
   const sampleDocument = project.title.startsWith("TEST") ? documents.find(doc => doc.kind === "invoice" && invoices.some(item => item.document_id === doc.id && item.status === "void" && item.invoice_number.startsWith("TEST-"))) : undefined;
   const sampleInvoice = sampleDocument ? invoices.find(item => item.document_id === sampleDocument.id) : undefined;
   const stripeInvoices = new Map<string, Stripe.Invoice>();
