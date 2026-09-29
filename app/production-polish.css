@@ -39,6 +39,11 @@ body { overflow-x: clip; }
 .legal-page { min-height: 55vh; max-width: 850px; margin: 8vh auto; padding: 40px 24px; }
 .legal-page h1 { font: 400 clamp(42px,6vw,70px)/1 Georgia,serif; }
 .legal-page p { font-size: 19px; line-height: 1.55; }
+.legal-page h2 { margin: 38px 0 12px; font: 400 clamp(27px,3vw,36px)/1.15 Georgia,serif; }
+.legal-page ul { padding-left: 1.4em; font-size: 18px; line-height: 1.6; }
+.legal-page li + li { margin-top: 12px; }
+.legal-page a { color: #672265; text-underline-offset: 3px; }
+.legal-page .legal-updated { font-size: 13px; color: #604b5b; }
 @media (max-width: 700px) {
   .project-context,.case-world-metadata,.conversion-footer-inner { grid-template-columns: 1fr; }
   .case-world-metadata { gap: 19px; }
