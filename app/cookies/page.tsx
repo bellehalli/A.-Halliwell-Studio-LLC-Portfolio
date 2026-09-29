@@ -21,7 +21,8 @@ export default function Cookies() {
     <h2>Private fax cookies</h2>
     <p>If an authorized user requests a fax desk sign-in code, a short-lived challenge cookie lasts up to five minutes. After sign-in, a session cookie lasts up to one hour. These cookies are HttpOnly, SameSite Strict, and Secure on the production site; they are required for the private fax desk and are removed at sign-out or expiry.</p>
     <h2>Client portal cookie</h2>
-    <p>When an invited client or studio owner signs in through a one-time email link, an essential session cookie keeps their private workspace open for up to seven days. It is HttpOnly, SameSite Lax, and Secure on the production site. Signing out clears it; the one-time email link expires after 15 minutes.</p>
+    <p>When an invited client or studio owner signs in with an email code or invitation link, an essential session cookie keeps their private workspace open for up to seven days. It is HttpOnly, SameSite Lax, and Secure on the production site. Signing out clears it. Invitation links expire after 48 hours and can be used once. Returning sign-in codes expire after 15 minutes and can be used once.</p>
+    <p>The payment tracker uses session storage to remember which completed milestones have already been celebrated in this tab. It does not store card details.</p>
     <h2>Your controls</h2>
     <p>You can clear this site&apos;s cookies and local storage in your browser settings. That will sign you out of private workspaces and remove any saved inquiry draft or session preferences. For information about submitted inquiries and client records, see the <a href="/privacy">Privacy Policy</a>.</p>
   </main>;

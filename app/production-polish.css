@@ -81,3 +81,6 @@ body { overflow-x: clip; }
   content-visibility: auto;
   contain-intrinsic-size: auto 1000px;
 }
+
+/* Keep decorative props inside the sheet without clipping its vertical composition. */
+.destination-sheet { overflow-x: clip; }
