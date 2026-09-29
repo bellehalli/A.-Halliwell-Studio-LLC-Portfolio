@@ -282,3 +282,14 @@
 .portal-stripe-activation h4 { margin: 0 0 12px; font: 400 26px var(--font-editorial), Georgia, serif; }
 .portal-stripe-activation p, .portal-stripe-activation li { line-height: 1.5; overflow-wrap: anywhere; }
 .portal-stripe-activation button { margin: 4px; padding: 10px 14px; }
+
+/* A warm, readable payment invitation that follows the portal's lavender palette. */
+.portal-zelle-welcome { margin: 20px 0; padding: clamp(18px,4vw,28px); border: 1px solid #c9afd6; border-radius: 18px; background: linear-gradient(135deg,#faf5fc,#eee3f5); color: #35203f; }
+.portal-zelle-welcome h4 { margin: 12px 0; font: 400 30px Georgia,serif; }
+.portal-payment-preferred { display: inline-block; padding: 6px 12px; border-radius: 30px; background: #e4d2ec; font-size: 12px; font-weight: 700; }
+.portal-zelle-welcome .portal-payment-recipient { background: #ffffffb8; border-radius: 10px; }
+.portal-zelle-welcome button { padding: 10px 16px; border: 1px solid #60217d; border-radius: 24px; background: #60217d; color: #fff; cursor: pointer; }
+.portal-zelle-welcome small { display: block; line-height: 1.6; }
+.portal-payment-chooser .portal-payment-methods button { border-radius: 12px; }
+.portal-payment-chooser .portal-payment-detail { border-radius: 16px; }
+.portal-zelle-welcome button:focus-visible { outline: 3px solid #60217d; outline-offset: 4px; }
