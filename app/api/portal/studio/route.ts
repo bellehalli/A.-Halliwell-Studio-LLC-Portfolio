@@ -180,11 +180,11 @@ export async function POST(request: Request) {
       const recent = await sql`SELECT count(*)::int AS count FROM portal_login_links WHERE client_id = ${client.id} AND created_at > now() - interval '1 hour'`;
       if (Number(recent[0]?.count) >= 3) return fail(429, "Please wait before sending another invitation.");
       const token = newToken(), hash = tokenHash(token);
-      await sql`INSERT INTO portal_login_links(token_hash, client_id, expires_at) VALUES (${hash}, ${client.id}, now() + interval '15 minutes')`;
+      await sql`INSERT INTO portal_login_links(token_hash, client_id, project_id, expires_at) VALUES (${hash}, ${client.id}, ${id}, now() + interval '48 hours')`;
       const { data: sent, error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
         from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(client.email)],
         subject: "Your A. Halliwell Studio project workspace",
-        text: `Hi ${client.first_name},\n\nYour private project workspace is ready. The agreement is signed by the studio and waiting for your review. Open your private link to sign and see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis link expires in 15 minutes. You can request a fresh link any time at https://www.ahalliwellstudio.com/portal.\n\nArabella`,
+        text: `Hi ${client.first_name},\n\nYour private project workspace is ready. The agreement is signed by the studio and waiting for your review. Open your private link to sign and see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis invitation link expires in 48 hours and can be used once. Your permanent workspace address is https://www.ahalliwellstudio.com/portal/projects/${id}. Sign in there with your email and a fresh email code whenever you return.\n\nArabella`,
       });
       if (error || !sent?.id) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "The email provider did not accept the invitation. Check the sender configuration and try again."); }
       await sql`UPDATE portal_projects SET invited_at = coalesce(invited_at, now()) WHERE id = ${id}`;

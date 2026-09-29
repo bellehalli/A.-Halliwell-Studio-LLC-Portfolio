@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const sql = portalDb();
     const rows = await sql`UPDATE portal_login_links SET consumed_at = now()
       WHERE token_hash = ${tokenHash(token)} AND consumed_at IS NULL AND expires_at > now()
-      RETURNING client_id`;
+      RETURNING client_id, project_id`;
     if (!rows.length) return NextResponse.json({ ok: false, message: "This link has expired or has already been used." }, { status: 401, headers });
 
     const allowed = await sql`SELECT 1 FROM portal_clients c WHERE c.id = ${rows[0].client_id} AND
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const session = newToken();
     await sql`INSERT INTO portal_sessions(token_hash, client_id, expires_at)
       VALUES (${tokenHash(session)}, ${rows[0].client_id}, now() + interval '7 days')`;
-    const response = NextResponse.json({ ok: true }, { headers });
+    const response = NextResponse.json({ ok: true, redirectTo: rows[0].project_id ? `/portal/projects/${rows[0].project_id}` : "/portal" }, { headers });
     response.cookies.set(PORTAL_COOKIE, session, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: SESSION_AGE_SECONDS });
     return response;
   } catch {

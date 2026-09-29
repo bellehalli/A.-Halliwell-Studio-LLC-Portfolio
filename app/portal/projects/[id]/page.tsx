@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import { liveStripeStatus } from "@/lib/portal-payments";
 import { milestoneLabels, projectMilestoneAmounts } from "@/lib/portal-plan";
 import PaymentJourney from "./PaymentJourney";
+import ClientVisitTracker from "./ClientVisitTracker";
 import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, isPortalStudio, portalDb, portalDeliverables, portalDocuments, portalEnabled, portalInvoices, portalProject } from "@/lib/portal";
 import Navigation from "@/components/navigation/Navigation";
 import PortalFeedback from "./PortalFeedback";
@@ -16,9 +17,9 @@ export const metadata: Metadata = { title: "Private client project", robots: { i
 
 export default async function ProjectPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ studioPreview?: string }> }) {
   if (!portalEnabled()) notFound();
-  const client = await currentPortalClient();
-  if (!client) redirect("/portal");
   const { id } = await params;
+  const client = await currentPortalClient();
+  if (!client) redirect(`/portal?project=${encodeURIComponent(id)}`);
   const studioPreview = (await searchParams).studioPreview === "1" && isPortalStudio(client);
   const target = studioPreview && /^[a-f0-9-]{36}$/.test(id) ? await portalDb()`SELECT c.id, c.first_name, c.email FROM portal_projects p
     JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1` : [];
@@ -56,6 +57,7 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
   const started = ["in_progress", "review", "complete"].includes(project.stage);
   const isVenueMap = project.client_business.toLowerCase() === "vale royal barn" && project.title.toLowerCase().includes("map");
   return <main className="portal-page">
+    {!studioPreview && !isPortalStudio(client) && <ClientVisitTracker projectId={project.id}/>}
     <div className="site-background" aria-hidden="true"/><Navigation />
     <section className="portal-card portal-project-detail">
       <Link className="portal-brand" href="/portal"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>

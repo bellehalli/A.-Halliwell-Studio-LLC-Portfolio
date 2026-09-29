@@ -55,6 +55,15 @@ export async function ensurePortalLifecycle() {
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_1_cents integer`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_2_cents integer`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_3_cents integer`;
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS first_client_opened_at timestamptz`;
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS first_visit_alert_at timestamptz`;
+    await sql`ALTER TABLE portal_login_links ADD COLUMN IF NOT EXISTS project_id text`;
+    await sql`UPDATE portal_login_links SET expires_at = created_at + interval '48 hours'
+      WHERE consumed_at IS NULL AND created_at > now() - interval '48 hours' AND expires_at < created_at + interval '48 hours'`;
+    await sql`CREATE TABLE IF NOT EXISTS portal_login_codes (
+      token_hash text PRIMARY KEY, code_hash text NOT NULL, client_id text NOT NULL REFERENCES portal_clients(id) ON DELETE CASCADE,
+      project_id text, attempts integer NOT NULL DEFAULT 0, created_at timestamptz NOT NULL DEFAULT now(), expires_at timestamptz NOT NULL, consumed_at timestamptz
+    )`;
     await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
     await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS notification_status text NOT NULL DEFAULT 'unknown'`;
