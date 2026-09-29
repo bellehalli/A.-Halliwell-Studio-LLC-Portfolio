@@ -253,3 +253,5 @@
 .portal-preview-controls button + button { background: #fffdfa; color: #604273; }
 .portal-preview-controls button:disabled { opacity: .5; cursor: default; }
 .portal-preview-controls button:focus-visible { outline: 3px solid #604273; outline-offset: 3px; }
+
+.portal-studio-settlement-alert { padding: 12px 14px; border: 1px solid #866595; background: #f5eaf8; font-weight: 700; }

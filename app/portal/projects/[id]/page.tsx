@@ -65,7 +65,7 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
       {project.investment_cents && <p className="portal-investment"><span>PROJECT INVESTMENT</span><strong>{money(project.investment_cents)}</strong></p>}
       {isVenueMap && <PaymentJourney projectId={project.id} milestones={[187500, 93750, 93750].map((amount, index) => {
         const item = invoices.find(invoice => Number(invoice.milestone_number) === index + 1 && invoice.amount_cents === amount);
-        return { amount, label: ["Project deposit", "First concept", "Final delivery"][index], paid: !!item && (item.status === "paid" || stripeStatuses.get(item.document_id) === "paid"), issued: !!item && item.status === "issued" };
+        return { amount, label: ["Project deposit", "First concept", "Final production"][index], paid: !!item && (item.status === "paid" || stripeStatuses.get(item.document_id) === "paid"), issued: !!item && item.status === "issued" };
       })} />}
       <div className="portal-step-grid">
         {(proposal || studioPreview) && <article><h2>Project proposal</h2>{proposal ? <><p>Review the project scope, investment, and payment milestones.</p><a href={`/api/portal/proposals/${proposal.id}`} target="_blank" rel="noopener noreferrer">View {String(proposal.title)}</a></> : <p>Your approved proposal will appear here when the studio attaches it.</p>}</article>}

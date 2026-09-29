@@ -10,9 +10,10 @@ export default function PaymentJourney({ projectId, milestones }: { projectId: s
   useEffect(() => {
     const paid = milestones.map((item, index) => item.paid ? index : -1).filter(index => index >= 0);
     const key = `ahs-payment-seen-${projectId}`;
-    const seen = JSON.parse(sessionStorage.getItem(key) || "[]") as number[];
+    let seen: number[] = [];
+    try { seen = JSON.parse(sessionStorage.getItem(key) || "[]") as number[]; } catch { /* The journey works without browser storage. */ }
     const latest = paid.find(index => !seen.includes(index));
-    sessionStorage.setItem(key, JSON.stringify(paid));
+    try { sessionStorage.setItem(key, JSON.stringify(paid)); } catch { /* Storage may be disabled. */ }
     if (latest === undefined) return;
     const open = window.setTimeout(() => setCelebrating(latest), 0);
     const close = window.setTimeout(() => setCelebrating(null), 4800);

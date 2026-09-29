@@ -142,3 +142,4 @@ ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAU
 ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS milestone_number integer DEFAULT 1 CHECK (milestone_number BETWEEN 1 AND 3);
 ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS stripe_invoice_id text;
 CREATE TABLE IF NOT EXISTS request_rate_limits (key text PRIMARY KEY, count integer NOT NULL, expires_at timestamptz NOT NULL);
+ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS chase_closed_at timestamptz;

@@ -202,10 +202,10 @@ export async function POST(request: Request) {
       if (!rows.length || rows[0].shared_at) return fail(409, "This file is already shared or unavailable.");
       if (!rows[0].invited_at || String(rows[0].email).endsWith(".invalid")) return fail(409, "Invite the client before sharing a file.");
       if (invoice && rows[0].status !== "issued") return fail(409, "Only issued invoices can be shared.");
-      if (invoice) {
+      if (invoice || data.action === "shareReview") {
         const signed = await sql`SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id
           WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement' AND s.signer_role = 'client' LIMIT 1`;
-        if (!signed.length) return fail(409, "The client must sign the agreement before the next invoice is shared. The deposit is released with the invitation.");
+        if (!signed.length) return fail(409, "The client must sign the agreement before this file is shared. The deposit invoice is released with the invitation.");
       }
       if (invoice) await sql`UPDATE portal_invoices SET shared_at = now() WHERE document_id = ${id} AND shared_at IS NULL`;
       else await sql`UPDATE portal_deliverables SET shared_at = now() WHERE id = ${id} AND shared_at IS NULL`;
@@ -216,6 +216,14 @@ export async function POST(request: Request) {
       }, { idempotencyKey: `portal-share/${id}` });
       return NextResponse.json({ ok: true, notified: !error }, { headers });
     }
+    if (data.action === "confirmChaseClosed") {
+      const id = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(id) || data.confirm !== "yes") return fail(400, "Confirm the Chase invoice was closed or marked paid in Chase.");
+      const rows = await sql`UPDATE portal_invoices SET chase_closed_at = now()
+        WHERE document_id = ${id} AND status = 'paid' AND payment_url IS NOT NULL AND chase_closed_at IS NULL RETURNING document_id`;
+      if (!rows.length) return fail(409, "No Chase closure is pending for this paid invoice.");
+      return NextResponse.json({ ok: true }, { headers });
+    }
     if (data.action === "invoiceStatus") {
       const documentId = String(data.documentId || "");
       const status = String(data.status || "");
@@ -223,7 +231,7 @@ export async function POST(request: Request) {
       const details = await sql`SELECT i.status, i.stripe_invoice_id, i.payment_url, i.amount_cents FROM portal_invoices i WHERE i.document_id = ${documentId} LIMIT 1`;
       if (!details.length || details[0].status !== "issued") return fail(409, "Only an issued invoice can be marked paid or void.");
       const item = details[0];
-      if (status === "paid" && item.payment_url && data.externalClosed !== "yes") return fail(409, "Close or mark the Chase invoice paid first, then confirm it here.");
+      if (item.payment_url && data.externalClosed !== "yes") return fail(409, "Close or mark the Chase invoice paid first, then confirm it here.");
       if (item.stripe_invoice_id) {
         if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe status is unavailable. Try again later.");
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -232,7 +240,7 @@ export async function POST(request: Request) {
         if (live.status === "open") await stripe.invoices.voidInvoice(String(item.stripe_invoice_id));
         else if (live.status !== "void") return fail(409, "Stripe is still processing this invoice. Wait for its final status.");
       }
-      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END
+      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END, chase_closed_at = CASE WHEN ${item.payment_url ? true : false} THEN now() ELSE chase_closed_at END
         WHERE document_id = ${documentId} AND status = 'issued' RETURNING document_id`;
       if (!rows.length) return fail(409, "Invoice status changed. Refresh before trying again.");
       if (status === "paid") {

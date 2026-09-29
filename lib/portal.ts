@@ -56,6 +56,7 @@ export async function ensurePortalLifecycle() {
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS milestone_number integer DEFAULT 1 CHECK (milestone_number BETWEEN 1 AND 3)`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS stripe_invoice_id text`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS chase_closed_at timestamptz`;
     await sql`UPDATE portal_invoices i SET stripe_invoice_id = p.stripe_invoice_id
       FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
       WHERE d.id = i.document_id AND i.stripe_invoice_id IS NULL AND p.stripe_invoice_id IS NOT NULL
@@ -75,7 +76,7 @@ export type PortalClient = { id: string; email: string; first_name: string; role
 export type PortalProject = { id: string; client_id: string; title: string; summary: string; stage: string; agreement_url: string | null; stripe_invoice_id: string | null; payment_instructions: string; client_business: string; investment_cents: number | null; invited_at: Date | null; archived_at: Date | null };
 export type PortalDeliverable = { id: string; project_id: string; version: number; title: string; file_name: string; status: string; shared_at: Date | null; created_at: Date };
 export type PortalDocument = { id: string; project_id: string; kind: "agreement" | "invoice"; title: string; file_name: string; blob_url: string; sha256: string; created_at: Date; studio_signed_at: Date | null; client_signed_at: Date | null };
-export type PortalInvoice = { document_id: string; invoice_number: string; amount_cents: number; due_on: string | null; payment_url: string | null; zelle_id: string; check_address: string; status: "issued" | "paid" | "void"; paid_at: Date | null; shared_at: Date | null; milestone_number: number; stripe_invoice_id: string | null };
+export type PortalInvoice = { document_id: string; invoice_number: string; amount_cents: number; due_on: string | null; payment_url: string | null; zelle_id: string; check_address: string; status: "issued" | "paid" | "void"; paid_at: Date | null; shared_at: Date | null; milestone_number: number; stripe_invoice_id: string | null; chase_closed_at: Date | null };
 
 export async function currentPortalClient(): Promise<PortalClient | null> {
   if (!portalEnabled()) return null;
