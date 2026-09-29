@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { track } from "@vercel/analytics";
 
-const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.webp";
 const SCOPE_KEY = "ahs-lab-scope-v1";
 
 const jobs = ["Book appointments","Sell products","Request quotes","Client portal","Manage events","Capture leads"] as const;

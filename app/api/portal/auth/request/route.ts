@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { checkRequestLimit } from "@/lib/request-rate-limit";
-import { newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
+import { ensurePortalLifecycle, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -10,17 +10,22 @@ const accepted = () => NextResponse.json({ ok: true, message: "If this email has
 export async function POST(request: Request) {
   if (!portalEnabled()) return NextResponse.json({ ok: false }, { status: 503, headers });
   if (request.headers.get("origin") !== new URL(request.url).origin) return NextResponse.json({ ok: false }, { status: 403, headers });
-  if (checkRequestLimit(request, "portal-link", 5, 15 * 60_000).limited) return NextResponse.json({ ok: false, message: "Please wait before requesting another link." }, { status: 429, headers });
+  if ((await checkRequestLimit(request, "portal-link", 5, 15 * 60_000)).limited) return NextResponse.json({ ok: false, message: "Please wait before requesting another link." }, { status: 429, headers });
   try {
     const raw = await request.text();
     if (raw.length > 1_000) return accepted();
     const email = String(JSON.parse(raw)?.email ?? "").trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return accepted();
 
+    await ensurePortalLifecycle();
     const sql = portalDb();
-    const clients = await sql`SELECT id, first_name FROM portal_clients WHERE email = ${email} LIMIT 1`;
+    const clients = await sql`SELECT id, first_name, role FROM portal_clients WHERE email = ${email} LIMIT 1`;
     if (!clients.length) return accepted();
     const client = clients[0];
+    if (client.role !== "studio") {
+      const invited = await sql`SELECT 1 FROM portal_projects WHERE client_id = ${client.id} AND invited_at IS NOT NULL AND archived_at IS NULL LIMIT 1`;
+      if (!invited.length) return accepted();
+    }
     const recent = await sql`SELECT count(*)::int AS count FROM portal_login_links
       WHERE client_id = ${client.id} AND created_at > now() - interval '1 hour'`;
     if (Number(recent[0]?.count) >= 3) return accepted();

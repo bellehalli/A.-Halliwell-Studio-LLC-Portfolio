@@ -168,7 +168,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const limit = checkRequestLimit(request, "inquiry", 8, 15 * 60 * 1000);
+    const limit = await checkRequestLimit(request, "inquiry", 8, 15 * 60 * 1000);
     if (limit.limited) {
       return NextResponse.json(
         { success: false, message: "Too many inquiries from this connection. Please try again later or email the studio." },

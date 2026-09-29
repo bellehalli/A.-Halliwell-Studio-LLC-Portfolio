@@ -174,7 +174,7 @@ vercel-live-feedback { display: none !important; }
 .home-star-link:focus-visible,.home-hero-text-link:focus-visible { outline: 3px solid #43166c; outline-offset: 5px; }
 .home-world .hero-strip { background: #241621; color: #ffcee2; }
 .home-world .intro-sheet,.home-world .proof-world {
-  background: linear-gradient(rgba(255,250,246,.91),rgba(255,250,246,.91)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.PNG') center / cover;
+  background: linear-gradient(rgba(255,250,246,.91),rgba(255,250,246,.91)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 130.webp') center / cover;
 }
 .home-world .offer-world {
   background: linear-gradient(rgba(255,249,253,.7),rgba(255,249,253,.7)),url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 39.webp') center / cover;
@@ -529,11 +529,11 @@ vercel-live-feedback { display: none !important; }
 .home-world .composition-piece { position: absolute; display: block; background-repeat: no-repeat; }
 .home-world .composition-offer .piece-diamond-heart {
   top: 4%; right: 2%; width: min(18vw,240px); aspect-ratio: 1;
-  background: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 88.PNG') center / 250%; opacity: .85;
+  background: url('/assets/art-direction/layers/Portfolio Assets A.Halliwell  - 88.webp') center / 250%; opacity: .85;
 }
 .home-world .composition-offer .piece-pearl-chain {
   top: -18%; left: 24%; width: min(58vw,800px); aspect-ratio: 1.7;
-  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 99.PNG') center / contain;
+  background: url('/assets/objects/Portfolio Assets A.Halliwell  - 99.webp') center / contain;
 }
 .home-world .composition-offer .piece-foil-card { display: none; }
 .home-world .composition-offer .piece-glint-one,.home-world .composition-offer .piece-glint-two {

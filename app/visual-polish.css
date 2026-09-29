@@ -1,7 +1,7 @@
 /* The floral backdrop remains visible between the layered sheets. */
 .site-background {
   inset: 0;
-  background: #fff8ef url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.PNG') center top / min(620px, 90vw) repeat;
+  background: #fff8ef url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.webp') center top / min(620px, 90vw) repeat;
 }
 .site-background::after { background: rgba(255,248,239,.08); }
 
@@ -104,11 +104,11 @@
 .prop-star { background-image: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.webp'); }
 .prop-purpleStar { background-image: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 22.webp'); }
 .prop-pixelStar { background-image: url('/assets/icon/stars/Portfolio Assets A.Halliwell  - 25.webp'); }
-.prop-cursor { background-image: url('/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG'); }
+.prop-cursor { background-image: url('/assets/ui/Portfolio Assets A.Halliwell  - 24.webp'); }
 .prop-flower { background-image: url('/assets/decorations/florals/Portfolio Assets A.Halliwell  - 33.webp'); }
 .prop-chromeButterfly { background-image: url('/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 31.webp'); }
-.prop-flatButterfly { background-image: url('/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 20.PNG'); }
-.prop-pinkButterfly { background-image: url('/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 54.PNG'); }
+.prop-flatButterfly { background-image: url('/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 20.webp'); }
+.prop-pinkButterfly { background-image: url('/assets/decorations/butterflies/Portfolio Assets A.Halliwell  - 54.webp'); }
 .prop-pearls { width: 100px; height: 45px; aspect-ratio: auto; background: radial-gradient(circle at 8% 50%,#fff 0 7%,#d2b9d3 8% 9%,transparent 10%), radial-gradient(circle at 24% 44%,#fff 0 7%,#d2b9d3 8% 9%,transparent 10%), radial-gradient(circle at 40% 43%,#fff 0 7%,#d2b9d3 8% 9%,transparent 10%), radial-gradient(circle at 56% 45%,#fff 0 7%,#d2b9d3 8% 9%,transparent 10%), radial-gradient(circle at 72% 49%,#fff 0 7%,#d2b9d3 8% 9%,transparent 10%), radial-gradient(circle at 88% 53%,#fff 0 7%,#d2b9d3 8% 9%,transparent 10%); }
 .prop-chromeDrip { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 51.webp'); }
 .prop-globe { background-image: url('/assets/objects/Portfolio Assets A.Halliwell  - 57.webp'); }

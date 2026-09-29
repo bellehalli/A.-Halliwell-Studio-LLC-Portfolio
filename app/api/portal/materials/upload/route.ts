@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { currentPortalClient, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalLifecycle, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -23,7 +23,8 @@ export async function POST(request: Request) {
         const category = String(payload.category || "");
         const note = String(payload.note || "").trim();
         if (!/^[a-f0-9-]{36}$/.test(projectId) || !categories.has(category) || note.length > 500 || !new RegExp(`^portal-materials/${projectId}/[a-f0-9-]{36}-[A-Za-z0-9._-]{1,120}$`).test(pathname)) throw Error("Invalid material details.");
-        const projects = await portalDb()`SELECT id FROM portal_projects WHERE id = ${projectId} AND client_id = ${client.id} LIMIT 1`;
+        await ensurePortalLifecycle();
+        const projects = await portalDb()`SELECT id FROM portal_projects WHERE id = ${projectId} AND client_id = ${client.id} AND invited_at IS NOT NULL AND archived_at IS NULL LIMIT 1`;
         if (!projects.length) throw Error("Project not found.");
         const signed = await portalDb()`SELECT 1 FROM portal_documents d JOIN portal_agreement_signatures s ON s.document_id = d.id AND s.signer_role = 'client'
           WHERE d.project_id = ${projectId} AND d.kind = 'agreement'

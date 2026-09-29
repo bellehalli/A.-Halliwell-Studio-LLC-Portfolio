@@ -45,6 +45,26 @@ export async function ensurePortalProposals() {
   catch (error) { proposalsReady = undefined; throw error; }
 }
 
+// Additive migrations keep existing signed records and invoices in place.
+let lifecycleReady: Promise<unknown> | undefined;
+export async function ensurePortalLifecycle() {
+  lifecycleReady ??= (async () => {
+    const sql = portalDb();
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS invited_at timestamptz`;
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS archived_at timestamptz`;
+    await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS milestone_number integer DEFAULT 1 CHECK (milestone_number BETWEEN 1 AND 3)`;
+    await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS stripe_invoice_id text`;
+    await sql`UPDATE portal_invoices i SET stripe_invoice_id = p.stripe_invoice_id
+      FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
+      WHERE d.id = i.document_id AND i.stripe_invoice_id IS NULL AND p.stripe_invoice_id IS NOT NULL
+      AND i.document_id = (SELECT d2.id FROM portal_documents d2 JOIN portal_invoices i2 ON i2.document_id = d2.id
+        WHERE d2.project_id = p.id AND i2.status = 'issued' ORDER BY d2.created_at DESC, d2.id DESC LIMIT 1)`;
+  })();
+  try { await lifecycleReady; } catch (error) { lifecycleReady = undefined; throw error; }
+}
+
 export function newToken() { return randomBytes(32).toString("base64url"); }
 export function tokenHash(token: string) { return createHash("sha256").update(token).digest("hex"); }
 export function validToken(token: unknown): token is string {
@@ -52,15 +72,16 @@ export function validToken(token: unknown): token is string {
 }
 
 export type PortalClient = { id: string; email: string; first_name: string; role: "client" | "studio" };
-export type PortalProject = { id: string; client_id: string; title: string; summary: string; stage: string; agreement_url: string | null; stripe_invoice_id: string | null; payment_instructions: string; client_business: string; investment_cents: number | null };
-export type PortalDeliverable = { id: string; project_id: string; version: number; title: string; file_name: string; status: string; created_at: Date };
+export type PortalProject = { id: string; client_id: string; title: string; summary: string; stage: string; agreement_url: string | null; stripe_invoice_id: string | null; payment_instructions: string; client_business: string; investment_cents: number | null; invited_at: Date | null; archived_at: Date | null };
+export type PortalDeliverable = { id: string; project_id: string; version: number; title: string; file_name: string; status: string; shared_at: Date | null; created_at: Date };
 export type PortalDocument = { id: string; project_id: string; kind: "agreement" | "invoice"; title: string; file_name: string; blob_url: string; sha256: string; created_at: Date; studio_signed_at: Date | null; client_signed_at: Date | null };
-export type PortalInvoice = { document_id: string; invoice_number: string; amount_cents: number; due_on: string | null; payment_url: string | null; zelle_id: string; check_address: string; status: "issued" | "paid" | "void"; paid_at: Date | null };
+export type PortalInvoice = { document_id: string; invoice_number: string; amount_cents: number; due_on: string | null; payment_url: string | null; zelle_id: string; check_address: string; status: "issued" | "paid" | "void"; paid_at: Date | null; shared_at: Date | null; milestone_number: number; stripe_invoice_id: string | null };
 
 export async function currentPortalClient(): Promise<PortalClient | null> {
   if (!portalEnabled()) return null;
   const token = (await cookies()).get(PORTAL_COOKIE)?.value;
   if (!validToken(token)) return null;
+  await ensurePortalLifecycle();
   const sql = portalDb();
   const rows = await sql`SELECT c.id, c.email, c.first_name, c.role FROM portal_sessions s
     JOIN portal_clients c ON c.id = s.client_id
@@ -73,19 +94,22 @@ export function isPortalStudio(client: PortalClient | null): boolean {
 }
 
 export async function portalProjects(clientId: string): Promise<PortalProject[]> {
-  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents
-    FROM portal_projects WHERE client_id = ${clientId} ORDER BY created_at DESC`;
+  await ensurePortalLifecycle();
+  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents, invited_at, archived_at
+    FROM portal_projects WHERE client_id = ${clientId} AND invited_at IS NOT NULL AND archived_at IS NULL ORDER BY created_at DESC`;
   return rows as PortalProject[];
 }
 
 export async function portalProject(clientId: string, projectId: string): Promise<PortalProject | null> {
-  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents
+  await ensurePortalLifecycle();
+  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents, invited_at, archived_at
     FROM portal_projects WHERE client_id = ${clientId} AND id = ${projectId} LIMIT 1`;
   return (rows[0] as PortalProject | undefined) ?? null;
 }
 
 export async function portalDeliverables(projectId: string): Promise<PortalDeliverable[]> {
-  const rows = await portalDb()`SELECT id, project_id, version, title, file_name, status, created_at
+  await ensurePortalLifecycle();
+  const rows = await portalDb()`SELECT id, project_id, version, title, file_name, status, shared_at, created_at
     FROM portal_deliverables WHERE project_id = ${projectId} ORDER BY version DESC`;
   return rows as PortalDeliverable[];
 }
@@ -101,6 +125,7 @@ export async function portalDocuments(projectId: string): Promise<PortalDocument
 }
 
 export async function portalInvoices(projectId: string): Promise<PortalInvoice[]> {
+  await ensurePortalLifecycle();
   const rows = await portalDb()`SELECT i.*, i.due_on::text AS due_on FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
     WHERE d.project_id = ${projectId} ORDER BY d.created_at DESC, d.id DESC`;
   return rows as PortalInvoice[];

@@ -5,12 +5,13 @@ import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import type { Project } from "@/data/projects";
 
-const filters = ["All", "Hospitality", "Wellness", "Service"] as const;
+const filters = ["All", "Hospitality", "Nightlife", "Wellness", "Service"] as const;
 type Filter = typeof filters[number];
 
 function matches(project: Project, filter: Filter) {
   if (filter === "All") return true;
-  if (filter === "Hospitality") return ["willow", "maison", "vanta"].includes(project.tone);
+  if (filter === "Hospitality") return ["willow", "maison"].includes(project.tone);
+  if (filter === "Nightlife") return project.tone === "vanta";
   if (filter === "Wellness") return project.tone === "elan";
   if (filter === "Service") return project.tone === "northstar";
   return project.tone === "northstar";
