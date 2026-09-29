@@ -17,7 +17,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
     LEFT JOIN portal_agreement_signatures ss ON ss.document_id = d.id AND ss.signer_role = 'studio'
     LEFT JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
-    WHERE d.id = ${id} AND (p.client_id = ${client.id} AND p.invited_at IS NOT NULL AND p.archived_at IS NULL OR ${isPortalStudio(client)}) LIMIT 1`;
+    WHERE d.id = ${id} AND (d.removed_at IS NULL OR ${isPortalStudio(client)}) AND (p.client_id = ${client.id} AND p.invited_at IS NOT NULL AND p.archived_at IS NULL OR ${isPortalStudio(client)}) LIMIT 1`;
   if (!rows.length) return NextResponse.json({ ok: false }, { status: 404, headers });
   if (rows[0].kind === "invoice" && !isPortalStudio(client)) {
     const shared = await portalDb()`SELECT 1 FROM portal_invoices WHERE document_id = ${id} AND shared_at IS NOT NULL LIMIT 1`;
@@ -27,9 +27,17 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const agreements = await portalDb()`SELECT cs.id FROM portal_documents d
       JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
       WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement'
-        AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
+        AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1)
       LIMIT 1`;
     if (!agreements.length && !samples.length) return NextResponse.json({ ok: false }, { status: 403, headers });
+  }
+  const versionId = new URL(request.url).searchParams.get("version");
+  if (versionId) {
+    if (!isPortalStudio(client) || !/^[a-f0-9-]{36}$/.test(versionId)) return NextResponse.json({ ok: false }, { status: 403, headers });
+    const versions = await portalDb()`SELECT file_name, blob_url FROM portal_document_file_versions WHERE id = ${versionId} AND document_id = ${id} LIMIT 1`;
+    if (!versions.length) return NextResponse.json({ ok: false }, { status: 404, headers });
+    rows[0].display_url = versions[0].blob_url;
+    rows[0].file_name = versions[0].file_name;
   }
   try {
     const blob = await get(String(rows[0].display_url), { access: "private" });

@@ -163,3 +163,9 @@ ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS signature_layout jsonb;
 ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_url text;
 ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_sha256 text;
 ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS completed_email_id text;
+
+ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS removed_at timestamptz;
+CREATE TABLE IF NOT EXISTS portal_document_file_versions (
+ id text PRIMARY KEY, document_id text NOT NULL REFERENCES portal_documents(id) ON DELETE CASCADE,
+ title text NOT NULL, file_name text NOT NULL, blob_url text NOT NULL, sha256 text NOT NULL, replaced_at timestamptz NOT NULL DEFAULT now()
+);

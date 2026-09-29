@@ -50,6 +50,11 @@ let lifecycleReady: Promise<unknown> | undefined;
 export async function ensurePortalLifecycle() {
   lifecycleReady ??= (async () => {
     const sql = portalDb();
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS removed_at timestamptz`;
+    await sql`CREATE TABLE IF NOT EXISTS portal_document_file_versions (
+      id text PRIMARY KEY, document_id text NOT NULL REFERENCES portal_documents(id) ON DELETE CASCADE,
+      title text NOT NULL, file_name text NOT NULL, blob_url text NOT NULL, sha256 text NOT NULL, replaced_at timestamptz NOT NULL DEFAULT now()
+    )`;
     await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS signature_layout jsonb`;
     await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_url text`;
     await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_sha256 text`;
@@ -143,7 +148,7 @@ export async function portalDocuments(projectId: string): Promise<PortalDocument
     FROM portal_documents d
     LEFT JOIN portal_agreement_signatures ss ON ss.document_id = d.id AND ss.signer_role = 'studio'
     LEFT JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
-    WHERE d.project_id = ${projectId} ORDER BY d.created_at DESC, d.id DESC`;
+    WHERE d.project_id = ${projectId} AND d.removed_at IS NULL ORDER BY d.created_at DESC, d.id DESC`;
   return rows as PortalDocument[];
 }
 

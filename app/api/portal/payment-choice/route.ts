@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const rows = await sql`SELECT i.status, i.shared_at, i.invoice_number, i.amount_cents, i.zelle_id, i.payment_url, i.check_address, p.title, i.stripe_invoice_id,
       o.ach_url, d.id AS document_id, d.project_id, d.kind,
       EXISTS(SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents a ON a.id = s.document_id
-        WHERE a.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
+        WHERE a.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1)
         AND s.signer_role = 'client') AS agreement_signed,
       (SELECT d2.id FROM portal_documents d2 JOIN portal_invoices i2 ON i2.document_id = d2.id
         WHERE d2.project_id = d.project_id AND d2.kind = 'invoice' AND i2.status != 'void'

@@ -94,6 +94,15 @@ export async function POST(request: Request) {
       await sql`INSERT INTO portal_projects(id, client_id, title, summary, client_business, investment_cents) VALUES (${id}, ${clients[0].id}, ${title}, ${summary}, ${clientBusiness}, ${investmentCents})`;
       return NextResponse.json({ ok: true, id }, { headers });
     }
+    if (data.action === "removeDocument") {
+      const id = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a document.");
+      const removed = await sql`UPDATE portal_documents SET removed_at = now()
+        WHERE id = ${id} AND kind = 'agreement' AND removed_at IS NULL
+        AND NOT EXISTS (SELECT 1 FROM portal_agreement_signatures WHERE document_id = ${id}) RETURNING id`;
+      if (!removed.length) return fail(409, "Signed agreements are retained. Upload a replacement version instead.");
+      return NextResponse.json({ ok: true }, { headers });
+    }
     if (data.action === "updatePaymentPlan") {
       const id = String(data.projectId || "");
       const total = cents(data.total);
@@ -189,7 +198,7 @@ export async function POST(request: Request) {
       }
       const signed = await sql`SELECT 1 FROM portal_documents d JOIN portal_agreement_signatures s ON s.document_id = d.id AND s.signer_role = 'studio'
         WHERE d.project_id = ${id} AND d.kind = 'agreement'
-          AND d.id = (SELECT id FROM portal_documents WHERE project_id = ${id} AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;
+          AND d.id = (SELECT id FROM portal_documents WHERE project_id = ${id} AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;
       if (!signed.length) return fail(409, "Sign the current agreement as the studio before inviting the client.");
       const readyInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
         WHERE d.project_id = ${id} AND i.status = 'issued' LIMIT 1`;

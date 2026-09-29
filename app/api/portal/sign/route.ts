@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       LEFT JOIN portal_agreement_signatures ss ON ss.document_id = d.id AND ss.signer_role = 'studio'
       LEFT JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
       WHERE d.id = ${id} AND d.kind = 'agreement'
-        AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
+        AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1)
       LIMIT 1`;
     if (!docs.length) return fail(404, "Agreement not found.");
     const doc = docs[0];
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
         SELECT ${signatureId}, ${id}, ${role}, ${signer.id}, ${signer.email}, ${typedName}, ${businessName}, ${consentText}, ${at.toISOString()}, ${ip}, ${agent}, ${sourceHash}, ${signedBlob.url}, ${hash(signed)}
         WHERE NOT EXISTS (SELECT 1 FROM portal_agreement_signatures WHERE document_id = ${id} AND signer_role = ${role})
           AND EXISTS (SELECT 1 FROM portal_documents WHERE id = ${id} AND signature_layout = ${JSON.stringify(doc.signature_layout)}::jsonb)
-          AND ${id} = (SELECT id FROM portal_documents WHERE project_id = ${doc.project_id} AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
+          AND ${id} = (SELECT id FROM portal_documents WHERE project_id = ${doc.project_id} AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1)
           AND (${role} = 'studio' OR EXISTS (SELECT 1 FROM portal_agreement_signatures WHERE document_id = ${id} AND signer_role = 'studio'))
         RETURNING id`;
       if (!rows.length) { await del(signedBlob.url); return fail(409, "This signature was already recorded."); }

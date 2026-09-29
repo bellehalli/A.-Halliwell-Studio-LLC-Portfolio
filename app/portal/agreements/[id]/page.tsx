@@ -20,11 +20,11 @@ export default async function AgreementPage({ params }: { params: Promise<{ id: 
   await ensurePortalLifecycle();
   const rows = await portalDb()`SELECT d.id, d.title, d.project_id, d.signature_layout, p.title AS project_title, p.client_business, p.client_id, p.invited_at, p.archived_at,
     ss.signed_at AS studio_signed_at, cs.signed_at AS client_signed_at,
-    (SELECT id FROM portal_documents WHERE project_id = p.id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) AS latest_id
+    (SELECT id FROM portal_documents WHERE project_id = p.id AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1) AS latest_id
     FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
     LEFT JOIN portal_agreement_signatures ss ON ss.document_id = d.id AND ss.signer_role = 'studio'
     LEFT JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
-    WHERE d.id = ${id} AND d.kind = 'agreement' LIMIT 1`;
+    WHERE d.id = ${id} AND d.kind = 'agreement' AND (d.removed_at IS NULL OR ${studio}) LIMIT 1`;
   const doc = rows[0];
   if (!doc || (!studio && (doc.client_id !== client.id || !doc.invited_at || doc.archived_at))) notFound();
   const canSign = (studio || validSignatureLayout(doc.signature_layout)) && doc.latest_id === doc.id && (studio ? !doc.studio_signed_at : !!doc.studio_signed_at && !doc.client_signed_at);

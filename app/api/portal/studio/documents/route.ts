@@ -3,6 +3,8 @@ import { del, get, put } from "@vercel/blob";
 import { PDFDocument } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { liveStripeStatus } from "@/lib/portal-payments";
+import type { PortalInvoice } from "@/lib/portal";
 import { projectMilestoneAmounts } from "@/lib/portal-plan";
 
 export const runtime = "nodejs";
@@ -47,6 +49,31 @@ export async function POST(request: Request) {
     const project = await sql`SELECT p.id, p.investment_cents, p.milestone_1_cents, p.milestone_2_cents, p.milestone_3_cents, c.email, c.first_name FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${projectId} LIMIT 1`;
     if (!project.length) return fail(404, "Project not found.");
 
+    const replaceId = String(field("replaceDocumentId") || "");
+    if (replaceId && !/^[a-f0-9-]{36}$/.test(replaceId)) return fail(400, "Choose the document to replace.");
+    if (replaceId && kind === "invoice") {
+      const previous = await sql`SELECT d.*, i.status, i.stripe_invoice_id, i.amount_cents FROM portal_documents d JOIN portal_invoices i ON i.document_id = d.id
+        WHERE d.id = ${replaceId} AND d.project_id = ${projectId} AND d.kind = 'invoice' AND d.removed_at IS NULL LIMIT 1`;
+      if (!previous.length || previous[0].status !== "issued") return fail(409, "Only an unpaid issued invoice PDF can be replaced. Paid and void records are retained.");
+      const old = previous[0];
+      if (old.stripe_invoice_id && await liveStripeStatus({ document_id: replaceId, stripe_invoice_id: String(old.stripe_invoice_id), amount_cents: Number(old.amount_cents) } as PortalInvoice) !== "open") return fail(409, "Check Stripe's actual invoice status before replacing this PDF.");
+      const digest = createHash("sha256").update(bytes).digest("hex");
+      const blob = direct ? { url: blobUrl } : await put(`portal/${projectId}/documents/${randomUUID()}-${safeName}`, Buffer.from(bytes), { access: "private", contentType: "application/pdf", addRandomSuffix: false });
+      if (blob.url === old.blob_url) return fail(409, "Choose a new PDF to replace this file.");
+      const duplicate = await sql`SELECT 1 FROM portal_documents WHERE blob_url = ${blob.url} LIMIT 1`;
+      if (duplicate.length) return fail(409, "That PDF is already attached. Upload a new copy.");
+      await sql.transaction([
+        sql`INSERT INTO portal_document_file_versions(id, document_id, title, file_name, blob_url, sha256)
+          VALUES (${randomUUID()}, ${replaceId}, ${old.title}, ${old.file_name}, ${old.blob_url}, ${old.sha256})`,
+        sql`UPDATE portal_documents SET title = ${title}, file_name = ${safeName}, blob_url = ${blob.url}, sha256 = ${digest} WHERE id = ${replaceId}`,
+        sql`UPDATE portal_invoices SET shared_at = NULL, notification_status = 'unknown', notification_email_id = NULL, notification_attempted_at = NULL WHERE document_id = ${replaceId}`,
+      ]);
+      return NextResponse.json({ ok: true, id: replaceId, notified: false, replaced: true }, { headers });
+    }
+    if (replaceId && kind === "agreement") {
+      const old = await sql`SELECT 1 FROM portal_documents WHERE id = ${replaceId} AND project_id = ${projectId} AND kind = 'agreement' LIMIT 1`;
+      if (!old.length) return fail(404, "The agreement to replace was not found in this project.");
+    }
     let invoiceNumber = "", amountCents = 0, dueOn: string | null = null;
     let paymentUrl: string | null = null, achUrl = "", zelleId = "", checkAddress = "", milestone = 1;
     if (kind === "invoice") {

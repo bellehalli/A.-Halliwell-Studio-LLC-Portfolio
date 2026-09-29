@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         WHERE d2.project_id = d.project_id AND d2.kind = 'invoice' AND i2.status != 'void'
         ORDER BY d2.created_at DESC, d2.id DESC LIMIT 1) AS latest_invoice_id,
       EXISTS(SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents a ON a.id = s.document_id
-        WHERE a.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
+        WHERE a.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' AND removed_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 1)
           AND s.signer_role = 'client') AS agreement_signed
       FROM portal_documents d JOIN portal_invoices i ON i.document_id = d.id
       JOIN portal_projects p ON p.id = d.project_id AND p.client_id = ${client.id} AND p.invited_at IS NOT NULL AND p.archived_at IS NULL
