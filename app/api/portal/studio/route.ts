@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { del } from "@vercel/blob";
 import Stripe from "stripe";
 import { currentPortalClient, ensurePortalPaymentOptions, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
 
@@ -22,20 +23,43 @@ export async function POST(request: Request) {
     if (data.action === "create") {
       const email = String(data.email || "").trim().toLowerCase();
       const firstName = String(data.firstName || "").trim().slice(0, 80);
-      const title = String(data.title || "").trim().slice(0, 150);
+      const rawTitle = String(data.title || "").trim();
+      const title = (data.isTest === "on" ? `TEST ${rawTitle}` : rawTitle).slice(0, 150);
       const summary = String(data.summary || "").trim().slice(0, 1000);
       const clientBusiness = String(data.clientBusiness || "").trim().slice(0, 150);
       const investment = String(data.investment || "").trim();
       if (investment && !/^\d{1,7}(\.\d{1,2})?$/.test(investment)) return fail(400, "Check the project investment.");
       const [dollars, cents = ""] = investment.split(".");
       const investmentCents = investment ? Number(dollars) * 100 + Number(cents.padEnd(2, "0")) : null;
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !firstName || !title) return fail(400, "Client email, name, and project title are required.");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !firstName || !rawTitle) return fail(400, "Client email, name, and project title are required.");
       await sql`INSERT INTO portal_clients(id, email, first_name) VALUES (${randomUUID()}, ${email}, ${firstName}) ON CONFLICT (email) DO NOTHING`;
       const clients = await sql`SELECT id, role FROM portal_clients WHERE email = ${email} LIMIT 1`;
       if (clients[0]?.role !== "client") return fail(400, "Use a client email address.");
       const id = randomUUID();
       await sql`INSERT INTO portal_projects(id, client_id, title, summary, client_business, investment_cents) VALUES (${id}, ${clients[0].id}, ${title}, ${summary}, ${clientBusiness}, ${investmentCents})`;
       return NextResponse.json({ ok: true, id }, { headers });
+    }
+    if (data.action === "deleteTest") {
+      const id = String(data.projectId || "");
+      if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a test workspace.");
+      const rows = await sql`SELECT p.id, p.client_id, p.title, c.email FROM portal_projects p
+        JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
+      if (!rows.length) return fail(404, "Test workspace not found.");
+      const target = rows[0];
+      if (!String(target.title).startsWith("TEST") || String(target.email).toLowerCase() === studio?.email) return fail(403, "Only test client workspaces can be removed here.");
+      const actualInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+        WHERE d.project_id = ${id} AND (i.status = 'paid' OR i.invoice_number NOT LIKE 'TEST-%') LIMIT 1`;
+      if (actualInvoice.length) return fail(409, "This project contains a real invoice and cannot be removed as a test.");
+      const blobs = await sql`SELECT blob_url AS url FROM portal_documents WHERE project_id = ${id}
+        UNION SELECT blob_url AS url FROM portal_materials WHERE project_id = ${id}
+        UNION SELECT blob_url AS url FROM portal_deliverables WHERE project_id = ${id}
+        UNION SELECT signed_pdf_url AS url FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id WHERE d.project_id = ${id}`;
+      await sql`DELETE FROM portal_projects WHERE id = ${id}`;
+      const remaining = await sql`SELECT 1 FROM portal_projects WHERE client_id = ${target.client_id} LIMIT 1`;
+      if (!remaining.length) await sql`DELETE FROM portal_clients WHERE id = ${target.client_id}`;
+      const urls = blobs.map(blob => String(blob.url)).filter(url => url.startsWith("https://"));
+      if (urls.length) await del(urls).catch(() => { /* The database removal remains authoritative. */ });
+      return NextResponse.json({ ok: true, email: target.email, clientRemoved: !remaining.length }, { headers });
     }
     if (data.action === "update") {
       const id = String(data.projectId || "");
