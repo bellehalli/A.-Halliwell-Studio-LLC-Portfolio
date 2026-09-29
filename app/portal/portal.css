@@ -111,3 +111,69 @@
 .portal-journey ol { list-style: none; padding: 0; margin: 0; }
 .portal-journey li { display: grid; gap: 5px; padding: 14px 0; border-top: 1px solid #e3cdd8; }
 .portal-journey li span { color: #63495a; }
+
+/* The studio desk uses the same lavender floral world as the client portal. */
+.portal-page .portal-studio-shell { width: min(1120px, 100%); padding: clamp(22px, 4vw, 58px); transform: none; background: rgba(255, 250, 247, .96); }
+.portal-studio-shell > h1 { max-width: 760px; }
+.portal-studio-shell > p { max-width: 720px; }
+.portal-studio-dashboard { color: #352540; }
+.portal-studio-intro { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin: 30px 0 25px; padding: clamp(22px, 4vw, 42px); border: 1px solid #9b86ab; background: linear-gradient(118deg, rgba(239,226,246,.94), rgba(254,246,250,.94)); }
+.portal-studio-eyebrow,.portal-studio-panel-head > span,.portal-studio-picker label { display: block; color: #695378; font: 700 11px var(--font-mono), monospace; letter-spacing: .14em; text-transform: uppercase; }
+.portal-studio-intro h2 { max-width: 610px; margin: 13px 0; font: 400 clamp(32px, 4.5vw, 56px)/1.06 var(--font-editorial), Georgia, serif; letter-spacing: -.035em; }
+.portal-studio-intro p { max-width: 540px; margin: 0; line-height: 1.55; }
+.portal-studio-monogram { display: grid; flex: 0 0 125px; place-items: center; width: 125px; height: 125px; border: 1px solid #b997c4; border-radius: 50%; color: #8d5d9a; background: rgba(255,255,255,.5); font: italic 58px var(--font-fashion), Georgia, serif; transform: rotate(-11deg); }
+.portal-studio-picker { display: grid; gap: 8px; max-width: 630px; margin: 22px 0; }
+.portal-studio-picker select { width: 100%; min-height: 53px; padding: 12px 15px; border: 1px solid #9b86ab; background: #fff; color: #352540; font: inherit; }
+.portal-studio-feature { display: flex; justify-content: space-between; align-items: end; gap: 22px; padding: clamp(24px, 4vw, 42px); border: 1px solid #6c4a78; color: #fff9f7; background: #4e365f; }
+.portal-studio-feature .portal-studio-eyebrow { color: #e6c9eb; }
+.portal-studio-feature h3 { max-width: 680px; margin: 10px 0 12px; font: 400 clamp(32px, 4.5vw, 58px)/1.03 var(--font-editorial), Georgia, serif; letter-spacing: -.04em; }
+.portal-studio-feature p { margin: 0; overflow-wrap: anywhere; }
+.portal-studio-feature-side { display: grid; gap: 12px; justify-items: end; flex: 0 0 auto; }
+.portal-studio-feature-side span { padding: 6px 10px; border: 1px solid #d5b5df; border-radius: 99px; font-size: 12px; text-transform: capitalize; }
+.portal-studio-feature-side strong { font: 400 30px var(--font-editorial), Georgia, serif; }
+.portal-studio-tabs { display: flex; gap: 3px; overflow-x: auto; margin: 22px 0 0; border-bottom: 1px solid #c9b2ce; }
+.portal-studio-tabs button { flex: 0 0 auto; padding: 15px 17px; border: 0; border-bottom: 3px solid transparent; color: #594466; background: transparent; font: 700 13px var(--font-mono), monospace; cursor: pointer; }
+.portal-studio-tabs button[aria-current="page"] { border-bottom-color: #644174; color: #352540; background: #f3e8f5; }
+.portal-studio-tabs button:hover { background: #f3e8f5; }
+.portal-studio-panel { padding: clamp(21px, 3vw, 34px); border: 1px solid #c9b2ce; border-top: 0; background: #fffaf8; }
+.portal-studio-panel-head h3 { margin: 10px 0; font: 400 clamp(30px, 4vw, 46px)/1.08 var(--font-editorial), Georgia, serif; letter-spacing: -.035em; }
+.portal-studio-panel-head p { max-width: 670px; margin: 0 0 25px; line-height: 1.55; }
+.portal-studio-milestones { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 13px; }
+.portal-studio-milestones button { display: grid; align-content: start; gap: 13px; min-height: 172px; padding: 22px; border: 1px solid #c7aaca; color: #352540; background: #f7eff8; text-align: left; cursor: pointer; }
+.portal-studio-milestones button:hover { border-color: #5e3d70; background: #f0e3f3; }
+.portal-studio-milestones small { color: #755580; font: 700 10px var(--font-mono), monospace; letter-spacing: .11em; }
+.portal-studio-milestones strong { font: 400 25px/1.15 var(--font-editorial), Georgia, serif; }
+.portal-studio-milestones span { font-size: 13px; line-height: 1.45; }
+.portal-studio-send { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 22px; padding: 24px; border: 1px solid #c7aaca; background: #fff; }
+.portal-studio-send h4,.portal-studio-materials h4,.portal-studio-attachment-list h4 { margin: 0 0 10px; font: 400 26px var(--font-editorial), Georgia, serif; }
+.portal-studio-send p { max-width: 610px; margin: 0; line-height: 1.5; }
+.portal-studio-materials { margin-top: 22px; padding: 20px 24px; background: #f7eff8; }
+.portal-studio-materials p { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; line-height: 1.45; }
+.portal-studio-materials span { color: #65566b; }
+.portal-studio-form { display: grid; gap: 17px; max-width: 720px; margin: 25px 0; padding: 26px; border: 1px solid #d0bbd2; background: #f9f3f9; }
+.portal-studio-form label { display: grid; gap: 7px; min-width: 0; font-weight: 700; }
+.portal-studio-form :is(input,select,textarea) { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid #a88eaf; background: #fff; color: #30243a; font: inherit; }
+.portal-studio-form input[type="file"] { padding: 12px; }
+.portal-studio-form textarea { min-height: 90px; }
+.portal-studio-form small { color: #65566b; font-weight: 400; line-height: 1.45; }
+.portal-studio-form-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 17px; }
+.portal-studio-dashboard button:not(.portal-studio-tabs button):not(.portal-studio-milestones button),.portal-studio-form button { justify-self: start; padding: 11px 16px; border: 1px solid #604273; color: white; background: #604273; font: 700 13px var(--font-mono), monospace; cursor: pointer; }
+.portal-studio-dashboard button:disabled { opacity: .52; cursor: not-allowed; }
+.portal-studio-dashboard :is(button,input,select,textarea,summary,a):focus-visible { outline: 3px solid #784f95; outline-offset: 3px; }
+.portal-studio-form-status,.portal-studio-notice { min-height: 1.5em; margin: 0; color: #4b325c; font-weight: 700; line-height: 1.5; }
+.portal-studio-notice { margin: 14px 0; padding: 14px 18px; background: #efe5f1; }
+.portal-studio-attachment-list { margin-top: 28px; }
+.portal-studio-attachment-list article { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 0; border-top: 1px solid #d9c9db; }
+.portal-studio-attachment-list article > div:first-child { display: grid; gap: 5px; }
+.portal-studio-attachment-list article strong { font-size: 17px; }
+.portal-studio-attachment-list article span { color: #6c5874; font-size: 13px; }
+.portal-studio-attachment-list a,.portal-studio-materials a { color: #56336d; text-underline-offset: 4px; }
+.portal-studio-invoice-item .portal-studio-invoice-controls { flex-basis: 100%; }
+.portal-studio-invoice-controls details { margin: 10px 0; }
+.portal-studio-invoice-controls .portal-studio-form { margin: 12px 0; }
+.portal-studio-dashboard summary { color: #56336d; font-weight: 700; cursor: pointer; }
+.portal-studio-create { margin-top: 24px; padding: 20px 24px; border: 1px solid #c9b2ce; background: #f8eef7; }
+.portal-studio-create > summary { font: 400 26px var(--font-editorial), Georgia, serif; }
+.portal-studio-create .portal-studio-form { margin-bottom: 0; }
+@media (max-width: 760px) { .portal-studio-monogram { display: none; } .portal-studio-feature { align-items: start; flex-direction: column; } .portal-studio-feature-side { justify-items: start; } .portal-studio-milestones { grid-template-columns: 1fr; } .portal-studio-milestones button { min-height: 125px; } .portal-studio-send { align-items: start; flex-direction: column; } }
+@media (max-width: 520px) { .portal-page .portal-studio-shell { padding: 22px 15px; } .portal-studio-intro,.portal-studio-panel { padding: 18px; } .portal-studio-form { padding: 17px; } .portal-studio-form-pair { grid-template-columns: 1fr; } .portal-studio-feature { padding: 22px; } }
