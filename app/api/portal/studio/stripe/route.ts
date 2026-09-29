@@ -12,7 +12,8 @@ export async function POST(request: Request) {
     if (raw.length > 1000) return fail(413, "Request too large.");
     const { documentId, action, invoiceLink } = JSON.parse(raw);
     let suppliedUrl: URL | null = null;
-    if (invoiceLink) {
+    const suppliedId = /^in_[A-Za-z0-9]+$/.test(String(invoiceLink || "").trim()) ? String(invoiceLink).trim() : "";
+    if (invoiceLink && !suppliedId) {
       try { suppliedUrl = new URL(String(invoiceLink)); } catch { return fail(400, "Paste the complete Stripe invoice link."); }
       if (suppliedUrl.protocol !== "https:" || suppliedUrl.hostname !== "invoice.stripe.com" || suppliedUrl.username || suppliedUrl.password || !suppliedUrl.pathname.startsWith("/i/")) return fail(400, "Use a hosted invoice link from invoice.stripe.com.");
     }
@@ -36,8 +37,9 @@ export async function POST(request: Request) {
     const repairAmount = action === "connect" && item.status === "issued" && Number(item.milestone_number || 1) === 1 && originalAmount === Number(item.investment_cents) && planAmount > 0 && planAmount < originalAmount && !item.stripe_invoice_id;
     const paymentAmount = repairAmount ? planAmount : originalAmount;
     const matches = (invoice: Stripe.Invoice) => invoice.customer_email?.trim().toLowerCase() === String(item.email).trim().toLowerCase() && invoice.currency === "usd" && invoice.amount_due === paymentAmount;
-    let stripeId = String(item.stripe_invoice_id || "");
+    let stripeId = action === "connect" && suppliedId ? suppliedId : String(item.stripe_invoice_id || "");
     if (action === "connect") {
+      if (item.stripe_invoice_id && suppliedId && suppliedId !== item.stripe_invoice_id) return fail(409, "A different Stripe invoice is already connected. Close that payment path before replacing it.");
       if (item.status !== "issued" || item.archived_at) return fail(409, "Connect Stripe to an unpaid, active invoice.");
       if (suppliedUrl || !stripeId) {
         const candidates: Stripe.Invoice[] = [];
