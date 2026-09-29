@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect,useRef,useState } from "react";
 import { usePathname } from "next/navigation";
 const HEART="/assets/hearts/Portfolio Assets A.Halliwell  - 1.webp";
-const links=[["HOME","/"],["WORK","/work"],["SERVICES","/services"],["STUDIO","/studio"],["LAB","/lab"]];
+const links=[["HOME","/"],["WORK","/work"],["SERVICES","/services"],["STUDIO","/studio"],["LAB","/lab"],["CLIENT PORTAL","/portal"]];
 export default function Navigation(){
  const [open,setOpen]=useState(false),[scrolled,setScrolled]=useState(false);
  const pathname=usePathname();
@@ -29,7 +29,7 @@ export default function Navigation(){
    <span className="heart-button-label">{open?"CLOSE":"MENU"}</span>
   </button>
   <nav id="primary-navigation" className={`heart-dock ${open?"is-open":""}`} aria-label="Primary navigation">
-   {links.map(([label,href])=><a className="heart-nav-button" href={href} key={href} aria-current={pathname===href || (href!=="/" && pathname.startsWith(`${href}/`)) ? "page" : undefined} onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="104px"/></span><span className="heart-button-label">{label}</span></a>)}
+   {links.map(([label,href])=><a className="heart-nav-button" href={href} key={href} aria-current={pathname===href || (href!=="/" && pathname.startsWith(`${href}/`)) ? "page" : undefined} onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="104px"/></span><span className="heart-button-label">{href === "/portal" ? <>CLIENT<br/>PORTAL</> : label}</span></a>)}
    <a className="heart-nav-button heart-start" href="/start" aria-current={pathname==="/start"?"page":undefined} onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="110px"/></span><span className="heart-button-label">START A<br/>PROJECT</span></a>
   </nav>
  </header>
