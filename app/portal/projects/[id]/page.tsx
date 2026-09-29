@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import Stripe from "stripe";
-import { currentPortalClient, portalDeliverables, portalEnabled, portalProject } from "@/lib/portal";
+import { currentPortalClient, portalDb, portalDeliverables, portalDocuments, portalEnabled, portalInvoices, portalProject } from "@/lib/portal";
 import Navigation from "@/components/navigation/Navigation";
 import PortalFeedback from "./PortalFeedback";
+import MaterialUpload from "./MaterialUpload";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Private client project", robots: { index: false, follow: false }, referrer: "no-referrer" };
@@ -16,25 +17,44 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   const { id } = await params;
   const project = await portalProject(client.id, id);
   if (!project) notFound();
-  const deliverables = await portalDeliverables(project.id);
+  const [deliverables, documents, invoices, materials] = await Promise.all([portalDeliverables(project.id), portalDocuments(project.id), portalInvoices(project.id), portalDb()`SELECT id, category, note, file_name, created_at FROM portal_materials WHERE project_id = ${project.id} ORDER BY created_at DESC`]);
+  const agreement = documents.find(doc => doc.kind === "agreement");
+  const chaseInvoices = documents.filter(doc => doc.kind === "invoice" && invoices.find(item => item.document_id === doc.id)?.status !== "void");
   let invoice: Stripe.Invoice | null = null;
   if (project.stripe_invoice_id && process.env.STRIPE_SECRET_KEY) {
     try { invoice = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(project.stripe_invoice_id); }
     catch { /* Keep the portal usable if Stripe is temporarily unavailable. */ }
   }
   const agreementUrl = project.agreement_url?.startsWith("https://") ? project.agreement_url : null;
+  const money = (cents: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cents / 100);
+  const paid = invoices.some(item => item.status === "paid") || invoice?.status === "paid";
+  const started = ["in_progress", "review", "complete"].includes(project.stage);
+  const isVenueMap = project.client_business.toLowerCase() === "vale royal barn" && project.title.toLowerCase().includes("map");
   return <main className="portal-page">
     <div className="site-background" aria-hidden="true"/><Navigation />
     <section className="portal-card portal-project-detail">
       <Link className="portal-brand" href="/portal"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>
       <small>PRIVATE PROJECT / {project.stage.toUpperCase().replaceAll("_", " ")}</small>
       <h1>{project.title}</h1>
+      <div className="portal-welcome"><h2>Welcome, {client.first_name}.</h2><p>{isVenueMap ? "We’re excited to create a custom illustrated experience map for Vale Royal Barn — a timeless piece designed to showcase your property, guide guests through the experience, and become part of your venue’s story." : `Welcome to your private workspace for ${project.client_business || project.title}.`}</p><p>Your project dashboard houses your agreement, payments, updates, and final deliverables throughout the creative process.</p></div>
       {project.summary && <p>{project.summary}</p>}
+      {project.investment_cents && <p className="portal-investment"><span>PROJECT INVESTMENT</span><strong>{money(project.investment_cents)}</strong></p>}
       <div className="portal-step-grid">
-        <article><h2>01 / Agreement</h2><p>{agreementUrl ? "Review and sign your project agreement using the secure link." : "The agreement will appear here after we settle the scope and terms."}</p>{agreementUrl && <a href={agreementUrl} target="_blank" rel="noopener noreferrer">Review agreement ↗</a>}</article>
-        <article><h2>02 / Invoice</h2>{invoice && invoice.status !== "draft" && invoice.status !== "void" ? <><p>{invoice.status === "paid" ? "Payment received. Thank you!" : `Invoice ${invoice.number || ""} · ${new Intl.NumberFormat("en-US", { style: "currency", currency: invoice.currency }).format(invoice.amount_remaining / 100)} remaining.`}</p>{invoice.hosted_invoice_url && <a href={invoice.hosted_invoice_url} target="_blank" rel="noopener noreferrer">{invoice.status === "paid" ? "View receipt" : "View invoice and pay by card"} ↗</a>}{invoice.status !== "paid" && project.payment_instructions && <><h3>Pay by Zelle or check</h3><p className="portal-payment-instructions">{project.payment_instructions}</p><p>Let us know when you send payment. Your invoice updates after it arrives and is confirmed.</p></>}</> : <p>Your invoice and payment options will appear after the project price is agreed. No payment is due yet.</p>}</article>
+        <article><h2>01 / Agreement</h2>{agreement ? <><p>{agreement.client_signed_at ? "Signed by both parties. Your signed copy is ready." : agreement.studio_signed_at ? "The studio has signed. Read the complete agreement and add your signature." : "The agreement is being prepared for your signature."}</p><Link href={`/portal/agreements/${agreement.id}`}>{agreement.client_signed_at ? "View signed agreement" : "Review agreement"} ↗</Link></> : <><p>{agreementUrl ? "Review and sign your project agreement using the secure link." : "The agreement will appear here after we settle the scope and terms."}</p>{agreementUrl && <a href={agreementUrl} target="_blank" rel="noopener noreferrer">Review agreement ↗</a>}</>}</article>
+        <article><h2>02 / Investment &amp; payment</h2>{chaseInvoices.length && !agreement?.client_signed_at ? <p>Your Chase invoice is prepared. Its details will appear here after you sign the agreement.</p> : chaseInvoices.length ? <div className="portal-invoice-list">{chaseInvoices.map(doc => { const item = invoices.find(entry => entry.document_id === doc.id)!; return <section className="portal-invoice-card" key={doc.id}><small>CHASE INVOICE / {item.invoice_number}</small><h3>{doc.title}</h3><div className="portal-invoice-row"><span>Business</span><strong>A. Halliwell Studio, LLC</strong></div><div className="portal-invoice-row"><span>Customer</span><strong>{client.first_name}</strong></div><div className="portal-invoice-row"><span>Amount due</span><strong>{money(item.amount_cents)}</strong></div><div className="portal-invoice-row"><span>Status</span><strong>{(item.status === "paid" || (invoice?.status === "paid" && invoice.customer_email?.toLowerCase() === client.email.toLowerCase() && invoice.amount_paid === item.amount_cents)) ? "Paid" : "Issued"}</strong></div>{item.due_on && <div className="portal-invoice-row"><span>Due</span><strong>{String(item.due_on).slice(0, 10)}</strong></div>}<a href={`/api/portal/documents/${doc.id}`} target="_blank" rel="noopener noreferrer">View original Chase invoice PDF ↗</a>{item.status !== "paid" && !(invoice?.status === "paid" && invoice.customer_email?.toLowerCase() === client.email.toLowerCase() && invoice.amount_paid === item.amount_cents) && <div className="portal-payment-options">{invoice?.status === "open" && invoice.customer_email?.toLowerCase() === client.email.toLowerCase() && invoice.amount_remaining === item.amount_cents && invoice.hosted_invoice_url && <p><a href={invoice.hosted_invoice_url} target="_blank" rel="noopener noreferrer">Pay by card via Stripe ↗</a></p>}{item.payment_url && <p><a href={item.payment_url} target="_blank" rel="noopener noreferrer">Open payment link from Chase ↗</a></p>}{item.zelle_id && <p><strong>Zelle:</strong> {item.zelle_id}</p>}{item.check_address && <p><strong>Mail check to:</strong> <span className="portal-payment-instructions">{item.check_address}</span></p>}<p>Choose one payment method for this invoice. Zelle uses the ID above in your bank app; check instructions appear when available. Payment status updates after the studio confirms receipt.</p></div>}</section> })}</div> : invoice && invoice.status !== "draft" && invoice.status !== "void" ? <><p>{invoice.status === "paid" ? "Payment received. Thank you!" : `Invoice ${invoice.number || ""} · ${new Intl.NumberFormat("en-US", { style: "currency", currency: invoice.currency }).format(invoice.amount_remaining / 100)} remaining.`}</p>{invoice.hosted_invoice_url && <a href={invoice.hosted_invoice_url} target="_blank" rel="noopener noreferrer">{invoice.status === "paid" ? "View receipt" : "View invoice and pay by card"} ↗</a>}{invoice.status !== "paid" && project.payment_instructions && <><h3>Pay by Zelle or check</h3><p className="portal-payment-instructions">{project.payment_instructions}</p><p>Let us know when you send payment. Your invoice updates after it arrives and is confirmed.</p></>}</> : <p>Your invoice and payment options will appear after the project price is agreed. No payment is due yet.</p>}</article>
       </div>
-      <section className="portal-review"><h2>03 / Review &amp; revisions</h2><p>When a version is ready, you&apos;ll receive an email and can view it here. Leave one clear set of revision notes or approve that version.</p>
+      <section className="portal-materials"><h2>03 / Upload project materials</h2><p>Share the aerial imagery, site plan, floor plan, property photography, logo or branding, and any inspiration you already have. Upload what is ready now; you can return for the rest.</p>
+        {agreement?.client_signed_at ? <MaterialUpload projectId={project.id}/> : <p>The upload folder opens once the agreement is signed.</p>}
+        {materials.length > 0 && <div className="portal-material-list"><h3>Shared materials</h3>{materials.map(item => <p key={String(item.id)}><a href={`/api/portal/materials/${item.id}`}>{String(item.file_name)} ↗</a> · {String(item.category).replaceAll("_", " ")}</p>)}</div>}
+      </section>
+      <section className="portal-journey"><h2>Project journey</h2><ol>
+        <li><strong>01 — Project confirmed</strong><span>Agreement {agreement?.client_signed_at ? "signed ✓" : "awaiting signature"} · Deposit {paid ? "received ✓" : "awaiting payment"}</span></li>
+        <li><strong>02 — Creative development</strong><span>{started ? "In progress" : "Source review + illustration planning"}</span></li>
+        <li><strong>03 — First concept review</strong><span>{deliverables.length ? "Initial concept available" : "Initial map presentation"}</span></li>
+        <li><strong>04 — Refinement</strong><span>Final adjustments</span></li>
+        <li><strong>05 — Final delivery</strong><span>{project.stage === "complete" ? "Delivered" : "Website + print-ready files"}</span></li>
+      </ol></section>
+      <section className="portal-review"><h2>Review &amp; revisions</h2><p>When a version is ready, you&apos;ll receive an email and can view it here. Leave one clear set of revision notes or approve that version.</p>
         {deliverables.length ? deliverables.map(item => <article className="portal-review-item" key={item.id}>
           <strong>Version {item.version} · {item.title}</strong><p>Status: {item.status.replaceAll("_", " ")}</p>
           <a href={`/api/portal/files/${item.id}`} target="_blank" rel="noopener noreferrer">View {item.file_name} ↗</a>

@@ -12,7 +12,7 @@ export default function Cookies() {
   return <main className="legal-page">
     <h1>Cookies &amp; storage</h1>
     <p className="legal-updated">Updated September 29, 2026</p>
-    <p>The public portfolio does not use advertising cookies. Vercel Web Analytics works without analytics cookies. The site does use browser storage for a few conveniences and essential cookies for the private fax desk.</p>
+    <p>The public portfolio does not use advertising cookies. Vercel Web Analytics works without analytics cookies. The site uses browser storage for a few conveniences and essential cookies for private workspaces.</p>
     <h2>Browser storage</h2>
     <ul>
       <li><strong>Project inquiry draft:</strong> local storage saves your answers on this device while you fill out the form. It is removed after successful submission; you can clear site data in your browser sooner.</li>
@@ -20,7 +20,9 @@ export default function Cookies() {
     </ul>
     <h2>Private fax cookies</h2>
     <p>If an authorized user requests a fax desk sign-in code, a short-lived challenge cookie lasts up to five minutes. After sign-in, a session cookie lasts up to one hour. These cookies are HttpOnly, SameSite Strict, and Secure on the production site; they are required for the private fax desk and are removed at sign-out or expiry.</p>
+    <h2>Client portal cookie</h2>
+    <p>When an invited client or studio owner signs in through a one-time email link, an essential session cookie keeps their private workspace open for up to seven days. It is HttpOnly, SameSite Lax, and Secure on the production site. Signing out clears it; the one-time email link expires after 15 minutes.</p>
     <h2>Your controls</h2>
-    <p>You can clear this site&apos;s cookies and local storage in your browser settings. That will sign you out of the private fax desk and remove any saved inquiry draft or session preferences. For information about submitted inquiries, see the <a href="/privacy">Privacy Policy</a>.</p>
+    <p>You can clear this site&apos;s cookies and local storage in your browser settings. That will sign you out of private workspaces and remove any saved inquiry draft or session preferences. For information about submitted inquiries and client records, see the <a href="/privacy">Privacy Policy</a>.</p>
   </main>;
 }
