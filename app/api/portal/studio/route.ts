@@ -54,6 +54,27 @@ export async function POST(request: Request) {
       await sql`UPDATE portal_clients SET email = ${email} WHERE id = ${draft[0].client_id}`;
       return NextResponse.json({ ok: true }, { headers });
     }
+    if (data.action === "updateRecipient") {
+      const id = String(data.projectId || "");
+      const email = String(data.email || "").trim().toLowerCase();
+      if (!/^[a-f0-9-]{36}$/.test(id) || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.endsWith(".invalid")) return fail(400, "Enter a valid client email address.");
+      const rows = await sql`SELECT c.id, c.email, c.role FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
+      if (!rows.length) return fail(404, "Project not found.");
+      const client = rows[0];
+      if (client.role !== "client") return fail(403, "Only client recipients can be edited here.");
+      if (client.email === email) return NextResponse.json({ ok: true, recipient: email, changed: false }, { headers });
+      const duplicate = await sql`SELECT 1 FROM portal_clients WHERE email = ${email} AND id != ${client.id} LIMIT 1`;
+      if (duplicate.length) return fail(409, "This email already belongs to another portal account. Use a different email or resolve that account first.");
+      // Keep signed records and their original signer_email immutable. Revoke the old identity atomically.
+      await sql.transaction([
+        sql`UPDATE portal_clients SET email = ${email} WHERE id = ${client.id} AND role = 'client'`,
+        sql`DELETE FROM portal_sessions WHERE client_id = ${client.id}`,
+        sql`DELETE FROM portal_login_links WHERE client_id = ${client.id}`,
+        sql`DELETE FROM portal_login_codes WHERE client_id = ${client.id}`,
+        sql`UPDATE portal_projects SET invited_at = NULL WHERE client_id = ${client.id}`,
+      ]);
+      return NextResponse.json({ ok: true, recipient: email, changed: true }, { headers });
+    }
     if (data.action === "create") {
       const email = String(data.email || "").trim().toLowerCase();
       const firstName = String(data.firstName || "").trim().slice(0, 80);
