@@ -255,3 +255,11 @@
 .portal-preview-controls button:focus-visible { outline: 3px solid #604273; outline-offset: 3px; }
 
 .portal-studio-settlement-alert { padding: 12px 14px; border: 1px solid #866595; background: #f5eaf8; font-weight: 700; }
+.portal-payment-plan { margin-bottom: 26px; background: #f4ebf5; }
+.portal-payment-plan h4 { margin: 0; font: 400 27px var(--font-editorial),Georgia,serif; }
+.portal-payment-plan p { margin: 4px 0 12px; max-width: 660px; line-height: 1.5; }
+.portal-plan-parts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+.portal-payment-plan .portal-plan-split { justify-self: start; border: 1px solid #745584; background: #fffdfa; color: #593e68; }
+.portal-payment-plan .portal-plan-balance { padding: 10px 12px; border: 1px solid #ad7f91; background: #fff6f6; }
+.portal-payment-plan .portal-plan-balance.is-balanced { border-color: #8f78a0; background: #f8f2fa; }
+@media (max-width: 740px) { .portal-plan-parts { grid-template-columns: 1fr; } }

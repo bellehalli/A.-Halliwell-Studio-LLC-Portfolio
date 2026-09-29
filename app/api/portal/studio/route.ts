@@ -4,11 +4,18 @@ import { Resend } from "resend";
 import { del } from "@vercel/blob";
 import Stripe from "stripe";
 import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, ensurePortalLifecycle, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
+import { projectMilestoneAmounts } from "@/lib/portal-plan";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
 const fail = (status: number, message: string) => NextResponse.json({ ok: false, message }, { status, headers });
 const stages = ["proposal", "agreement", "invoice", "in_progress", "review", "complete"];
+const cents = (value: unknown) => {
+  const amount = String(value ?? "").trim();
+  if (!/^\d{1,7}(\.\d{1,2})?$/.test(amount)) return null;
+  const [dollars, fraction = ""] = amount.split(".");
+  return Number(dollars) * 100 + Number(fraction.padEnd(2, "0"));
+};
 
 export async function POST(request: Request) {
   if (!portalEnabled()) return fail(503, "Portal unavailable.");
@@ -65,6 +72,26 @@ export async function POST(request: Request) {
       const id = randomUUID();
       await sql`INSERT INTO portal_projects(id, client_id, title, summary, client_business, investment_cents) VALUES (${id}, ${clients[0].id}, ${title}, ${summary}, ${clientBusiness}, ${investmentCents})`;
       return NextResponse.json({ ok: true, id }, { headers });
+    }
+    if (data.action === "updatePaymentPlan") {
+      const id = String(data.projectId || "");
+      const total = cents(data.total);
+      const amounts = [cents(data.milestone1), cents(data.milestone2), cents(data.milestone3)];
+      if (!/^[a-f0-9-]{36}$/.test(id) || !total || amounts.some(amount => !amount) || amounts.reduce<number>((sum, amount) => sum + Number(amount), 0) !== total) return fail(400, "The three payment amounts must add up exactly to the project total.");
+      const project = await sql`SELECT investment_cents, milestone_1_cents, milestone_2_cents, milestone_3_cents FROM portal_projects WHERE id = ${id} LIMIT 1`;
+      if (!project.length) return fail(404, "Project not found.");
+      const original = projectMilestoneAmounts(project[0]);
+      const changed = total !== Number(project[0].investment_cents || 0) || amounts.some((amount, index) => amount !== original[index]);
+      if (changed) {
+        const signed = await sql`SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id
+          WHERE d.project_id = ${id} AND s.signer_role = 'client' LIMIT 1`;
+        if (signed.length) return fail(409, "The client has signed the payment terms. Add an amended agreement before changing the plan.");
+      }
+      const attached = await sql`SELECT i.milestone_number, i.amount_cents FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+        WHERE d.project_id = ${id} AND i.status != 'void'`;
+      if (attached.some(invoice => Number(invoice.amount_cents) !== amounts[Number(invoice.milestone_number) - 1])) return fail(409, "An attached invoice has a different amount. Correct or void that invoice before changing its milestone.");
+      await sql`UPDATE portal_projects SET investment_cents = ${total}, milestone_1_cents = ${amounts[0]}, milestone_2_cents = ${amounts[1]}, milestone_3_cents = ${amounts[2]} WHERE id = ${id}`;
+      return NextResponse.json({ ok: true }, { headers });
     }
     if (data.action === "deleteWorkspace") {
       const id = String(data.projectId || "");

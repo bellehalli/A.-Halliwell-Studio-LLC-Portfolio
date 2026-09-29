@@ -3,6 +3,7 @@ import { del, get, put } from "@vercel/blob";
 import { PDFDocument } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { projectMilestoneAmounts } from "@/lib/portal-plan";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
     }
     await ensurePortalLifecycle();
     const sql = portalDb();
-    const project = await sql`SELECT p.id, c.email, c.first_name FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${projectId} LIMIT 1`;
+    const project = await sql`SELECT p.id, p.investment_cents, p.milestone_1_cents, p.milestone_2_cents, p.milestone_3_cents, c.email, c.first_name FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${projectId} LIMIT 1`;
     if (!project.length) return fail(404, "Project not found.");
 
     let invoiceNumber = "", amountCents = 0, dueOn: string | null = null;
@@ -60,6 +61,11 @@ export async function POST(request: Request) {
       if (![1, 2, 3].includes(milestone) || !invoiceNumber || invoiceNumber.length > 80 || !/^\d{1,7}(\.\d{1,2})?$/.test(amount) || zelleId.length > 254 || checkAddress.length > 500 || (due && !/^\d{4}-\d{2}-\d{2}$/.test(due)) || (rawUrl && !rawUrl.startsWith("https://")) || (achUrl && (!achUrl.startsWith("https://") || achUrl.length > 1000))) return fail(400, "Check invoice number, amount, due date, and payment details.");
       const [dollars, cents = ""] = amount.split(".");
       amountCents = Number(dollars) * 100 + Number(cents.padEnd(2, "0"));
+      const planned = projectMilestoneAmounts(project[0]);
+      if (!planned[milestone - 1] || amountCents !== planned[milestone - 1]) return fail(409, "This invoice must match its saved milestone amount. Set the project payment plan first.");
+      const alreadyAttached = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+        WHERE d.project_id = ${projectId} AND i.milestone_number = ${milestone} AND i.status != 'void' LIMIT 1`;
+      if (alreadyAttached.length) return fail(409, "This milestone already has an active invoice. Void it before attaching a replacement.");
       const parsedDue = due ? new Date(`${due}T12:00:00Z`) : null;
       if (amountCents < 1 || (parsedDue && (Number.isNaN(parsedDue.getTime()) || parsedDue.toISOString().slice(0, 10) !== due))) return fail(400, "Check the amount and due date.");
       dueOn = due || null;

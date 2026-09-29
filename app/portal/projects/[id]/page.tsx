@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import Stripe from "stripe";
 import { liveStripeStatus } from "@/lib/portal-payments";
+import { milestoneLabels, projectMilestoneAmounts } from "@/lib/portal-plan";
 import PaymentJourney from "./PaymentJourney";
 import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, isPortalStudio, portalDb, portalDeliverables, portalDocuments, portalEnabled, portalInvoices, portalProject } from "@/lib/portal";
 import Navigation from "@/components/navigation/Navigation";
@@ -64,9 +65,9 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
       <div className="portal-welcome"><h2>Welcome, {projectClient.first_name}.</h2><p>{isVenueMap ? "We’re excited to create a custom illustrated experience map for Vale Royal Barn. The piece is designed to showcase your property, guide guests through the experience, and become part of your venue’s story." : `Welcome to your private workspace for ${project.client_business || project.title}.`}</p><p>Your project dashboard houses your agreement, payments, updates, and final deliverables throughout the creative process.</p></div>
       {project.summary && <p>{project.summary}</p>}
       {project.investment_cents && <p className="portal-investment"><span>PROJECT INVESTMENT</span><strong>{money(project.investment_cents)}</strong></p>}
-      {isVenueMap && <PaymentJourney projectId={project.id} milestones={[187500, 93750, 93750].map((amount, index) => {
-        const item = invoices.find(invoice => Number(invoice.milestone_number) === index + 1 && invoice.amount_cents === amount);
-        return { amount, label: ["Project deposit", "First concept", "Final production"][index], paid: !!item && (item.status === "paid" || stripeStatuses.get(item.document_id) === "paid"), issued: !!item && item.status === "issued" };
+      {isVenueMap && <PaymentJourney projectId={project.id} milestones={projectMilestoneAmounts(project).map((amount, index) => {
+        const item = invoices.find(invoice => Number(invoice.milestone_number) === index + 1 && invoice.status !== "void");
+        return { amount, label: milestoneLabels[index], paid: !!item && (item.status === "paid" || stripeStatuses.get(item.document_id) === "paid"), issued: !!item && item.status === "issued" };
       })} />}
       <div className="portal-step-grid">
         {(proposal || studioPreview) && <article><h2>Project proposal</h2>{proposal ? <><p>Review the project scope, investment, and payment milestones.</p><a href={`/api/portal/proposals/${proposal.id}`} target="_blank" rel="noopener noreferrer">View {String(proposal.title)}</a></> : <p>Your approved proposal will appear here when the studio attaches it.</p>}</article>}

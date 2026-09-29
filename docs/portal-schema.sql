@@ -22,6 +22,9 @@ CREATE TABLE IF NOT EXISTS portal_projects (
 CREATE INDEX IF NOT EXISTS portal_projects_client_idx ON portal_projects(client_id);
 ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS client_business text NOT NULL DEFAULT '';
 ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS investment_cents integer CHECK (investment_cents > 0);
+ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_1_cents integer;
+ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_2_cents integer;
+ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_3_cents integer;
 
 CREATE TABLE IF NOT EXISTS portal_login_links (
   token_hash text PRIMARY KEY,

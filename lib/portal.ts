@@ -52,6 +52,9 @@ export async function ensurePortalLifecycle() {
     const sql = portalDb();
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS invited_at timestamptz`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS archived_at timestamptz`;
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_1_cents integer`;
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_2_cents integer`;
+    await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_3_cents integer`;
     await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
     await sql`ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now()`;
     await sql`ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS notification_status text NOT NULL DEFAULT 'unknown'`;
@@ -79,7 +82,7 @@ export function validToken(token: unknown): token is string {
 }
 
 export type PortalClient = { id: string; email: string; first_name: string; role: "client" | "studio" };
-export type PortalProject = { id: string; client_id: string; title: string; summary: string; stage: string; agreement_url: string | null; stripe_invoice_id: string | null; payment_instructions: string; client_business: string; investment_cents: number | null; invited_at: Date | null; archived_at: Date | null };
+export type PortalProject = { id: string; client_id: string; title: string; summary: string; stage: string; agreement_url: string | null; stripe_invoice_id: string | null; payment_instructions: string; client_business: string; investment_cents: number | null; milestone_1_cents: number | null; milestone_2_cents: number | null; milestone_3_cents: number | null; invited_at: Date | null; archived_at: Date | null };
 export type PortalDeliverable = { id: string; project_id: string; version: number; title: string; file_name: string; status: string; shared_at: Date | null; created_at: Date };
 export type PortalDocument = { id: string; project_id: string; kind: "agreement" | "invoice"; title: string; file_name: string; blob_url: string; sha256: string; created_at: Date; studio_signed_at: Date | null; client_signed_at: Date | null };
 export type PortalInvoice = { document_id: string; invoice_number: string; amount_cents: number; due_on: string | null; payment_url: string | null; zelle_id: string; check_address: string; status: "issued" | "paid" | "void"; paid_at: Date | null; shared_at: Date | null; milestone_number: number; stripe_invoice_id: string | null; chase_closed_at: Date | null };
@@ -102,14 +105,14 @@ export function isPortalStudio(client: PortalClient | null): boolean {
 
 export async function portalProjects(clientId: string): Promise<PortalProject[]> {
   await ensurePortalLifecycle();
-  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents, invited_at, archived_at
+  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents, milestone_1_cents, milestone_2_cents, milestone_3_cents, invited_at, archived_at
     FROM portal_projects WHERE client_id = ${clientId} AND invited_at IS NOT NULL AND archived_at IS NULL ORDER BY created_at DESC`;
   return rows as PortalProject[];
 }
 
 export async function portalProject(clientId: string, projectId: string): Promise<PortalProject | null> {
   await ensurePortalLifecycle();
-  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents, invited_at, archived_at
+  const rows = await portalDb()`SELECT id, client_id, title, summary, stage, agreement_url, stripe_invoice_id, payment_instructions, client_business, investment_cents, milestone_1_cents, milestone_2_cents, milestone_3_cents, invited_at, archived_at
     FROM portal_projects WHERE client_id = ${clientId} AND id = ${projectId} LIMIT 1`;
   return (rows[0] as PortalProject | undefined) ?? null;
 }
