@@ -5,8 +5,8 @@ import { useState } from "react";
 type Method = "zelle" | "ach" | "chase" | "card" | "check";
 const methods: Method[] = ["zelle", "ach", "chase", "card", "check"];
 
-export default function PaymentOptions({ documentId, amount, invoiceNumber, zelleId, bankLink, achUrl, stripeUrl, checkAddress, selectedMethod, preview = false }: {
-  documentId: string; amount: string; invoiceNumber: string; zelleId: string; bankLink: string | null; achUrl: string; stripeUrl: string | null; checkAddress: string; selectedMethod: string; preview?: boolean;
+export default function PaymentOptions({ documentId, amount, invoiceNumber, zelleId, bankLink, achUrl, stripeUrl, checkAddress, selectedMethod, preview = false, readonly = false }: {
+  documentId: string; amount: string; invoiceNumber: string; zelleId: string; bankLink: string | null; achUrl: string; stripeUrl: string | null; checkAddress: string; selectedMethod: string; preview?: boolean; readonly?: boolean;
 }) {
   const [selected, setSelected] = useState<Method | null>(methods.includes(selectedMethod as Method) ? selectedMethod as Method : null);
   const [saving, setSaving] = useState(false);
@@ -20,6 +20,7 @@ export default function PaymentOptions({ documentId, amount, invoiceNumber, zell
     { id: "check", name: "Check", detail: "Mail a check", available: !!checkAddress || preview },
   ];
   async function choose(method: Method) {
+    if (readonly) { setSelected(method); return; }
     setSaving(true); setNotice("");
     try {
       const response = await fetch("/api/portal/payment-choice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ documentId, method }) });
@@ -36,17 +37,18 @@ export default function PaymentOptions({ documentId, amount, invoiceNumber, zell
   }
   return <div className="portal-payment-chooser">
     <h3>Choose how to pay</h3>
-    <p>Selecting a method shares your choice with the studio. It does not charge you or mark the invoice paid.</p>
+    <p>{readonly ? "Preview the available methods. No choice is submitted from this view." : "Selecting a method shares your choice with the studio. It does not charge you or mark the invoice paid."}</p>
     <div className="portal-payment-methods" role="group" aria-label="Payment method">
       {options.map(option => <button key={option.id} type="button" disabled={!option.available || saving} aria-pressed={selected === option.id} onClick={() => void choose(option.id)}><strong>{option.name}</strong><span>{option.detail}</span>{!option.available && <small>Not available yet</small>}</button>)}
     </div>
     {saving && <p role="status">Saving your choice…</p>}
     {notice && <p className="portal-payment-notice" role="status" aria-live="polite">{notice}</p>}
     {preview && <p className="portal-preview-safety">Test preview only. No payment can be sent from this sample.</p>}
+    {readonly && <p className="portal-preview-safety">Manager preview. Payment links are inactive here.</p>}
     {selected === "zelle" && <div className="portal-payment-detail"><h4>Pay with Zelle</h4><p>Open Zelle in your own banking app. Send <strong>{amount}</strong> using the recipient below and include <strong>{invoiceNumber}</strong> as the memo. Confirm the recipient name in your bank before sending.</p><p className="portal-payment-recipient">{preview ? "Recipient appears on an issued invoice" : zelleId}</p>{!preview && <button type="button" onClick={() => void copyRecipient()}>{copied ? "Copied" : "Copy Zelle recipient"}</button>}<p><a href="https://www.zellepay.com/how-it-works" target="_blank" rel="noopener noreferrer">How to use Zelle</a></p><small>Preferred. Check your bank’s terms and payment limits.</small></div>}
-    {selected === "ach" && <div className="portal-payment-detail"><h4>Pay by ACH</h4><p>Use the studio supplied secure bank payment page for <strong>{amount}</strong>. Your bank details stay on that payment page.</p>{preview ? <button type="button" disabled>Open ACH payment page</button> : <a className="portal-payment-button" href={achUrl} target="_blank" rel="noopener noreferrer">Open ACH payment page</a>}</div>}
-    {selected === "chase" && <div className="portal-payment-detail"><h4>Pay through the Chase invoice</h4><p>Open the issued Chase invoice for <strong>{amount}</strong>. Use this option only if you have not paid by another method.</p>{preview ? <button type="button" disabled>Open Chase invoice payment page</button> : bankLink && <a className="portal-payment-button" href={bankLink} target="_blank" rel="noopener noreferrer">Open Chase invoice payment page</a>}</div>}
-    {selected === "card" && <div className="portal-payment-detail"><h4>Pay by card</h4><p>Stripe opens a secure invoice for <strong>{amount}</strong>. Use this option only if you have not paid by another method.</p>{preview ? <button type="button" disabled>Open Stripe checkout</button> : stripeUrl && <a className="portal-payment-button" href={stripeUrl} target="_blank" rel="noopener noreferrer">Open Stripe checkout</a>}</div>}
+    {selected === "ach" && <div className="portal-payment-detail"><h4>Pay by ACH</h4><p>Use the studio supplied secure bank payment page for <strong>{amount}</strong>. Your bank details stay on that payment page.</p>{preview || readonly ? <button type="button" disabled>Open ACH payment page</button> : <a className="portal-payment-button" href={achUrl} target="_blank" rel="noopener noreferrer">Open ACH payment page</a>}</div>}
+    {selected === "chase" && <div className="portal-payment-detail"><h4>Pay through the Chase invoice</h4><p>Open the issued Chase invoice for <strong>{amount}</strong>. Use this option only if you have not paid by another method.</p>{preview || readonly ? <button type="button" disabled>Open Chase invoice payment page</button> : bankLink && <a className="portal-payment-button" href={bankLink} target="_blank" rel="noopener noreferrer">Open Chase invoice payment page</a>}</div>}
+    {selected === "card" && <div className="portal-payment-detail"><h4>Pay by card</h4><p>Stripe opens a secure invoice for <strong>{amount}</strong>. Use this option only if you have not paid by another method.</p>{preview || readonly ? <button type="button" disabled>Open Stripe checkout</button> : stripeUrl && <a className="portal-payment-button" href={stripeUrl} target="_blank" rel="noopener noreferrer">Open Stripe checkout</a>}</div>}
     {selected === "check" && <div className="portal-payment-detail"><h4>Pay by check</h4><p>Make the check payable to <strong>A. Halliwell Studio LLC</strong> for <strong>{amount}</strong>. Write <strong>{invoiceNumber}</strong> on the memo line.</p><p className="portal-payment-address">{preview ? "Mailing address appears once the studio supplies it" : checkAddress}</p><small>The studio updates the invoice after the check arrives and clears.</small></div>}
   </div>;
 }

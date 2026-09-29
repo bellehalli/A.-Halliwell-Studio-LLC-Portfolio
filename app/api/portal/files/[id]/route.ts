@@ -1,6 +1,6 @@
 import { get } from "@vercel/blob";
 import { NextResponse } from "next/server";
-import { currentPortalClient, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -12,7 +12,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   if (!/^[a-f0-9-]{36}$/.test(id)) return NextResponse.json({ ok: false }, { status: 404, headers });
   const rows = await portalDb()`SELECT d.blob_url, d.file_name FROM portal_deliverables d
-    JOIN portal_projects p ON p.id = d.project_id WHERE d.id = ${id} AND p.client_id = ${client.id} LIMIT 1`;
+    JOIN portal_projects p ON p.id = d.project_id WHERE d.id = ${id} AND (p.client_id = ${client.id} OR ${isPortalStudio(client)}) LIMIT 1`;
   if (!rows.length) return NextResponse.json({ ok: false }, { status: 404, headers });
   try {
     const blob = await get(String(rows[0].blob_url), { access: "private" });

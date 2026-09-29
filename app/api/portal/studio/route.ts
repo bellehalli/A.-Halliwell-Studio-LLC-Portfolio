@@ -20,6 +20,32 @@ export async function POST(request: Request) {
     if (raw.length > 8_000) return fail(413, "Request too large.");
     const data = JSON.parse(raw);
     const sql = portalDb();
+    if (data.action === "createValerieDraft") {
+      const email = "valerie-draft@portal.invalid";
+      const title = "Custom Illustrated Venue Experience Map";
+      const summary = "A custom illustrated map of Vale Royal Barn, composed to help couples picture their arrival, ceremony, celebration, and stay. The final artwork will include venue spaces, suites, outdoor areas, photo locations, parking, and thoughtful labels, prepared for website and brochure use. Two rounds of refinements and an exclusive commercial usage license for the approved final artwork are included in the agreement.";
+      await sql`INSERT INTO portal_clients(id, email, first_name) VALUES (${randomUUID()}, ${email}, 'Valerie') ON CONFLICT (email) DO NOTHING`;
+      const clients = await sql`SELECT id FROM portal_clients WHERE email = ${email} LIMIT 1`;
+      const clientId = String(clients[0].id);
+      const existing = await sql`SELECT id FROM portal_projects WHERE client_id = ${clientId} AND title = ${title} LIMIT 1`;
+      if (existing.length) return NextResponse.json({ ok: true, id: existing[0].id, draft: true }, { headers });
+      const id = randomUUID();
+      await sql`INSERT INTO portal_projects(id, client_id, title, summary, client_business, investment_cents)
+        VALUES (${id}, ${clientId}, ${title}, ${summary}, 'Vale Royal Barn', 375000)`;
+      return NextResponse.json({ ok: true, id, draft: true }, { headers });
+    }
+    if (data.action === "releaseDraft") {
+      const id = String(data.projectId || "");
+      const email = String(data.email || "").trim().toLowerCase();
+      if (!/^[a-f0-9-]{36}$/.test(id) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.endsWith(".invalid")) return fail(400, "Enter Valerie's real email address.");
+      const draft = await sql`SELECT p.client_id FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id
+        WHERE p.id = ${id} AND c.email = 'valerie-draft@portal.invalid' LIMIT 1`;
+      if (!draft.length) return fail(409, "This workspace is not a held Valerie draft.");
+      const duplicate = await sql`SELECT id FROM portal_clients WHERE email = ${email} LIMIT 1`;
+      if (duplicate.length) return fail(409, "This email already has a portal account. Resolve the existing client record first.");
+      await sql`UPDATE portal_clients SET email = ${email} WHERE id = ${draft[0].client_id}`;
+      return NextResponse.json({ ok: true }, { headers });
+    }
     if (data.action === "create") {
       const email = String(data.email || "").trim().toLowerCase();
       const firstName = String(data.firstName || "").trim().slice(0, 80);
@@ -47,7 +73,8 @@ export async function POST(request: Request) {
         JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
       if (!rows.length) return fail(404, "Workspace not found.");
       const target = rows[0];
-      if (confirmEmail !== String(target.email).toLowerCase() || confirmEmail === studio?.email) return fail(403, "The client email does not match this workspace.");
+      const draftConfirmed = String(target.email).endsWith(".invalid") && confirmEmail === "draft" && String(data.confirmTitle || "") === String(target.title);
+      if ((!draftConfirmed && confirmEmail !== String(target.email).toLowerCase()) || confirmEmail === studio?.email) return fail(403, "The client confirmation does not match this workspace.");
       const paidInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
         WHERE d.project_id = ${id} AND i.status = 'paid' LIMIT 1`;
       if (paidInvoice.length) return fail(409, "This workspace has a confirmed payment and cannot be deleted here.");
@@ -102,6 +129,7 @@ export async function POST(request: Request) {
         WHERE d.project_id = ${id} AND i.status = 'void' AND i.invoice_number LIKE 'TEST-%' LIMIT 1`;
       if (!readyInvoice.length && !(String(rows[0].title).startsWith("TEST") && sample.length)) return fail(409, "Attach an issued invoice before inviting the client.");
       const client = rows[0];
+      if (String(client.email).endsWith(".invalid")) return fail(409, "This draft has no client email. Review it before adding an address and inviting Valerie.");
       const recent = await sql`SELECT count(*)::int AS count FROM portal_login_links WHERE client_id = ${client.id} AND created_at > now() - interval '1 hour'`;
       if (Number(recent[0]?.count) >= 3) return fail(429, "Please wait before sending another invitation.");
       const token = newToken(), hash = tokenHash(token);
@@ -140,7 +168,7 @@ export async function POST(request: Request) {
       if (status === "paid") {
         const recipient = await sql`SELECT c.email, c.first_name, i.invoice_number FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
           JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE i.document_id = ${documentId} LIMIT 1`;
-        if (recipient.length) {
+        if (recipient.length && !String(recipient[0].email).endsWith(".invalid")) {
           try { await new Resend(process.env.RESEND_API_KEY).emails.send({
             from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(recipient[0].email)],
             subject: "Your project payment is confirmed",
