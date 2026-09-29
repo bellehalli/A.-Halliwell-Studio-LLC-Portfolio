@@ -4,7 +4,7 @@
   margin-top: clamp(40px, 7vw, 86px);
   background:
     linear-gradient(rgba(255,250,245,.96), rgba(255,250,245,.96)),
-    url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.PNG");
+    url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.webp");
   background-size: cover, 520px;
   background-position: center, right top;
 }

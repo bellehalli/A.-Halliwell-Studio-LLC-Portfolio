@@ -1,6 +1,6 @@
 import { get } from "@vercel/blob";
 import { NextResponse } from "next/server";
-import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" };
@@ -11,8 +11,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!client) return NextResponse.json({ ok: false }, { status: 401, headers });
   const { id } = await params;
   if (!/^[a-f0-9-]{36}$/.test(id)) return NextResponse.json({ ok: false }, { status: 404, headers });
+  await ensurePortalLifecycle();
   const rows = await portalDb()`SELECT m.blob_url, m.file_name, m.content_type FROM portal_materials m
-    JOIN portal_projects p ON p.id = m.project_id WHERE m.id = ${id} AND (p.client_id = ${client.id} OR ${isPortalStudio(client)}) LIMIT 1`;
+    JOIN portal_projects p ON p.id = m.project_id WHERE m.id = ${id} AND (p.client_id = ${client.id} AND p.invited_at IS NOT NULL AND p.archived_at IS NULL OR ${isPortalStudio(client)}) LIMIT 1`;
   if (!rows.length) return NextResponse.json({ ok: false }, { status: 404, headers });
   try {
     const blob = await get(String(rows[0].blob_url), { access: "private" });

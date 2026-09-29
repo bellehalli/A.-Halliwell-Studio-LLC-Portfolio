@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { del } from "@vercel/blob";
 import Stripe from "stripe";
-import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
+import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, ensurePortalLifecycle, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     const raw = await request.text();
     if (raw.length > 8_000) return fail(413, "Request too large.");
     const data = JSON.parse(raw);
+    await ensurePortalLifecycle();
     const sql = portalDb();
     if (data.action === "createValerieDraft") {
       const email = "valerie-draft@portal.invalid";
@@ -77,11 +78,16 @@ export async function POST(request: Request) {
       if ((!draftConfirmed && confirmEmail !== String(target.email).toLowerCase()) || confirmEmail === studio?.email) return fail(403, "The client confirmation does not match this workspace.");
       const paidInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
         WHERE d.project_id = ${id} AND i.status = 'paid' LIMIT 1`;
-      if (paidInvoice.length) return fail(409, "This workspace has a confirmed payment and cannot be deleted here.");
-      if (target.stripe_invoice_id) {
-        if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe payment status is unavailable. Try again later.");
-        const stripeInvoice = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(String(target.stripe_invoice_id));
-        if (stripeInvoice.status === "paid" || stripeInvoice.amount_paid > 0) return fail(409, "This workspace has a Stripe payment and cannot be deleted here.");
+      if (paidInvoice.length) return fail(409, "This workspace has a confirmed payment. Archive it instead.");
+      const signed = await sql`SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id WHERE d.project_id = ${id} LIMIT 1`;
+      if (signed.length) return fail(409, "A signed agreement is part of this workspace. Archive it instead.");
+      const connected = await sql`SELECT DISTINCT i.stripe_invoice_id FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id WHERE d.project_id = ${id} AND i.stripe_invoice_id IS NOT NULL`;
+      const stripeIds = [...new Set([target.stripe_invoice_id, ...connected.map(row => row.stripe_invoice_id)].filter(Boolean).map(String))];
+      if (stripeIds.length && !process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe payment status is unavailable. Try again later.");
+      for (const invoiceId of stripeIds) {
+        const stripeInvoice = await new Stripe(process.env.STRIPE_SECRET_KEY!).invoices.retrieve(invoiceId);
+        if (stripeInvoice.status === "paid" || stripeInvoice.amount_paid > 0) return fail(409, "This workspace has a Stripe payment. Archive it instead.");
+        if (stripeInvoice.status === "open") return fail(409, "Void the open Stripe invoice before removing this practice workspace.");
       }
       await ensurePortalProposals();
       const blobs = await sql`SELECT blob_url AS url FROM portal_documents WHERE project_id = ${id}
@@ -95,6 +101,13 @@ export async function POST(request: Request) {
       const urls = blobs.map(blob => String(blob.url)).filter(url => url.startsWith("https://"));
       if (urls.length) await del(urls).catch(() => { /* The database removal remains authoritative. */ });
       return NextResponse.json({ ok: true, email: target.email, clientRemoved: !remaining.length }, { headers });
+    }
+    if (data.action === "archiveWorkspace") {
+      const id = String(data.projectId || "");
+      if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a workspace.");
+      const rows = await sql`UPDATE portal_projects SET archived_at = CASE WHEN archived_at IS NULL THEN now() ELSE NULL END WHERE id = ${id} RETURNING archived_at`;
+      if (!rows.length) return fail(404, "Workspace not found.");
+      return NextResponse.json({ ok: true, archived: !!rows[0].archived_at }, { headers });
     }
     if (data.action === "update") {
       const id = String(data.projectId || "");
@@ -147,6 +160,8 @@ export async function POST(request: Request) {
         text: `Hi ${client.first_name},\n\nYour private project workspace is ready. The agreement is signed by the studio and waiting for your review. Open your private link to sign and see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis link expires in 15 minutes. You can request a fresh link any time at https://www.ahalliwellstudio.com/portal.\n\nArabella`,
       });
       if (error || !sent?.id) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "The email provider did not accept the invitation. Check the sender configuration and try again."); }
+      await sql`UPDATE portal_projects SET invited_at = coalesce(invited_at, now()) WHERE id = ${id}`;
+      await sql`UPDATE portal_invoices i SET shared_at = coalesce(i.shared_at, now()) FROM portal_documents d WHERE i.document_id = d.id AND d.project_id = ${id} AND i.status = 'issued' AND i.milestone_number = 1`;
       return NextResponse.json({ ok: true, recipient: String(client.email), emailId: sent.id, status: "accepted" }, { headers });
     }
     if (data.action === "updateInvoice") {
@@ -156,8 +171,18 @@ export async function POST(request: Request) {
       const achUrl = String(data.achUrl || "").trim();
       const zelleId = String(data.zelleId || "").trim();
       const checkAddress = String(data.checkAddress || "").trim();
+      const stripeId = String(data.stripeInvoiceId || "").trim();
+      if (stripeId && !/^in_[A-Za-z0-9]+$/.test(stripeId)) return fail(400, "Check the Stripe invoice ID.");
       if (!/^[a-f0-9-]{36}$/.test(projectId) || !/^[a-f0-9-]{36}$/.test(documentId) || (paymentUrl && (!paymentUrl.startsWith("https://") || paymentUrl.length > 1000)) || (achUrl && (!achUrl.startsWith("https://") || achUrl.length > 1000)) || zelleId.length > 254 || checkAddress.length > 500) return fail(400, "Check the invoice payment details.");
-      const rows = await sql`UPDATE portal_invoices i SET payment_url = ${paymentUrl || null}, zelle_id = ${zelleId}, check_address = ${checkAddress}
+      if (stripeId) {
+        if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe is not configured.");
+        const info = await sql`SELECT i.amount_cents, c.email FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+          JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${documentId} AND p.id = ${projectId} LIMIT 1`;
+        if (!info.length) return fail(404, "Invoice not found.");
+        const stripe = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(stripeId);
+        if (stripe.customer_email?.toLowerCase() !== String(info[0].email).toLowerCase() || stripe.currency !== "usd" || stripe.amount_due !== Number(info[0].amount_cents) || !["open", "paid"].includes(stripe.status || "")) return fail(400, "Stripe must be issued to the same client for the same amount.");
+      }
+      const rows = await sql`UPDATE portal_invoices i SET payment_url = ${paymentUrl || null}, zelle_id = ${zelleId}, check_address = ${checkAddress}, stripe_invoice_id = ${stripeId || null}
         FROM portal_documents d WHERE i.document_id = d.id AND d.id = ${documentId} AND d.project_id = ${projectId} AND i.status = 'issued' RETURNING i.document_id`;
       if (!rows.length) return fail(404, "Issued invoice not found.");
       await ensurePortalPaymentOptions();
@@ -165,13 +190,60 @@ export async function POST(request: Request) {
         ON CONFLICT (document_id) DO UPDATE SET ach_url = EXCLUDED.ach_url`;
       return NextResponse.json({ ok: true }, { headers });
     }
+    if (data.action === "shareInvoice" || data.action === "shareReview") {
+      const id = String(data.documentId || data.deliverableId || "");
+      if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a file.");
+      const invoice = data.action === "shareInvoice";
+      const rows = invoice ? await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, i.status, i.shared_at
+        FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id JOIN portal_projects p ON p.id = d.project_id
+        JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${id} LIMIT 1`
+        : await sql`SELECT d.project_id, c.email, c.first_name, p.invited_at, d.status, d.shared_at, d.version
+          FROM portal_deliverables d JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE d.id = ${id} LIMIT 1`;
+      if (!rows.length || rows[0].shared_at) return fail(409, "This file is already shared or unavailable.");
+      if (!rows[0].invited_at || String(rows[0].email).endsWith(".invalid")) return fail(409, "Invite the client before sharing a file.");
+      if (invoice && rows[0].status !== "issued") return fail(409, "Only issued invoices can be shared.");
+      if (invoice || data.action === "shareReview") {
+        const signed = await sql`SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id
+          WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement' AND s.signer_role = 'client' LIMIT 1`;
+        if (!signed.length) return fail(409, "The client must sign the agreement before this file is shared. The deposit invoice is released with the invitation.");
+      }
+      if (invoice) await sql`UPDATE portal_invoices SET shared_at = now() WHERE document_id = ${id} AND shared_at IS NULL`;
+      else await sql`UPDATE portal_deliverables SET shared_at = now() WHERE id = ${id} AND shared_at IS NULL`;
+      const subject = invoice ? "Your project invoice is ready" : "A new version is ready for your review";
+      const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
+        from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(rows[0].email)], subject,
+        text: `Hi ${rows[0].first_name},\n\n${invoice ? "Your invoice" : `Version ${rows[0].version}`} is ready in your private project workspace.\n\nhttps://www.ahalliwellstudio.com/portal\n\nArabella`,
+      }, { idempotencyKey: `portal-share/${id}` });
+      return NextResponse.json({ ok: true, notified: !error }, { headers });
+    }
+    if (data.action === "confirmChaseClosed") {
+      const id = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(id) || data.confirm !== "yes") return fail(400, "Confirm the Chase invoice was closed or marked paid in Chase.");
+      const rows = await sql`UPDATE portal_invoices SET chase_closed_at = now()
+        WHERE document_id = ${id} AND status = 'paid' AND invoice_number NOT LIKE 'TEST-%' AND chase_closed_at IS NULL RETURNING document_id`;
+      if (!rows.length) return fail(409, "No Chase closure is pending for this paid invoice.");
+      return NextResponse.json({ ok: true }, { headers });
+    }
     if (data.action === "invoiceStatus") {
       const documentId = String(data.documentId || "");
       const status = String(data.status || "");
       if (!/^[a-f0-9-]{36}$/.test(documentId) || !["paid", "void"].includes(status)) return fail(400, "Check the invoice and status.");
-      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END
+      const details = await sql`SELECT i.status, i.invoice_number, i.stripe_invoice_id, i.payment_url, i.amount_cents FROM portal_invoices i WHERE i.document_id = ${documentId} LIMIT 1`;
+      if (!details.length || details[0].status !== "issued") return fail(409, "Only an issued invoice can be marked paid or void.");
+      const item = details[0];
+      const needsChaseCloseout = !String(item.invoice_number).startsWith("TEST-");
+      if (needsChaseCloseout && data.externalClosed !== "yes") return fail(409, "Close or mark the Chase invoice paid first, then confirm it here.");
+      if (item.stripe_invoice_id) {
+        if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe status is unavailable. Try again later.");
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const live = await stripe.invoices.retrieve(String(item.stripe_invoice_id));
+        if (live.status === "paid" || live.amount_paid > 0) return fail(409, "Stripe records a payment. Refresh the invoice to reconcile its actual status.");
+        if (live.status === "open") await stripe.invoices.voidInvoice(String(item.stripe_invoice_id));
+        else if (live.status !== "void") return fail(409, "Stripe is still processing this invoice. Wait for its final status.");
+      }
+      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END, chase_closed_at = CASE WHEN ${needsChaseCloseout} THEN now() ELSE chase_closed_at END
         WHERE document_id = ${documentId} AND status = 'issued' RETURNING document_id`;
-      if (!rows.length) return fail(409, "Only an issued invoice can be marked paid or void.");
+      if (!rows.length) return fail(409, "Invoice status changed. Refresh before trying again.");
       if (status === "paid") {
         const recipient = await sql`SELECT c.email, c.first_name, i.invoice_number FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
           JOIN portal_projects p ON p.id = d.project_id JOIN portal_clients c ON c.id = p.client_id WHERE i.document_id = ${documentId} LIMIT 1`;

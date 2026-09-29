@@ -2,8 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { del, get, put } from "@vercel/blob";
 import { PDFDocument } from "pdf-lib";
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -42,21 +41,23 @@ export async function POST(request: Request) {
     if (kind === "agreement") {
       try { await PDFDocument.load(bytes); } catch { return fail(400, "The agreement PDF could not be read for signing. Export an unencrypted PDF."); }
     }
+    await ensurePortalLifecycle();
     const sql = portalDb();
     const project = await sql`SELECT p.id, c.email, c.first_name FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${projectId} LIMIT 1`;
     if (!project.length) return fail(404, "Project not found.");
 
     let invoiceNumber = "", amountCents = 0, dueOn: string | null = null;
-    let paymentUrl: string | null = null, achUrl = "", zelleId = "", checkAddress = "";
+    let paymentUrl: string | null = null, achUrl = "", zelleId = "", checkAddress = "", milestone = 1;
     if (kind === "invoice") {
       invoiceNumber = String(field("invoiceNumber") || "").trim();
+      milestone = Number(field("milestoneNumber") || 1);
       const amount = String(field("amount") || "").trim();
       const due = String(field("dueOn") || "").trim();
       zelleId = String(field("zelleId") || "").trim();
       checkAddress = String(field("checkAddress") || "").trim();
       const rawUrl = String(field("paymentUrl") || "").trim();
       achUrl = String(field("achUrl") || "").trim();
-      if (!invoiceNumber || invoiceNumber.length > 80 || !/^\d{1,7}(\.\d{1,2})?$/.test(amount) || zelleId.length > 254 || checkAddress.length > 500 || (due && !/^\d{4}-\d{2}-\d{2}$/.test(due)) || (rawUrl && !rawUrl.startsWith("https://")) || (achUrl && (!achUrl.startsWith("https://") || achUrl.length > 1000))) return fail(400, "Check invoice number, amount, due date, and payment details.");
+      if (![1, 2, 3].includes(milestone) || !invoiceNumber || invoiceNumber.length > 80 || !/^\d{1,7}(\.\d{1,2})?$/.test(amount) || zelleId.length > 254 || checkAddress.length > 500 || (due && !/^\d{4}-\d{2}-\d{2}$/.test(due)) || (rawUrl && !rawUrl.startsWith("https://")) || (achUrl && (!achUrl.startsWith("https://") || achUrl.length > 1000))) return fail(400, "Check invoice number, amount, due date, and payment details.");
       const [dollars, cents = ""] = amount.split(".");
       amountCents = Number(dollars) * 100 + Number(cents.padEnd(2, "0"));
       const parsedDue = due ? new Date(`${due}T12:00:00Z`) : null;
@@ -82,30 +83,14 @@ export async function POST(request: Request) {
       if (kind === "invoice") await ensurePortalPaymentOptions();
       await sql`INSERT INTO portal_documents(id, project_id, kind, title, file_name, blob_url, sha256)
         VALUES (${id}, ${projectId}, ${kind}, ${title}, ${safeName}, ${blob.url}, ${digest})`;
-      if (kind === "invoice") await sql`INSERT INTO portal_invoices(document_id, invoice_number, amount_cents, due_on, payment_url, zelle_id, check_address)
-        VALUES (${id}, ${invoiceNumber}, ${amountCents}, ${dueOn}, ${paymentUrl}, ${zelleId}, ${checkAddress})`;
+      if (kind === "invoice") await sql`INSERT INTO portal_invoices(document_id, invoice_number, amount_cents, due_on, payment_url, zelle_id, check_address, milestone_number, shared_at)
+        VALUES (${id}, ${invoiceNumber}, ${amountCents}, ${dueOn}, ${paymentUrl}, ${zelleId}, ${checkAddress}, ${milestone}, NULL)`;
       if (kind === "invoice" && achUrl) await sql`INSERT INTO portal_payment_options(document_id, ach_url) VALUES (${id}, ${achUrl})`;
     } catch (error) {
       await sql`DELETE FROM portal_documents WHERE id = ${id}`.catch(() => {});
       await del(blob.url).catch(() => {});
       throw error;
     }
-    let notified = false;
-    if (kind === "invoice") {
-      const signed = await sql`SELECT 1 FROM portal_documents d JOIN portal_agreement_signatures s ON s.document_id = d.id AND s.signer_role = 'client'
-        WHERE d.project_id = ${projectId} AND d.kind = 'agreement'
-          AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;
-      if (signed.length && !String(project[0].email).endsWith(".invalid")) {
-        try {
-          const result = await new Resend(process.env.RESEND_API_KEY).emails.send({
-            from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(project[0].email)],
-            subject: `Your project invoice ${invoiceNumber} is ready`,
-            text: `Hi ${project[0].first_name},\n\nYour issued invoice is available in your private project workspace: https://www.ahalliwellstudio.com/portal\n\nPlease review the original Chase invoice PDF and its payment details there.\n\nArabella`,
-          }, { idempotencyKey: `portal-invoice/${id}` });
-          notified = !result.error;
-        } catch { /* The invoice remains available if the email service fails. */ }
-      }
-    }
-    return NextResponse.json({ ok: true, id, notified }, { headers });
+    return NextResponse.json({ ok: true, id, notified: false }, { headers });
   } catch { return fail(500, "The document could not be published."); }
 }

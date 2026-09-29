@@ -8,7 +8,7 @@ import HomeOpening from "@/components/visual/HomeOpening";
 import SceneProps from "@/components/visual/SceneProps";
 import { publicProjects } from "@/data/projects";
 
-const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.webp";
 
 const offers=[
  ["Custom Website","Give the whole story room.","Starting at $5,000 + scope","Strategy, design, and development for a complete journey through your business."],

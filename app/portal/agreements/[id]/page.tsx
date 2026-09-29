@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import Navigation from "@/components/navigation/Navigation";
-import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 import SignAgreement from "./SignAgreement";
 import PdfReader from "./PdfReader";
 
@@ -16,7 +16,8 @@ export default async function AgreementPage({ params }: { params: Promise<{ id: 
   const { id } = await params;
   if (!/^[a-f0-9-]{36}$/.test(id)) notFound();
   const studio = isPortalStudio(client);
-  const rows = await portalDb()`SELECT d.id, d.title, d.project_id, p.title AS project_title, p.client_business, p.client_id,
+  await ensurePortalLifecycle();
+  const rows = await portalDb()`SELECT d.id, d.title, d.project_id, p.title AS project_title, p.client_business, p.client_id, p.invited_at, p.archived_at,
     ss.signed_at AS studio_signed_at, cs.signed_at AS client_signed_at,
     (SELECT id FROM portal_documents WHERE project_id = p.id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) AS latest_id
     FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
@@ -24,7 +25,7 @@ export default async function AgreementPage({ params }: { params: Promise<{ id: 
     LEFT JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
     WHERE d.id = ${id} AND d.kind = 'agreement' LIMIT 1`;
   const doc = rows[0];
-  if (!doc || (!studio && doc.client_id !== client.id)) notFound();
+  if (!doc || (!studio && (doc.client_id !== client.id || !doc.invited_at || doc.archived_at))) notFound();
   const canSign = doc.latest_id === doc.id && (studio ? !doc.studio_signed_at : !!doc.studio_signed_at && !doc.client_signed_at);
   return <main className="portal-page"><div className="site-background" aria-hidden="true"/><Navigation />
     <section className="portal-card portal-project-detail"><Link className="portal-brand" href="/portal"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>

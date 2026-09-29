@@ -1,30 +1,23 @@
-type Bucket = { count: number; resetsAt: number };
+import { createHash } from "node:crypto";
+import { neon } from "@neondatabase/serverless";
 
-// A small, bounded server-side guard for email-sending routes. Each Vercel
-// function instance has its own buckets; add a project-wide WAF rate limit for
-// an enforced limit across instances and regions.
-const buckets = new Map<string, Bucket>();
-const MAX_BUCKETS = 4096;
-
-export function checkRequestLimit(request: Request, route: string, max: number, windowMs: number) {
-  const client = (request.headers.get("x-vercel-forwarded-for") || request.headers.get("x-forwarded-for") || "unknown")
-    .split(",")[0].trim().slice(0, 64);
-  const key = `${route}:${client}`;
-  const now = Date.now();
-  let bucket = buckets.get(key);
-
-  if (!bucket || bucket.resetsAt <= now) {
-    bucket = { count: 0, resetsAt: now + windowMs };
-    buckets.set(key, bucket);
-  }
-
-  if (buckets.size > MAX_BUCKETS) {
-    for (const [id, item] of buckets) if (item.resetsAt <= now) buckets.delete(id);
-    while (buckets.size > MAX_BUCKETS) buckets.delete(buckets.keys().next().value!);
-  }
-
-  const retryAfter = Math.max(1, Math.ceil((bucket.resetsAt - now) / 1000));
-  if (bucket.count >= max) return { limited: true, retryAfter };
-  bucket.count++;
-  return { limited: false, retryAfter: 0 };
+let ready: Promise<unknown> | undefined;
+export async function checkRequestLimit(request: Request, route: string, max: number, windowMs: number) {
+  const address = (request.headers.get("x-vercel-forwarded-for") || request.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim().slice(0, 64);
+  const url = process.env.DATABASE_URL;
+  if (!url) return { limited: true, retryAfter: Math.ceil(windowMs / 1000) };
+  const sql = neon(url);
+  ready ??= sql`CREATE TABLE IF NOT EXISTS request_rate_limits (
+    key text PRIMARY KEY, count integer NOT NULL, expires_at timestamptz NOT NULL
+  )`;
+  try { await ready; } catch (error) { ready = undefined; throw error; }
+  if (Math.random() < 0.01) await sql`DELETE FROM request_rate_limits WHERE expires_at < now()`;
+  const window = Math.floor(Date.now() / windowMs);
+  const key = createHash("sha256").update(`${route}:${address}:${window}`).digest("hex");
+  const seconds = Math.max(1, Math.ceil(windowMs / 1000));
+  const rows = await sql`INSERT INTO request_rate_limits(key, count, expires_at)
+    VALUES (${key}, 1, now() + (${seconds} * interval '1 second'))
+    ON CONFLICT (key) DO UPDATE SET count = request_rate_limits.count + 1
+    RETURNING count`;
+  return { limited: Number(rows[0].count) > max, retryAfter: Math.max(1, Math.ceil(((window + 1) * windowMs - Date.now()) / 1000)) };
 }

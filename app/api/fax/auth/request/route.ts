@@ -8,7 +8,7 @@ const noStore = { "Cache-Control": "no-store" };
 export async function POST(request: NextRequest) {
   if (!sameOrigin(request)) return NextResponse.json({ ok: false }, { status: 403, headers: noStore });
   if (!available()) return NextResponse.json({ ok: false, error: "Fax sign-in is not configured." }, { status: 503, headers: noStore });
-  const limit = checkRequestLimit(request, "fax-code", 3, 15 * 60 * 1000);
+  const limit = await checkRequestLimit(request, "fax-code", 3, 15 * 60 * 1000);
   if (limit.limited) return NextResponse.json({ ok: false, error: "Too many sign-in requests. Try again later." }, { status: 429, headers: { ...noStore, "Retry-After": String(limit.retryAfter) } });
   const previous = challengeFrom(request.cookies.get(CHALLENGE_COOKIE)?.value);
   if (previous && Date.now() - previous.issued < 60_000) return NextResponse.json({ ok: false, error: "Wait a minute before requesting another code." }, { status: 429, headers: noStore });

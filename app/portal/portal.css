@@ -215,3 +215,40 @@
 .portal-studio-draft-note a { color: #56336d; font-weight: 700; text-underline-offset: 4px; }
 @media (max-width: 760px) { .portal-studio-monogram { display: none; } .portal-studio-feature { align-items: start; flex-direction: column; } .portal-studio-feature-side { justify-items: start; } .portal-studio-milestones { grid-template-columns: 1fr; } .portal-studio-milestones button { min-height: 125px; } .portal-studio-send,.portal-studio-delivery-heading { align-items: start; flex-direction: column; } }
 @media (max-width: 520px) { .portal-page .portal-studio-shell { padding: 22px 15px; } .portal-studio-intro,.portal-studio-panel { padding: 18px; } .portal-studio-form { padding: 17px; } .portal-studio-form-pair { grid-template-columns: 1fr; } .portal-studio-feature { padding: 22px; } }
+
+/* The payment journey uses the same lavender paper and editorial type as the portal. */
+.portal-payment-journey { margin: 36px 0; padding: clamp(20px,4vw,36px); border: 1px solid #b898bd; background: linear-gradient(135deg,#fbf7fc,#f4eaf5); box-shadow: 8px 9px 0 rgba(144,110,168,.17); }
+.portal-payment-journey-head > span { color: #71507f; font: 700 11px var(--font-mono),monospace; letter-spacing: .14em; }
+.portal-payment-journey h2 { margin: 10px 0; font: 400 clamp(30px,4vw,46px)/1.05 var(--font-editorial),Georgia,serif; }
+.portal-payment-journey-head p { max-width: 590px; line-height: 1.5; }
+.portal-payment-journey ol { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; list-style: none; margin: 26px 0 0; padding: 0; }
+.portal-payment-journey li { position: relative; min-width: 0; min-height: 180px; display: flex; justify-content: space-between; gap: 12px; padding: 18px; border: 1px solid #c8b4ce; border-radius: 12px 12px 28px 12px; background: #fffdfa; overflow: hidden; }
+.portal-payment-journey li.is-paid { border-color: #86719a; background: #f5eef8; }
+.portal-payment-journey li.is-upcoming { opacity: .73; }
+.portal-milestone-number { font: italic 28px var(--font-editorial),Georgia,serif; color: #9572a2; }
+.portal-payment-journey li > div:not(.portal-payment-celebration) { display: grid; align-content: start; gap: 8px; flex: 1; }
+.portal-payment-journey h3 { margin: 2px 0 5px; font: 400 23px/1.05 var(--font-editorial),Georgia,serif; }
+.portal-payment-journey li strong { font-size: 17px; }
+.portal-payment-journey li > div > span { font-size: 12px; color: #634866; }
+.portal-milestone-flower { align-self: end; color: #9476a4; font-size: 26px; }
+.portal-payment-celebration { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px; background: #eee1f3f2; text-align: center; animation: portal-receipt 4.8s ease-in-out both; }
+.portal-payment-celebration strong { font: 400 27px var(--font-editorial),Georgia,serif; }
+.portal-payment-celebration small { font-size: 12px; line-height: 1.35; }
+.portal-butterfly-flight { display: block; width: 52px; height: 48px; margin-bottom: 4px; animation: portal-butterfly-fly 2.4s cubic-bezier(.2,.6,.4,1) both; }
+.portal-butterfly-asset { display: block; width: 100%; height: 100%; background: url('/assets/decorations/butterflies/Portfolio%20Assets%20A.Halliwell%20%20-%2031.webp') center / contain no-repeat; animation: portal-butterfly-flutter .35s ease-in-out 7 alternate; }
+@keyframes portal-receipt { 0% { opacity: 0; transform: translateY(8px); } 12%,85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+@keyframes portal-butterfly-fly { 0% { opacity: 0; transform: translate(-48px,30px) rotate(-20deg) scale(.65); } 20% { opacity: 1; } 55% { transform: translate(8px,-12px) rotate(12deg) scale(1); } 100% { opacity: 1; transform: translate(35px,-23px) rotate(18deg) scale(.82); } }
+@keyframes portal-butterfly-flutter { from { transform: scaleX(.88) rotate(-4deg); } to { transform: scaleX(1) rotate(4deg); } }
+@media (max-width: 740px) { .portal-payment-journey ol { grid-template-columns: 1fr; } .portal-payment-journey li { min-height: 115px; } }
+@media (prefers-reduced-motion: reduce) { .portal-payment-celebration,.portal-butterfly-flight,.portal-butterfly-asset { animation: none; } }
+
+.portal-milestone-flower { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle,#fff9f5 0 28%,#b99bc9 30% 56%,transparent 60%), conic-gradient(from 10deg,#b99bc9 0 13%,transparent 13% 20%,#b99bc9 20% 33%,transparent 33% 40%,#b99bc9 40% 53%,transparent 53% 60%,#b99bc9 60% 73%,transparent 73% 80%,#b99bc9 80% 93%,transparent 93%); }
+.portal-payment-journey li.is-upcoming .portal-milestone-flower { opacity: .4; }
+.portal-preview-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+.portal-preview-controls p { flex-basis: 100%; margin: 0; }
+.portal-preview-controls button { padding: 11px 16px; border: 1px solid #604273; background: #604273; color: white; cursor: pointer; }
+.portal-preview-controls button + button { background: #fffdfa; color: #604273; }
+.portal-preview-controls button:disabled { opacity: .5; cursor: default; }
+.portal-preview-controls button:focus-visible { outline: 3px solid #604273; outline-offset: 3px; }
+
+.portal-studio-settlement-alert { padding: 12px 14px; border: 1px solid #866595; background: #f5eaf8; font-weight: 700; }

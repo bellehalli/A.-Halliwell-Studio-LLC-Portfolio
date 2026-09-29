@@ -1,8 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { put, del } from "@vercel/blob";
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -21,6 +20,7 @@ export async function POST(request: Request) {
     const title = String(form.get("title") || "").trim().slice(0, 150);
     const file = form.get("file");
     if (!/^[a-f0-9-]{36}$/.test(projectId) || !title || !(file instanceof File) || file.size > 10_000_000 || !allowed.has(file.type)) return fail(400, "Choose a PDF or image under 10 MB with a title.");
+    await ensurePortalLifecycle();
     const sql = portalDb();
     const projects = await sql`SELECT p.title, c.email, c.first_name FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${projectId} LIMIT 1`;
     if (!projects.length) return fail(404, "Project not found.");
@@ -29,19 +29,9 @@ export async function POST(request: Request) {
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120);
     const blob = await put(`portal/${projectId}/${randomUUID()}-${safeName}`, file, { access: "private", contentType: file.type, addRandomSuffix: false });
     try {
-      await sql`INSERT INTO portal_deliverables(id, project_id, version, title, file_name, blob_url)
-        VALUES (${randomUUID()}, ${projectId}, ${version}, ${title}, ${safeName}, ${blob.url})`;
-      await sql`UPDATE portal_projects SET stage = 'review' WHERE id = ${projectId}`;
+      await sql`INSERT INTO portal_deliverables(id, project_id, version, title, file_name, blob_url, shared_at)
+        VALUES (${randomUUID()}, ${projectId}, ${version}, ${title}, ${safeName}, ${blob.url}, NULL)`;
     } catch (error) { await del(blob.url); throw error; }
-    const client = projects[0];
-    let notified = false;
-    if (!String(client.email).endsWith(".invalid")) try { const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
-      from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(client.email)],
-      subject: `Ready for your review: ${client.title}`,
-      text: `Hi ${client.first_name},\n\nVersion ${version} of ${client.title} is ready for your review. Open your private workspace to view the file and leave your first-round notes or approve it:\n\nhttps://www.ahalliwellstudio.com/portal\n\nIf your sign-in link has expired, request a new one there.\n\nArabella`,
-      }, { idempotencyKey: `portal-review/${projectId}/${version}` });
-      notified = !error;
-    } catch { /* The file was published; report the email failure separately. */ }
-    return NextResponse.json({ ok: true, version, notified }, { headers });
+    return NextResponse.json({ ok: true, version, notified: false }, { headers });
   } catch { return fail(500, "The review file could not be published."); }
 }

@@ -146,7 +146,7 @@ img { max-width: 100%; }
 .world-sheet { overflow: visible; padding: clamp(76px,9vw,128px) 0; background: rgba(255,250,245,.96); }
 .intro-sheet {
   transform: rotate(-.2deg);
-  background: linear-gradient(rgba(255,250,244,.94),rgba(255,250,244,.94)), url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.PNG");
+  background: linear-gradient(rgba(255,250,244,.94),rgba(255,250,244,.94)), url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.webp");
   background-size: cover, 460px; background-position: center, right top;
 }
 .section-kicker { display: flex; justify-content: space-between; gap: 24px; font-size: 9px; font-weight: 700; letter-spacing: .09em; }

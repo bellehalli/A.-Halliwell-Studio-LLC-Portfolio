@@ -6,7 +6,7 @@ import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -31,8 +31,9 @@ export async function POST(request: Request) {
     const signatureImage = data.signatureImage;
     if (!/^[a-f0-9-]{36}$/.test(id) || typedName.length < 3 || typedName.length > 120 || businessName.length > 150 || !["draw", "type"].includes(signatureStyle) || data.reviewed !== true || data.consent !== true) return fail(400, "Review the agreement, enter your legal name, and consent to electronic signing.");
     if (signatureStyle === "draw" && (typeof signatureImage !== "string" || !/^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(signatureImage) || signatureImage.length > 150_000)) return fail(400, "Draw your signature again and try signing.");
+    await ensurePortalLifecycle();
     const sql = portalDb();
-    const docs = await sql`SELECT d.id, d.project_id, d.blob_url, d.sha256, p.client_id, c.email AS client_email,
+    const docs = await sql`SELECT d.id, d.project_id, d.blob_url, d.sha256, p.client_id, p.invited_at, p.archived_at, c.email AS client_email,
       ss.signed_pdf_url AS studio_pdf_url, ss.signed_pdf_sha256 AS studio_pdf_hash,
       ss.signed_at AS studio_signed_at, cs.signed_at AS client_signed_at
       FROM portal_documents d JOIN portal_projects p ON p.id = d.project_id
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
     if (!docs.length) return fail(404, "Agreement not found.");
     const doc = docs[0];
     const role = isPortalStudio(signer) ? "studio" : "client";
-    if (role === "client" && doc.client_id !== signer.id) return fail(403, "Forbidden.");
+    if (role === "client" && (doc.client_id !== signer.id || !doc.invited_at || doc.archived_at)) return fail(403, "Forbidden.");
     if ((role === "studio" && doc.studio_signed_at) || (role === "client" && (doc.client_signed_at || !doc.studio_signed_at))) return fail(409, "This agreement is not ready for your signature.");
     if (role === "client" && !businessName) return fail(400, "Enter the business you are authorized to sign for.");
     const sourceUrl = role === "studio" ? String(doc.blob_url) : String(doc.studio_pdf_url);

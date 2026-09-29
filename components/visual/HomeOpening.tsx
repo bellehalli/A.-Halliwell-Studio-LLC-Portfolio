@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.PNG";
+const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.webp";
 const SEEN_KEY = "ahs-opening-seen";
 
 /** A short, non-scrolling opening scene. The site becomes usable after the curtain lifts. */
@@ -29,7 +29,7 @@ export default function HomeOpening() {
       document.documentElement.style.overflow = "";
       setPhase("done");
       document.getElementById("home-heading")?.focus({ preventScroll: true });
-    }, reduced || seenRef.current ? 0 : 650);
+    }, reduced || seenRef.current ? 0 : 420);
   }, []);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function HomeOpening() {
     window.scrollTo(0, 0);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     try { seenRef.current = sessionStorage.getItem(SEEN_KEY) === "1"; } catch { /* Storage may be disabled. */ }
-    const timer = setTimeout(leave, seenRef.current ? 0 : reduced ? 900 : 1900);
+    const timer = setTimeout(leave, seenRef.current ? 0 : reduced ? 900 : 1250);
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") leave();
     };
@@ -69,7 +69,7 @@ export default function HomeOpening() {
       <span className="opening-edition" aria-hidden="true">A. HALLIWELL STUDIO<br />DETROIT / EST. 2026</span>
       <div className="opening-center">
         <div className="opening-heart" aria-hidden="true">
-          <Image src="/assets/hearts/Portfolio Assets A.Halliwell  - 119.PNG" alt="" fill sizes="(max-width: 700px) 82vw, 570px" priority />
+          <Image src="/assets/hearts/Portfolio Assets A.Halliwell  - 119.webp" alt="" fill sizes="(max-width: 700px) 82vw, 570px" priority />
         </div>
         <h2 className="opening-brand"><span>A. HALLIWELL</span><em>Studio</em></h2>
         <p className="opening-caption">DESIGN WITH A PULSE.</p>

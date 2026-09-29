@@ -133,3 +133,13 @@ CREATE TABLE IF NOT EXISTS portal_materials (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS portal_materials_project_idx ON portal_materials(project_id, created_at DESC);
+
+-- Lifecycle and payment schedule migrations for existing databases.
+ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS invited_at timestamptz;
+ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS archived_at timestamptz;
+ALTER TABLE portal_deliverables ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now();
+ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS shared_at timestamptz DEFAULT now();
+ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS milestone_number integer DEFAULT 1 CHECK (milestone_number BETWEEN 1 AND 3);
+ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS stripe_invoice_id text;
+CREATE TABLE IF NOT EXISTS request_rate_limits (key text PRIMARY KEY, count integer NOT NULL, expires_at timestamptz NOT NULL);
+ALTER TABLE portal_invoices ADD COLUMN IF NOT EXISTS chase_closed_at timestamptz;
