@@ -124,7 +124,7 @@ export default function StudioWorkspace({ projects }: { projects: Project[] }) {
         <PaymentPlanEditor key={`${selected}-${project.investmentCents}-${project.milestoneAmounts.join("-")}`} projectId={selected} total={project.investmentCents} amounts={project.milestoneAmounts} busy={busy} post={post} />
         <form className="portal-studio-form portal-studio-invoice-form" onSubmit={uploadDocument}>
           <input type="hidden" name="kind" value="invoice" />
-          <h4>Attach an issued invoice</h4><p>Each PDF covers one milestone. The amount below comes from your saved plan; confirm the Chase PDF matches it.</p>
+          <h4>Attach an issued invoice</h4><p>You can attach the full project invoice to the deposit. The payment amount below is only this milestone; the full project total stays in your plan and PDF. Any external payment link must collect only this milestone amount.</p>
           <label>Payment milestone<select name="milestoneNumber" value={invoiceMilestone} onChange={event => setInvoiceMilestone(Number(event.target.value))}>{milestoneLabels.map((label, index) => <option key={label} value={index + 1}>0{index + 1} {label}</option>)}</select></label>
           <label>Invoice title<input name="title" required placeholder={milestoneLabels[invoiceMilestone - 1]} /></label>
           <div className="portal-studio-form-pair"><label>Chase invoice number<input name="invoiceNumber" required placeholder="11741" /></label><label>Amount for this milestone in USD<input name="amount" readOnly value={(project.milestoneAmounts[invoiceMilestone - 1] / 100).toFixed(2)} /><small>Set the full project total and split above to change this amount.</small></label></div>

@@ -20,7 +20,7 @@ export default function StripeActivation({ documentId }: { documentId: string })
     } catch (error) { setMessage(error instanceof Error ? error.message : "Stripe could not be checked."); }
     finally { setBusy(false); }
   }
-  return <section className="portal-stripe-activation"><h4>Activate Stripe for this payment</h4><p>Connect the open Stripe invoice matching this client’s email and milestone amount. Existing payment details stay intact.</p>
+  return <section className="portal-stripe-activation"><h4>Activate Stripe for this payment</h4><p>Connect the open Stripe invoice matching this client’s email and milestone amount. A full project invoice PDF can stay attached while Stripe collects only the deposit. Older full-total deposit records are corrected to the saved payment plan when connected.</p>
     <label>Stripe invoice link<input type="url" value={invoiceLink} onChange={event => setInvoiceLink(event.target.value)} placeholder="https://invoice.stripe.com/i/…" autoComplete="off" /></label><p>Paste the invoice link to choose it directly, or leave this blank to find an exact email and amount match.</p>
     <div className="portal-invoice-actions"><button type="button" disabled={busy} onClick={() => void check("connect")}>{busy ? "Checking Stripe…" : "Connect Stripe"}</button><button type="button" disabled={busy} onClick={() => void check("check")}>Check client readiness</button></div>
     {message && <p role="status">{message}</p>}
