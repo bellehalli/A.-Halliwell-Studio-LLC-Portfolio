@@ -6,6 +6,14 @@ export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" };
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const url = new URL(request.url);
+  if (request.headers.get("accept")?.includes("text/html") && url.searchParams.get("download") !== "1") {
+    const { id } = await params;
+    if (!/^[a-f0-9-]{36}$/.test(id)) return NextResponse.json({ ok: false }, { status: 404, headers });
+    const query = new URLSearchParams();
+    for (const key of ["version", "original"]) { const value = url.searchParams.get(key); if (value) query.set(key, value); }
+    return NextResponse.redirect(new URL(`/portal/documents/${id}${query.size ? `?${query}` : ""}`, request.url));
+  }
   if (!portalEnabled()) return NextResponse.json({ ok: false }, { status: 404, headers });
   const client = await currentPortalClient();
   if (!client) return NextResponse.json({ ok: false }, { status: 401, headers });
@@ -43,6 +51,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const blob = await get(String(rows[0].display_url), { access: "private" });
     if (!blob || blob.statusCode !== 200) return NextResponse.json({ ok: false }, { status: 404, headers });
     const filename = String(rows[0].file_name).replace(/[^a-zA-Z0-9._-]/g, "_");
-    return new Response(blob.stream, { headers: { ...headers, "Content-Type": "application/pdf", "Content-Disposition": `inline; filename="${filename}"` } });
+    const bytes = new Uint8Array(await new Response(blob.stream).arrayBuffer());
+    const download = url.searchParams.get("download") === "1";
+    return new Response(bytes, { headers: { ...headers, "Content-Type": "application/pdf", "Content-Length": String(bytes.length), "Content-Disposition": `${download ? "attachment" : "inline"}; filename="${filename}"` } });
   } catch { return NextResponse.json({ ok: false }, { status: 502, headers }); }
 }
