@@ -64,3 +64,15 @@ body { overflow-x: clip; }
 @media (max-width: 700px) {
   .work-page .case-hero h1 { font-size: clamp(42px, 11vw, 56px); overflow-wrap: anywhere; }
 }
+@media (max-width: 360px) {
+  .case-world-hero-grid > * { min-width: 0; max-width: 100%; }
+  .case-world-hero-copy h1 { font-size: clamp(48px, 14vw, 56px); }
+  .case-world-hero-art { box-sizing: border-box; }
+  .digital-card { min-width: 0; box-sizing: border-box; }
+  .digital-card h1 { font-size: clamp(48px, 15vw, 56px); }
+}
+/* Keep the complete server-rendered page while deferring below-fold painting. */
+.home-world :is(.work-gallery,.project-gallery,.proof-world,.offer-world,.lab-world,.studio-section,.start-world) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}

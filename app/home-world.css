@@ -3,7 +3,7 @@
   position: fixed; z-index: 250; inset: 0; display: grid; place-items: center;
   min-height: 100svh; padding: 28px; overflow: hidden; isolation: isolate;
   background: #e7b5d1 url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 120.webp') center / cover no-repeat;
-  color: #260d22; transition: transform .85s cubic-bezier(.74,0,.21,1);
+  color: #260d22; transition: transform .65s cubic-bezier(.74,0,.21,1);
 }
 .home-opening.is-leaving { transform: translateY(-102%); }
 .home-opening::before {
@@ -33,7 +33,7 @@
   position: relative; width: clamp(310px,47vw,610px); aspect-ratio: 1;
   margin: -62px auto -84px;
   filter: drop-shadow(0 38px 28px rgba(66,8,53,.21));
-  animation: ahs-heart-arrive 3.5s cubic-bezier(.17,.7,.2,1) both;
+  animation: ahs-heart-arrive 1.4s cubic-bezier(.17,.7,.2,1) both;
 }
 .opening-heart img { object-fit: contain; }
 @keyframes ahs-heart-arrive {
@@ -47,7 +47,7 @@
   position: relative; display: grid; justify-items: center; margin: 0;
   font: 400 clamp(57px,9.2vw,148px)/.81 var(--font-fashion),Georgia,serif;
   letter-spacing: -.072em; white-space: nowrap; text-shadow: 0 2px 0 rgba(255,255,255,.25);
-  animation: ahs-name 1.35s 2.05s both;
+  animation: ahs-name .55s .5s both;
 }
 .opening-brand em {
   margin-top: -.1em; margin-left: min(31vw,400px); padding-right: .12em;
@@ -56,14 +56,14 @@
 }
 .opening-caption {
   margin: 5px 0 0; font: 600 clamp(10px,1vw,14px)/1.5 var(--font-sans),sans-serif;
-  letter-spacing: .34em; animation: ahs-name 1s 2.7s both;
+  letter-spacing: .34em; animation: ahs-name .45s .95s both;
 }
 .opening-enter {
   position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
   display: inline-flex; align-items: center; gap: 16px; padding: 8px 0;
   border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit;
   font: 600 10px var(--font-sans),sans-serif; letter-spacing: .16em;
-  white-space: nowrap; cursor: pointer; animation: ahs-enter .8s 3.7s both;
+  white-space: nowrap; cursor: pointer; animation: ahs-enter .45s 1.15s both;
 }
 .opening-enter .glitter-cursor { width: 30px; height: 30px; transition: transform .25s ease; }
 .opening-enter:hover .glitter-cursor { transform: translate(3px,-3px); }
@@ -108,7 +108,7 @@ vercel-live-feedback { display: none !important; }
 .home-world .home-hero::before { content: none; }
 .home-art-stage {
   position: relative; width: min(100vw,177.865svh); max-width: 100%; aspect-ratio: 1366 / 768;
-  background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center / 100% 100% no-repeat;
+  background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.webp') center / 100% 100% no-repeat;
 }
 .home-hero-copy { position: absolute; z-index: 4; left: 8.5%; top: 30%; width: 36%; color: #2b1233; }
 .home-hero-index {
@@ -188,7 +188,7 @@ vercel-live-feedback { display: none !important; }
   width: 100%; min-height: 100svh; margin: 0; padding: 0;
   display: grid; align-items: center; overflow: hidden; transform: none;
   border: 0; box-shadow: none;
-  background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.PNG') center / cover no-repeat;
+  background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.webp') center / cover no-repeat;
 }
 .home-world .intro-sheet .content-shell {
   position: relative; z-index: 2; width: min(440px,34vw);
@@ -238,11 +238,11 @@ vercel-live-feedback { display: none !important; }
 .work-gallery::before {
   content: ''; position: absolute; inset: 0 0 auto; z-index: -1;
   height: clamp(220px,35vw,420px); pointer-events: none;
-  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center top / 100% auto no-repeat;
+  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.webp') center top / 100% auto no-repeat;
   -webkit-mask-image: linear-gradient(#000,transparent 90%);
   mask-image: linear-gradient(#000,transparent 90%);
 }
-.work-gallery-maison::before { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
+.work-gallery-maison::before { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.webp'); }
 .work-gallery-heading { position: relative; width: min(780px,100%); margin: 0 auto 42px; text-align: center; }
 .work-gallery-kicker { margin: 0; font: 750 10px/1.4 var(--font-sans),sans-serif; letter-spacing: .13em; text-transform: uppercase; }
 .work-gallery-kicker span { margin: 0 10px; color: #da328d; }
@@ -274,9 +274,9 @@ vercel-live-feedback { display: none !important; }
 .work-gallery .project-evidence:not(.project-live-preview) > .project-evidence-bar { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .work-gallery .project-evidence-gallery {
   position: relative; display: block; width: 100%; aspect-ratio: 1366 / 390; padding: 0;
-  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.PNG') center bottom / 100% auto no-repeat;
+  background: url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.webp') center bottom / 100% auto no-repeat;
 }
-.work-gallery-maison .project-evidence-gallery { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.PNG'); }
+.work-gallery-maison .project-evidence-gallery { background-image: url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.webp'); }
 .work-gallery .project-evidence-gallery figure {
   position: absolute; top: 22.3%; left: 5.8%; width: 12.8%; height: 50%;
   overflow: hidden; border-radius: 4px; background: #fff;
@@ -335,7 +335,7 @@ vercel-live-feedback { display: none !important; }
 @media (max-width: 600px) {
   .home-world .intro-sheet {
     min-height: 0; align-items: start; padding: 0 0 72px;
-    background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.PNG') center top / 100% auto no-repeat;
+    background: #fcecf4 url('/assets/art-direction/A. Halliwell Studio Website Design  - 4.webp') center top / 100% auto no-repeat;
   }
   .home-world .intro-sheet .content-shell {
     width: min(100% - 50px,420px); margin: 0 auto; padding: 55vw 0 0;
@@ -376,7 +376,7 @@ vercel-live-feedback { display: none !important; }
   }
   .home-art-stage::before {
     content: ''; position: absolute; inset: 0 0 auto; height: 56.223vw;
-    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') center top / 100% auto no-repeat;
+    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.webp') center top / 100% auto no-repeat;
     mask-image: linear-gradient(#000 75%,transparent 100%);
   }
   .home-art-stage::after {
@@ -421,7 +421,7 @@ vercel-live-feedback { display: none !important; }
 @media (min-width: 601px) and (max-width: 1050px) {
   .home-world .home-hero { min-height: 0; }
   .home-art-stage { width: 100%; height: auto; min-height: 710px; aspect-ratio: auto;
-    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.PNG') top center / 100% auto no-repeat,
+    background: url('/assets/art-direction/A. Halliwell Studio Website Design  - 3.webp') top center / 100% auto no-repeat,
       #eee0fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover; }
   .home-hero-copy { position: relative; left: auto; top: auto; width: 53%; margin-left: 6%; padding: 110px 0 45px; }
   .home-hero-title { font-size: clamp(40px,5.2vw,55px); }
@@ -616,7 +616,7 @@ vercel-live-feedback { display: none !important; }
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background:
     linear-gradient(to bottom, rgba(255,226,234,.04) 0 55%, #f7d8df 98%),
-    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG') center top / 100% auto no-repeat;
+    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.webp') center top / 100% auto no-repeat;
 }
 .home-world .offer-world .content-shell { width: min(1366px,100%); }
 .home-world .offer-world .section-kicker { position: relative; z-index: 4; margin-bottom: 28px; color: #572a42; }

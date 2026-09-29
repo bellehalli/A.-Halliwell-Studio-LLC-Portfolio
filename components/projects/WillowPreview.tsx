@@ -19,6 +19,6 @@ export default function WillowPreview({ url }: { url: string }) {
   }, []);
 
   return canEmbed ? <iframe src={url} title="Explore the Willow Lily live website" loading="lazy" /> : <div className="project-preview-scroll" role="region" tabIndex={0} aria-label="Scroll through the Willow Lily website tour">
-    {tour.map((src, index) => <img key={src} src={src} alt={`Willow Lily website view ${index + 1}`} loading={index ? "lazy" : "eager"} />)}
+    {tour.map((src, index) => <img key={src} src={src} alt={`Willow Lily website view ${index + 1}`} loading="lazy" decoding="async" />)}
   </div>;
 }

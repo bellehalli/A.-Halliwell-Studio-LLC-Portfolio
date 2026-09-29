@@ -2,7 +2,7 @@
    interactive components on these routes remain their original live pages. */
 .work-page .site-background {
   background-image: linear-gradient(rgba(255,180,214,.68),rgba(255,180,214,.68)),
-    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.PNG');
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.webp');
   background-position: center; background-size: auto,360px;
 }
 .work-page .case-sheet {
@@ -13,7 +13,7 @@
 .work-page .case-sheet::before {
   content: ''; position: absolute; inset: 0 0 auto; height: 128px; pointer-events: none;
   background-image: linear-gradient(rgba(246,180,215,.72),rgba(246,180,215,.72)),
-    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.PNG');
+    url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 48.webp');
   background-position: center; background-size: auto,240px;
   border-bottom: 1px solid #bd7ca4;
 }
@@ -37,7 +37,7 @@
 .services-route .services-destination::before {
   content: ''; position: absolute; inset: 0 0 auto; height: clamp(235px,34vw,445px);
   background: linear-gradient(to bottom,transparent 75%,#fff8f4 100%),
-    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG') center top / cover no-repeat;
+    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.webp') center top / cover no-repeat;
   pointer-events: none;
 }
 .services-route .destination-hero { padding-top: clamp(230px,30vw,390px); }

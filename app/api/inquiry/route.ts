@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { checkRequestLimit } from "@/lib/request-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -164,6 +165,14 @@ export async function POST(request: Request) {
       return json(
         { success: false, message: "Please enter a valid website URL." },
         400
+      );
+    }
+
+    const limit = checkRequestLimit(request, "inquiry", 8, 15 * 60 * 1000);
+    if (limit.limited) {
+      return NextResponse.json(
+        { success: false, message: "Too many inquiries from this connection. Please try again later or email the studio." },
+        { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": String(limit.retryAfter) } }
       );
     }
 

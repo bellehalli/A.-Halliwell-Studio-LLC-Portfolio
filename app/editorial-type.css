@@ -56,7 +56,7 @@ button, input, select, textarea { font-family: inherit; }
   background:
     radial-gradient(ellipse 42% 42% at 83% 58%,#f7d8df 58%,rgba(247,216,223,.88) 78%,transparent 100%),
     linear-gradient(to bottom,rgba(255,226,234,.04) 0 55%,#f7d8df 98%),
-    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.PNG') center top / 100% auto no-repeat;
+    url('/assets/art-direction/services/A. Halliwell Studio Website Design  - 9.webp') center top / 100% auto no-repeat;
 }
 .home-world .offer-world .offer-grid article { border-left: 0; border-right: 0; }
 .home-world .offer-receipt { background: linear-gradient(148deg,#fffaf7 0%,#fff2f0 51%,#ffedf1 100%); }
