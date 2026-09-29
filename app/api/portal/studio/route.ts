@@ -76,13 +76,13 @@ export async function POST(request: Request) {
       if (Number(recent[0]?.count) >= 3) return fail(429, "Please wait before sending another invitation.");
       const token = newToken(), hash = tokenHash(token);
       await sql`INSERT INTO portal_login_links(token_hash, client_id, expires_at) VALUES (${hash}, ${client.id}, now() + interval '15 minutes')`;
-      const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
+      const { data: sent, error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
         from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(client.email)],
         subject: "Your A. Halliwell Studio project workspace",
         text: `Hi ${client.first_name},\n\nYour private project workspace is ready. The agreement is signed by the studio and waiting for your review. Open your private link to sign and see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis link expires in 15 minutes. You can request a fresh link any time at https://www.ahalliwellstudio.com/portal.\n\nArabella`,
       });
-      if (error) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "Invitation email could not be sent."); }
-      return NextResponse.json({ ok: true }, { headers });
+      if (error || !sent?.id) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "The email provider did not accept the invitation. Check the sender configuration and try again."); }
+      return NextResponse.json({ ok: true, recipient: String(client.email), emailId: sent.id, status: "accepted" }, { headers });
     }
     if (data.action === "updateInvoice") {
       const projectId = String(data.projectId || "");
