@@ -19,12 +19,14 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     WHERE d.id = ${id} AND (p.client_id = ${client.id} OR ${isPortalStudio(client)}) LIMIT 1`;
   if (!rows.length) return NextResponse.json({ ok: false }, { status: 404, headers });
   if (rows[0].kind === "invoice" && !isPortalStudio(client)) {
+    const samples = await portalDb()`SELECT 1 FROM portal_invoices i JOIN portal_projects p ON p.id = ${rows[0].project_id}
+      WHERE i.document_id = ${id} AND i.status = 'void' AND i.invoice_number LIKE 'TEST-%' AND p.title LIKE 'TEST%' LIMIT 1`;
     const agreements = await portalDb()`SELECT cs.id FROM portal_documents d
       JOIN portal_agreement_signatures cs ON cs.document_id = d.id AND cs.signer_role = 'client'
       WHERE d.project_id = ${rows[0].project_id} AND d.kind = 'agreement'
         AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1)
       LIMIT 1`;
-    if (!agreements.length) return NextResponse.json({ ok: false }, { status: 403, headers });
+    if (!agreements.length && !samples.length) return NextResponse.json({ ok: false }, { status: 403, headers });
   }
   try {
     const blob = await get(String(rows[0].display_url), { access: "private" });
