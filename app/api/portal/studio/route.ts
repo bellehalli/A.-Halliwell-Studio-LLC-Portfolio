@@ -39,17 +39,23 @@ export async function POST(request: Request) {
       await sql`INSERT INTO portal_projects(id, client_id, title, summary, client_business, investment_cents) VALUES (${id}, ${clients[0].id}, ${title}, ${summary}, ${clientBusiness}, ${investmentCents})`;
       return NextResponse.json({ ok: true, id }, { headers });
     }
-    if (data.action === "deleteTest") {
+    if (data.action === "deleteWorkspace") {
       const id = String(data.projectId || "");
-      if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a test workspace.");
-      const rows = await sql`SELECT p.id, p.client_id, p.title, c.email FROM portal_projects p
+      const confirmEmail = String(data.confirmEmail || "").trim().toLowerCase();
+      if (!/^[a-f0-9-]{36}$/.test(id) || !confirmEmail) return fail(400, "Choose a workspace and confirm its client email.");
+      const rows = await sql`SELECT p.id, p.client_id, p.title, p.stripe_invoice_id, c.email FROM portal_projects p
         JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
-      if (!rows.length) return fail(404, "Test workspace not found.");
+      if (!rows.length) return fail(404, "Workspace not found.");
       const target = rows[0];
-      if (!String(target.title).startsWith("TEST") || String(target.email).toLowerCase() === studio?.email) return fail(403, "Only test client workspaces can be removed here.");
-      const actualInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
-        WHERE d.project_id = ${id} AND (i.status = 'paid' OR i.invoice_number NOT LIKE 'TEST-%') LIMIT 1`;
-      if (actualInvoice.length) return fail(409, "This project contains a real invoice and cannot be removed as a test.");
+      if (confirmEmail !== String(target.email).toLowerCase() || confirmEmail === studio?.email) return fail(403, "The client email does not match this workspace.");
+      const paidInvoice = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id
+        WHERE d.project_id = ${id} AND i.status = 'paid' LIMIT 1`;
+      if (paidInvoice.length) return fail(409, "This workspace has a confirmed payment and cannot be deleted here.");
+      if (target.stripe_invoice_id) {
+        if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe payment status is unavailable. Try again later.");
+        const stripeInvoice = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(String(target.stripe_invoice_id));
+        if (stripeInvoice.status === "paid" || stripeInvoice.amount_paid > 0) return fail(409, "This workspace has a Stripe payment and cannot be deleted here.");
+      }
       const blobs = await sql`SELECT blob_url AS url FROM portal_documents WHERE project_id = ${id}
         UNION SELECT blob_url AS url FROM portal_materials WHERE project_id = ${id}
         UNION SELECT blob_url AS url FROM portal_deliverables WHERE project_id = ${id}
