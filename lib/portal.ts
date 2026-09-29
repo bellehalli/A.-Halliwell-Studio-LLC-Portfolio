@@ -30,6 +30,21 @@ export async function ensurePortalPaymentOptions() {
   catch (error) { paymentOptionsReady = undefined; throw error; }
 }
 
+let proposalsReady: Promise<unknown> | undefined;
+export async function ensurePortalProposals() {
+  proposalsReady ??= portalDb()`CREATE TABLE IF NOT EXISTS portal_proposals (
+    id text PRIMARY KEY,
+    project_id text NOT NULL REFERENCES portal_projects(id) ON DELETE CASCADE,
+    title text NOT NULL,
+    file_name text NOT NULL,
+    blob_url text NOT NULL UNIQUE,
+    sha256 text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+  )`;
+  try { await proposalsReady; }
+  catch (error) { proposalsReady = undefined; throw error; }
+}
+
 export function newToken() { return randomBytes(32).toString("base64url"); }
 export function tokenHash(token: string) { return createHash("sha256").update(token).digest("hex"); }
 export function validToken(token: unknown): token is string {

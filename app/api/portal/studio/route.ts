@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { del } from "@vercel/blob";
 import Stripe from "stripe";
-import { currentPortalClient, ensurePortalPaymentOptions, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
+import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -83,7 +83,9 @@ export async function POST(request: Request) {
         const stripeInvoice = await new Stripe(process.env.STRIPE_SECRET_KEY).invoices.retrieve(String(target.stripe_invoice_id));
         if (stripeInvoice.status === "paid" || stripeInvoice.amount_paid > 0) return fail(409, "This workspace has a Stripe payment and cannot be deleted here.");
       }
+      await ensurePortalProposals();
       const blobs = await sql`SELECT blob_url AS url FROM portal_documents WHERE project_id = ${id}
+        UNION SELECT blob_url AS url FROM portal_proposals WHERE project_id = ${id}
         UNION SELECT blob_url AS url FROM portal_materials WHERE project_id = ${id}
         UNION SELECT blob_url AS url FROM portal_deliverables WHERE project_id = ${id}
         UNION SELECT signed_pdf_url AS url FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id WHERE d.project_id = ${id}`;
@@ -119,6 +121,11 @@ export async function POST(request: Request) {
       if (!/^[a-f0-9-]{36}$/.test(id)) return fail(400, "Choose a project.");
       const rows = await sql`SELECT c.id, c.email, c.first_name, p.title FROM portal_projects p JOIN portal_clients c ON c.id = p.client_id WHERE p.id = ${id} LIMIT 1`;
       if (!rows.length) return fail(404, "Project not found.");
+      if (!String(rows[0].title).startsWith("TEST")) {
+        await ensurePortalProposals();
+        const proposals = await sql`SELECT 1 FROM portal_proposals WHERE project_id = ${id} LIMIT 1`;
+        if (!proposals.length) return fail(409, "Attach the approved proposal before inviting the client.");
+      }
       const signed = await sql`SELECT 1 FROM portal_documents d JOIN portal_agreement_signatures s ON s.document_id = d.id AND s.signer_role = 'studio'
         WHERE d.project_id = ${id} AND d.kind = 'agreement'
           AND d.id = (SELECT id FROM portal_documents WHERE project_id = ${id} AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;

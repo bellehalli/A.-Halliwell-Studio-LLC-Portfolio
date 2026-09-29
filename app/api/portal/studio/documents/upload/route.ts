@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         const payload = JSON.parse(clientPayload || "{}");
         const projectId = String(payload.projectId || "");
         const kind = String(payload.kind || "");
-        if (!/^[a-f0-9-]{36}$/.test(projectId) || !["agreement", "invoice"].includes(kind) ||
+        if (!/^[a-f0-9-]{36}$/.test(projectId) || !["proposal", "agreement", "invoice"].includes(kind) ||
           !new RegExp(`^portal/${projectId}/documents/[a-f0-9-]{36}-[A-Za-z0-9._-]{1,120}\\.pdf$`, "i").test(pathname)) throw Error("Invalid document upload.");
         const projects = await portalDb()`SELECT id FROM portal_projects WHERE id = ${projectId} LIMIT 1`;
         if (!projects.length) throw Error("Project not found.");

@@ -72,6 +72,15 @@ CREATE TABLE IF NOT EXISTS portal_documents (
   sha256 text NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS portal_proposals (
+  id text PRIMARY KEY,
+  project_id text NOT NULL REFERENCES portal_projects(id) ON DELETE CASCADE,
+  title text NOT NULL,
+  file_name text NOT NULL,
+  blob_url text NOT NULL UNIQUE,
+  sha256 text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
 CREATE INDEX IF NOT EXISTS portal_documents_project_idx ON portal_documents(project_id, kind, created_at DESC);
 
 CREATE TABLE IF NOT EXISTS portal_invoices (
