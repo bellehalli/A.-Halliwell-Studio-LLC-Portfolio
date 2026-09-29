@@ -68,6 +68,10 @@
 .portal-payment-recipient,.portal-payment-address { padding: 12px; background: #f5ebf8; overflow-wrap: anywhere; white-space: pre-wrap; font-weight: 700; }
 .portal-payment-detail button,.portal-payment-button { display: inline-block; padding: 10px 14px; border: 1px solid #60217d; background: #60217d; color: #fff; cursor: pointer; text-decoration: none; }
 .portal-payment-detail button:disabled { opacity: .55; cursor: not-allowed; }
+.portal-stripe-embed { margin-top: 18px; max-width: 560px; }
+.portal-stripe-form { display: grid; gap: 18px; }
+.portal-stripe-form button { justify-self: start; }
+.portal-stripe-embed > p:last-child { margin-top: 18px; }
 .portal-payment-detail small { display: block; margin-top: 14px; line-height: 1.5; }
 .portal-preview-safety { font-weight: 700; }
 .portal-payment-chooser :is(button,a):focus-visible { outline: 3px solid #60217d; outline-offset: 3px; }
