@@ -24,7 +24,7 @@ export default function PaymentJourney({ projectId, milestones }: { projectId: s
     <ol>{milestones.map((item, index) => <li key={item.label} className={item.paid ? "is-paid" : item.issued ? "is-due" : "is-upcoming"}>
       <span className="portal-milestone-number">0{index + 1}</span><div><h3>{item.label}</h3><strong>{money(item.amount)}</strong><span>{item.paid ? "Payment received" : item.issued ? "Invoice ready" : "Coming later"}</span></div>
       <span className="portal-milestone-flower" aria-hidden="true"></span>
-      {celebrating === index && <div className="portal-payment-celebration" role="status"><span className="portal-butterfly" aria-hidden="true"><span /><span /><i /></span><strong>Payment received</strong><small>Another step closer to your finished piece.</small></div>}
+      {celebrating === index && <div className="portal-payment-celebration" role="status"><span className="portal-butterfly-flight" aria-hidden="true"><span className="portal-butterfly-asset" /></span><strong>Payment received</strong><small>Another step closer to your finished piece.</small></div>}
     </li>)}</ol>
   </section>;
 }

@@ -234,16 +234,13 @@
 .portal-payment-celebration { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px; background: #eee1f3f2; text-align: center; animation: portal-receipt 4.8s ease-in-out both; }
 .portal-payment-celebration strong { font: 400 27px var(--font-editorial),Georgia,serif; }
 .portal-payment-celebration small { font-size: 12px; line-height: 1.35; }
-.portal-butterfly { position: relative; width: 42px; height: 32px; margin-bottom: 8px; animation: portal-butterfly-rise 2.2s ease-out both; }
-.portal-butterfly span { position: absolute; top: 2px; width: 22px; height: 27px; border: 1px solid #765c8f; background: radial-gradient(circle at 45% 40%,#fff9fc,#c9a7d9); border-radius: 80% 15% 65% 20%; transform-origin: right center; animation: portal-wing 1.2s ease-in-out 2; }
-.portal-butterfly span:first-child { left: 0; transform: rotate(-25deg); }
-.portal-butterfly span:nth-child(2) { right: 0; transform: scaleX(-1) rotate(-25deg); }
-.portal-butterfly i { position: absolute; left: 19px; top: 5px; width: 4px; height: 25px; border-radius: 4px; background: #765c8f; }
+.portal-butterfly-flight { display: block; width: 52px; height: 48px; margin-bottom: 4px; animation: portal-butterfly-fly 2.4s cubic-bezier(.2,.6,.4,1) both; }
+.portal-butterfly-asset { display: block; width: 100%; height: 100%; background: url('/assets/decorations/butterflies/Portfolio%20Assets%20A.Halliwell%20%20-%2031.webp') center / contain no-repeat; animation: portal-butterfly-flutter .35s ease-in-out 7 alternate; }
 @keyframes portal-receipt { 0% { opacity: 0; transform: translateY(8px); } 12%,85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
-@keyframes portal-butterfly-rise { from { opacity: 0; transform: translateY(18px) rotate(-12deg); } to { opacity: 1; transform: translateY(0) rotate(5deg); } }
-@keyframes portal-wing { 50% { transform: rotate(-45deg) scaleX(.75); } }
+@keyframes portal-butterfly-fly { 0% { opacity: 0; transform: translate(-48px,30px) rotate(-20deg) scale(.65); } 20% { opacity: 1; } 55% { transform: translate(8px,-12px) rotate(12deg) scale(1); } 100% { opacity: 1; transform: translate(35px,-23px) rotate(18deg) scale(.82); } }
+@keyframes portal-butterfly-flutter { from { transform: scaleX(.88) rotate(-4deg); } to { transform: scaleX(1) rotate(4deg); } }
 @media (max-width: 740px) { .portal-payment-journey ol { grid-template-columns: 1fr; } .portal-payment-journey li { min-height: 115px; } }
-@media (prefers-reduced-motion: reduce) { .portal-payment-celebration,.portal-butterfly,.portal-butterfly span { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .portal-payment-celebration,.portal-butterfly-flight,.portal-butterfly-asset { animation: none; } }
 
 .portal-milestone-flower { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle,#fff9f5 0 28%,#b99bc9 30% 56%,transparent 60%), conic-gradient(from 10deg,#b99bc9 0 13%,transparent 13% 20%,#b99bc9 20% 33%,transparent 33% 40%,#b99bc9 40% 53%,transparent 53% 60%,#b99bc9 60% 73%,transparent 73% 80%,#b99bc9 80% 93%,transparent 93%); }
 .portal-payment-journey li.is-upcoming .portal-milestone-flower { opacity: .4; }
