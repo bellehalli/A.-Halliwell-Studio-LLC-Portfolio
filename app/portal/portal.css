@@ -1,3 +1,8 @@
+.portal-page > .site-background {
+  background: #eee0fa url('/assets/backgrounds/Portfolio Assets A.Halliwell  - 122.webp') center / cover no-repeat;
+}
+.portal-page .portal-card { box-shadow: 16px 18px 0 rgba(170,136,221,.42); }
+
 .portal-workspace { width: min(960px,100%); }
 .portal-workspace h1 { font-size: clamp(48px,7vw,82px); }
 .portal-login { display: grid; gap: 12px; max-width: 430px; margin-top: 26px; }
