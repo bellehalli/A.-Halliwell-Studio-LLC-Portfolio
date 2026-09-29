@@ -88,7 +88,7 @@ export async function POST(request: Request) {
       const signed = await sql`SELECT 1 FROM portal_documents d JOIN portal_agreement_signatures s ON s.document_id = d.id AND s.signer_role = 'client'
         WHERE d.project_id = ${projectId} AND d.kind = 'agreement'
           AND d.id = (SELECT id FROM portal_documents WHERE project_id = d.project_id AND kind = 'agreement' ORDER BY created_at DESC, id DESC LIMIT 1) LIMIT 1`;
-      if (signed.length) {
+      if (signed.length && !String(project[0].email).endsWith(".invalid")) {
         try {
           const result = await new Resend(process.env.RESEND_API_KEY).emails.send({
             from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(project[0].email)],

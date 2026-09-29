@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     } catch (error) { await del(blob.url); throw error; }
     const client = projects[0];
     let notified = false;
-    try { const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
+    if (!String(client.email).endsWith(".invalid")) try { const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
       from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to: [String(client.email)],
       subject: `Ready for your review: ${client.title}`,
       text: `Hi ${client.first_name},\n\nVersion ${version} of ${client.title} is ready for your review. Open your private workspace to view the file and leave your first-round notes or approve it:\n\nhttps://www.ahalliwellstudio.com/portal\n\nIf your sign-in link has expired, request a new one there.\n\nArabella`,
