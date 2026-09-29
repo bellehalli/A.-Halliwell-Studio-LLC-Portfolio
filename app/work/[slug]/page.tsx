@@ -4,18 +4,18 @@ import { notFound, permanentRedirect } from "next/navigation";
 import ProjectMedia from "@/components/ProjectMedia";
 import CaseStudyWorld from "@/components/projects/CaseStudyWorld";
 import { caseStudies } from "@/data/caseStudies";
-import { getProject, projects } from "@/data/projects";
+import { getProject, publicProjects } from "@/data/projects";
 import Navigation from "@/components/navigation/Navigation";
 
 type Props = { params: Promise<{ slug: string }> };
 
 const aliases: Record<string, string> = { vanta: "vanta-social", elan: "elan-aesthetics", northstar: "northstar-heating-home" };
-export function generateStaticParams() { return [...projects.map((p) => ({ slug: p.slug })), ...Object.keys(aliases).map(slug => ({ slug }))]; }
+export function generateStaticParams() { return [...publicProjects.map((p) => ({ slug: p.slug })), ...Object.keys(aliases).map(slug => ({ slug }))]; }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(aliases[slug] ?? slug);
-  if (!project) return { title: "Project Not Found", robots: { index: false, follow: false } };
+  if (!project || project.inDevelopment) return { title: "Project Not Found", robots: { index: false, follow: false } };
   return { title: project.inDevelopment?`${project.name} · Coming Soon`:`${project.name} Case Study`, description: project.description, robots: project.inDevelopment?{index:false,follow:true}:undefined, alternates: { canonical: `/work/${project.slug}` }, openGraph: { title: `${project.name} | A. Halliwell Studio`, description: project.description, url: `/work/${project.slug}`, images: [{url:"/og-image.png",width:1200,height:630,alt:"A. Halliwell Studio portfolio case study"}] }, twitter: {card:"summary_large_image",title:`${project.name} | A. Halliwell Studio`,description:project.description,images:["/og-image.png"]} };
 }
 
@@ -23,7 +23,7 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   if (aliases[slug]) permanentRedirect(`/work/${aliases[slug]}`);
   const project = getProject(slug);
-  if (!project) notFound();
+  if (!project || project.inDevelopment) notFound();
 
   return (
     <main className={`case-page ${caseStudies[project.slug] ? "case-page-editorial" : ""}`}>

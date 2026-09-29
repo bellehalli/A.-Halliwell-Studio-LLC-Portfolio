@@ -158,6 +158,9 @@ export const projects: Project[] = [
   }
 ];
 
+// Keep unfinished concepts in the repository without publishing them to clients.
+export const publicProjects = projects.filter((project) => !project.inDevelopment);
+
 export function getProject(slug: string) {
   return projects.find((project) => project.slug === slug);
 }
