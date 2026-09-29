@@ -78,6 +78,18 @@
 @media (max-width: 580px) { .portal-payment-methods { grid-template-columns: 1fr; } }
 .portal-pdf-viewer { border: 1px solid #986483; background: white; }
 .portal-pdf-viewer iframe { display: block; width: 100%; min-height: 520px; height: min(75vh, 850px); border: 0; }
+.portal-agreement-heading { margin: 24px 0 18px; padding: 20px 24px; border: 1px solid #d2b8d9; background: linear-gradient(120deg,#f6eaf7,#fff9f7); }
+.portal-agreement-heading small { color: #654576; letter-spacing: .14em; }
+.portal-agreement-heading p { margin: 9px 0 0; color: #4e365f; font: 400 clamp(23px,3vw,36px)/1.15 var(--font-editorial),Georgia,serif; }
+.portal-agreement-heading span { padding: 0 .15em; color: #92709e; }
+.portal-pdf-reader { margin: 28px 0; border: 1px solid #b896bf; background: #f8f1f8; }
+.portal-pdf-reader > p { padding: 16px 20px; margin: 0; }
+.portal-pdf-controls { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 16px; padding: 15px; border-bottom: 1px solid #d2b8d9; }
+.portal-pdf-controls button { padding: 9px 14px; border: 1px solid #604273; background: #604273; color: #fff; cursor: pointer; }
+.portal-pdf-controls button:disabled { opacity: .45; cursor: not-allowed; }
+.portal-pdf-controls button:focus-visible { outline: 3px solid #784f95; outline-offset: 2px; }
+.portal-pdf-canvas { width: 100%; min-height: 320px; overflow: hidden; background: #fff; }
+.portal-pdf-canvas canvas { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 .portal-sign-form { display: grid; gap: 14px; max-width: 680px; padding: 24px; margin: 26px 0; border: 1px solid #986483; background: #fff7fb; }
 .portal-sign-form h2 { margin: 0; font: 400 33px Georgia,serif; }
 .portal-sign-form label:not(.portal-check) { display: grid; gap: 7px; font-weight: 700; }
