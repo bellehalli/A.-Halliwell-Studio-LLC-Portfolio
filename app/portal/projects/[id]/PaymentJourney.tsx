@@ -1,12 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Milestone = { label: string; amount: number; paid: boolean; issued: boolean };
 const money = (cents: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cents / 100);
 
 export default function PaymentJourney({ projectId, milestones }: { projectId: string; milestones: Milestone[] }) {
   const [celebrating, setCelebrating] = useState<number | null>(null);
+  const replayTimer = useRef<number | null>(null);
+  const receiptTimer = useRef<number | null>(null);
+  const latestPaid = milestones.findLastIndex(item => item.paid);
+  function replayMilestone() {
+    if (latestPaid < 0) return;
+    if (replayTimer.current) window.clearTimeout(replayTimer.current);
+    if (receiptTimer.current) window.clearTimeout(receiptTimer.current);
+    setCelebrating(null);
+    replayTimer.current = window.setTimeout(() => {
+      setCelebrating(latestPaid);
+      receiptTimer.current = window.setTimeout(() => setCelebrating(null), 4800);
+    }, 40);
+  }
+  useEffect(() => () => {
+    if (replayTimer.current) window.clearTimeout(replayTimer.current);
+    if (receiptTimer.current) window.clearTimeout(receiptTimer.current);
+  }, []);
   useEffect(() => {
     const paid = milestones.map((item, index) => item.paid ? index : -1).filter(index => index >= 0);
     const key = `ahs-payment-seen-${projectId}`;
@@ -26,5 +43,6 @@ export default function PaymentJourney({ projectId, milestones }: { projectId: s
       <span className="portal-milestone-flower" aria-hidden="true"></span>
       {celebrating === index && <div className="portal-payment-celebration" role="status"><span className="portal-butterfly-flight" aria-hidden="true"><span className="portal-butterfly-asset" /></span><strong>Payment received</strong><small>Another step closer to your finished piece.</small></div>}
     </li>)}</ol>
+    {latestPaid >= 0 && <button className="portal-milestone-replay" type="button" onClick={replayMilestone}>Replay milestone moment</button>}
   </section>;
 }

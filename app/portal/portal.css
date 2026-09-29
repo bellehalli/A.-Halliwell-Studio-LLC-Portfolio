@@ -244,6 +244,9 @@
 
 .portal-milestone-flower { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle,#fff9f5 0 28%,#b99bc9 30% 56%,transparent 60%), conic-gradient(from 10deg,#b99bc9 0 13%,transparent 13% 20%,#b99bc9 20% 33%,transparent 33% 40%,#b99bc9 40% 53%,transparent 53% 60%,#b99bc9 60% 73%,transparent 73% 80%,#b99bc9 80% 93%,transparent 93%); }
 .portal-payment-journey li.is-upcoming .portal-milestone-flower { opacity: .4; }
+.portal-milestone-replay { display: block; margin: 20px 0 0 auto; padding: 9px 14px; border: 1px solid #745584; border-radius: 999px; background: #fffdfa; color: #593e68; font: 600 12px var(--font-mono),monospace; cursor: pointer; }
+.portal-milestone-replay:hover { background: #eee1f3; }
+.portal-milestone-replay:focus-visible { outline: 3px solid #745584; outline-offset: 3px; }
 .portal-preview-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
 .portal-preview-controls p { flex-basis: 100%; margin: 0; }
 .portal-preview-controls button { padding: 11px 16px; border: 1px solid #604273; background: #604273; color: white; cursor: pointer; }
