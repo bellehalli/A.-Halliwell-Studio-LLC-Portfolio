@@ -220,7 +220,7 @@ export async function POST(request: Request) {
       const id = String(data.documentId || "");
       if (!/^[a-f0-9-]{36}$/.test(id) || data.confirm !== "yes") return fail(400, "Confirm the Chase invoice was closed or marked paid in Chase.");
       const rows = await sql`UPDATE portal_invoices SET chase_closed_at = now()
-        WHERE document_id = ${id} AND status = 'paid' AND payment_url IS NOT NULL AND chase_closed_at IS NULL RETURNING document_id`;
+        WHERE document_id = ${id} AND status = 'paid' AND invoice_number NOT LIKE 'TEST-%' AND chase_closed_at IS NULL RETURNING document_id`;
       if (!rows.length) return fail(409, "No Chase closure is pending for this paid invoice.");
       return NextResponse.json({ ok: true }, { headers });
     }
@@ -228,10 +228,11 @@ export async function POST(request: Request) {
       const documentId = String(data.documentId || "");
       const status = String(data.status || "");
       if (!/^[a-f0-9-]{36}$/.test(documentId) || !["paid", "void"].includes(status)) return fail(400, "Check the invoice and status.");
-      const details = await sql`SELECT i.status, i.stripe_invoice_id, i.payment_url, i.amount_cents FROM portal_invoices i WHERE i.document_id = ${documentId} LIMIT 1`;
+      const details = await sql`SELECT i.status, i.invoice_number, i.stripe_invoice_id, i.payment_url, i.amount_cents FROM portal_invoices i WHERE i.document_id = ${documentId} LIMIT 1`;
       if (!details.length || details[0].status !== "issued") return fail(409, "Only an issued invoice can be marked paid or void.");
       const item = details[0];
-      if (item.payment_url && data.externalClosed !== "yes") return fail(409, "Close or mark the Chase invoice paid first, then confirm it here.");
+      const needsChaseCloseout = !String(item.invoice_number).startsWith("TEST-");
+      if (needsChaseCloseout && data.externalClosed !== "yes") return fail(409, "Close or mark the Chase invoice paid first, then confirm it here.");
       if (item.stripe_invoice_id) {
         if (!process.env.STRIPE_SECRET_KEY) return fail(503, "Stripe status is unavailable. Try again later.");
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -240,7 +241,7 @@ export async function POST(request: Request) {
         if (live.status === "open") await stripe.invoices.voidInvoice(String(item.stripe_invoice_id));
         else if (live.status !== "void") return fail(409, "Stripe is still processing this invoice. Wait for its final status.");
       }
-      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END, chase_closed_at = CASE WHEN ${item.payment_url ? true : false} THEN now() ELSE chase_closed_at END
+      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END, chase_closed_at = CASE WHEN ${needsChaseCloseout} THEN now() ELSE chase_closed_at END
         WHERE document_id = ${documentId} AND status = 'issued' RETURNING document_id`;
       if (!rows.length) return fail(409, "Invoice status changed. Refresh before trying again.");
       if (status === "paid") {
