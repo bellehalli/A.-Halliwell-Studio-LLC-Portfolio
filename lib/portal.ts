@@ -16,6 +16,20 @@ export function portalDb() {
   return neon(url);
 }
 
+// Keeps existing portal databases current without requiring a separate deployment step.
+let paymentOptionsReady: Promise<unknown> | undefined;
+export async function ensurePortalPaymentOptions() {
+  paymentOptionsReady ??= portalDb()`CREATE TABLE IF NOT EXISTS portal_payment_options (
+    document_id text PRIMARY KEY REFERENCES portal_invoices(document_id) ON DELETE CASCADE,
+    client_id text REFERENCES portal_clients(id) ON DELETE CASCADE,
+    ach_url text NOT NULL DEFAULT '',
+    selected_method text CHECK (selected_method IN ('zelle','ach','chase','card','check')),
+    selected_at timestamptz
+  )`;
+  try { await paymentOptionsReady; }
+  catch (error) { paymentOptionsReady = undefined; throw error; }
+}
+
 export function newToken() { return randomBytes(32).toString("base64url"); }
 export function tokenHash(token: string) { return createHash("sha256").update(token).digest("hex"); }
 export function validToken(token: unknown): token is string {

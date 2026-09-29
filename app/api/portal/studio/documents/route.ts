@@ -3,7 +3,7 @@ import { del, get, put } from "@vercel/blob";
 import { PDFDocument } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { currentPortalClient, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalPaymentOptions, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     if (!project.length) return fail(404, "Project not found.");
 
     let invoiceNumber = "", amountCents = 0, dueOn: string | null = null;
-    let paymentUrl: string | null = null, zelleId = "", checkAddress = "";
+    let paymentUrl: string | null = null, achUrl = "", zelleId = "", checkAddress = "";
     if (kind === "invoice") {
       invoiceNumber = String(field("invoiceNumber") || "").trim();
       const amount = String(field("amount") || "").trim();
@@ -55,7 +55,8 @@ export async function POST(request: Request) {
       zelleId = String(field("zelleId") || "").trim();
       checkAddress = String(field("checkAddress") || "").trim();
       const rawUrl = String(field("paymentUrl") || "").trim();
-      if (!invoiceNumber || invoiceNumber.length > 80 || !/^\d{1,7}(\.\d{1,2})?$/.test(amount) || zelleId.length > 254 || checkAddress.length > 500 || (due && !/^\d{4}-\d{2}-\d{2}$/.test(due)) || (rawUrl && !rawUrl.startsWith("https://"))) return fail(400, "Check invoice number, amount, due date, and payment details.");
+      achUrl = String(field("achUrl") || "").trim();
+      if (!invoiceNumber || invoiceNumber.length > 80 || !/^\d{1,7}(\.\d{1,2})?$/.test(amount) || zelleId.length > 254 || checkAddress.length > 500 || (due && !/^\d{4}-\d{2}-\d{2}$/.test(due)) || (rawUrl && !rawUrl.startsWith("https://")) || (achUrl && (!achUrl.startsWith("https://") || achUrl.length > 1000))) return fail(400, "Check invoice number, amount, due date, and payment details.");
       const [dollars, cents = ""] = amount.split(".");
       amountCents = Number(dollars) * 100 + Number(cents.padEnd(2, "0"));
       const parsedDue = due ? new Date(`${due}T12:00:00Z`) : null;
@@ -71,10 +72,12 @@ export async function POST(request: Request) {
     const digest = createHash("sha256").update(bytes).digest("hex");
     const blob = direct ? { url: blobUrl } : await put(`portal/${projectId}/documents/${id}-${safeName}`, Buffer.from(bytes), { access: "private", contentType: "application/pdf", addRandomSuffix: false });
     try {
+      if (kind === "invoice") await ensurePortalPaymentOptions();
       await sql`INSERT INTO portal_documents(id, project_id, kind, title, file_name, blob_url, sha256)
         VALUES (${id}, ${projectId}, ${kind}, ${title}, ${safeName}, ${blob.url}, ${digest})`;
       if (kind === "invoice") await sql`INSERT INTO portal_invoices(document_id, invoice_number, amount_cents, due_on, payment_url, zelle_id, check_address)
         VALUES (${id}, ${invoiceNumber}, ${amountCents}, ${dueOn}, ${paymentUrl}, ${zelleId}, ${checkAddress})`;
+      if (kind === "invoice" && achUrl) await sql`INSERT INTO portal_payment_options(document_id, ach_url) VALUES (${id}, ${achUrl})`;
     } catch (error) {
       await sql`DELETE FROM portal_documents WHERE id = ${id}`.catch(() => {});
       await del(blob.url).catch(() => {});
