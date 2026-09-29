@@ -7,9 +7,9 @@ import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Studio",
-  description: "Meet Arabella Halliwell, founder, designer and developer of A. Halliwell Studio, an independent web design, development and digital systems studio.",
+  description: "Meet Arabella Halliwell, founder, creative director and full-stack designer of A. Halliwell Studio, an independent web design, development and digital systems studio.",
   alternates: { canonical: "/studio" },
-  ...socialMetadata("/studio", "Studio", "Meet Arabella Halliwell, founder, designer and developer of A. Halliwell Studio, an independent web design, development and digital systems studio."),
+  ...socialMetadata("/studio", "Studio", "Meet Arabella Halliwell, founder, creative director and full-stack designer of A. Halliwell Studio, an independent web design, development and digital systems studio."),
 };
 
 const blocks: string[][] = [
@@ -26,10 +26,21 @@ export default function Page() {
       <Navigation />
 
       <article className="destination-sheet studio-destination"><SceneProps scene="studioPage"/>
-        <section className="destination-hero"><small>A. HALLIWELL STUDIO / DETROIT, MICHIGAN</small><h1>The person behind the cursor.</h1><p>Good design should make you feel something. Good development should make the whole thing work.</p><div className="founder-profile-photo"><Image src="/assets/founder/arabella-halliwell.webp" alt="Arabella Payton-Halliwell, founder, designer and developer of A. Halliwell Studio" fill sizes="(max-width: 800px) 90vw, 460px" priority/><span>ARABELLA PAYTON-HALLIWELL / FOUNDER</span></div></section>
+        <section className="destination-hero"><small>A. HALLIWELL STUDIO / DETROIT, MICHIGAN</small><h1>The person behind the cursor.</h1><p>Good design should make you feel something. Good development should make the whole thing work.</p><div className="founder-profile-photo"><Image src="/assets/founder/arabella-halliwell.webp" alt="Arabella Payton-Halliwell, founder, creative director and full-stack designer of A. Halliwell Studio" fill sizes="(max-width: 800px) 90vw, 460px" priority/><span>ARABELLA PAYTON-HALLIWELL / FOUNDER</span></div></section>
 
         <section className="founder-profile">
-          <div className="founder-profile-copy"><small>FOUNDER / DESIGNER / DEVELOPER</small><h2>Hi, I&apos;m Arabella.</h2><p className="founder-lead">I like beautiful things. I like them even more when they do something.</p><p>I have a B.A. in Psychology, and my experience working face to face in hospitality and events made those questions real. What makes a person stay? What makes them hesitate? When do they feel ready to book, buy, or ask for more? Those moments still guide how I build.</p><p>Design and development let me put the feeling and the function in the same place. I want a website to have the nerve to be itself and the good sense to help people do what they came to do. Hospitality has my heart, but curiosity takes me well beyond it.</p><p>The portfolio is full of original concepts because I&apos;d rather show you what I can make than borrow a client list I don&apos;t have. You can scroll the sites, test the interactions, and see the thinking for yourself.</p><div className="founder-facts"><span>DETROIT, MICHIGAN</span><span>INDEPENDENT STUDIO</span><span>STRATEGY + DESIGN + DEVELOPMENT</span></div><a className="button button-primary" href="mailto:hello@ahalliwellstudio.com">hello@ahalliwellstudio.com</a></div>
+          <div className="founder-profile-copy">
+            <small>FOUNDER / CREATIVE DIRECTOR / FULL-STACK DESIGNER</small>
+            <h2>Hi, I&apos;m Arabella.</h2>
+            <p className="founder-lead">I build digital experiences where strategy, storytelling, and technology meet.</p>
+            <p>With a bachelor&apos;s degree in psychology and years of experience in hospitality and customer-facing industries, I&apos;ve always been fascinated by the moments that influence decisions: what makes someone trust a brand, stay longer, explore further, or finally click “inquire.”</p>
+            <p>That curiosity became the foundation of A. Halliwell Studio.</p>
+            <p>I design and develop custom websites using modern web technologies, combining thoughtful user experience design with clean, intentional code. From responsive layouts and interactive experiences to custom components built with HTML, CSS, JavaScript, and modern development frameworks, every detail is created to look beautiful <strong>and work beautifully.</strong></p>
+            <p>My approach sits between creative direction and problem-solving. I believe a website should guide people, communicate value, and create an experience that feels unmistakably yours.</p>
+            <p>A. Halliwell Studio began with original concept builds because I believe the best way to show what&apos;s possible is to create it. Explore the work, interact with the experiences, and see the strategy behind every decision.</p>
+            <div className="founder-facts"><span>DETROIT, MICHIGAN</span><span>INDEPENDENT DIGITAL STUDIO</span><span>STRATEGY + DESIGN + DEVELOPMENT</span></div>
+            <a className="button button-primary" href="mailto:hello@ahalliwellstudio.com">hello@ahalliwellstudio.com</a>
+          </div>
         </section>
 
         <section className="destination-grid">{blocks.map(([label, title, body]) => <article key={label + title} className="destination-block"><small>{label}</small><h2>{title}</h2><p>{body}</p></article>)}</section>
