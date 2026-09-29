@@ -29,7 +29,10 @@ export async function POST(request: Request) {
     const hash = tokenHash(token);
     await sql`INSERT INTO portal_login_links(token_hash, client_id, expires_at)
       VALUES (${hash}, ${client.id}, now() + interval '15 minutes')`;
-    const url = `https://www.ahalliwellstudio.com/portal/claim#token=${token}`;
+    const previewHost = process.env.VERCEL_ENV === "preview" ? process.env.VERCEL_URL : null;
+    const portalOrigin = previewHost?.startsWith("a-halliwell-studio-llc-portfolio-") && previewHost.endsWith(".vercel.app")
+      ? `https://${previewHost}` : "https://www.ahalliwellstudio.com";
+    const url = `${portalOrigin}/portal/claim#token=${token}`;
     const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
       from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>",
       to: [email],

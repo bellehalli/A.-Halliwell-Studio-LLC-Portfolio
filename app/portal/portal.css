@@ -81,3 +81,19 @@
 .portal-journey ol { list-style: none; padding: 0; margin: 0; }
 .portal-journey li { display: grid; gap: 5px; padding: 14px 0; border-top: 1px solid #e3cdd8; }
 .portal-journey li span { color: #63495a; }
+.portal-preview-banner { display: grid; gap: 5px; padding: 14px 18px; margin-bottom: 22px; border: 1px solid #713a67; background: #f9dfeb; line-height: 1.4; }
+.portal-preview-banner strong { font-size: 12px; letter-spacing: .08em; }
+.portal-preview-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; }
+.portal-preview-nav button { padding: 9px 13px; border: 1px solid #8b5480; border-radius: 999px; background: #fff7fb; color: #3c2538; cursor: pointer; }
+.portal-preview-nav button[aria-current="step"] { background: #60217d; color: white; }
+.portal-preview .portal-project-list button { display: grid; gap: 5px; width: 100%; padding: 18px; border: 1px solid #986483; background: #fff7fb; color: inherit; text-align: left; cursor: pointer; }
+.portal-preview .portal-project-list button strong { font: 400 clamp(27px,4vw,42px)/1.1 Georgia,serif; }
+.portal-text-action { display: inline-block; padding: 0; border: 0; background: transparent; color: #60217d; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; font: inherit; }
+.portal-preview-document { max-width: 780px; padding: clamp(22px,4vw,48px); margin: 24px 0; border: 1px solid #986483; background: #fff; box-shadow: 0 15px 38px rgba(58,25,41,.09); line-height: 1.65; }
+.portal-preview-document h2 { font: 400 clamp(28px,4vw,42px)/1.12 Georgia,serif; }
+.portal-preview-document p { margin: 20px 0; }
+.portal-preview-note { border-left: 3px solid #8b5480; padding-left: 14px; }
+.portal-preview-emails { display: grid; gap: 16px; }
+.portal-preview-emails article { padding: 24px; border: 1px solid #c79bb9; background: white; }
+.portal-preview-emails h2 { font: 400 27px Georgia,serif; }
+.portal-preview-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; border-top: 1px solid #c79bb9; padding-top: 20px; margin-top: 32px; font-size: 13px; }
