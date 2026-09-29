@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 
 const categories = [
   ["aerial", "Aerial imagery"], ["site_plan", "Site plan"], ["floor_plan", "Floor plan"],
-  ["photos", "Property photography"], ["branding", "Logo / branding"], ["references", "Inspiration / references"],
+  ["photos", "Property photography"], ["branding", "Logo and branding"], ["references", "Inspiration and references"],
 ] as const;
 
 export default function MaterialUpload({ projectId }: { projectId: string }) {

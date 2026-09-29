@@ -17,7 +17,7 @@ export default function PortalLogin() {
   return <form className="portal-login" onSubmit={submit}>
     <label htmlFor="portal-email">Your email address</label>
     <input id="portal-email" type="email" autoComplete="email" required value={email} onChange={event => setEmail(event.target.value)} />
-    <button className="button button-primary" disabled={busy}>{busy ? "Sending…" : "Email my private link ↗"}</button>
+    <button className="button button-primary" disabled={busy}>{busy ? "Sending…" : "Email my private link"}</button>
     {message && <p role="status">{message}</p>}
   </form>;
 }
