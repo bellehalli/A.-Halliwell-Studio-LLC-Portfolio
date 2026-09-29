@@ -34,3 +34,45 @@
 .portal-studio-tools textarea { min-height: 100px; }
 .portal-studio-tools button,.portal-feedback button { justify-self: start; padding: 10px 14px; border: 1px solid #60217d; background: #60217d; color: white; cursor: pointer; }
 .portal-studio-tools button:disabled,.portal-feedback button:disabled { opacity: .5; cursor: wait; }
+.portal-studio-documents article { border-top: 1px solid #d8b5cf; padding: 16px 0; }
+.portal-studio-documents article p { margin: 7px 0; }
+.portal-invoice-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+.portal-invoice-list { display: grid; gap: 18px; }
+.portal-invoice-card { padding: 16px 0; border-top: 1px solid #d8b5cf; }
+.portal-invoice-card h3 { margin: 8px 0 18px; font: 400 25px Georgia,serif; }
+.portal-invoice-row { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 9px 0; border-bottom: 1px solid #e3cdd8; }
+.portal-invoice-row span { color: #63495a; }
+.portal-invoice-row strong { text-align: right; overflow-wrap: anywhere; }
+.portal-invoice-card > a { display: inline-block; margin-top: 17px; }
+.portal-payment-options { overflow-wrap: anywhere; margin-top: 14px; }
+.portal-pdf-viewer { border: 1px solid #986483; background: white; }
+.portal-pdf-viewer iframe { display: block; width: 100%; min-height: 520px; height: min(75vh, 850px); border: 0; }
+.portal-sign-form { display: grid; gap: 14px; max-width: 680px; padding: 24px; margin: 26px 0; border: 1px solid #986483; background: #fff7fb; }
+.portal-sign-form h2 { margin: 0; font: 400 33px Georgia,serif; }
+.portal-sign-form label:not(.portal-check) { display: grid; gap: 7px; font-weight: 700; }
+.portal-sign-form input:not([type="checkbox"]) { width: 100%; min-height: 46px; padding: 10px; border: 1px solid #986483; background: white; color: #27182a; font: inherit; }
+.portal-check { display: flex; align-items: flex-start; gap: 10px; line-height: 1.45; }
+.portal-check input { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 3px; }
+.portal-sign-form button { justify-self: start; padding: 12px 18px; border: 1px solid #60217d; background: #60217d; color: white; cursor: pointer; }
+.portal-sign-form button:disabled { opacity: .5; }
+@media (max-width: 700px) { .portal-pdf-viewer iframe { min-height: 430px; height: 60vh; } .portal-sign-form { padding: 17px; } }
+.portal-welcome { padding: 22px; margin-top: 20px; border-left: 3px solid #8b5480; background: #fff7fb; }
+.portal-welcome h2 { margin: 0 0 10px; font: 400 clamp(28px,4vw,38px)/1.1 Georgia,serif; }
+.portal-welcome p { max-width: 70ch; line-height: 1.55; }
+.portal-investment { display: flex; gap: 15px; align-items: baseline; justify-content: space-between; border-block: 1px solid #c79bb9; padding: 16px 0; }
+.portal-investment span { font-size: 12px; letter-spacing: .1em; }
+.portal-investment strong { font: 400 27px Georgia,serif; }
+.portal-materials,.portal-journey { padding: 22px; border: 1px solid #c79bb9; margin: 18px 0; background: #fff7fb; }
+.portal-materials h2,.portal-journey h2 { margin: 0 0 12px; font: 400 clamp(25px,3vw,36px)/1.1 Georgia,serif; }
+.portal-materials p,.portal-journey p { line-height: 1.55; }
+.portal-material-form { display: grid; gap: 15px; max-width: 650px; }
+.portal-material-form label { display: grid; gap: 6px; font-weight: 700; }
+.portal-material-form :is(input,select,textarea) { width: 100%; padding: 12px; border: 1px solid #986483; background: white; color: #27182a; font: inherit; }
+.portal-material-form textarea { min-height: 95px; }
+.portal-material-form small { font-weight: 400; }
+.portal-material-form button { justify-self: start; padding: 12px 18px; border: 1px solid #60217d; background: #60217d; color: white; cursor: pointer; }
+.portal-material-form button:disabled { opacity: .55; }
+.portal-material-list { margin-top: 22px; border-top: 1px solid #d8b5cf; overflow-wrap: anywhere; }
+.portal-journey ol { list-style: none; padding: 0; margin: 0; }
+.portal-journey li { display: grid; gap: 5px; padding: 14px 0; border-top: 1px solid #e3cdd8; }
+.portal-journey li span { color: #63495a; }

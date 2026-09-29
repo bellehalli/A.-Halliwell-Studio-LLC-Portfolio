@@ -24,12 +24,17 @@ export async function POST(request: Request) {
       const firstName = String(data.firstName || "").trim().slice(0, 80);
       const title = String(data.title || "").trim().slice(0, 150);
       const summary = String(data.summary || "").trim().slice(0, 1000);
+      const clientBusiness = String(data.clientBusiness || "").trim().slice(0, 150);
+      const investment = String(data.investment || "").trim();
+      if (investment && !/^\d{1,7}(\.\d{1,2})?$/.test(investment)) return fail(400, "Check the project investment.");
+      const [dollars, cents = ""] = investment.split(".");
+      const investmentCents = investment ? Number(dollars) * 100 + Number(cents.padEnd(2, "0")) : null;
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !firstName || !title) return fail(400, "Client email, name, and project title are required.");
       await sql`INSERT INTO portal_clients(id, email, first_name) VALUES (${randomUUID()}, ${email}, ${firstName}) ON CONFLICT (email) DO NOTHING`;
       const clients = await sql`SELECT id, role FROM portal_clients WHERE email = ${email} LIMIT 1`;
       if (clients[0]?.role !== "client") return fail(400, "Use a client email address.");
       const id = randomUUID();
-      await sql`INSERT INTO portal_projects(id, client_id, title, summary) VALUES (${id}, ${clients[0].id}, ${title}, ${summary})`;
+      await sql`INSERT INTO portal_projects(id, client_id, title, summary, client_business, investment_cents) VALUES (${id}, ${clients[0].id}, ${title}, ${summary}, ${clientBusiness}, ${investmentCents})`;
       return NextResponse.json({ ok: true, id }, { headers });
     }
     if (data.action === "update") {
@@ -64,6 +69,15 @@ export async function POST(request: Request) {
         text: `Hi ${client.first_name},\n\nYour project workspace is ready. Open this private link to see the next steps:\n\nhttps://www.ahalliwellstudio.com/portal/claim#token=${token}\n\nThis link expires in 15 minutes. You can request a fresh link any time at https://www.ahalliwellstudio.com/portal.\n\nArabella`,
       });
       if (error) { await sql`DELETE FROM portal_login_links WHERE token_hash = ${hash}`; return fail(502, "Invitation email could not be sent."); }
+      return NextResponse.json({ ok: true }, { headers });
+    }
+    if (data.action === "invoiceStatus") {
+      const documentId = String(data.documentId || "");
+      const status = String(data.status || "");
+      if (!/^[a-f0-9-]{36}$/.test(documentId) || !["issued", "paid", "void"].includes(status)) return fail(400, "Check the invoice and status.");
+      const rows = await sql`UPDATE portal_invoices SET status = ${status}, paid_at = CASE WHEN ${status} = 'paid' THEN now() ELSE NULL END
+        WHERE document_id = ${documentId} RETURNING document_id`;
+      if (!rows.length) return fail(404, "Invoice not found.");
       return NextResponse.json({ ok: true }, { headers });
     }
     return fail(400, "Unknown action.");
