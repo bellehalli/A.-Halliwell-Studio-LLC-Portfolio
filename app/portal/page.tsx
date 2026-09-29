@@ -23,14 +23,13 @@ export default async function PortalPage(){
     return <main className="portal-page">
       <div className="site-background" aria-hidden="true"/><Navigation />
       <section className="portal-card portal-workspace">
-        <Link className="portal-brand" href="/"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>
+        <div className="portal-session-bar"><Link className="portal-brand" href="/"><span className="logo-mark">A.</span><strong>A. HALLIWELL STUDIO</strong></Link>{client && <PortalSignOut />}</div>
         <small>PRIVATE CLIENT WORKSPACE</small>
         {client ? <>
           <h1>Welcome back,<br/><em>{client.first_name}.</em></h1>
           <p>Your project details live here. When a new agreement, invoice, or review file is ready, the studio will email you.</p>
           {isPortalStudio(client) && <p><Link href="/portal/studio">Manage client workspaces</Link></p>}
           <div className="portal-project-list">{projects.length ? projects.map(project => <Link key={project.id} href={`/portal/projects/${project.id}`}><span>{project.stage.replaceAll("_", " ")}</span><strong>{project.title}</strong><span>Open project</span></Link>) : !isPortalStudio(client) && <p>Your workspace is being prepared. Arabella will email when the project is ready.</p>}</div>
-          <PortalSignOut />
         </> : <>
           <h1>Your project has<br/><em>a place to live.</em></h1>
           <p>Enter the email address your studio invitation was sent to. We&apos;ll send a private, one-time link to your workspace.</p>
