@@ -20,7 +20,13 @@ This package intentionally does not duplicate the large `/public` asset library 
 
 ## Client Portal
 
-The `/portal` route is a polished private client entry experience. It deliberately does not invent authentication, client accounts, files, invoices or project data. Those require a real identity/data provider before they can be safely activated. Public self-registration is intentionally absent.
+The `/portal` route keeps its public entry experience until a private Neon
+database and Resend are connected and `PORTAL_ENABLED=true`. The gated client
+workspace supports invited sign-in, studio project management, Stripe invoice
+status and payment links, private Blob review files, and revision decisions.
+There is no public self-registration. Read
+[`docs/client-portal-setup.md`](docs/client-portal-setup.md) before activation;
+agreement signing still requires a provider and client terms.
 
 ## Environment
 
