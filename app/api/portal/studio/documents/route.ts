@@ -3,7 +3,7 @@ import { del, get, put } from "@vercel/blob";
 import { PDFDocument } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { currentPortalClient, ensurePortalPaymentOptions, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
+import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
 
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const title = String(field("title") || "").trim();
     const file = field("file");
     const blobUrl = String(field("blobUrl") || "");
-    if (!/^[a-f0-9-]{36}$/.test(projectId) || !["agreement", "invoice"].includes(kind) || !title || title.length > 150) return fail(400, "Choose a project and document title.");
+    if (!/^[a-f0-9-]{36}$/.test(projectId) || !["proposal", "agreement", "invoice"].includes(kind) || !title || title.length > 150) return fail(400, "Choose a project and document title.");
     let bytes: Uint8Array;
     let safeName: string;
     if (direct) {
@@ -65,13 +65,20 @@ export async function POST(request: Request) {
       paymentUrl = rawUrl || null;
     }
     if (direct) {
-      const existing = await sql`SELECT id FROM portal_documents WHERE blob_url = ${blobUrl} LIMIT 1`;
+      if (kind === "proposal") await ensurePortalProposals();
+      const existing = kind === "proposal" ? await sql`SELECT id FROM portal_proposals WHERE blob_url = ${blobUrl} LIMIT 1` : await sql`SELECT id FROM portal_documents WHERE blob_url = ${blobUrl} LIMIT 1`;
       if (existing.length) return fail(409, "This document is already attached to a project.");
     }
     const id = randomUUID();
     const digest = createHash("sha256").update(bytes).digest("hex");
     const blob = direct ? { url: blobUrl } : await put(`portal/${projectId}/documents/${id}-${safeName}`, Buffer.from(bytes), { access: "private", contentType: "application/pdf", addRandomSuffix: false });
     try {
+      if (kind === "proposal") {
+        await ensurePortalProposals();
+        await sql`INSERT INTO portal_proposals(id, project_id, title, file_name, blob_url, sha256)
+          VALUES (${id}, ${projectId}, ${title}, ${safeName}, ${blob.url}, ${digest})`;
+        return NextResponse.json({ ok: true, id, notified: false }, { headers });
+      }
       if (kind === "invoice") await ensurePortalPaymentOptions();
       await sql`INSERT INTO portal_documents(id, project_id, kind, title, file_name, blob_url, sha256)
         VALUES (${id}, ${projectId}, ${kind}, ${title}, ${safeName}, ${blob.url}, ${digest})`;
