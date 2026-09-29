@@ -60,6 +60,7 @@ export async function POST(request: Request) {
     const font = await pdf.embedFont(await readFile(join(process.cwd(), "assets", "DejaVuSans.ttf")), { subset: true });
     const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
     const at = new Date();
+    const signingDate = new Intl.DateTimeFormat("en-US", { timeZone: "America/Detroit", year: "numeric", month: "long", day: "numeric" }).format(at);
     page.drawText("A. HALLIWELL STUDIO", { x: 46, y: 730, size: 13, font: bold, color: rgb(.34,.21,.32) });
     page.drawText("Electronic signature record", { x: 46, y: 707, size: 12, font: bold, color: rgb(.34,.21,.32) });
     page.drawText("This page is attached to the agreement identified by its source SHA-256.", { x: 46, y: 677, size: 10, font });
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
     const lines = [
       `Signer ${display(typedName)}`, `Role ${role === "studio" ? "Studio" : "Client"}`,
       `Business ${display(role === "studio" ? "A. Halliwell Studio, LLC" : businessName)}`,
-      `Authenticated email ${display(signer.email)}`, `Signed at ${at.toISOString()}`,
+      `Authenticated email ${display(signer.email)}`, `Date signed ${signingDate}`, `Signed at ${at.toISOString()}`,
       `Source SHA-256 ${sourceHash.slice(0,32)}`, `                       ${sourceHash.slice(32)}`,
       `Method ${signatureStyle === "draw" ? "drawn" : "typed"} signature with affirmative consent in an authenticated portal session`
     ];
