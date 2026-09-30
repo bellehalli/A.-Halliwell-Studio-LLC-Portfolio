@@ -42,6 +42,7 @@ const projectNeeds = [
   "One-page website",
   "Multi-page website",
   "Website redesign",
+  "Website Refinement",
   "E-commerce",
   "Booking or scheduling",
   "Quote or lead flow",
@@ -61,11 +62,11 @@ const timingOptions = [
 ];
 
 const investmentOptions = [
-  "$1k–$2.5k · focused one-page",
-  "$2.5k–$5k · expanded or smaller custom scope",
-  "$5k–$10k · custom multi-page",
+  "$2.5k–$7k · refinement or custom scope",
+  "$7k–$10k · custom website",
   "$10k–$20k · larger build + integrations",
   "$20k+ · advanced custom systems",
+  "Custom project · priced by scope",
   "I need help scoping the investment",
 ];
 
@@ -119,7 +120,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   const hasBooking = needs.includes("Booking or scheduling");
   const isHospitality = projectType === "Hospitality / venue";
   const isExistingSite = needs.some((x) =>
-    ["Website redesign", "Add to an existing website", "Ongoing support"].includes(x)
+    ["Website redesign", "Website Refinement", "Add to an existing website", "Ongoing support"].includes(x)
   );
   const hasProjectSpecificDetails = isCommerce || hasBooking || isHospitality || isExistingSite;
   const step = {
@@ -161,7 +162,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
         setProjectType(draft.projectType || "");
         setNeeds(Array.isArray(draft.needs) ? draft.needs : []);
         setTiming(draft.timing || "");
-        setInvestment(draft.investment || "");
+        setInvestment(investmentOptions.includes(draft.investment || "") ? draft.investment! : "");
         setName(draft.name || "");
         setEmail(draft.email || "");
         setBusiness(draft.business || "");
@@ -653,6 +654,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
             </p>
           )}
 
+          <p className="builder-privacy"><a href="/services#faqs">Questions about pricing, payments, timelines, or ownership? Read the FAQs.</a></p>
           <p className="builder-privacy">
             Your information is used only to respond to your project inquiry.
           </p>

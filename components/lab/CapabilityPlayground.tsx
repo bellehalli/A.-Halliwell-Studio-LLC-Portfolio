@@ -76,12 +76,12 @@ function Events() {
 
 function Leads() {
   const [goal,setGoal]=useState("Book a consultation");
-  const [budget,setBudget]=useState("$5k–$10k");
+  const [budget,setBudget]=useState("$7k–$10k");
   const [context,setContext]=useState("");
   return <div className="ahs-live">
     <header><div><small>LEAD QUALIFICATION</small><h3>Start with context</h3></div><b>SMART FORM</b></header>
     <p className="ahs-label">WHAT&apos;S THE GOAL?</p><div className="ahs-pills">{["Book a consultation","Get a proposal","Ask a question"].map(x=><button key={x} className={goal===x?"on":""} onClick={()=>setGoal(x)}>{x}</button>)}</div>
-    <p className="ahs-label">PROJECT RANGE</p><div className="ahs-pills">{["$1k–$5k","$5k–$10k","$10k+"].map(x=><button key={x} className={budget===x?"on":""} onClick={()=>setBudget(x)}>{x}</button>)}</div>
+    <p className="ahs-label">PROJECT RANGE</p><div className="ahs-pills">{["Custom scope","$7k–$10k","$10k+"].map(x=><button key={x} className={budget===x?"on":""} onClick={()=>setBudget(x)}>{x}</button>)}</div>
     <label><span>ONE THING WE SHOULD KNOW</span><input value={context} onChange={e=>setContext(e.target.value)} maxLength={120} placeholder="What are you trying to change?"/></label>
     <aside aria-live="polite"><small>LIVE INTAKE SUMMARY</small><strong>{goal} · {budget}</strong><p>{context.trim() || "Add context to see a more useful project brief take shape."} Nothing is sent from this demo.</p></aside>
   </div>
@@ -116,10 +116,10 @@ function ScopeDiscovery({inHome}:{inHome:boolean}) {
   const availableFeatures = [...new Set<string>([...discoveryOptions[business],"Commerce","Client portal","Booking","Events","Galleries"])];
   const needsLargerBuild = features.some(x => ["Booking","Commerce","Client portal","Planning tools"].includes(x)) || selectedGoals.some(x=>["Sell online","Smoother operations"].includes(x));
   const recommendation = business === "Wedding venue"
-    ? ["Custom Website","Starting at $5,000 + scope"]
+    ? ["Custom Website","Starting at $7,000 + scope"]
     : business === "Restaurant" || business === "Something else" || needsLargerBuild
       ? ["Custom Scope","Priced by scope"]
-      : ["Focused Page","Starting at $1,000 + scope"];
+      : ["Custom Website","Starting at $7,000 + scope"];
   const toggle = (item:string,current:string[],set:(value:string[])=>void) =>
     set(current.includes(item) ? current.filter(x=>x!==item) : [...current,item]);
 
@@ -127,7 +127,7 @@ function ScopeDiscovery({inHome}:{inHome:boolean}) {
     const projectType = business === "Wedding venue" || business === "Hospitality" ? "Hospitality / venue"
       : business === "Restaurant" ? "Restaurant / nightlife / events"
       : business === "Service business" ? "Small business / service" : business === "Local business" ? "Small business / service" : "Something else";
-    const needs = [recommendation[0] === "Focused Page" ? "One-page website" : "Multi-page website",
+    const needs = [features.includes("Focused landing page") ? "One-page website" : "Multi-page website",
       ...features.flatMap(feature => ({"Booking":"Booking or scheduling","Reservations":"Booking or scheduling","Inquiry system":"Quote or lead flow","Commerce":"E-commerce","Client portal":"Client portal","Events":"Events or ticketing","Planning tools":"Custom interactive feature"} as Record<string,string>)[feature] || [])];
     const scope = {
       projectType, needs: [...new Set(needs)],
