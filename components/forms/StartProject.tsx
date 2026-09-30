@@ -1,7 +1,7 @@
 "use client";
 import { track } from "@vercel/analytics";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type Status = "idle" | "sending" | "success" | "error";
 type LabScope = { projectType: string; needs: string[]; successGoal: string };
@@ -91,6 +91,7 @@ const referralOptions = [
 const productCountOptions = ["1–10", "11–50", "51–200", "200+", "Not sure yet"];
 
 export default function StartProject({ inHome = false }: { inHome?: boolean }) {
+  const submissionRef = useRef("");
   const Heading = inHome ? "h2" : "h1";
   const [projectType, setProjectType] = useState("");
   const [needs, setNeeds] = useState<string[]>([]);
@@ -277,10 +278,15 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     setFeedback("");
 
     try {
+      if (!submissionRef.current) {
+        try { submissionRef.current = sessionStorage.getItem("ahs-inquiry-submission") || crypto.randomUUID(); sessionStorage.setItem("ahs-inquiry-submission", submissionRef.current); }
+        catch { submissionRef.current = crypto.randomUUID(); }
+      }
       const response = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          submissionId: submissionRef.current,
           name,
           email,
           business,
@@ -302,9 +308,10 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       });
 
       const result = await response.json();
+      if (response.status === 409) { submissionRef.current = ""; try { sessionStorage.removeItem("ahs-inquiry-submission"); } catch {} }
       if (!response.ok || !result.success) throw new Error();
 
-      localStorage.removeItem(DRAFT_KEY);
+      try { localStorage.removeItem(DRAFT_KEY); sessionStorage.removeItem("ahs-inquiry-submission"); } catch { /* Receipt is authoritative even when browser storage is unavailable. */ }
       setConfirmationSent(Boolean(result.confirmationSent));
       setStatus("success");
       track("Form completion", { projectType });
@@ -333,6 +340,9 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
             <span>INVESTMENT</span><strong>{investment}</strong>
             <span>TIMING</span><strong>{timing}</strong>
           </div>
+          <p>Want to talk it through? You can also choose a time for a 15-minute phone consultation. Leave your phone number when booking, and I’ll call you.</p>
+          <a className="button button-primary" href="https://calendar.app.google/UArjShmAHzt4vGE48" target="_blank" rel="noopener noreferrer" data-consultation-booking>Book a consultation</a>
+          <p className="builder-privacy">Opens Google Calendar in a new tab.</p>
           {confirmationSent && (
             <p className="builder-privacy">Keep the confirmation email for a copy of the brief you sent.</p>
           )}
@@ -651,3 +661,4 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     </section>
   );
 }
+

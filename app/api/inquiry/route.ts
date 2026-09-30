@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { checkRequestLimit } from "@/lib/request-rate-limit";
+import { randomUUID } from "node:crypto";
+import { saveInquiryLead, leadEmailStatus } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
@@ -76,6 +78,7 @@ function classifyLead(needs: string[], projectType: string) {
 }
 
 export async function POST(request: Request) {
+  let savedLeadId = "";
   try {
     if (
       !(request.headers.get("content-type") || "")
@@ -179,16 +182,18 @@ export async function POST(request: Request) {
     const key = process.env.RESEND_API_KEY;
     const destination = process.env.INQUIRY_TO_EMAIL;
 
+    const classification = classifyLead(needs, projectType);
+    const source = referralSource === "Other" && referralOther ? `Other: ${referralOther}` : referralSource || "Not provided";
+    const submissionId = clean(body.submissionId, 36) || randomUUID();
+    if (!/^[a-f0-9-]{36}$/.test(submissionId)) return json({ success: false, message: "Invalid submission reference." }, 400);
+    const lead = await saveInquiryLead(submissionId, { name, email: email.toLowerCase(), business, projectType, classification, needs, timing, investment, currentUrl, currentProblem, successGoal, assets, source, productCount, bookingType, guestPain });
+    if (lead.conflict) return json({ success: false, message: "This submission reference was already used. Please try again." }, 409);
+    savedLeadId = lead.id;
+    if (!lead.fresh) return json({ success: true, confirmationSent: lead.confirmationSent });
     if (!key || !destination) {
-      return json(
-        {
-          success: false,
-          message: "Inquiry delivery is temporarily unavailable.",
-        },
-        500
-      );
+      await leadEmailStatus(lead.id, "unavailable", "unavailable");
+      return json({ success: true, confirmationSent: false });
     }
-
     const resend = new Resend(key);
 
     const from =
@@ -198,13 +203,6 @@ export async function POST(request: Request) {
     const studioReplyTo =
       process.env.INQUIRY_REPLY_TO_EMAIL ||
       "hello@ahalliwellstudio.com";
-
-    const classification = classifyLead(needs, projectType);
-
-    const source =
-      referralSource === "Other" && referralOther
-        ? `Other: ${referralOther}`
-        : referralSource || "Not provided";
 
     const safe = {
       name: esc(name),
@@ -237,115 +235,124 @@ export async function POST(request: Request) {
         : "",
     ].join("");
 
-    const { error } = await resend.emails.send({
-      from,
-      to: [destination],
-      replyTo: email,
-      subject: `[${classification}] ${investment} · ${business || name}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.55;color:#171317;max-width:720px">
-          <p style="font-size:12px;letter-spacing:.08em"><b>${safe.classification} LEAD</b></p>
-          <h1 style="margin:0 0 24px">New project inquiry</h1>
-          <p><b>Name:</b> ${safe.name}</p>
-          <p><b>Email:</b> ${safe.email}</p>
-          <p><b>Business:</b> ${safe.business}</p>
-          <p><b>Business type:</b> ${safe.projectType}</p>
-          <p><b>Needs:</b> ${safe.needs.join(", ")}</p>
-          <p><b>Timing:</b> ${safe.timing}</p>
-          <p><b>Investment:</b> ${safe.investment}</p>
-          <p><b>Current website:</b> ${safe.currentUrl}</p>
-          ${conditionalRows}
-          <p><b>What is not working now:</b><br/>${safe.currentProblem}</p>
-          <p><b>What success looks like:</b><br/>${safe.successGoal}</p>
-          <p><b>Assets ready:</b> ${safe.assets.join(", ") || "Not provided"}</p>
-          <p><b>How they found the studio:</b> ${safe.referral}</p>
-        </div>
-      `,
-      text: `LEAD CLASSIFICATION: ${classification}
-Name: ${name}
-Email: ${email}
-Business: ${business || "Not provided"}
-Business type: ${projectType}
-Needs: ${needs.join(", ")}
-Timing: ${timing}
-Investment: ${investment}
-Current website: ${currentUrl || "Not provided"}
-Approx. products: ${productCount || "Not applicable"}
-Booking / scheduling: ${bookingType || "Not applicable"}
-Hospitality guest friction: ${guestPain || "Not applicable"}
-
-WHAT IS NOT WORKING NOW
-${currentProblem || "Not provided"}
-
-WHAT SUCCESS LOOKS LIKE
-${successGoal || "Not provided"}
-
-ASSETS READY
-${assets.join(", ") || "Not provided"}
-
-SOURCE
-${source}`,
-    });
-
-    if (error) {
-      return json(
-        {
-          success: false,
-          message: "We couldn't send your inquiry right now. Please try again.",
-        },
-        502
-      );
-    }
-
-    const confirmation = await resend.emails.send({
-      from,
-      to: [email],
-      replyTo: studioReplyTo,
-      subject: "Your A. Halliwell Studio project brief is in ♥",
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#171317;max-width:680px;margin:auto">
-          <p style="font-size:12px;letter-spacing:.08em"><b>A. HALLIWELL STUDIO</b></p>
-          <h1 style="font-size:34px;line-height:1.05">I got your project brief. ♥</h1>
-          <p>Hi ${safe.name},</p>
-          <p>Thank you for reaching out. Your inquiry made it safely to the studio. I’ll review what you sent and follow up at this email address.</p>
-
-          <div style="border:1px solid #171317;padding:20px;margin:24px 0">
+    let studioStatus = "failed";
+    let confirmationStatus = "failed";
+    try {
+      const { error } = await resend.emails.send({
+        from,
+        to: [destination],
+        replyTo: email,
+        subject: `[${classification}] ${investment} · ${business || name}`,
+        html: `
+          <div style="font-family:Arial,sans-serif;line-height:1.55;color:#171317;max-width:720px">
+            <p style="font-size:12px;letter-spacing:.08em"><b>${safe.classification} LEAD</b></p>
+            <h1 style="margin:0 0 24px">New project inquiry</h1>
+            <p><a href="https://www.ahalliwellstudio.com/portal/studio/leads">Open the Leads desk</a></p>
+            <p><b>Name:</b> ${safe.name}</p>
+            <p><b>Email:</b> ${safe.email}</p>
             <p><b>Business:</b> ${safe.business}</p>
-            <p><b>Project:</b> ${safe.needs.join(", ")}</p>
+            <p><b>Business type:</b> ${safe.projectType}</p>
+            <p><b>Needs:</b> ${safe.needs.join(", ")}</p>
             <p><b>Timing:</b> ${safe.timing}</p>
             <p><b>Investment:</b> ${safe.investment}</p>
             <p><b>Current website:</b> ${safe.currentUrl}</p>
-            <p><b>Your goal:</b><br/>${safe.successGoal}</p>
+            ${conditionalRows}
+            <p><b>What is not working now:</b><br/>${safe.currentProblem}</p>
+            <p><b>What success looks like:</b><br/>${safe.successGoal}</p>
+            <p><b>Assets ready:</b> ${safe.assets.join(", ") || "Not provided"}</p>
+            <p><b>How they found the studio:</b> ${safe.referral}</p>
           </div>
+        `,
+        text: `Open the Leads desk: https://www.ahalliwellstudio.com/portal/studio/leads
+  
+  LEAD CLASSIFICATION: ${classification}
+  Name: ${name}
+  Email: ${email}
+  Business: ${business || "Not provided"}
+  Business type: ${projectType}
+  Needs: ${needs.join(", ")}
+  Timing: ${timing}
+  Investment: ${investment}
+  Current website: ${currentUrl || "Not provided"}
+  Approx. products: ${productCount || "Not applicable"}
+  Booking / scheduling: ${bookingType || "Not applicable"}
+  Hospitality guest friction: ${guestPain || "Not applicable"}
+  
+  WHAT IS NOT WORKING NOW
+  ${currentProblem || "Not provided"}
+  
+  WHAT SUCCESS LOOKS LIKE
+  ${successGoal || "Not provided"}
+  
+  ASSETS READY
+  ${assets.join(", ") || "Not provided"}
+  
+  SOURCE
+  ${source}`,
+      });
+  
+      if (!error) studioStatus = "accepted";
+    } catch { console.warn("Inquiry studio email was not accepted; lead is saved."); }
 
-          <p>If you forgot something important, reply directly to this email and add it.</p>
-          <p>Arabella Halliwell<br/>Founder · Designer · Developer<br/>A. Halliwell Studio</p>
-        </div>
-      `,
-      text: `Hi ${name},
-
-I got your A. Halliwell Studio project brief. Thank you for reaching out. I’ll review what you sent and follow up at this email address.
-
-Business: ${business || "Not provided"}
-Project: ${needs.join(", ")}
-Timing: ${timing}
-Investment: ${investment}
-Current website: ${currentUrl || "Not provided"}
-Your goal: ${successGoal || "Not provided"}
-
-If you forgot something important, reply directly to this email and add it.
-
-Arabella Halliwell
-Founder · Designer · Developer
-A. Halliwell Studio`,
-    });
-
-    return json({
-      success: true,
-      message: "Your project inquiry has been sent.",
-      confirmationSent: !confirmation.error,
-    });
+    try {
+      const confirmation = await resend.emails.send({
+        from,
+        to: [email],
+        replyTo: studioReplyTo,
+        subject: "Your A. Halliwell Studio project brief is in ♥",
+        html: `
+          <div style="font-family:Arial,sans-serif;line-height:1.6;color:#171317;max-width:680px;margin:auto">
+            <p style="font-size:12px;letter-spacing:.08em"><b>A. HALLIWELL STUDIO</b></p>
+            <h1 style="font-size:34px;line-height:1.05">I got your project brief. ♥</h1>
+            <p>Hi ${safe.name},</p>
+            <p>Thank you for reaching out. Your inquiry made it safely to the studio. I’ll review what you sent and respond within 1–2 business days at this email address.</p>
+  
+            <div style="border:1px solid #171317;padding:20px;margin:24px 0">
+              <p><b>Business:</b> ${safe.business}</p>
+              <p><b>Project:</b> ${safe.needs.join(", ")}</p>
+              <p><b>Timing:</b> ${safe.timing}</p>
+              <p><b>Investment:</b> ${safe.investment}</p>
+              <p><b>Current website:</b> ${safe.currentUrl}</p>
+              <p><b>Your goal:</b><br/>${safe.successGoal}</p>
+            </div>
+  
+            <div style="padding:22px;background:#f4ebf7;border:1px solid #c9b0d0;margin:24px 0">
+              <h2 style="font-family:Georgia,serif;font-weight:400">Would you like to talk it through?</h2>
+              <p>You can also book a 15-minute phone consultation. Choose an available time and leave the best phone number to reach you. I’ll call you at your selected time.</p>
+              <p><a href="https://calendar.app.google/UArjShmAHzt4vGE48" style="display:inline-block;padding:12px 18px;background:#604273;color:#fff;text-decoration:none">Book a consultation</a></p>
+            </div>
+            <p>If you forgot something important, reply directly to this email and add it.</p>
+            <p>Arabella Halliwell<br/>Founder · Creative Director · Full-Stack Designer<br/>A. Halliwell Studio</p>
+          </div>
+        `,
+        text: `Hi ${name},
+  
+  I got your A. Halliwell Studio project brief. Thank you for reaching out. I’ll review what you sent and respond within 1–2 business days at this email address.
+  
+  Business: ${business || "Not provided"}
+  Project: ${needs.join(", ")}
+  Timing: ${timing}
+  Investment: ${investment}
+  Current website: ${currentUrl || "Not provided"}
+  Your goal: ${successGoal || "Not provided"}
+  
+  Want to talk it through? Book an optional 15-minute phone consultation:
+  https://calendar.app.google/UArjShmAHzt4vGE48
+  Choose a time and leave your phone number. I’ll call you at your selected time.
+  
+  If you forgot something important, reply directly to this email and add it.
+  
+  Arabella Halliwell
+  Founder · Creative Director · Full-Stack Designer
+  A. Halliwell Studio`,
+      });
+  
+      if (!confirmation.error) confirmationStatus = "accepted";
+    } catch { console.warn("Inquiry confirmation email was not accepted; lead is saved."); }
+    await leadEmailStatus(lead.id, studioStatus, confirmationStatus);
+    return json({ success: true, message: "Your project inquiry has been received.", confirmationSent: confirmationStatus === "accepted" });
   } catch {
+    if (savedLeadId) return json({ success: true, confirmationSent: false });
     return json(
       {
         success: false,
@@ -356,3 +363,4 @@ A. Halliwell Studio`,
     );
   }
 }
+

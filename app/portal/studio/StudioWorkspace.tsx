@@ -17,6 +17,10 @@ const money = (cents: number) => new Intl.NumberFormat("en-US", { style: "curren
 export default function StudioWorkspace({ projects, stripeWebhookReady = false }: { projects: Project[]; stripeWebhookReady?: boolean }) {
   const router = useRouter();
   const [selected, setSelected] = useState(projects[0]?.id || "");
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("project");
+    if (id && projects.some(project => project.id === id)) setSelected(id);
+  }, []);
   const [panel, setPanel] = useState<Panel>("overview");
   const [invoiceMilestone, setInvoiceMilestone] = useState(1);
   const [busy, setBusy] = useState(false);
@@ -229,3 +233,4 @@ function InvoiceAttachments({ doc, projectId, busy, upload, uploadMessage }: { d
     </form></details>}{uploadMessage && <p role="status">{uploadMessage}</p>}{message && <p role="status">{message}</p>}
   </section>;
 }
+

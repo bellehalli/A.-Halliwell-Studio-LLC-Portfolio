@@ -11,11 +11,12 @@ export const metadata: Metadata = {
 export default function Cookies() {
   return <main className="legal-page">
     <h1>Cookies &amp; storage</h1>
-    <p className="legal-updated">Updated September 29, 2026</p>
+    <p className="legal-updated">Updated September 30, 2026</p>
     <p>The public portfolio does not use advertising cookies. Vercel Web Analytics works without analytics cookies. The site uses browser storage for a few conveniences and essential cookies for private workspaces.</p>
     <h2>Browser storage</h2>
     <ul>
       <li><strong>Project inquiry draft:</strong> local storage saves your answers on this device while you fill out the form. It is removed after successful submission; you can clear site data in your browser sooner.</li>
+      <li><strong>Inquiry submission reference:</strong> session storage keeps a random reference while an inquiry is being sent so a retry does not create a duplicate lead. It is removed after successful submission or when the tab session ends.</li>
       <li><strong>Opening and Lab:</strong> session storage remembers that you have seen the opening during this tab session and carries a Lab scope into the inquiry form. It is not used for advertising.</li>
     </ul>
     <h2>Private fax cookies</h2>
@@ -27,3 +28,4 @@ export default function Cookies() {
     <p>You can clear this site&apos;s cookies and local storage in your browser settings. That will sign you out of private workspaces and remove any saved inquiry draft or session preferences. For information about submitted inquiries and client records, see the <a href="/privacy">Privacy Policy</a>.</p>
   </main>;
 }
+
