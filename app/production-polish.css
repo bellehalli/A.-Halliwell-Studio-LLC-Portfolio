@@ -84,3 +84,12 @@ body { overflow-x: clip; }
 
 /* Keep decorative props inside the sheet without clipping its vertical composition. */
 .destination-sheet { overflow-x: clip; }
+
+/* Eight shared navigation hearts fit in four rows on compact screens. */
+@media(max-width:1180px) {
+  .site-nav .heart-dock .heart-start { grid-column: auto !important; width: 140px !important; height: 110px !important; }
+  .site-nav .heart-dock.is-open { max-height: 100dvh; overflow-y: auto; }
+}
+@media(max-width:520px) {
+  .site-nav .heart-dock .heart-start { width: 120px !important; height: 94px !important; }
+}
