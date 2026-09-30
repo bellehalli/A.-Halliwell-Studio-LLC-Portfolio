@@ -1,7 +1,0 @@
-Add these fields to the existing metadata object:
-
-icons: { icon: '/favicon.svg', apple: '/favicon.svg' },
-openGraph: { ...existing, images: ['/opengraph-image.png'] },
-twitter: { ...existing, images: ['/opengraph-image.png'] }
-
-Do not replace the existing AHS metadata.
