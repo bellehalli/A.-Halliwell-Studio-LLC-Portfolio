@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ConsultationLink from "@/components/ConsultationLink";
 import CapabilityPlayground from "@/components/lab/CapabilityPlayground";
 import ProjectShowcase from "@/components/projects/ProjectShowcase";
 import WorkWorldGallery from "@/components/projects/WorkWorldGallery";
@@ -55,6 +56,7 @@ export default function Home(){
 
    <section className="world-sheet studio-section" id="studio"><SceneProps scene="studio"/><div className="content-shell founder-preview"><div className="founder-preview-copy"><span className="section-kicker-text">04 — The Studio</span><h2>The person<br/>behind the <em>cursor.</em></h2><p className="studio-lead">Hello, I&apos;m Arabella. I make websites with personality and a real job to do.</p><p>I have a B.A. in Psychology and experience working with people face to face in hospitality and events. I pay attention to the moment someone gets curious, the place they hesitate, and the little details that make them feel ready to move forward.</p><p>That&apos;s the eye I bring to design and code. A site can have a whole personality and still make booking, buying, or getting an answer feel easy. I love hospitality, but I&apos;m just as interested in the odd little digital problem another business needs solved.</p><div className="studio-note"><span>STRATEGY</span><span>DESIGN</span><span>CODE</span><span>SYSTEMS ♥</span></div><a className="button" href="/studio">MEET THE STUDIO</a></div><div className="founder-preview-visual"><div className="founder-photo-card"><Image src="/assets/founder/arabella-halliwell.webp" alt="Arabella Halliwell, founder of A. Halliwell Studio" fill sizes="(max-width:820px) 86vw,420px"/></div><aside className="founder-desk-note"><small>FROM MY DESK</small><strong>Detroit,<br/>Michigan</strong><span>Independent studio</span><span>Design with a pulse.</span><a href="mailto:hello@ahalliwellstudio.com">Say hello</a></aside></div></div></section>
 
+   <ConsultationLink />
    <section className="start-world"><SceneProps scene="start"/><StartProject inHome/></section>
   </div>
   </div>

@@ -1,6 +1,7 @@
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
+import ConsultationLink from "@/components/ConsultationLink";
 import SceneProps from "@/components/visual/SceneProps";
 import Navigation from "@/components/navigation/Navigation";
 
@@ -34,6 +35,7 @@ export default function Page() {
           <p><strong>One-page projects start at $1,000 + scope. Custom multi-page websites start at $5,000 + scope.</strong></p>
         </section>
         <section className="destination-grid">{blocks.map(([label, t, b]) => <article key={label + t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
+        <ConsultationLink />
         <section className="case-end"><small>THE BUSINESS TELLS US WHAT TO BUILD</small><h2>Start with the<br />problem, not the template.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
       </article>
     </main>

@@ -1,5 +1,6 @@
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
+import ConsultationLink from "@/components/ConsultationLink";
 import StartProject from "@/components/forms/StartProject";
 import SceneProps from "@/components/visual/SceneProps";
 import Navigation from "@/components/navigation/Navigation";
@@ -12,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <main className="destination-page start-route"><div className="site-background" aria-hidden="true"/><Navigation /><div className="start-route-wrap"><SceneProps scene="start"/><StartProject /></div></main>;
+  return <main className="destination-page start-route"><div className="site-background" aria-hidden="true"/><Navigation /><div className="start-route-wrap"><SceneProps scene="start"/><ConsultationLink /><StartProject /></div></main>;
 }

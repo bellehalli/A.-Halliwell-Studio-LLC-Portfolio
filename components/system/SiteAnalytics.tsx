@@ -30,6 +30,7 @@ export default function SiteAnalytics() {
       if (!anchor) return;
       const href = anchor.getAttribute("href") || "";
       if (href === "/start" || href === "#start") track("Start project click", { route: window.location.pathname });
+      if (anchor.hasAttribute("data-consultation-booking")) track("Consultation booking click", { route: window.location.pathname });
       if (href.startsWith("mailto:")) track("Email click", { route: window.location.pathname });
     };
     document.addEventListener("click", click);
