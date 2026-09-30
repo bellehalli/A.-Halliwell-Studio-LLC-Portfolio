@@ -4,3 +4,12 @@
 .studio-support p { max-width: 730px; font: 400 18px/1.65 "Times New Roman",serif; }
 .studio-support .button { margin-top: 14px; }
 @media(max-width:520px) { .studio-support { padding: 22px 18px; } .studio-support .button { width: 100%; white-space: normal; text-align: center; } }
+
+.studio-support .portal-feedback label { display:grid; gap:8px; font-weight:700; }
+.studio-support .portal-feedback :is(input,textarea) { width:100%; min-height:46px; padding:12px; border:1px solid #a88eaf; color:#30243a; background:#fffdfa; font:inherit; }
+.studio-support .portal-feedback p { margin:0; }
+
+.portal-support-history { margin-top:24px; }
+.portal-support-history summary { padding:12px 0; cursor:pointer; font-weight:700; }
+.portal-support-history article { border-top:1px solid #cdbad7; padding:16px 0; }
+.portal-support-history p { white-space:pre-wrap; overflow-wrap:anywhere; }

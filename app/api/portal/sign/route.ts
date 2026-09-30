@@ -5,7 +5,7 @@ import { del, get, put } from "@vercel/blob";
 import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { sendCompletedAgreement } from "@/lib/portal-agreement-email";
 import { alignedSignedCopy, privatePdf } from "@/lib/portal-signed-copy";
 import { validSignatureLayout } from "@/lib/portal-signature-layout";
 import { currentPortalClient, ensurePortalLifecycle, isPortalStudio, portalDb, portalEnabled } from "@/lib/portal";
@@ -109,16 +109,8 @@ export async function POST(request: Request) {
 
     await sql`UPDATE portal_documents SET aligned_pdf_url = NULL, aligned_pdf_sha256 = NULL WHERE id = ${id}`;
     if (role === "studio") return NextResponse.json({ ok: true, notified: true }, { headers });
-    const issuedInvoices = await sql`SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id WHERE d.project_id = ${doc.project_id} AND i.status = 'issued' LIMIT 1`;
-    const to = [String(doc.client_email), process.env.PORTAL_STUDIO_EMAIL].filter((value): value is string => !!value);
     let notified = false;
-    try { const result = await new Resend(process.env.RESEND_API_KEY).emails.send({
-      from: process.env.INQUIRY_FROM_EMAIL || "A. Halliwell Studio <onboarding@resend.dev>", to,
-      subject: "Your agreement is signed",
-      attachments: [{ filename: "completed-signed-agreement.pdf", content: Buffer.from(signed) }],
-      text: `The attached agreement has both signatures, dates on the agreement lines, and timestamped signature records. You can download the signed copy${issuedInvoices.length ? " and review your issued invoice" : ""} from your private project workspace: https://www.ahalliwellstudio.com/portal\n\nArabella`,
-    }, { idempotencyKey: `portal-signature/${id}/client` }); notified = !result.error && !!result.data?.id; if (notified) await sql`UPDATE portal_documents SET completed_email_id = ${result.data!.id} WHERE id = ${id}`; }
-    catch { /* The signature is recorded even if notification fails. */ }
+    try { notified = (await sendCompletedAgreement(id)).ok; } catch { /* The signature remains recorded if email infrastructure is unavailable. */ }
     return NextResponse.json({ ok: true, notified }, { headers });
   } catch { return fail(500, "The signature could not be recorded. Please try again."); }
 }

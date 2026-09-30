@@ -2,6 +2,7 @@ import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { neon } from "@neondatabase/serverless";
+import { ensurePortalRecordProtection } from "./portal-record-protection";
 
 export const PORTAL_COOKIE = "__Host-ahs_client_session";
 export const SESSION_AGE_SECONDS = 7 * 24 * 60 * 60;
@@ -64,6 +65,9 @@ export async function ensurePortalLifecycle() {
     await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_url text`;
     await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS aligned_pdf_sha256 text`;
     await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS completed_email_id text`;
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS completed_email_status text NOT NULL DEFAULT 'unknown'`;
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS completed_email_attempted_at timestamptz`;
+    await sql`ALTER TABLE portal_documents ADD COLUMN IF NOT EXISTS completed_email_attempts integer NOT NULL DEFAULT 0`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS invited_at timestamptz`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS archived_at timestamptz`;
     await sql`ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS milestone_1_cents integer`;
@@ -102,6 +106,7 @@ export async function ensurePortalLifecycle() {
       AND (SELECT count(*) FROM portal_invoices only_i JOIN portal_documents only_d ON only_d.id = only_i.document_id WHERE only_d.project_id = p.id AND only_i.status != 'void') = 1
       AND i.document_id = (SELECT d2.id FROM portal_documents d2 JOIN portal_invoices i2 ON i2.document_id = d2.id
         WHERE d2.project_id = p.id AND i2.status = 'issued' ORDER BY d2.created_at DESC, d2.id DESC LIMIT 1)`;
+    await ensurePortalRecordProtection();
   })();
   try { await lifecycleReady; } catch (error) { lifecycleReady = undefined; throw error; }
 }

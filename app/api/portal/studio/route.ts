@@ -5,6 +5,7 @@ import { Resend } from "resend";
 import { del } from "@vercel/blob";
 import Stripe from "stripe";
 import { currentPortalClient, ensurePortalPaymentOptions, ensurePortalProposals, ensurePortalLifecycle, isPortalStudio, newToken, portalDb, portalEnabled, tokenHash } from "@/lib/portal";
+import { sendCompletedAgreement } from "@/lib/portal-agreement-email";
 import { projectMilestoneAmounts } from "@/lib/portal-plan";
 
 export const runtime = "nodejs";
@@ -29,6 +30,12 @@ export async function POST(request: Request) {
     const data = JSON.parse(raw);
     await ensurePortalLifecycle();
     const sql = portalDb();
+    if (data.action === "resendCompletedAgreement") {
+      const documentId = String(data.documentId || "");
+      if (!/^[a-f0-9-]{36}$/.test(documentId)) return fail(400, "Choose a signed agreement.");
+      const result = await sendCompletedAgreement(documentId, true);
+      return NextResponse.json(result, { status: result.ok ? 200 : 409, headers });
+    }
     if (data.action === "createValerieDraft") {
       const email = "valerie-draft@portal.invalid";
       const title = "Custom Illustrated Venue Experience Map";
@@ -153,9 +160,12 @@ export async function POST(request: Request) {
         UNION SELECT blob_url AS url FROM portal_materials WHERE project_id = ${id}
         UNION SELECT blob_url AS url FROM portal_deliverables WHERE project_id = ${id}
         UNION SELECT signed_pdf_url AS url FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id WHERE d.project_id = ${id}`;
-      await sql`DELETE FROM portal_projects WHERE id = ${id}`;
+      const deleted = await sql`DELETE FROM portal_projects p WHERE p.id = ${id}
+        AND NOT EXISTS (SELECT 1 FROM portal_agreement_signatures s JOIN portal_documents d ON d.id = s.document_id WHERE d.project_id = p.id)
+        AND NOT EXISTS (SELECT 1 FROM portal_invoices i JOIN portal_documents d ON d.id = i.document_id WHERE d.project_id = p.id AND (i.status IN ('paid','issued') OR i.submitted_at IS NOT NULL)) RETURNING id`;
+      if (!deleted.length) return fail(409, "This workspace now has a signed record, payment, pending receipt, or issued invoice. Archive it instead, or void an unpaid practice invoice first.");
       const remaining = await sql`SELECT 1 FROM portal_projects WHERE client_id = ${target.client_id} LIMIT 1`;
-      if (!remaining.length) await sql`DELETE FROM portal_clients WHERE id = ${target.client_id}`;
+      if (!remaining.length) await sql`DELETE FROM portal_clients c WHERE c.id = ${target.client_id} AND NOT EXISTS (SELECT 1 FROM portal_projects p WHERE p.client_id = c.id)`;
       const urls = blobs.map(blob => String(blob.url)).filter(url => url.startsWith("https://"));
       if (urls.length) await del(urls).catch(() => { /* The database removal remains authoritative. */ });
       return NextResponse.json({ ok: true, email: target.email, clientRemoved: !remaining.length }, { headers });
@@ -367,7 +377,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true }, { headers });
     }
     return fail(400, "Unknown action.");
-  } catch {
+  } catch (error) {
+    if ((error as { code?: string }).code === "P0001") return fail(409, "This workspace is protected. Archive it instead, or void an unpaid practice invoice first.");
     return fail(500, "The studio action could not be completed.");
   }
 }

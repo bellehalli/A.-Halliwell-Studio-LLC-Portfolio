@@ -11,6 +11,8 @@ import Navigation from "@/components/navigation/Navigation";
 import PortalFeedback from "./PortalFeedback";
 import MaterialUpload from "./MaterialUpload";
 import PaymentOptions from "./PaymentOptions";
+import SupportRequest from "./SupportRequest";
+import { ensurePortalSupport } from "@/lib/portal-support";
 import "@/components/studio-support.css";
 
 export const dynamic = "force-dynamic";
@@ -60,6 +62,11 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
   const milestonePending = invoices.some(item => Number(item.milestone_number) !== 0 && (!!item.submitted_at || stripeStatuses.get(item.document_id) === "received, awaiting approval"));
   const milestonePaid = invoices.some(item => Number(item.milestone_number) !== 0 && (item.status === "paid" || stripeStatuses.get(item.document_id) === "paid"));
   const depositReceived = allInvoices.some(item => (Number(item.milestone_number) === 1 || Number(item.milestone_number) === 0) && item.status === "paid" && !!item.paid_at);
+  let supportRequests: { id: string; message: string; timing: string; created_at: string }[] = [];
+  if (depositReceived || studioPreview) {
+    await ensurePortalSupport();
+    supportRequests = await portalDb()`SELECT id, message, timing, created_at::text FROM portal_support_requests WHERE project_id = ${project.id} ORDER BY created_at DESC LIMIT 10` as typeof supportRequests;
+  }
   const started = ["in_progress", "review", "complete"].includes(project.stage);
   const isVenueMap = project.client_business.toLowerCase() === "vale royal barn" && project.title.toLowerCase().includes("map");
   return <main className="portal-page">
@@ -106,7 +113,8 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
         {studioPreview && !depositReceived && <p className="portal-preview-safety">Clients see this section after the studio confirms the deposit as received.</p>}
         <p>Your business keeps evolving after a project is complete. Return to A. Halliwell Studio for website updates, design refinements, additional illustrations, new features, or technical support.</p>
         <p>Every request is scoped and quoted before work begins, with clear deliverables, pricing, and an estimated timeline.</p>
-        <Link className="button button-primary" href="/start?service=support#start">Request Studio Support</Link>
+        <SupportRequest projectId={project.id} readonly={studioPreview} />
+        {supportRequests.length > 0 && <details className="portal-support-history"><summary>Your support requests</summary>{supportRequests.map(request => <article key={request.id}><small>Received {new Date(request.created_at).toLocaleDateString("en-US", { timeZone: "America/Detroit" })}</small><p>{request.message}</p>{request.timing && <p>Timing preference {request.timing}</p>}</article>)}</details>}
       </section>}
       <p><Link href={studioPreview ? "/portal/studio" : "/portal"}>{studioPreview ? "Manager portal" : "All projects"}</Link>. Questions? <a href="mailto:hello@ahalliwellstudio.com">Email Arabella</a>.</p>
     </section>
