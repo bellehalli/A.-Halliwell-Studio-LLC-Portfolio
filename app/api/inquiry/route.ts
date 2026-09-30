@@ -72,6 +72,7 @@ function classifyLead(needs: string[], projectType: string) {
   if (needs.includes("Multi-page website")) return "CUSTOM WEBSITE";
   if (needs.includes("One-page website")) return "ONE-PAGE";
   if (needs.includes("Ongoing support")) return "SUPPORT";
+  if (needs.includes("Illustration / property map")) return "ILLUSTRATION";
   if (projectType === "Hospitality / venue") return "HOSPITALITY";
 
   return "GENERAL WEB";
@@ -363,4 +364,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

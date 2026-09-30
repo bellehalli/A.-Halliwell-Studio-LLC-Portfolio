@@ -8,9 +8,9 @@ import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Web Design, Development & Digital Systems",
-  description: "Custom web design, development and digital systems for businesses that need the website to sell, book, explain, organize or automate.",
+  description: "Custom websites, illustrations, property maps and digital systems shaped around your business.",
   alternates: { canonical: "/services" },
-  ...socialMetadata("/services", "Web Design, Development & Digital Systems", "Custom web design, development and digital systems for businesses that need the website to sell, book, explain, organize or automate."),
+  ...socialMetadata("/services", "Web Design, Development & Digital Systems", "Custom websites, illustrations, property maps and digital systems shaped around your business."),
 };
 
 const blocks: string[][] = [
@@ -30,12 +30,20 @@ export default function Page() {
 
       <article className="destination-sheet services-destination"><SceneProps scene="services"/>
         <section className="destination-hero">
-          <small>WEB DESIGN + DEVELOPMENT + DIGITAL SYSTEMS</small>
+          <small>WEB DESIGN + DEVELOPMENT + ILLUSTRATION + DIGITAL SYSTEMS</small>
           <h1>The website should participate in the business.</h1>
           <p>I combine strategy, custom design and development to build websites that help people understand, choose, buy, book, inquire or get something done.</p>
           <p><strong>Website Refinement starts at $2,500. Custom websites start at $7,000. Other custom projects are priced by scope.</strong></p>
         </section>
         <section className="destination-grid">{blocks.map(([label, t, b]) => <article key={label + t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
+        <section className="destination-block" id="illustration">
+          <small>ILLUSTRATION / PROPERTY + VENUE MAPS</small>
+          <h2>Let people picture the place.</h2>
+          <p>Custom illustrations and property maps that help guests understand your venue, explore the grounds, and imagine being there. A distinctive piece for your website, brochure, welcome guide, or other agreed uses.</p>
+          <p>We define the spaces to feature, labels, visual direction, final file formats, and revision rounds in your proposal. A standalone illustration and an interactive website map are separate scopes.</p>
+          <p><strong>Priced by scope.</strong> Your agreement defines the commercial usage license for the final artwork and any additional uses.</p>
+          <Link className="button button-primary" href="/start?service=illustration">Discuss an illustration or property map ↗</Link>
+        </section>
         <StudioFaq />
         <ConsultationLink />
         <section className="case-end"><small>THE BUSINESS TELLS US WHAT TO BUILD</small><h2>Start with the<br />problem, not the template.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>

@@ -1,7 +1,9 @@
 "use client";
 import { track } from "@vercel/analytics";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+
+import { readStorage, writeStorage, removeStorage } from "@/lib/browser-storage";
 
 type Status = "idle" | "sending" | "success" | "error";
 type LabScope = { projectType: string; needs: string[]; successGoal: string };
@@ -27,6 +29,8 @@ type Draft = {
 
 const DRAFT_KEY = "ahs-project-inquiry-draft-v1";
 const LAB_SCOPE_KEY = "ahs-lab-scope-v1";
+const draftText = (value: unknown, max: number) => typeof value === "string" ? value.slice(0, max) : "";
+const draftList = (value: unknown, options: string[]) => Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && options.includes(item)) : [];
 
 const projectTypes = [
   "Small business / service",
@@ -49,6 +53,7 @@ const projectNeeds = [
   "Client portal",
   "Events or ticketing",
   "Custom interactive feature",
+  "Illustration / property map",
   "Add to an existing website",
   "Ongoing support",
 ];
@@ -93,6 +98,12 @@ const productCountOptions = ["1–10", "11–50", "51–200", "200+", "Not sure 
 
 export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   const submissionRef = useRef("");
+  const formRef = useRef<HTMLFormElement>(null);
+  const feedbackRef = useRef<HTMLParagraphElement>(null);
+  const errorPrefix = useId();
+  const [attempted, setAttempted] = useState(false);
+  const [draftSaved, setDraftSaved] = useState(false);
+  const [invalidField, setInvalidField] = useState("");
   const Heading = inHome ? "h2" : "h1";
   const [projectType, setProjectType] = useState("");
   const [needs, setNeeds] = useState<string[]>([]);
@@ -156,41 +167,48 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(DRAFT_KEY);
+      const saved = readStorage("local", DRAFT_KEY);
       if (saved) {
         const draft = JSON.parse(saved) as Partial<Draft>;
-        setProjectType(draft.projectType || "");
-        setNeeds(Array.isArray(draft.needs) ? draft.needs : []);
-        setTiming(draft.timing || "");
+        setProjectType(projectTypes.includes(draft.projectType || "") ? draft.projectType! : "");
+        setNeeds(draftList(draft.needs, projectNeeds));
+        setTiming(timingOptions.includes(draft.timing || "") ? draft.timing! : "");
         setInvestment(investmentOptions.includes(draft.investment || "") ? draft.investment! : "");
-        setName(draft.name || "");
-        setEmail(draft.email || "");
-        setBusiness(draft.business || "");
-        setCurrentUrl(draft.currentUrl || "");
-        setCurrentProblem(draft.currentProblem || "");
-        setSuccessGoal(draft.successGoal || "");
-        setAssets(Array.isArray(draft.assets) ? draft.assets : []);
-        setReferralSource(draft.referralSource || "");
-        setReferralOther(draft.referralOther || "");
-        setProductCount(draft.productCount || "");
-        setBookingType(draft.bookingType || "");
-        setGuestPain(draft.guestPain || "");
-      }
-      const fromLab = sessionStorage.getItem(LAB_SCOPE_KEY);
-      if (fromLab) {
-        const scope = JSON.parse(fromLab) as LabScope;
-        if (scope.projectType && Array.isArray(scope.needs) && scope.successGoal) {
-          setProjectType(scope.projectType);
-          setNeeds(scope.needs);
-          setSuccessGoal(scope.successGoal);
-        }
-        sessionStorage.removeItem(LAB_SCOPE_KEY);
+        setName(draftText(draft.name, 100));
+        setEmail(draftText(draft.email, 254));
+        setBusiness(draftText(draft.business, 150));
+        setCurrentUrl(draftText(draft.currentUrl, 400));
+        setCurrentProblem(draftText(draft.currentProblem, 3000));
+        setSuccessGoal(draftText(draft.successGoal, 3000));
+        setAssets(draftList(draft.assets, assetOptions));
+        setReferralSource(referralOptions.includes(draft.referralSource || "") ? draft.referralSource! : "");
+        setReferralOther(draftText(draft.referralOther, 200));
+        setProductCount(productCountOptions.includes(draft.productCount || "") ? draft.productCount! : "");
+        setBookingType(draftText(draft.bookingType, 1200));
+        setGuestPain(draftText(draft.guestPain, 1800));
       }
     } catch {
-      localStorage.removeItem(DRAFT_KEY);
+      removeStorage("local", DRAFT_KEY);
+    }
+    try {
+      const fromLab = readStorage("session", LAB_SCOPE_KEY);
+      if (fromLab) {
+        const scope = JSON.parse(fromLab) as LabScope;
+        if (projectTypes.includes(scope.projectType) && Array.isArray(scope.needs) && typeof scope.successGoal === "string") {
+          setProjectType(scope.projectType);
+          setNeeds(draftList(scope.needs, projectNeeds));
+          setSuccessGoal(draftText(scope.successGoal, 3000));
+        }
+        removeStorage("session", LAB_SCOPE_KEY);
+      }
+    } catch {
+      removeStorage("session", LAB_SCOPE_KEY);
     } finally {
       if (new URLSearchParams(window.location.search).get("service") === "support") {
         setNeeds(current => current.includes("Ongoing support") ? current : [...current, "Ongoing support"]);
+      }
+      if (new URLSearchParams(window.location.search).get("service") === "illustration") {
+        setNeeds(current => current.includes("Illustration / property map") ? current : [...current, "Illustration / property map"]);
       }
       setDraftReady(true);
     }
@@ -218,7 +236,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       guestPain,
     };
 
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    setDraftSaved(writeStorage("local", DRAFT_KEY, JSON.stringify(draft)));
   }, [
     draftReady,
     status,
@@ -243,11 +261,11 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   useEffect(() => {
     const receiveScope = (event: Event) => {
       const scope = (event as CustomEvent<LabScope>).detail;
-      if (!scope || !Array.isArray(scope.needs)) return;
+      if (!scope || !projectTypes.includes(scope.projectType) || !Array.isArray(scope.needs) || typeof scope.successGoal !== "string") return;
       setProjectType(scope.projectType);
-      setNeeds(scope.needs);
-      setSuccessGoal(scope.successGoal);
-      sessionStorage.removeItem(LAB_SCOPE_KEY);
+      setNeeds(draftList(scope.needs, projectNeeds));
+      setSuccessGoal(draftText(scope.successGoal, 3000));
+      removeStorage("session", LAB_SCOPE_KEY);
     };
     window.addEventListener("ahs:lab-scope", receiveScope);
     return () => window.removeEventListener("ahs:lab-scope", receiveScope);
@@ -272,9 +290,21 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!projectType || !needs.length || !timing || !investment || !name.trim() || !email.trim()) {
+    if (status === "sending") return;
+    setAttempted(true);
+    const missing = [["projectType", !!projectType], ["needs", !!needs.length], ["timing", !!timing], ["investment", !!investment], ["name", !!name.trim()], ["email", !!email.trim()]].find(([, complete]) => !complete)?.[0];
+    if (missing) {
       setStatus("error");
-      setFeedback("Complete the required fields before sending your project.");
+      setFeedback("Please complete the marked answers before sending your project.");
+      formRef.current?.querySelector<HTMLElement>(`[data-required="${missing}"] button, input[data-required="${missing}"]`)?.focus();
+      return;
+    }
+    const invalid = formRef.current?.querySelector<HTMLInputElement>("input:invalid");
+    if (invalid) {
+      setInvalidField(invalid.type === "email" ? "email" : "url");
+      setStatus("error");
+      setFeedback(invalid.validationMessage);
+      invalid.focus();
       return;
     }
 
@@ -283,8 +313,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
 
     try {
       if (!submissionRef.current) {
-        try { submissionRef.current = sessionStorage.getItem("ahs-inquiry-submission") || crypto.randomUUID(); sessionStorage.setItem("ahs-inquiry-submission", submissionRef.current); }
-        catch { submissionRef.current = crypto.randomUUID(); }
+        submissionRef.current = readStorage("session", "ahs-inquiry-submission") || crypto.randomUUID();
+        writeStorage("session", "ahs-inquiry-submission", submissionRef.current);
       }
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -312,23 +342,37 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       });
 
       const result = await response.json();
-      if (response.status === 409) { submissionRef.current = ""; try { sessionStorage.removeItem("ahs-inquiry-submission"); } catch {} }
-      if (!response.ok || !result.success) throw new Error();
+      if (response.status === 409) { submissionRef.current = ""; removeStorage("session", "ahs-inquiry-submission"); }
+      if (!response.ok || !result.success) throw new Error(result.message || "Your inquiry couldn't be sent right now. Please try again.");
 
-      try { localStorage.removeItem(DRAFT_KEY); sessionStorage.removeItem("ahs-inquiry-submission"); } catch { /* Receipt is authoritative even when browser storage is unavailable. */ }
+      removeStorage("local", DRAFT_KEY);
+      removeStorage("session", "ahs-inquiry-submission");
       setConfirmationSent(Boolean(result.confirmationSent));
       setStatus("success");
-      track("Form completion", { projectType });
+      try { track("Form completion", { projectType }); } catch { /* Analytics cannot change a saved receipt. */ }
       setFeedback(
         result.confirmationSent
           ? "Your project is officially in my inbox, and a confirmation copy is headed to your email. ♥"
           : "Your project is officially in my inbox. I'll review it and be in touch soon. ♥"
       );
-    } catch {
+    } catch (error) {
       setStatus("error");
-      setFeedback("Your inquiry couldn't be sent right now. Please try again.");
+      setFeedback(error instanceof Error ? error.message : "Your inquiry couldn't be sent right now. Please try again.");
+      requestAnimationFrame(() => feedbackRef.current?.focus());
     }
   }
+
+  function clearDraft() {
+    setProjectType(""); setNeeds([]); setTiming(""); setInvestment(""); setName(""); setEmail(""); setBusiness("");
+    setCurrentUrl(""); setCurrentProblem(""); setSuccessGoal(""); setAssets([]); setReferralSource(""); setReferralOther("");
+    setProductCount(""); setBookingType(""); setGuestPain(""); setWebsite(""); setAttempted(false); setInvalidField(""); setStatus("idle"); setFeedback("");
+    submissionRef.current = "";
+    removeStorage("local", DRAFT_KEY); removeStorage("session", "ahs-inquiry-submission"); removeStorage("session", LAB_SCOPE_KEY);
+    formRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+  }
+
+  const groupError = (key: string, complete: boolean, message: string) => attempted && !complete
+    ? <p className="builder-field-error" id={`${errorPrefix}-${key}`}>{message}</p> : null;
 
   if (status === "success") {
     return (
@@ -369,9 +413,11 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           </p>
         </div>
 
-        <form className="project-builder" onSubmit={submit}>
-          <fieldset className="builder-step">
-            <legend><span>01</span>What kind of business is this?</legend>
+        <form ref={formRef} className="project-builder" onSubmit={submit} onInput={() => setInvalidField("")} noValidate>
+          <p className="builder-hint">Answers marked * are required. Everything else can be shaped together.</p>
+          <fieldset className="builder-step" data-required="projectType" aria-invalid={attempted && !projectType} aria-describedby={attempted && !projectType ? `${errorPrefix}-projectType` : undefined}>
+            <legend><span>01</span>What kind of business is this? <b>*</b></legend>
+            {groupError("projectType", !!projectType, "Choose a business type.")}
             <div className="builder-options">
               {projectTypes.map((x) => (
                 <button
@@ -387,8 +433,9 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
             </div>
           </fieldset>
 
-          <fieldset className="builder-step">
+          <fieldset className="builder-step" data-required="needs" aria-invalid={attempted && !needs.length} aria-describedby={attempted && !needs.length ? `${errorPrefix}-needs` : undefined}>
             <legend><span>02</span>What do you need? <b>*</b></legend>
+            {groupError("needs", !!needs.length, "Choose at least one service.")}
             <p className="builder-hint">Choose as many as apply.</p>
             <div className="builder-options">
               {projectNeeds.map((x) => (
@@ -432,7 +479,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
                   <label className="builder-message">
                     <span>What do customers need to book or schedule?</span>
                     <textarea
-                      value={bookingType}
+                      maxLength={1200}
+                  value={bookingType}
                       onChange={(e) => setBookingType(e.target.value)}
                       rows={3}
                       placeholder="Appointments, tours, consultations, tables, classes, services..."
@@ -444,7 +492,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
                   <label className="builder-message">
                     <span>What do guests struggle to find, understand or do right now?</span>
                     <textarea
-                      value={guestPain}
+                      maxLength={1800}
+                  value={guestPain}
                       onChange={(e) => setGuestPain(e.target.value)}
                       rows={4}
                       placeholder="Pricing, availability, spaces, packages, booking, planning details..."
@@ -462,8 +511,9 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           )}
 
           <div className="builder-split">
-            <fieldset className="builder-step">
-              <legend><span>{String(step.timing).padStart(2, "0")}</span>What&apos;s the timing?</legend>
+            <fieldset className="builder-step" data-required="timing" aria-invalid={attempted && !timing} aria-describedby={attempted && !timing ? `${errorPrefix}-timing` : undefined}>
+              <legend><span>{String(step.timing).padStart(2, "0")}</span>What&apos;s the timing? <b>*</b></legend>
+              {groupError("timing", !!timing, "Choose a timing preference; flexible is fine.")}
               <div className="builder-options">
                 {timingOptions.map((x) => (
                   <button
@@ -479,8 +529,9 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
               </div>
             </fieldset>
 
-            <fieldset className="builder-step">
-              <legend><span>{String(step.investment).padStart(2, "0")}</span>What investment range fits?</legend>
+            <fieldset className="builder-step" data-required="investment" aria-invalid={attempted && !investment} aria-describedby={attempted && !investment ? `${errorPrefix}-investment` : undefined}>
+              <legend><span>{String(step.investment).padStart(2, "0")}</span>What investment range fits? <b>*</b></legend>
+              {groupError("investment", !!investment, "Choose an investment direction, or ask for help scoping it.")}
               <p className="builder-hint">This helps me shape the right scope, not force you into a package.</p>
               <div className="builder-options">
                 {investmentOptions.map((x) => (
@@ -504,6 +555,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
               <label className="builder-message">
                 <span>What is not working well right now?</span>
                 <textarea
+                  maxLength={3000}
                   value={currentProblem}
                   onChange={(e) => setCurrentProblem(e.target.value)}
                   rows={5}
@@ -514,6 +566,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
               <label className="builder-message">
                 <span>What would make this project a win?</span>
                 <textarea
+                  maxLength={3000}
                   value={successGoal}
                   onChange={(e) => setSuccessGoal(e.target.value)}
                   rows={5}
@@ -562,7 +615,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
                 <label>
                   <span>Tell me where</span>
                   <input
-                    value={referralOther}
+                    maxLength={200}
+                  value={referralOther}
                     onChange={(e) => setReferralOther(e.target.value)}
                     placeholder="Podcast, article, friend, directory..."
                   />
@@ -579,10 +633,15 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
                 <input
                   required
                   autoComplete="name"
+                  maxLength={100}
+                  data-required="name"
+                  aria-invalid={attempted && !name.trim()}
+                  aria-describedby={attempted && !name.trim() ? `${errorPrefix}-name` : undefined}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
                 />
+                {groupError("name", !!name.trim(), "Enter your name.")}
               </label>
 
               <label>
@@ -591,16 +650,22 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
                   required
                   type="email"
                   autoComplete="email"
+                  maxLength={254}
+                  data-required="email"
+                  aria-invalid={attempted && (!email.trim() || invalidField === "email")}
+                  aria-describedby={attempted && (!email.trim() || invalidField === "email") ? `${errorPrefix}-email` : undefined}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@business.com"
                 />
+                {groupError("email", !!email.trim() && invalidField !== "email", "Enter a valid email address.")}
               </label>
 
               <label>
                 <span>Business or brand</span>
                 <input
                   autoComplete="organization"
+                  maxLength={150}
                   value={business}
                   onChange={(e) => setBusiness(e.target.value)}
                   placeholder="Business name"
@@ -613,6 +678,9 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
                   type="url"
                   inputMode="url"
                   autoComplete="url"
+                  maxLength={400}
+                  aria-invalid={invalidField === "url"}
+                  aria-describedby={invalidField === "url" ? `${errorPrefix}-feedback` : undefined}
                   value={currentUrl}
                   onChange={(e) => setCurrentUrl(e.target.value)}
                   onBlur={normalizeUrl}
@@ -643,7 +711,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
             <div>
               <small>READY WHEN YOU ARE</small>
               <p>Your answers come directly to A. Halliwell Studio.</p>
-              <p className="builder-privacy">Your draft saves automatically on this device until you submit it.</p>
+              <p className="builder-privacy">{draftSaved ? "Your draft saves automatically on this device until you submit it." : "You can send your inquiry here. Keep this page open until you finish."}</p>
+              <button className="builder-draft-clear" type="button" disabled={status === "sending"} onClick={clearDraft}>Clear my draft</button>
             </div>
             <button className="button button-primary" disabled={status === "sending"}>
               {status === "sending" ? "Sending..." : "Send my project"}
@@ -651,7 +720,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           </div>
 
           {feedback && status === "error" && (
-            <p className="builder-feedback builder-error">
+            <p ref={feedbackRef} id={`${errorPrefix}-feedback`} tabIndex={-1} role="alert" className="builder-feedback builder-error">
               {feedback}{" "}
               <a href="mailto:hello@ahalliwellstudio.com">Email the studio directly</a>
             </p>
@@ -666,4 +735,3 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     </section>
   );
 }
-

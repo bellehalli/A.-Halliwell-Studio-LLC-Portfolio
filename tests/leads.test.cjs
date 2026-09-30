@@ -60,6 +60,11 @@ async function run() {
   assert(sent[1].html.includes('https://calendar.app.google/UArjShmAHzt4vGE48')); assert(sent[1].text.includes('1–2 business days'));
   duplicate = true; await inquiry.POST(request(payload)); assert.equal(sent.length, 2); duplicate = false;
   emailFails = true; response = await inquiry.POST(request(payload)); const receipt = await response.json(); assert.equal(receipt.success, true); assert.equal(receipt.confirmationSent, false);
+  emailFails = false;
+  response = await inquiry.POST(request({ ...payload, needs: ['Illustration / property map'], investment: 'Custom project · priced by scope' }));
+  assert.equal((await response.json()).success, true);
+  assert(sent.at(-2).subject.startsWith('[ILLUSTRATION]'));
+  assert(sent.at(-1).text.includes('Illustration / property map'));
 
   let studio = false, writes = 0;
   const manager = load('app/api/portal/studio/leads/route.ts', { 'next/server': next, '@/lib/lead-fields': fields, '@/lib/leads': { ensureLeads: async () => {} }, '@/lib/portal': { portalEnabled: () => true, currentPortalClient: async () => ({ email: 'owner@example.com' }), isPortalStudio: () => studio, portalDb: () => async () => { writes++; return []; } } });

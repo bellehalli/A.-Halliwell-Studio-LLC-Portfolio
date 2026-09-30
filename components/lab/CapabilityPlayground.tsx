@@ -1,4 +1,5 @@
 "use client";
+import { writeStorage } from "@/lib/browser-storage";
 import { useState } from "react";
 import Image from "next/image";
 import { track } from "@vercel/analytics";
@@ -133,7 +134,7 @@ function ScopeDiscovery({inHome}:{inHome:boolean}) {
       projectType, needs: [...new Set(needs)],
       successGoal: `From The Lab: ${business}. Goals: ${selectedGoals.join(", ") || "to discuss"}. Functionality: ${features.join(", ") || "to discuss"}. Desired experience: ${experience}. Starting direction: ${recommendation[0]} (${recommendation[1]}).`
     };
-    sessionStorage.setItem(SCOPE_KEY, JSON.stringify(scope));
+    writeStorage("session", SCOPE_KEY, JSON.stringify(scope));
     window.dispatchEvent(new CustomEvent("ahs:lab-scope", { detail: scope }));
   };
 

@@ -139,3 +139,8 @@ body { overflow-x: clip; }
     height: 72px !important;
   }
 }
+.skip-to-content { position: fixed; top: 12px; left: 12px; z-index: 2147483647; transform: translateY(-160%); padding: 12px 20px; background: #fffaf7; color: #32172c; border: 2px solid #60217d; }
+.skip-to-content:focus { transform: translateY(0); }
+.builder-field-error { color: #802344; font-weight: bold; }
+.project-builder fieldset[aria-invalid="true"] { border-left: 3px solid #802344; padding-left: 14px; }
+.builder-draft-clear { margin-top: 10px; cursor: pointer; background: transparent; border: 1px solid currentColor; padding: 8px 12px; color: inherit; font: inherit; }
