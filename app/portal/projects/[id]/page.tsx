@@ -11,6 +11,7 @@ import Navigation from "@/components/navigation/Navigation";
 import PortalFeedback from "./PortalFeedback";
 import MaterialUpload from "./MaterialUpload";
 import PaymentOptions from "./PaymentOptions";
+import "@/components/studio-support.css";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Private client project", robots: { index: false, follow: false }, referrer: "no-referrer" };
@@ -58,7 +59,7 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
   const fullPending = invoices.some(item => Number(item.milestone_number) === 0 && (!!item.submitted_at || stripeStatuses.get(item.document_id) === "received, awaiting approval"));
   const milestonePending = invoices.some(item => Number(item.milestone_number) !== 0 && (!!item.submitted_at || stripeStatuses.get(item.document_id) === "received, awaiting approval"));
   const milestonePaid = invoices.some(item => Number(item.milestone_number) !== 0 && (item.status === "paid" || stripeStatuses.get(item.document_id) === "paid"));
-  const paid = invoices.some(item => item.status === "paid" || stripeStatuses.get(item.document_id) === "paid");
+  const depositReceived = allInvoices.some(item => (Number(item.milestone_number) === 1 || Number(item.milestone_number) === 0) && item.status === "paid" && !!item.paid_at);
   const started = ["in_progress", "review", "complete"].includes(project.stage);
   const isVenueMap = project.client_business.toLowerCase() === "vale royal barn" && project.title.toLowerCase().includes("map");
   return <main className="portal-page">
@@ -86,7 +87,7 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
         {materials.length > 0 && <div className="portal-material-list"><h3>Shared materials</h3>{materials.map(item => <p key={String(item.id)}><a href={`/api/portal/materials/${item.id}`}>{String(item.file_name)}</a>. {String(item.category).replaceAll("_", " ")}</p>)}</div>}
       </section>
       <section className="portal-journey"><h2>Project journey</h2><ol>
-        <li><strong>01 Project confirmed</strong><span>Agreement {agreement?.client_signed_at ? "signed" : "awaiting signature"}. Deposit {paid ? "received" : "awaiting payment"}</span></li>
+        <li><strong>01 Project confirmed</strong><span>Agreement {agreement?.client_signed_at ? "signed" : "awaiting signature"}. Deposit {depositReceived ? "received" : "awaiting payment"}</span></li>
         <li><strong>02 Creative development</strong><span>{started ? "In progress" : "Source review + illustration planning"}</span></li>
         <li><strong>03 First concept review</strong><span>{deliverables.length ? "Initial concept available" : "Initial map presentation"}</span></li>
         <li><strong>04 Refinement</strong><span>Final adjustments</span></li>
@@ -99,6 +100,14 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
           {item.status === "review" && (studioPreview ? <p>Client feedback controls open in the client workspace.</p> : <PortalFeedback deliverableId={item.id} />)}
         </article>) : sampleInvoice ? <article className="portal-review-item"><strong>First concept review preview</strong><p>When the first proof is shared, its PDF appears here. You can then request revisions or approve that version.</p><label>Revision notes<textarea disabled placeholder="What would you like adjusted?" /></label><div className="portal-feedback"><button type="button" disabled>Request revisions</button><button type="button" disabled>Approve this version</button></div><p>No review file has been shared in this test project.</p></article> : <p>No review files have been shared yet.</p>}
       </section>
+      {(depositReceived || studioPreview) && <section className="studio-support" id="studio-support" aria-labelledby="studio-support-heading">
+        <small>STUDIO SUPPORT</small>
+        <h2 id="studio-support-heading">For what comes next.</h2>
+        {studioPreview && !depositReceived && <p className="portal-preview-safety">Clients see this section after the studio confirms the deposit as received.</p>}
+        <p>Your business keeps evolving after a project is complete. Return to A. Halliwell Studio for website updates, design refinements, additional illustrations, new features, or technical support.</p>
+        <p>Every request is scoped and quoted before work begins, with clear deliverables, pricing, and an estimated timeline.</p>
+        <Link className="button button-primary" href="/start?service=support#start">Request Studio Support</Link>
+      </section>}
       <p><Link href={studioPreview ? "/portal/studio" : "/portal"}>{studioPreview ? "Manager portal" : "All projects"}</Link>. Questions? <a href="mailto:hello@ahalliwellstudio.com">Email Arabella</a>.</p>
     </section>
   </main>;

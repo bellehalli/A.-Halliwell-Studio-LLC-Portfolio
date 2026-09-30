@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ConsultationLink from "@/components/ConsultationLink";
 import StudioFaq from "@/components/StudioFaq";
-import "@/components/studio-support.css";
 import SceneProps from "@/components/visual/SceneProps";
 import Navigation from "@/components/navigation/Navigation";
 
@@ -37,13 +36,6 @@ export default function Page() {
           <p><strong>Website Refinement starts at $2,500. Custom websites start at $7,000. Other custom projects are priced by scope.</strong></p>
         </section>
         <section className="destination-grid">{blocks.map(([label, t, b]) => <article key={label + t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
-        <section className="studio-support" id="studio-support" aria-labelledby="studio-support-heading">
-          <small>STUDIO SUPPORT</small>
-          <h2 id="studio-support-heading">For what comes next.</h2>
-          <p>Your business keeps evolving after a project is complete. Return to A. Halliwell Studio for website updates, design refinements, additional illustrations, new features, or technical support.</p>
-          <p>Every request is scoped and quoted before work begins, with clear deliverables, pricing, and an estimated timeline.</p>
-          <Link className="button button-primary" href="/start?service=support#start">Request Studio Support</Link>
-        </section>
         <StudioFaq />
         <ConsultationLink />
         <section className="case-end"><small>THE BUSINESS TELLS US WHAT TO BUILD</small><h2>Start with the<br />problem, not the template.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
