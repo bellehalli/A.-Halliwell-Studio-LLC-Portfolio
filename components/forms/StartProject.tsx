@@ -207,9 +207,6 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       if (new URLSearchParams(window.location.search).get("service") === "support") {
         setNeeds(current => current.includes("Ongoing support") ? current : [...current, "Ongoing support"]);
       }
-      if (new URLSearchParams(window.location.search).get("service") === "illustration") {
-        setNeeds(current => current.includes("Illustration / property map") ? current : [...current, "Illustration / property map"]);
-      }
       setDraftReady(true);
     }
   }, []);
