@@ -189,6 +189,9 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     } catch {
       localStorage.removeItem(DRAFT_KEY);
     } finally {
+      if (new URLSearchParams(window.location.search).get("service") === "support") {
+        setNeeds(current => current.includes("Ongoing support") ? current : [...current, "Ongoing support"]);
+      }
       setDraftReady(true);
     }
   }, []);
