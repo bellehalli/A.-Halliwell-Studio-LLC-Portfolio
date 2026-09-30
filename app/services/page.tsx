@@ -39,10 +39,12 @@ export default function Page() {
         <section className="destination-block" id="illustration">
           <small>ILLUSTRATION / PROPERTY + VENUE MAPS</small>
           <h2>Let people picture the place.</h2>
+          <div>
           <p>Custom illustrations and property maps that help guests understand your venue, explore the grounds, and imagine being there. A distinctive piece for your website, brochure, welcome guide, or other agreed uses.</p>
           <p>We define the spaces to feature, labels, visual direction, final file formats, and revision rounds in your proposal. A standalone illustration and an interactive website map are separate scopes.</p>
           <p><strong>Priced by scope.</strong> Your agreement defines the commercial usage license for the final artwork and any additional uses.</p>
           <Link className="button button-primary" href="/start?service=illustration">Discuss an illustration or property map ↗</Link>
+          </div>
         </section>
         <StudioFaq />
         <ConsultationLink />
