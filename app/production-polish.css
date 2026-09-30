@@ -93,3 +93,49 @@ body { overflow-x: clip; }
 @media(max-width:520px) {
   .site-nav .heart-dock .heart-start { width: 120px !important; height: 94px !important; }
 }
+
+/* Mobile entrance menu: a transparent heart column. Floating menu is unchanged. */
+@media (max-width: 699px) {
+  .site-nav:not(.floating-heart-nav) #primary-navigation,
+  .home-world #home-content > .site-nav:not(.floating-heart-nav) #primary-navigation {
+    position: absolute !important;
+    inset: 76px 0 auto auto !important;
+    z-index: 90 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    align-content: start !important;
+    justify-content: center !important;
+    justify-items: center !important;
+    width: 94px !important;
+    height: auto !important;
+    max-height: calc(100svh - 110px) !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+  .site-nav:not(.floating-heart-nav) #primary-navigation.is-open,
+  .home-world #home-content > .site-nav:not(.floating-heart-nav) #primary-navigation.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+  .site-nav:not(.floating-heart-nav) #primary-navigation .heart-nav-button:nth-child(n),
+  .home-world #home-content > .site-nav:not(.floating-heart-nav) #primary-navigation .heart-nav-button:nth-child(n) {
+    position: relative !important;
+    inset: auto !important;
+    grid-column: auto !important;
+    justify-self: center !important;
+    width: 90px !important;
+    height: 72px !important;
+  }
+}
