@@ -42,8 +42,10 @@ export async function leadEmailStatus(id: string, studio: string, confirmation: 
 
 export async function studioLeads(): Promise<Lead[]> {
   await ensureLeads();
-  const rows = await portalDb()`SELECT *, follow_up_on::text AS follow_up_date FROM studio_leads ORDER BY created_at DESC`;
-  return rows.map(row => ({ ...row.brief, id: String(row.id), name: String(row.name), email: String(row.email), business: String(row.business),
+  const { ensureConsultations } = await import("@/lib/consultations");
+  await ensureConsultations();
+  const [bookings, rows] = await Promise.all([portalDb()`SELECT * FROM studio_consultations ORDER BY starts_at DESC`, portalDb()`SELECT *, follow_up_on::text AS follow_up_date FROM studio_leads ORDER BY created_at DESC`]);
+  return rows.map(row => ({ ...row.brief, consultations: bookings.filter(b => b.lead_id === row.id).map(b => ({ bookingId: String(b.booking_id), startsAt: new Date(b.starts_at).toISOString(), endsAt: new Date(b.ends_at).toISOString(), status: b.status, details: String(b.details) })), id: String(row.id), name: String(row.name), email: String(row.email), business: String(row.business),
     stage: row.stage, notes: String(row.notes), nextAction: String(row.next_action), followUpOn: String(row.follow_up_date || ""), projectId: String(row.project_id || ""),
     createdAt: new Date(row.created_at).toISOString(), updatedAt: new Date(row.updated_at).toISOString(), revision: Number(row.revision),
     studioEmailStatus: String(row.studio_email_status), confirmationStatus: String(row.confirmation_status), history: row.history,

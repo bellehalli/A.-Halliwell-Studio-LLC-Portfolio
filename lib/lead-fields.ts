@@ -2,6 +2,7 @@ export const leadStages = ["new", "qualified", "consultation", "proposal", "nego
 export type LeadStage = typeof leadStages[number];
 export const leadStageLabels: Record<LeadStage, string> = { new: "New inquiry", qualified: "Qualified", consultation: "Consultation", proposal: "Proposal sent", negotiation: "In conversation", won: "Client confirmed", lost: "Closed" };
 export type Lead = {
+  consultations?: { bookingId: string; startsAt: string; endsAt: string; status: "confirmed" | "cancelled"; details: string }[];
   id: string; name: string; email: string; business: string; projectType: string; classification: string;
   needs: string[]; timing: string; investment: string; currentUrl: string; currentProblem: string; successGoal: string;
   assets: string[]; source: string; productCount: string; bookingType: string; guestPain: string;
