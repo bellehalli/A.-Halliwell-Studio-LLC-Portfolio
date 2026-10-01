@@ -1,3 +1,7 @@
+import StudioProcess from "@/components/studio/StudioProcess";
+import ClientExperience from "@/components/studio/ClientExperience";
+import StudioContinuity from "@/components/studio/StudioContinuity";
+import { pricingSummary } from "@/lib/studio-config";
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -33,7 +37,7 @@ export default function Page() {
           <small>WEB DESIGN + DEVELOPMENT + ILLUSTRATION + DIGITAL SYSTEMS</small>
           <h1>The website should participate in the business.</h1>
           <p>I combine strategy, custom design and development to build websites that help people understand, choose, buy, book, inquire or get something done.</p>
-          <p><strong>Website Refinement starts at $2,500. Custom websites start at $7,000. Other custom projects are priced by scope.</strong></p>
+          <p><strong>{pricingSummary}</strong></p>
         </section>
         <section className="destination-grid">{blocks.map(([label, t, b]) => <article key={label + t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
         <section className="destination-block" id="illustration">
@@ -46,6 +50,9 @@ export default function Page() {
           <Link className="button button-primary" href="/start">Discuss your project ↗</Link>
           </div>
         </section>
+        <StudioProcess />
+        <ClientExperience />
+        <StudioContinuity />
         <StudioFaq />
         <ConsultationLink />
         <section className="case-end"><small>THE BUSINESS TELLS US WHAT TO BUILD</small><h2>Start with the<br />problem, not the template.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>

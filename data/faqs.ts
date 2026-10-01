@@ -1,3 +1,5 @@
+import { pricingSummary, studio } from "@/lib/studio-config";
+
 export const studioFaqs = [
   {
     "question": "What kinds of projects do you take on?",
@@ -5,7 +7,7 @@ export const studioFaqs = [
   },
   {
     "question": "How much does a project cost?",
-    "answer": "Website Refinement starts at $2,500. Custom websites start at $7,000. Illustration, standalone systems, and other custom projects are priced individually based on scope. You’ll receive a proposal outlining the deliverables and investment before you commit."
+    "answer": `${pricingSummary} You’ll receive a proposal outlining the deliverables and investment before you commit.`
   },
   {
     "question": "What is Website Refinement?",
@@ -33,7 +35,7 @@ export const studioFaqs = [
   },
   {
     "question": "Are hosting and maintenance included?",
-    "answer": "Your proposal identifies any hosting, domain, software, licensing, or maintenance costs associated with your project. These may be separate from the design and development investment. Ongoing support is scoped separately, with clear responsibilities and pricing."
+    "answer": `Your proposal identifies any hosting, domain, software, licensing, or maintenance costs associated with your project. These may be separate from the design and development investment. ${studio.offers.support} covers separately scoped updates, refinements, new features, and technical support, with clear responsibilities and pricing.`
   },
   {
     "question": "How do I get started?",

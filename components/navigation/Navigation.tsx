@@ -1,4 +1,5 @@
 "use client";
+import { studio } from "@/lib/studio-config";
 import Image from "next/image";
 import { useEffect,useRef,useState } from "react";
 import { usePathname } from "next/navigation";
@@ -30,7 +31,7 @@ export default function Navigation(){
   </button>
   <nav id="primary-navigation" className={`heart-dock ${open?"is-open":""}`} aria-label="Primary navigation">
    {links.map(([label,href])=><a className="heart-nav-button" href={href} key={href} aria-current={pathname===href || (href!=="/" && pathname.startsWith(`${href}/`)) ? "page" : undefined} onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="104px"/></span><span className="heart-button-label">{href === "/portal" ? <>CLIENT<br/>PORTAL</> : label}</span></a>)}
-   <a className="heart-nav-button heart-talk" href="https://calendar.app.google/UArjShmAHzt4vGE48" target="_blank" rel="noopener noreferrer" data-consultation-booking aria-label="Let’s talk — book a 15-minute phone consultation (opens in a new tab)" onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="104px"/></span><span className="heart-button-label">LET’S<br/>TALK</span></a>
+   <a className="heart-nav-button heart-talk" href={studio.consultationUrl} target="_blank" rel="noopener noreferrer" data-consultation-booking aria-label="Let’s talk — book a 15-minute phone consultation (opens in a new tab)" onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="104px"/></span><span className="heart-button-label">LET’S<br/>TALK</span></a>
    <a className="heart-nav-button heart-start" href="/start" aria-current={pathname==="/start"?"page":undefined} onClick={()=>setOpen(false)}><span className="heart-button-art" aria-hidden="true"><Image src={HEART} alt="" fill sizes="110px"/></span><span className="heart-button-label">START A<br/>PROJECT</span></a>
   </nav>
  </header>

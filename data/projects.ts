@@ -1,5 +1,7 @@
 export type Project = {
   slug: string;
+  workKind: "concept" | "commissioned";
+  proof?: { completed: boolean; publicationApproved: boolean; clientFeedback?: { quote: string; attribution: string }; outcomes?: { observation: string; period: string; source: string }[] };
   number: string;
   name: string;
   category: string;
@@ -24,6 +26,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "willow-lily",
+    workKind: "concept",
     number: "01",
     name: "Willow Lily",
     category: "Hospitality / Weddings / Custom Experience",
@@ -45,6 +48,7 @@ export const projects: Project[] = [
   },
   {
     slug: "maison-riviere",
+    workKind: "concept",
     number: "02",
     name: "Maison Rivière",
     category: "Hospitality / Events / Digital Presence",
@@ -66,6 +70,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vanta-social",
+    workKind: "concept",
     number: "03",
     name: "Vanta Social",
     category: "Nightlife / Events / Guest Conversion",
@@ -84,6 +89,7 @@ export const projects: Project[] = [
   },
   {
     slug: "elan-aesthetics",
+    workKind: "concept",
     number: "04",
     name: "Élan Aesthetics",
     category: "Beauty / Wellness / Booking Experience",
@@ -102,6 +108,7 @@ export const projects: Project[] = [
   },
   {
     slug: "northstar-heating-home",
+    workKind: "concept",
     number: "05",
     name: "Northstar Heating & Home",
     category: "Local Service / HVAC / Lead Generation",
@@ -120,6 +127,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sable-and-salt",
+    workKind: "concept",
     number: "06",
     name: "Sable & Salt",
     category: "Restaurant / Reservations / Menu UX",
@@ -139,6 +147,7 @@ export const projects: Project[] = [
   },
   {
     slug: "muse-room",
+    workKind: "concept",
     number: "07",
     name: "Muse Room",
     category: "E-commerce / Fashion / Shopping UX",
@@ -158,8 +167,13 @@ export const projects: Project[] = [
   }
 ];
 
-// Keep unfinished concepts in the repository without publishing them to clients.
-export const publicProjects = projects.filter((project) => !project.inDevelopment);
+// Commissioned work stays private until completed and approved for public display.
+export function canPublishProject(project: Project) {
+  return !project.inDevelopment && (project.workKind === "concept" || (project.proof?.completed === true && project.proof?.publicationApproved === true));
+}
+export const publicProjects = projects.filter(canPublishProject);
+export const commissionedProjects = publicProjects.filter(project => project.workKind === "commissioned");
+export const conceptProjects = publicProjects.filter(project => project.workKind === "concept");
 
 export function getProject(slug: string) {
   return projects.find((project) => project.slug === slug);

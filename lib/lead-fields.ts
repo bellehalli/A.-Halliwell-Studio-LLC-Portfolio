@@ -5,6 +5,7 @@ export type Lead = {
   consultations?: { bookingId: string; startsAt: string; endsAt: string; status: "confirmed" | "cancelled"; details: string }[];
   id: string; name: string; email: string; business: string; projectType: string; classification: string;
   needs: string[]; timing: string; investment: string; currentUrl: string; currentProblem: string; successGoal: string;
+  whyNow?: string;
   assets: string[]; source: string; productCount: string; bookingType: string; guestPain: string;
   stage: LeadStage; notes: string; nextAction: string; followUpOn: string; projectId: string;
   createdAt: string; updatedAt: string; revision: number; studioEmailStatus: string; confirmationStatus: string;

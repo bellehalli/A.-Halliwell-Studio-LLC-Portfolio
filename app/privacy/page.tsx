@@ -1,3 +1,4 @@
+import { studio } from "@/lib/studio-config";
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -12,7 +13,7 @@ export default function Privacy() {
   return <main className="legal-page">
     <h1>Privacy Policy</h1>
     <p className="legal-updated">Updated September 30, 2026</p>
-    <p>This policy describes the information handled by ahalliwellstudio.com. For questions or requests about your information, email <a href="mailto:hello@ahalliwellstudio.com">hello@ahalliwellstudio.com</a>.</p>
+    <p>This policy describes the information handled by ahalliwellstudio.com. For questions or requests about your information, email <a href={`mailto:${studio.email}`}>{studio.email}</a>.</p>
     <h2>Project inquiries</h2>
     <p>When you submit the Start Project form, the studio receives the name, email address, business details, website URL, goals, and other answers you choose to provide. We use these details to review your project, reply, prepare a proposal, and communicate about potential or agreed services. A confirmation email may be sent to your address. The form uses Resend to deliver these emails. Inquiry details are also stored in our private studio database, with contact notes, follow-up dates, and a history of changes to help us manage your inquiry. Only the studio can access these lead records. An optional consultation link opens Google Calendar, where Google handles your booking details. When booking sync is enabled, your consultation contact details, appointment time, booking notes, and booking status are also stored in the private studio Leads desk to prepare for the call and manage follow-up. Do not include passwords, payment card details, or other sensitive information in an inquiry.</p>
     <p>While you fill out the form, a draft is saved in your browser on that device. It is removed after a successful submission. You can remove it sooner by clearing this site&apos;s browser storage. See <a href="/cookies">Cookies &amp; storage</a> for details.</p>

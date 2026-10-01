@@ -5,7 +5,7 @@ const ts = require('typescript');
 function load(file, mocks, globals = {}) {
   const module = { exports: {} };
   const source = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText;
-  vm.runInNewContext(source, { module, exports: module.exports, require: name => name in mocks ? mocks[name] : require(name), URLSearchParams, crypto: require('node:crypto').webcrypto, ...globals });
+  vm.runInNewContext(source, { module, exports: module.exports, require: name => name in mocks ? mocks[name] : name === "@/lib/studio-config" ? load("lib/studio-config.ts", {}) : require(name), URLSearchParams, crypto: require('node:crypto').webcrypto, ...globals });
   return module.exports;
 }
 const deniedWindow = { location: { search: '?service=illustration' }, addEventListener() {}, removeEventListener() {} };
@@ -53,7 +53,7 @@ function formHarness(window) {
   assert.equal(h.submitted, undefined);
   assert(h.focus.includes('projectType'));
   assert(h.nodes().some(n => n.props?.role === 'alert'));
-  for (const label of ['Hospitality / venue', "I'm flexible", 'Custom project · priced by scope']) {
+  for (const label of ['Hospitality / venue', "I'm flexible", 'Custom project · priced by scope', 'Upcoming event or season']) {
     h.nodes().find(n => n.type === 'button' && n.props.children === label).props.onClick(); h.render();
   }
   for (const [key, value] of [['name','Test Client'],['email','client@example.com']]) {
@@ -61,9 +61,11 @@ function formHarness(window) {
   }
   await h.nodes().find(n => n.type === 'form').props.onSubmit({ preventDefault() {} }); h.render();
   assert(h.submitted.needs.includes('Illustration / property map'));
+  assert.equal(h.submitted.whyNow, 'Upcoming event or season');
   assert(h.nodes().some(n => n.props?.className === 'start-project start-project-success'));
   const clean = formHarness(deniedWindow); clean.render();
   clean.nodes().find(n => n.type === 'button' && n.props.children === 'Clear my draft').props.onClick(); clean.render();
   assert.equal(clean.nodes().find(n => n.type === 'button' && n.props.children === 'Illustration / property map').props['aria-pressed'], false);
+  assert.equal(clean.nodes().find(n => n.type === 'button' && n.props.children === 'Upcoming event or season').props['aria-pressed'], false);
   console.log('PASS denied storage, quota failure, required-answer focus, illustration preselection/submission, clear draft, and saved receipt despite analytics failure.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

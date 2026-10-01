@@ -1,3 +1,4 @@
+import { studio } from "@/lib/studio-config";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
     const incoming = event.data;
 
     const isForHello = incoming.to?.some((address: string) =>
-      address.toLowerCase().includes("hello@ahalliwellstudio.com")
+      address.toLowerCase().includes(studio.email)
     );
 
     if (!isForHello) {
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
     const subject = incoming.subject || "(No subject)";
 
     const { error: sendError } = await resend.emails.send({
-      from: "A. Halliwell Studio <hello@ahalliwellstudio.com>",
+      from: `${studio.name} <${studio.email}>`,
       to: [destination],
       replyTo: originalSender,
       subject,

@@ -1,0 +1,16 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const ts = require('typescript');
+const moduleObject = { exports: {} };
+const code = ts.transpileModule(fs.readFileSync('data/projects.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
+vm.runInNewContext(code, { module: moduleObject, exports: moduleObject.exports });
+const { projects, publicProjects, canPublishProject } = moduleObject.exports;
+assert.equal(publicProjects.length, 5);
+assert(projects.filter(project => project.inDevelopment).every(project => !canPublishProject(project)));
+const commissioned = { ...publicProjects[0], workKind: 'commissioned', proof: { completed: false, publicationApproved: false } };
+assert.equal(canPublishProject(commissioned), false);
+assert.equal(canPublishProject({ ...commissioned, proof: { completed: true, publicationApproved: false } }), false);
+assert.equal(canPublishProject({ ...commissioned, proof: { completed: false, publicationApproved: true } }), false);
+assert.equal(canPublishProject({ ...commissioned, proof: { completed: true, publicationApproved: true } }), true);
+console.log('PASS commissioned publication requires completion and approval; five concepts remain public.');

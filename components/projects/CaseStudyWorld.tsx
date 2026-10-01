@@ -1,3 +1,4 @@
+import StrategyEvidence from "@/components/projects/StrategyEvidence";
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import ScopeBreakdown from "@/components/projects/ScopeBreakdown";
@@ -11,6 +12,7 @@ function ArrowMark({ direction = "up" }: { direction?: "up" | "down" }) {
 }
 
 export default function CaseStudyWorld({ project, study }: { project: Project; study: CaseStudy }) {
+  const concept = project.workKind === "concept";
   const external = project.url.startsWith("http");
 
   return <article className={`case-sheet case-study-world project-${project.tone}`}>
@@ -18,7 +20,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       <div className="case-world-overline"><span>A. Halliwell Studio / Case file {project.number}</span><span>{project.category}</span></div>
       <div className="case-world-hero-grid">
         <div className="case-world-hero-copy">
-          <p className="case-world-eyebrow">An original studio concept</p>
+          <p className="case-world-eyebrow">{concept ? "An original studio concept" : "Commissioned work"}</p>
           <h1 id="case-title">{project.name}</h1>
           <p className="case-world-positioning">{study.positioning}</p>
           <p className="case-world-statement">{study.statement}</p>
@@ -29,7 +31,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
         </div>
         <figure className="case-world-hero-art">
           {study.heroImage ? <img src={study.heroImage} alt={study.heroImageAlt} /> : <iframe src={project.embedUrl || project.url} title={study.heroImageAlt} loading="lazy" />}
-          <figcaption>{project.name} <span>Website / Studio concept</span></figcaption>
+          <figcaption>{project.name} <span>{concept ? "Website / Studio concept" : "Commissioned project"}</span></figcaption>
         </figure>
       </div>
       <p className="case-world-disclosure">{project.disclosure}</p>
@@ -59,7 +61,9 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       </div>)}
     </section>
 
-    <section className="case-world-outcome" aria-labelledby="outcome-heading"><p>THE BUSINESS PURPOSE</p><h2 id="outcome-heading">What the experience supports.</h2><p>{project.outcome}</p><small>Concept objective; no measured client result is claimed.</small></section>
+    <section className="case-world-outcome" aria-labelledby="outcome-heading"><p>THE BUSINESS PURPOSE</p><h2 id="outcome-heading">What the experience supports.</h2><p>{project.outcome}</p><small>{concept ? "Concept objective; no measured client result is claimed." : "Project objective; verified observations are reported separately."}</small></section>
+
+    <StrategyEvidence slug={project.slug} concept={project.workKind !== "commissioned"}/>
 
     <section className="case-world-journey" aria-labelledby="journey-heading">
       <div className="case-world-section-heading"><p>05 / Experience map</p><h2 id="journey-heading">{study.journeyHeading ?? <>From first look<br />to first visit.</>}</h2><span>{study.journeyIntro ?? "A couple's path through the site"}</span></div>
@@ -67,7 +71,7 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
     </section>
 
     <section className="case-world-build" aria-labelledby="build-heading">
-      <div className="case-world-section-heading"><p>06 / Inside the build</p><h2 id="build-heading">The work behind<br />the world.</h2><span>Scope demonstrated in this original studio concept. No fictional client fee or business result is claimed.</span></div>
+      <div className="case-world-section-heading"><p>06 / Inside the build</p><h2 id="build-heading">The work behind<br />the world.</h2><span>{concept ? "Scope demonstrated in this original studio concept. No fictional client fee or business result is claimed." : "Scope delivered for this commissioned project."}</span></div>
       <ScopeBreakdown scope={study.scope} />
     </section>
 
@@ -93,11 +97,13 @@ export default function CaseStudyWorld({ project, study }: { project: Project; s
       <ProjectMedia project={project} mode="live" previewFallback={project.slug === "willow-lily"} />
     </section>
 
+    {!concept && project.proof && (project.proof.clientFeedback || !!project.proof.outcomes?.length) && <section className="studio-commercial-section" aria-label="Client feedback and measured observations"><small>FROM THE COMPLETED ENGAGEMENT</small>{project.proof.clientFeedback && <blockquote><p>{project.proof.clientFeedback.quote}</p><cite>{project.proof.clientFeedback.attribution}</cite></blockquote>}{project.proof.outcomes?.map(outcome => <article key={outcome.observation}><h3>{outcome.observation}</h3><p>Observation period: {outcome.period}. Source: {outcome.source}.</p></article>)}</section>}
+
     <section className="case-world-end" aria-labelledby="case-end-heading">
       <p>09 / Your next project</p><h2 id="case-end-heading">A beautiful site can<br /><em>do real work.</em></h2>
       <span>Let&apos;s shape the experience your business needs.</span>
       <Link href="/start">Start a project <ArrowMark /></Link>
-      <small>Original studio concept, not a commissioned client result.</small>
+      <small>{concept ? "Original studio concept, not a commissioned client result." : "Completed commissioned work, published with approval."}</small>
     </section>
   </article>;
 }

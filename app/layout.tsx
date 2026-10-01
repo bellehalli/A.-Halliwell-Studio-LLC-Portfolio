@@ -13,10 +13,12 @@ import "./destination-world.css";
 import "./destination-finish.css";
 import "./conversion-polish.css";
 import "./production-polish.css";
+import "./studio-commercial.css";
 import SiteFooter from "@/components/navigation/SiteFooter";
 import SiteAnalytics from "@/components/system/SiteAnalytics";
 import SkipToContent from "@/components/navigation/SkipToContent";
 export const metadata:Metadata={
+ icons:{icon:"/favicon.svg"},
  metadataBase:new URL("https://www.ahalliwellstudio.com"),
  title:{default:"A. Halliwell Studio | Web Design, Development & Digital Systems",template:"%s | A. Halliwell Studio"},
  description:"Custom web design, development and digital systems for businesses that need more than a pretty homepage.",

@@ -1,0 +1,42 @@
+/* Commercial clarity, using the approved editorial sheets and typography. */
+.business-value-world { position:relative; padding-block:clamp(48px,7vw,100px); }
+.business-value-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px; margin:35px 0; }
+.business-value-grid article { border-top:1px solid #a897a6; padding-top:18px; min-width:0; }
+.business-value-grid small,.studio-commercial-section > small { font:700 14px/1.4 var(--font-mono),monospace; letter-spacing:.06em; color:#683657; }
+.business-value-grid h3 { font:400 clamp(24px,2.5vw,34px)/1.15 var(--font-serif),Georgia,serif; margin:12px 0; }
+.business-value-grid p { font-size:17px; line-height:1.55; margin:0; }
+.studio-commercial-section { position:relative; border-top:1px solid #a897a6; padding-block:clamp(38px,5vw,70px); }
+.studio-commercial-section h2 { font:400 clamp(34px,4.5vw,62px)/1.08 var(--font-serif),Georgia,serif; max-width:850px; margin:18px 0 24px; }
+.studio-commercial-section > p { max-width:800px; font-size:18px; line-height:1.6; }
+.studio-commercial-section h3 { font:400 28px/1.15 var(--font-serif),Georgia,serif; margin:0 0 10px; }
+.studio-process-list { list-style:none; padding:0; margin:32px 0 0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px 36px; }
+.studio-process-list li { display:flex; gap:18px; min-width:0; border-top:1px solid #c7acc4; padding-top:22px; }
+.studio-process-list li:last-child { grid-column:1/-1; }
+.studio-process-list li > span { font:italic 26px/1 Georgia,serif; color:#683657; }
+.studio-process-list p { font-size:17px; line-height:1.55; margin:0; }
+.client-experience-preview { margin:30px 0 0; padding:clamp(20px,4vw,42px); background:#f7effb; border:1px solid #947491; box-shadow:7px 9px 0 #dec9eb; }
+.client-preview-masthead { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; padding-bottom:18px; border-bottom:1px solid #b39ab9; font-size:14px; }
+.client-preview-heading { padding-top:26px; }
+.client-preview-heading p { font-size:16px; }
+.client-experience-preview ol { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; list-style:none; padding:0; margin:26px 0; }
+.client-experience-preview li { display:flex; gap:14px; padding:20px; background:#fffafc; border:1px solid #cdbbd1; min-width:0; }
+.client-experience-preview li > span { font-size:14px; color:#683657; }
+.client-experience-preview h4 { font:400 24px/1.2 var(--font-serif),Georgia,serif; margin:0 0 8px; }
+.client-experience-preview li p { font-size:16px; line-height:1.5; margin:0; }
+.client-experience-preview figcaption { font-size:14px; line-height:1.6; color:#594358; }
+.studio-continuity ul,.studio-capabilities ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px 30px; padding-left:22px; font-size:17px; line-height:1.5; }
+.case-success-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin:28px 0; }
+.case-success-grid article { border-top:1px solid #bda4ba; padding-top:20px; }
+.case-success-grid h3 { font:400 27px/1.2 var(--font-serif),Georgia,serif; margin:0 0 12px; }
+.case-success-grid p { font-size:17px; line-height:1.55; margin:0; }
+.case-strategy-artifact { margin:32px 0 0; padding:clamp(20px,3vw,36px); border:1px solid #a897a6; background:#f7effb; }
+.case-strategy-artifact figcaption { font-size:16px; line-height:1.5; margin-bottom:26px; }
+.case-strategy-artifact figcaption strong { display:block; font:400 28px/1.2 var(--font-serif),Georgia,serif; margin-bottom:10px; }
+.case-strategy-artifact ol { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; list-style:none; padding:0; margin:0; counter-reset:strategy; }
+.case-strategy-artifact li { border-top:1px solid #bda4ba; padding-top:16px; min-width:0; counter-increment:strategy; }
+.case-strategy-artifact li::before { content:counter(strategy,decimal-leading-zero); display:block; color:#683657; font-size:14px; margin-bottom:10px; }
+.case-strategy-artifact h3 { font:400 25px/1.2 var(--font-serif),Georgia,serif; margin:0 0 10px; }
+.case-strategy-artifact p { font-size:17px; line-height:1.5; margin:0 0 12px; }
+.case-strategy-artifact small { display:block; font-size:14px; line-height:1.5; color:#594358; }
+@media(max-width:900px) { .business-value-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .business-value-grid,.studio-process-list,.client-experience-preview ol,.studio-continuity ul,.studio-capabilities ul,.case-success-grid,.case-strategy-artifact ol { grid-template-columns:1fr; } .studio-process-list li:last-child { grid-column:auto; } }

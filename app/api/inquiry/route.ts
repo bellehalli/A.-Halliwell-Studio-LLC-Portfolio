@@ -1,3 +1,4 @@
+import { studio } from "@/lib/studio-config";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { checkRequestLimit } from "@/lib/request-rate-limit";
@@ -135,6 +136,7 @@ export async function POST(request: Request) {
     const investment = clean(body.investment, 180);
     const currentUrl = clean(body.currentUrl, 400);
     const currentProblem = clean(body.currentProblem, 3000);
+    const whyNow = clean(body.whyNow, 1400);
     const successGoal = clean(body.successGoal, 3000);
     const referralSource = clean(body.referralSource, 120);
     const referralOther = clean(body.referralOther, 200);
@@ -187,7 +189,7 @@ export async function POST(request: Request) {
     const source = referralSource === "Other" && referralOther ? `Other: ${referralOther}` : referralSource || "Not provided";
     const submissionId = clean(body.submissionId, 36) || randomUUID();
     if (!/^[a-f0-9-]{36}$/.test(submissionId)) return json({ success: false, message: "Invalid submission reference." }, 400);
-    const lead = await saveInquiryLead(submissionId, { name, email: email.toLowerCase(), business, projectType, classification, needs, timing, investment, currentUrl, currentProblem, successGoal, assets, source, productCount, bookingType, guestPain });
+    const lead = await saveInquiryLead(submissionId, { name, email: email.toLowerCase(), business, projectType, classification, needs, timing, investment, currentUrl, currentProblem, successGoal, whyNow, assets, source, productCount, bookingType, guestPain });
     if (lead.conflict) return json({ success: false, message: "This submission reference was already used. Please try again." }, 409);
     savedLeadId = lead.id;
     if (!lead.fresh) return json({ success: true, confirmationSent: lead.confirmationSent });
@@ -199,11 +201,11 @@ export async function POST(request: Request) {
 
     const from =
       process.env.INQUIRY_FROM_EMAIL ||
-      "A. Halliwell Studio <hello@ahalliwellstudio.com>";
+      `${studio.name} <${studio.email}>`;
 
     const studioReplyTo =
       process.env.INQUIRY_REPLY_TO_EMAIL ||
-      "hello@ahalliwellstudio.com";
+      studio.email;
 
     const safe = {
       name: esc(name),
@@ -214,6 +216,7 @@ export async function POST(request: Request) {
       investment: esc(investment),
       currentUrl: esc(currentUrl || "Not provided"),
       currentProblem: nl2br(currentProblem || "Not provided"),
+      whyNow: nl2br(whyNow || "Not provided"),
       successGoal: nl2br(successGoal || "Not provided"),
       referral: esc(source),
       productCount: esc(productCount || "Not provided"),
@@ -259,6 +262,7 @@ export async function POST(request: Request) {
             <p><b>Current website:</b> ${safe.currentUrl}</p>
             ${conditionalRows}
             <p><b>What is not working now:</b><br/>${safe.currentProblem}</p>
+            <p><b>Why this project matters now:</b><br/>${safe.whyNow}</p>
             <p><b>What success looks like:</b><br/>${safe.successGoal}</p>
             <p><b>Assets ready:</b> ${safe.assets.join(", ") || "Not provided"}</p>
             <p><b>How they found the studio:</b> ${safe.referral}</p>
@@ -282,6 +286,9 @@ export async function POST(request: Request) {
   WHAT IS NOT WORKING NOW
   ${currentProblem || "Not provided"}
   
+  WHY THIS PROJECT MATTERS NOW
+  ${whyNow || "Not provided"}
+
   WHAT SUCCESS LOOKS LIKE
   ${successGoal || "Not provided"}
   
@@ -314,13 +321,14 @@ export async function POST(request: Request) {
               <p><b>Timing:</b> ${safe.timing}</p>
               <p><b>Investment:</b> ${safe.investment}</p>
               <p><b>Current website:</b> ${safe.currentUrl}</p>
+              <p><b>Why now:</b><br/>${safe.whyNow}</p>
               <p><b>Your goal:</b><br/>${safe.successGoal}</p>
             </div>
   
             <div style="padding:22px;background:#f4ebf7;border:1px solid #c9b0d0;margin:24px 0">
               <h2 style="font-family:Georgia,serif;font-weight:400">Would you like to talk it through?</h2>
               <p>You can also book a 15-minute phone consultation. Choose an available time and leave the best phone number to reach you. I’ll call you at your selected time.</p>
-              <p><a href="https://calendar.app.google/UArjShmAHzt4vGE48" style="display:inline-block;padding:12px 18px;background:#604273;color:#fff;text-decoration:none">Book a consultation</a></p>
+              <p><a href="${studio.consultationUrl}" style="display:inline-block;padding:12px 18px;background:#604273;color:#fff;text-decoration:none">Book a consultation</a></p>
             </div>
             <p>If you forgot something important, reply directly to this email and add it.</p>
             <p>Arabella Halliwell<br/>Founder · Creative Director · Full-Stack Designer<br/>A. Halliwell Studio</p>
@@ -335,10 +343,11 @@ export async function POST(request: Request) {
   Timing: ${timing}
   Investment: ${investment}
   Current website: ${currentUrl || "Not provided"}
+  Why now: ${whyNow || "Not provided"}
   Your goal: ${successGoal || "Not provided"}
   
   Want to talk it through? Book an optional 15-minute phone consultation:
-  https://calendar.app.google/UArjShmAHzt4vGE48
+  ${studio.consultationUrl}
   Choose a time and leave your phone number. I’ll call you at your selected time.
   
   If you forgot something important, reply directly to this email and add it.

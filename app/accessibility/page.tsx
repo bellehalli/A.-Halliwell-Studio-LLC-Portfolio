@@ -1,3 +1,4 @@
+import { studio } from "@/lib/studio-config";
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
@@ -14,6 +15,6 @@ export default function Accessibility() {
     <h2>Known limitations</h2>
     <p>Some embedded demonstrations open websites outside this studio site. Their accessibility can vary. If an interaction, image, form, or embedded preview blocks you, we can provide the information or help you complete a project inquiry by email.</p>
     <h2>Report a barrier</h2>
-    <p>Email <a href="mailto:hello@ahalliwellstudio.com?subject=Accessibility%20feedback">hello@ahalliwellstudio.com</a> with the page address, what you were trying to do, and any assistive technology or device details you want to share. You can also use that address to request an alternative way to access content or contact the studio.</p>
+    <p>Email <a href={`mailto:${studio.email}?subject=Accessibility%20feedback`}>{studio.email}</a> with the page address, what you were trying to do, and any assistive technology or device details you want to share. You can also use that address to request an alternative way to access content or contact the studio.</p>
   </main>;
 }

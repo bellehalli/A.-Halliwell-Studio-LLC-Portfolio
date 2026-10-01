@@ -2,7 +2,7 @@ import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import WorkIndex from "@/components/projects/WorkIndex";
-import { publicProjects } from "@/data/projects";
+import { commissionedProjects, conceptProjects } from "@/data/projects";
 import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
@@ -23,14 +23,15 @@ export default function WorkPage() {
           <div className="case-index"><span>SELECTED WORK</span><span>A. HALLIWELL STUDIO</span></div>
           <h1>Different businesses.<br />Different jobs.</h1>
           <p>Selected studio work across hospitality, nightlife, wellness and local services, showing how strategy, design and development change around what the business actually needs the internet to do.</p>
-          <p className="demo-disclosure"><strong>Transparent portfolio:</strong> The brands shown here are original studio concepts created to demonstrate design, development and digital-system thinking. I do not claim invented clients, testimonials or performance results.</p>
+          <p className="demo-disclosure"><strong>Transparent portfolio:</strong> Studio concepts demonstrate design, development, and digital-system thinking. Commissioned work is published only when complete and approved for display. I do not claim invented clients, testimonials or performance results.</p>
         </div>
 
         <div className="work-proof-strip">
           <span>LIVE BUILDS</span><span>CASE-STUDY THINKING</span><span>WORKING INTERACTIONS</span><span>NO INVENTED METRICS</span>
         </div>
 
-        <WorkIndex projects={publicProjects} />
+        {commissionedProjects.length > 0 && <section aria-labelledby="commissioned-work-heading"><h2 id="commissioned-work-heading">Commissioned work</h2><p>Completed engagements approved for public display. Client feedback and measured outcomes are included only when available.</p><WorkIndex projects={commissionedProjects} /></section>}
+        <section aria-labelledby="studio-concepts-heading"><h2 id="studio-concepts-heading">Studio concepts</h2><WorkIndex projects={conceptProjects} /></section>
 
         <section className="case-end">
           <small>HAVE A DIGITAL PROBLEM TO SOLVE?</small>

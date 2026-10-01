@@ -22,7 +22,7 @@ export async function ensureLeads() {
   try { await ready; } catch (error) { ready = undefined; throw error; }
 }
 
-export type InquiryLead = Pick<Lead, "name" | "email" | "business" | "projectType" | "classification" | "needs" | "timing" | "investment" | "currentUrl" | "currentProblem" | "successGoal" | "assets" | "source" | "productCount" | "bookingType" | "guestPain">;
+export type InquiryLead = Pick<Lead, "name" | "email" | "business" | "projectType" | "classification" | "needs" | "timing" | "investment" | "currentUrl" | "currentProblem" | "successGoal" | "whyNow" | "assets" | "source" | "productCount" | "bookingType" | "guestPain">;
 export async function saveInquiryLead(submissionId: string, inquiry: InquiryLead) {
   await ensureLeads();
   const sql = portalDb();

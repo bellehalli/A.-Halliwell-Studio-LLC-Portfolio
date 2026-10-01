@@ -32,7 +32,7 @@ img { max-width: 100%; }
   position: fixed;
   inset: -8%;
   z-index: -20;
-  background-image: linear-gradient(rgba(255,248,239,.04), rgba(255,248,239,.04)), url("/flower-backdrop.png");
+  background-image: linear-gradient(rgba(255,248,239,.04), rgba(255,248,239,.04)), url("/assets/backgrounds/Portfolio Assets A.Halliwell  - 36.webp");
   background-repeat: repeat;
   background-size: auto, 520px;
   background-position: center;

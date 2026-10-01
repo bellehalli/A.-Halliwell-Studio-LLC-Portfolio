@@ -7,7 +7,7 @@ const crypto = require('node:crypto');
 function load(file, mocks = {}, env = {}) {
   const source = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
   const module = { exports: {} };
-  vm.runInNewContext(source, { module, exports: module.exports, require: name => name in mocks ? mocks[name] : require(name), Date, Buffer, URL, console, process: { env } }, { filename: file });
+  vm.runInNewContext(source, { module, exports: module.exports, require: name => name in mocks ? mocks[name] : name === "@/lib/studio-config" ? load("lib/studio-config.ts", {}) : require(name), Date, Buffer, URL, console, process: { env } }, { filename: file });
   return module.exports;
 }
 const next = { NextResponse: { json: (body, options = {}) => Response.json(body, options) } };
@@ -44,12 +44,13 @@ async function run() {
   assert.equal(first.fresh, true); assert.equal(second.fresh, false); assert.equal(second.id, first.id); assert.equal(insertCount, 1);
   assert.equal((await leads.saveInquiryLead(id, { ...payload, name: 'Changed' })).conflict, true);
 
+  let savedBrief;
   let saves = 0, sent = [], emailFails = false, duplicate = false, limited = false;
   const inquiry = load('app/api/inquiry/route.ts', {
     'next/server': next,
     'resend': { Resend: class { emails = { send: async message => { sent.push(message); if (emailFails) throw Error('provider unavailable'); return { error: null }; } }; } },
     '@/lib/request-rate-limit': { checkRequestLimit: async () => ({ limited, retryAfter: 30 }) },
-    '@/lib/leads': { saveInquiryLead: async () => { saves++; return { id, fresh: !duplicate, confirmationSent: duplicate, conflict: false }; }, leadEmailStatus: async () => {} },
+    '@/lib/leads': { saveInquiryLead: async (_, brief) => { savedBrief = brief; saves++; return { id, fresh: !duplicate, confirmationSent: duplicate, conflict: false }; }, leadEmailStatus: async () => {} },
   }, { RESEND_API_KEY: 'test-only', INQUIRY_TO_EMAIL: 'studio@example.com' });
   const request = data => new Request('https://example.com/api/inquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
   assert.equal((await inquiry.POST(request({}))).status, 400); assert.equal(saves, 0);
@@ -58,7 +59,12 @@ async function run() {
   let response = await inquiry.POST(request(payload)); assert.equal((await response.json()).confirmationSent, true); assert.equal(saves, 1);
   assert.equal(sent.length, 2); assert(sent[0].html.includes('&lt;Belle&gt;')); assert(!sent[0].html.includes('<Belle>'));
   assert(sent[1].html.includes('https://calendar.app.google/UArjShmAHzt4vGE48')); assert(sent[1].text.includes('1–2 business days'));
-  duplicate = true; await inquiry.POST(request(payload)); assert.equal(sent.length, 2); duplicate = false;
+  await inquiry.POST(request({ ...payload, whyNow: '<Upcoming launch>' }));
+  assert.equal(savedBrief.whyNow, '<Upcoming launch>');
+  assert(sent.at(-2).html.includes('&lt;Upcoming launch&gt;'));
+  assert(sent.at(-1).text.includes('Why now: <Upcoming launch>'));
+  const sentBeforeRetry = sent.length;
+  duplicate = true; await inquiry.POST(request(payload)); assert.equal(sent.length, sentBeforeRetry); duplicate = false;
   emailFails = true; response = await inquiry.POST(request(payload)); const receipt = await response.json(); assert.equal(receipt.success, true); assert.equal(receipt.confirmationSent, false);
   emailFails = false;
   response = await inquiry.POST(request({ ...payload, needs: ['Illustration / property map'], investment: 'Custom project · priced by scope' }));

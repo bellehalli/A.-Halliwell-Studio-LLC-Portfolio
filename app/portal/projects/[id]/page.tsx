@@ -1,3 +1,4 @@
+import { studio } from "@/lib/studio-config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
@@ -116,7 +117,7 @@ export default async function ProjectPage({ params, searchParams }: { params: Pr
         <SupportRequest projectId={project.id} readonly={studioPreview} />
         {supportRequests.length > 0 && <details className="portal-support-history"><summary>Your support requests</summary>{supportRequests.map(request => <article key={request.id}><small>Received {new Date(request.created_at).toLocaleDateString("en-US", { timeZone: "America/Detroit" })}</small><p>{request.message}</p>{request.timing && <p>Timing preference {request.timing}</p>}</article>)}</details>}
       </section>}
-      <p><Link href={studioPreview ? "/portal/studio" : "/portal"}>{studioPreview ? "Manager portal" : "All projects"}</Link>. Questions? <a href="mailto:hello@ahalliwellstudio.com">Email Arabella</a>.</p>
+      <p><Link href={studioPreview ? "/portal/studio" : "/portal"}>{studioPreview ? "Manager portal" : "All projects"}</Link>. Questions? <a href={`mailto:${studio.email}`}>Email Arabella</a>.</p>
     </section>
   </main>;
 }

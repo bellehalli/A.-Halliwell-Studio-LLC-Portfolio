@@ -1,4 +1,5 @@
 "use client";
+import { investmentOptions, projectReasons, studio } from "@/lib/studio-config";
 import { track } from "@vercel/analytics";
 
 import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
@@ -19,6 +20,8 @@ type Draft = {
   currentUrl: string;
   currentProblem: string;
   successGoal: string;
+  whyNow: string;
+  whyNowOther: string;
   assets: string[];
   referralSource: string;
   referralOther: string;
@@ -66,15 +69,6 @@ const timingOptions = [
   "I'm flexible",
 ];
 
-const investmentOptions = [
-  "$2.5k–$7k · refinement or custom scope",
-  "$7k–$10k · custom website",
-  "$10k–$20k · larger build + integrations",
-  "$20k+ · advanced custom systems",
-  "Custom project · priced by scope",
-  "I need help scoping the investment",
-];
-
 const assetOptions = [
   "Brand identity / logo",
   "Website copy",
@@ -115,6 +109,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   const [currentUrl, setCurrentUrl] = useState("");
   const [currentProblem, setCurrentProblem] = useState("");
   const [successGoal, setSuccessGoal] = useState("");
+  const [whyNow, setWhyNow] = useState("");
+  const [whyNowOther, setWhyNowOther] = useState("");
   const [assets, setAssets] = useState<string[]>([]);
   const [referralSource, setReferralSource] = useState("");
   const [referralOther, setReferralOther] = useState("");
@@ -139,9 +135,10 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     timing: hasProjectSpecificDetails ? 4 : 3,
     investment: hasProjectSpecificDetails ? 5 : 4,
     change: hasProjectSpecificDetails ? 6 : 5,
-    assets: hasProjectSpecificDetails ? 7 : 6,
-    referral: hasProjectSpecificDetails ? 8 : 7,
-    contact: hasProjectSpecificDetails ? 9 : 8,
+    whyNow: hasProjectSpecificDetails ? 7 : 6,
+    assets: hasProjectSpecificDetails ? 8 : 7,
+    referral: hasProjectSpecificDetails ? 9 : 8,
+    contact: hasProjectSpecificDetails ? 10 : 9,
   };
 
   const normalizeUrl = () => {
@@ -159,10 +156,11 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
         timing && `Timing: ${timing}`,
         investment && `Investment: ${investment}`,
         successGoal && `Success looks like: ${successGoal}`,
+        whyNow && `Why now: ${whyNow === "Another reason" && whyNowOther.trim() ? whyNowOther.trim() : whyNow}`,
       ]
         .filter(Boolean)
         .join("\n"),
-    [projectType, needs, currentUrl, timing, investment, successGoal]
+    [projectType, needs, currentUrl, timing, investment, successGoal, whyNow, whyNowOther]
   );
 
   useEffect(() => {
@@ -180,6 +178,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
         setCurrentUrl(draftText(draft.currentUrl, 400));
         setCurrentProblem(draftText(draft.currentProblem, 3000));
         setSuccessGoal(draftText(draft.successGoal, 3000));
+        setWhyNow(projectReasons.includes(draft.whyNow || "") ? draft.whyNow! : "");
+        setWhyNowOther(draftText(draft.whyNowOther, 1200));
         setAssets(draftList(draft.assets, assetOptions));
         setReferralSource(referralOptions.includes(draft.referralSource || "") ? draft.referralSource! : "");
         setReferralOther(draftText(draft.referralOther, 200));
@@ -204,7 +204,11 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     } catch {
       removeStorage("session", LAB_SCOPE_KEY);
     } finally {
-      if (new URLSearchParams(window.location.search).get("service") === "support") {
+      const service = new URLSearchParams(window.location.search).get("service");
+      if (service === "illustration") {
+        setNeeds(current => current.includes("Illustration / property map") ? current : [...current, "Illustration / property map"]);
+      }
+      if (service === "support") {
         setNeeds(current => current.includes("Ongoing support") ? current : [...current, "Ongoing support"]);
       }
       setDraftReady(true);
@@ -225,6 +229,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       currentUrl,
       currentProblem,
       successGoal,
+      whyNow,
+      whyNowOther,
       assets,
       referralSource,
       referralOther,
@@ -247,6 +253,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     currentUrl,
     currentProblem,
     successGoal,
+    whyNow,
+    whyNowOther,
     assets,
     referralSource,
     referralOther,
@@ -328,6 +336,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           currentUrl,
           currentProblem,
           successGoal,
+          whyNow: whyNow === "Another reason" && whyNowOther.trim() ? `Another reason: ${whyNowOther.trim()}` : whyNow,
           assets,
           referralSource,
           referralOther,
@@ -361,7 +370,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
 
   function clearDraft() {
     setProjectType(""); setNeeds([]); setTiming(""); setInvestment(""); setName(""); setEmail(""); setBusiness("");
-    setCurrentUrl(""); setCurrentProblem(""); setSuccessGoal(""); setAssets([]); setReferralSource(""); setReferralOther("");
+    setCurrentUrl(""); setCurrentProblem(""); setSuccessGoal(""); setWhyNow(""); setWhyNowOther(""); setAssets([]); setReferralSource(""); setReferralOther("");
     setProductCount(""); setBookingType(""); setGuestPain(""); setWebsite(""); setAttempted(false); setInvalidField(""); setStatus("idle"); setFeedback("");
     submissionRef.current = "";
     removeStorage("local", DRAFT_KEY); removeStorage("session", "ahs-inquiry-submission"); removeStorage("session", LAB_SCOPE_KEY);
@@ -386,7 +395,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
             <span>TIMING</span><strong>{timing}</strong>
           </div>
           <p>Want to talk it through? You can also choose a time for a 15-minute phone consultation. Leave your phone number when booking, and I’ll call you.</p>
-          <a className="button button-primary" href="https://calendar.app.google/UArjShmAHzt4vGE48" target="_blank" rel="noopener noreferrer" data-consultation-booking>Book a consultation</a>
+          <a className="button button-primary" href={studio.consultationUrl} target="_blank" rel="noopener noreferrer" data-consultation-booking>Book a consultation</a>
           <p className="builder-privacy">Opens Google Calendar in a new tab.</p>
           {confirmationSent && (
             <p className="builder-privacy">Keep the confirmation email for a copy of the brief you sent.</p>
@@ -574,6 +583,13 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           </fieldset>
 
           <fieldset className="builder-step">
+            <legend><span>{String(step.whyNow).padStart(2, "0")}</span>Why is this project important now?</legend>
+            <p className="builder-hint">Choose the closest reason, if you have one.</p>
+            <div className="builder-options">{projectReasons.map(reason => <button key={reason} type="button" className={whyNow === reason ? "selected" : ""} aria-pressed={whyNow === reason} onClick={() => setWhyNow(reason)}>{reason}</button>)}</div>
+            {whyNow === "Another reason" && <label className="builder-message"><span>What is prompting the project?</span><textarea value={whyNowOther} onChange={event => setWhyNowOther(event.target.value)} maxLength={1200} rows={3}/></label>}
+          </fieldset>
+
+          <fieldset className="builder-step">
             <legend><span>{String(step.assets).padStart(2, "0")}</span>What do you already have?</legend>
             <p className="builder-hint">Choose everything that is ready. Starting from scratch is completely fine.</p>
             <div className="builder-options">
@@ -719,7 +735,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           {feedback && status === "error" && (
             <p ref={feedbackRef} id={`${errorPrefix}-feedback`} tabIndex={-1} role="alert" className="builder-feedback builder-error">
               {feedback}{" "}
-              <a href="mailto:hello@ahalliwellstudio.com">Email the studio directly</a>
+              <a href={`mailto:${studio.email}`}>Email the studio directly</a>
             </p>
           )}
 

@@ -1,4 +1,5 @@
 "use client";
+import { studio, websiteStartingPrice, websiteInvestmentRange } from "@/lib/studio-config";
 import { writeStorage } from "@/lib/browser-storage";
 import { useState } from "react";
 import Image from "next/image";
@@ -77,12 +78,12 @@ function Events() {
 
 function Leads() {
   const [goal,setGoal]=useState("Book a consultation");
-  const [budget,setBudget]=useState("$7k–$10k");
+  const [budget,setBudget]=useState(websiteInvestmentRange);
   const [context,setContext]=useState("");
   return <div className="ahs-live">
     <header><div><small>LEAD QUALIFICATION</small><h3>Start with context</h3></div><b>SMART FORM</b></header>
     <p className="ahs-label">WHAT&apos;S THE GOAL?</p><div className="ahs-pills">{["Book a consultation","Get a proposal","Ask a question"].map(x=><button key={x} className={goal===x?"on":""} onClick={()=>setGoal(x)}>{x}</button>)}</div>
-    <p className="ahs-label">PROJECT RANGE</p><div className="ahs-pills">{["Custom scope","$7k–$10k","$10k+"].map(x=><button key={x} className={budget===x?"on":""} onClick={()=>setBudget(x)}>{x}</button>)}</div>
+    <p className="ahs-label">PROJECT RANGE</p><div className="ahs-pills">{["Custom scope",websiteInvestmentRange,"$10k+"].map(x=><button key={x} className={budget===x?"on":""} onClick={()=>setBudget(x)}>{x}</button>)}</div>
     <label><span>ONE THING WE SHOULD KNOW</span><input value={context} onChange={e=>setContext(e.target.value)} maxLength={120} placeholder="What are you trying to change?"/></label>
     <aside aria-live="polite"><small>LIVE INTAKE SUMMARY</small><strong>{goal} · {budget}</strong><p>{context.trim() || "Add context to see a more useful project brief take shape."} Nothing is sent from this demo.</p></aside>
   </div>
@@ -117,10 +118,10 @@ function ScopeDiscovery({inHome}:{inHome:boolean}) {
   const availableFeatures = [...new Set<string>([...discoveryOptions[business],"Commerce","Client portal","Booking","Events","Galleries"])];
   const needsLargerBuild = features.some(x => ["Booking","Commerce","Client portal","Planning tools"].includes(x)) || selectedGoals.some(x=>["Sell online","Smoother operations"].includes(x));
   const recommendation = business === "Wedding venue"
-    ? ["Custom Website","Starting at $7,000 + scope"]
+    ? [studio.offers.website,websiteStartingPrice]
     : business === "Restaurant" || business === "Something else" || needsLargerBuild
-      ? ["Custom Scope","Priced by scope"]
-      : ["Custom Website","Starting at $7,000 + scope"];
+      ? [studio.offers.custom,"Priced by scope"]
+      : [studio.offers.website,websiteStartingPrice];
   const toggle = (item:string,current:string[],set:(value:string[])=>void) =>
     set(current.includes(item) ? current.filter(x=>x!==item) : [...current,item]);
 
