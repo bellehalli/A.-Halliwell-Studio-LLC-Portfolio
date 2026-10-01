@@ -7,7 +7,7 @@ export function Choices({label,options,value,onChange}:{label:string;options:rea
 export function BriefLink({name,projectType,needs,summary,inHome=false}:{name:string;projectType:string;needs:string[];summary:string;inHome?:boolean}){
  const scope={projectType,needs,successGoal:`Inspired by ${name} in the AHS Lab. ${summary}`};
  const href=inHome?"#start":`/start?labScope=${encodeURIComponent(JSON.stringify(scope))}`;
- return <a className="lab-brief-link" href={href} onClick={()=>{writeStorage("session","ahs-lab-scope-v1",JSON.stringify(scope));window.dispatchEvent(new CustomEvent("ahs:lab-scope",{detail:scope}));}}>Build something like this <span aria-hidden="true">↗</span></a>;
+ return <a className="lab-brief-link" href={href} onClick={()=>{writeStorage("session","ahs-lab-scope-v1",JSON.stringify(scope));window.dispatchEvent(new CustomEvent("ahs:lab-scope",{detail:scope}));}}>Start a project like this</a>;
 }
 export function Preview({title,children,disabled=false}:{title:string;children:ReactNode;disabled?:boolean}){
  const ref=useRef<HTMLDialogElement>(null);
