@@ -110,7 +110,7 @@ type Business = keyof typeof discoveryOptions;
 const goals = ["More inquiries","More bookings","Sell online","Smoother operations"];
 const experiences = ["Editorial & immersive","Warm & welcoming","Fast & focused","High-touch & guided"];
 
-function ScopeDiscovery({inHome}:{inHome:boolean}) {
+export function ScopeDiscovery({inHome}:{inHome:boolean}) {
   const [business,setBusiness] = useState<Business>("Wedding venue");
   const [selectedGoals,setSelectedGoals] = useState<string[]>(["More inquiries"]);
   const [features,setFeatures] = useState<string[]>([...discoveryOptions["Wedding venue"]]);
