@@ -191,7 +191,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       removeStorage("local", DRAFT_KEY);
     }
     try {
-      const fromLab = readStorage("session", LAB_SCOPE_KEY);
+      const fromLab = new URLSearchParams(window.location.search).get("labScope") || readStorage("session", LAB_SCOPE_KEY);
       if (fromLab) {
         const scope = JSON.parse(fromLab) as LabScope;
         if (projectTypes.includes(scope.projectType) && Array.isArray(scope.needs) && typeof scope.successGoal === "string") {
