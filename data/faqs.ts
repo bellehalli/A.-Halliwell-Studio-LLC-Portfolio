@@ -15,7 +15,7 @@ export const studioFaqs = [
   },
   {
     "question": "How do payments work?",
-    "answer": "The standard payment schedule is 50% to reserve your project and begin work, 25% at the milestone outlined in your proposal, and 25% before final delivery or website launch.\n\nZelle is the studio’s preferred payment method, using arabellakhalliwell@gmail.com. Please follow your invoice instructions and include your invoice number as the payment reference. Secure Stripe payments and other available options are listed in your client portal."
+    "answer": "The standard payment schedule is 50% to reserve your project and begin work, 25% at the milestone outlined in your proposal, and 25% before final delivery or website launch.\n\nYour invoice and private client portal provide the available payment methods and instructions for your project."
   },
   {
     "question": "How long does a project take?",
