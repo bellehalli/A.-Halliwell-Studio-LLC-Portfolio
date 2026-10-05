@@ -11,7 +11,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function Page() {
   return <SeoLandingPage
-    eyebrow="CUSTOM WEB DEVELOPMENT \u00b7 FRONT-END + INTERACTIVE SYSTEMS"
+    eyebrow="CUSTOM WEB DEVELOPMENT · FRONT-END + INTERACTIVE SYSTEMS"
     title="Development for websites with a real job to do."
     intro="A. Halliwell Studio develops custom web experiences that go beyond static pages, from responsive marketing sites to interactive maps, planning tools, portals, booking flows and business-specific systems."
     sections={[
