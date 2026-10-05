@@ -3,30 +3,44 @@ import Link from "next/link";
 import Navigation from "@/components/navigation/Navigation";
 import { notFound } from "next/navigation";
 import SceneProps from "@/components/visual/SceneProps";
+import JsonLd from "@/components/seo/JsonLd";
+import { articleSchema } from "@/lib/schema";
 
 const articles = {
   "wedding-venue-website": {
-    title: "What should a wedding venue website include?",
-    dek: "A practical framework for turning a venue website into a useful decision-making experience.",
+    title: "What Should a Wedding Venue Website Include?",
+    dek: "A practical framework for designing a wedding venue website that helps couples understand the property, offering, investment and next step.",
     sections: [
-      ["Start with the decision", "A venue site should help a prospective couple understand fit before asking them to inquire. Capacity, location, the shape of the experience, meaningful inclusions and the next step should not require detective work."],
-      ["Show the experience, not only the gallery", "Photography matters, but the site should also explain how the event experience fits together, including arrival, ceremony, reception and any overnight stay the venue actually offers."],
-      ["Make inquiry feel like progress", "The inquiry flow should preserve useful context and explain what happens next instead of ending at a generic form-submitted screen."],
+      ["Start with the decision couples are trying to make", "A venue website should help a prospective couple decide whether the property belongs on their shortlist. Before asking for an inquiry, make the essentials easy to understand: location, capacity, overall experience, ceremony and reception possibilities, meaningful inclusions and what happens next."],
+      ["Show the property as a connected experience", "A gallery creates desire, but couples also need orientation. Explain how arrival, ceremony, cocktail hour, reception, portraits, parking and any overnight stay fit together. A property map or guided venue experience can make a complex estate much easier to understand."],
+      ["Make capacity and spaces easy to compare", "Do not bury guest counts in scattered paragraphs. Connect each important space to its purpose, capacity and possible layouts so couples can picture how their event might work."],
+      ["Give enough investment context to establish fit", "You do not have to publish every line item, but hiding all pricing can create unnecessary friction. Starting investment, package ranges or clear inclusions can help qualified couples understand whether the venue fits before they spend time on an inquiry."],
+      ["Explain the full wedding experience", "If the venue offers weekend access, lodging, rehearsal events, getting-ready spaces, planning support or preferred vendors, show how those pieces connect. The website should communicate the experience being purchased, not merely the building being rented."],
+      ["Make inquiry feel like progress", "A strong inquiry form collects useful context without becoming homework. Ask only what helps the next conversation, then explain what happens after submission: response timing, tour scheduling, availability checks or the next planning step."],
+      ["Build for mobile planning", "A large share of early research happens on phones. Capacity, pricing context, maps, galleries, buttons and inquiry paths should remain easy to use without tiny text, overloaded menus or interactions that depend on hover."],
+      ["Connect inspiration to action", "Every major page should have a logical next step. A couple exploring the estate might move to weddings, investment or a tour. Someone reviewing investment might move directly to inquiry. Calls to action work best when they match the visitor's stage rather than repeating the same button everywhere."],
     ],
   },
   "website-redesign-checklist": {
-    title: "Website redesign checklist",
-    dek: "What to examine before rebuilding a site simply because it looks dated.",
+    title: "Website Redesign Checklist: What to Audit Before You Rebuild",
+    dek: "A practical website redesign checklist covering business goals, customer journey, SEO, content, integrations, performance and conversion before you replace what already works.",
     sections: [
-      ["Business job", "Write down what the website is expected to accomplish and where the current experience fails that job."],
-      ["Customer journey", "Identify the questions a visitor needs answered before they can confidently take the next step."],
-      ["Technical reality", "Audit content, integrations, forms, analytics, SEO equity, performance and accessibility before replacing working infrastructure."],
+      ["Define the business job first", "Write down what the website is expected to accomplish. Generate qualified inquiries? Sell? Book appointments? Explain a complex service? Reduce repetitive questions? A redesign without a defined job can produce a prettier version of the same problems."],
+      ["Map the current customer journey", "Identify how people enter the site, what they need to know, where they hesitate and which pages lead to action. Look for missing information, dead ends and moments where the visitor has to work too hard."],
+      ["Protect existing SEO equity", "Before changing URLs or deleting pages, document which pages receive organic traffic, backlinks or impressions. Preserve useful URLs where possible and plan permanent redirects when a URL truly needs to change."],
+      ["Audit content before rewriting everything", "Separate content that is outdated from content that is merely poorly presented. Strong information can often be reorganized instead of discarded."],
+      ["Inventory forms, tools and integrations", "List every form, calendar, payment flow, CRM connection, email automation, analytics tool, portal and third-party service the current site relies on. A redesign should not accidentally break the parts of the business that already work."],
+      ["Check performance and accessibility", "Review mobile behavior, image weight, loading performance, heading structure, keyboard access, color contrast, labels and interactive controls. Visual polish should not come at the cost of usability."],
+      ["Review conversion paths", "Every important page should make the next useful action clear. Calls to action should reflect visitor intent instead of forcing every person into the same generic contact form."],
+      ["Measure the new site against the old problem", "After launch, evaluate whether the redesign improved the thing that justified the project: clearer inquiries, better engagement, fewer support questions, stronger search visibility or another defined business outcome."],
     ],
   },
 } as const;
 
 export const dynamicParams = false;
-export function generateStaticParams() { return Object.keys(articles).map(slug => ({ slug })); }
+export function generateStaticParams() {
+  return Object.keys(articles).map(slug => ({ slug }));
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -65,14 +79,17 @@ export default async function ResourcePage({ params }: Props) {
   const article = articles[slug as keyof typeof articles];
   if (!article) notFound();
 
+  const canonical = `/resources/${slug}`;
+
   return (
     <main className="destination-page">
+      <JsonLd data={articleSchema({ title: article.title, description: article.dek, path: canonical })} />
       <div className="site-background" aria-hidden="true" />
       <Navigation />
       <article className="destination-sheet article-sheet">
         <SceneProps scene="resources" />
         <section className="destination-hero">
-          <small>A. HALLIWELL JOURNAL</small>
+          <small>A. HALLIWELL STUDIO / RESOURCES</small>
           <h1>{article.title}</h1>
           <p>{article.dek}</p>
         </section>
@@ -84,7 +101,12 @@ export default async function ResourcePage({ params }: Props) {
             </section>
           ))}
         </div>
-        <section className="case-end"><small>KEEP EXPLORING</small><h2>Bring the idea<br />into the studio.</h2><Link className="button" href="/resources">More resources ↗</Link><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
+        <section className="case-end">
+          <small>KEEP EXPLORING</small>
+          <h2>Bring the idea<br />into the studio.</h2>
+          <Link className="button" href="/resources">More resources ↗</Link>
+          <Link className="button button-primary" href="/start">Start a project ↗</Link>
+        </section>
       </article>
     </main>
   );
