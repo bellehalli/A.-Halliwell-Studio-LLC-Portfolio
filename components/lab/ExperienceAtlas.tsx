@@ -6,8 +6,8 @@ import { BriefLink, Choices, Preview, SpatialScene } from "./LabShared";
 
 // Each conceptual event floor has its own clear gathering zone in the artwork.
 const floors = [
-  { image: "conservatory", x: 25, y: 39, width: 43, height: 15, entry: "M13 44 H24", stage: { x: 71, y: 40, width: 4, height: 10 }, service: { x: 77, y: 53, width: 9, height: 4 }, vendorRoute: "M90 64 Q88 57 86 55" },
-  { image: "manor", x: 53, y: 52, width: 24, height: 14, entry: "M41 57 H51", stage: { x: 79, y: 54, width: 4, height: 9 }, service: { x: 64, y: 47, width: 9, height: 3 }, vendorRoute: "M64 73 V68 Q62 61 64 50" },
+  { image: "conservatory", x: 25, y: 39, width: 43, height: 15, entry: "M13 44 H24", stage: { x: 71, y: 40, width: 4, height: 10 }, service: { x: 77, y: 53, width: 9, height: 4 }, vendorRoute: "M45 66 V58 H80 L82 57" },
+  { image: "manor", x: 53, y: 52, width: 24, height: 14, entry: "M41 57 H51", stage: { x: 79, y: 54, width: 4, height: 9 }, service: { x: 64, y: 47, width: 9, height: 3 }, vendorRoute: "M65 73 H78 V49 H73" },
   { image: "garden", x: 40, y: 34, width: 22, height: 18, entry: "M18 74 Q20 61 38 47", stage: { x: 64, y: 34, width: 4, height: 9 }, service: { x: 32, y: 62, width: 9, height: 4 }, vendorRoute: "M26 77 Q29 69 34 66" },
 ];
 function FloorLayout({ layout, guests, space }: { layout: Layout; guests: number; space: number }) {
@@ -25,12 +25,13 @@ function FloorLayout({ layout, guests, space }: { layout: Layout; guests: number
   const ceremonyRows = Math.ceil(shown / ceremonyColumns);
   const seats = Array.from({ length: furniture.seats }, (_, i) => {
     if (layout === "Ceremony") {
-      const col = i % ceremonyColumns;
-      return { x: floor.x + (col + .5 + (col >= ceremonyColumns / 2 ? 1 : 0)) * floor.width / (ceremonyColumns + 1), y: floor.y + (Math.floor(i / ceremonyColumns) + .5) * floor.height / ceremonyRows, angle: 0 };
+      const col = i % ceremonyColumns, row = Math.floor(i / ceremonyColumns);
+      const aisle = ceremonyRows > 1 && row >= Math.ceil(ceremonyRows / 2) ? 1 : 0;
+      return { x: floor.x + (col + .5) * floor.width / ceremonyColumns, y: floor.y + (row + .5 + aisle) * floor.height / (ceremonyRows + (ceremonyRows > 1 ? 1 : 0)), angle: -90 };
     }
     const center = tableAt(Math.floor(i / 8));
     const angle = (i % 8) * Math.PI / 4;
-    return { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius, angle: (i % 8) * 45 + 90 };
+    return { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius, angle: (i % 8) * 45 - 90 };
   });
   return <>
     <div className="lab-floor">
