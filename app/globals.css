@@ -546,3 +546,21 @@ img { max-width: 100%; }
 .work-page .case-sheet{padding-top:clamp(36px,5vw,66px)}
 .work-page .case-hero h1{font-size:clamp(64px,8vw,118px)}
 .work-page .case-story{margin-top:clamp(32px,4vw,54px);padding-top:24px}
+
+
+/* Lab refinement: polished CTAs, compact controls and collision-safe map labels */
+.lab-brief-link{display:flex!important;align-items:center;justify-content:space-between;gap:18px;width:100%;margin-top:18px;padding:15px 16px;border:1px solid currentColor;text-decoration:none;font-family:var(--font-mono),monospace;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background .18s ease,color .18s ease}
+.lab-brief-link:hover,.lab-brief-link:focus-visible{background:currentColor;outline:0}
+.lab-night .lab-night-controls{align-items:end}
+.lab-night .lab-night-controls .lab-choices>div{display:grid;grid-template-columns:repeat(2,minmax(88px,1fr));gap:6px}
+.lab-night .lab-night-controls .lab-choices button{white-space:nowrap}
+.lab-night-scene .lab-hotspot span{opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,8px);max-width:150px;white-space:normal;text-align:center}
+.lab-night-scene .lab-hotspot.selected span,.lab-night-scene .lab-hotspot:focus-visible span{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.lab-night-scene .lab-hotspot{z-index:2}
+.lab-night-scene .lab-hotspot.selected{z-index:8}
+.lab-treatment .lab-education>a{display:inline-block;text-underline-offset:4px}
+@media(max-width:850px){
+ .lab-night .lab-night-controls .lab-choices>div{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .lab-night-scene .lab-hotspot span{display:none}
+ .lab-night-scene .lab-hotspot.selected span{display:block;opacity:1;visibility:visible}
+}

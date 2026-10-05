@@ -6,14 +6,14 @@ import CapabilityPlayground from "@/components/lab/CapabilityPlayground";
 import Navigation from "@/components/navigation/Navigation";
 export const metadata: Metadata = {
   title: "Lab",
-  description: "Try interactive concept demos for booking, commerce, packages, events and lead capture at A. Halliwell Studio.",
+  description: "Test five working experiments in spatial exploration, personalization, intelligent intake, service workflows and adaptive strategy.",
   alternates: { canonical: "/lab" },
-  ...socialMetadata("/lab", "Lab", "Try interactive concept demos for booking, commerce, packages, events and lead capture at A. Halliwell Studio."),
+  ...socialMetadata("/lab", "Lab", "Test five working experiments in spatial exploration, personalization, intelligent intake, service workflows and adaptive strategy."),
 };
 export default function Page() {
  return <main className="destination-page lab-route"><div className="site-background" aria-hidden="true"/>
  <Navigation />
- <article className="destination-sheet lab-destination"><SceneProps scene="labPage"/><section className="destination-hero"><small>INTERACTIVE PROOF</small><h1>Don't read the capability list. Use it.</h1><p>Try a short concept and see how your choices change the result. These are demonstrations, not connected to live inventory or payments.</p></section>
+ <article className="destination-sheet lab-destination"><section className="destination-hero"><small>INTERACTIVE PROOF</small><h1>What could your<br/>business make possible?</h1><p>Explore spaces. Personalize experiences. Connect workflows. These are functioning studio concepts built to show the possibilities.</p></section>
  <CapabilityPlayground />
  <section className="case-end"><small>NEXT</small><h2>Build something<br/>worth using.</h2><Link className="button button-primary" href="/start">Start a project</Link></section></article></main>;
 }

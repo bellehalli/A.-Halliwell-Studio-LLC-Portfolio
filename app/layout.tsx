@@ -7,6 +7,7 @@ import "./visual-polish.css";
 import "./home-world.css";
 import "./editorial-type.css";
 import "./lab-refinement.css";
+import "./lab-experiments.css";
 import "./work-refinement.css";
 import "./case-study-world.css";
 import "./destination-world.css";
