@@ -6,12 +6,13 @@ import { BriefLink, Choices, Preview, SpatialScene } from "./LabShared";
 
 // Each conceptual event floor has its own clear gathering zone in the artwork.
 const floors = [
-  { image: "conservatory", x: 25, y: 39, width: 43, height: 15, entry: "M13 44 H24", stage: { x: 70, y: 42, width: 3, height: 10 } },
-  { image: "manor", x: 53, y: 52, width: 24, height: 14, entry: "M41 57 H49", stage: { x: 83, y: 56, width: 3, height: 14 } },
-  { image: "garden", x: 40, y: 34, width: 22, height: 18, entry: "M18 74 Q20 61 28 54", stage: { x: 64, y: 33, width: 3, height: 8 } },
+  { image: "conservatory", x: 25, y: 39, width: 43, height: 15, entry: "M13 44 H24", stage: { x: 71, y: 40, width: 4, height: 10 }, service: { x: 77, y: 53, width: 9, height: 4 }, vendorRoute: "M90 64 Q88 57 86 55" },
+  { image: "manor", x: 53, y: 52, width: 24, height: 14, entry: "M41 57 H51", stage: { x: 79, y: 54, width: 4, height: 9 }, service: { x: 64, y: 47, width: 9, height: 3 }, vendorRoute: "M64 73 V68 Q62 61 64 50" },
+  { image: "garden", x: 40, y: 34, width: 22, height: 18, entry: "M18 74 Q20 61 38 47", stage: { x: 64, y: 34, width: 4, height: 9 }, service: { x: 32, y: 62, width: 9, height: 4 }, vendorRoute: "M26 77 Q29 69 34 66" },
 ];
 function FloorLayout({ layout, guests, space }: { layout: Layout; guests: number; space: number }) {
   const floor = floors[space];
+  const [showVendors, setShowVendors] = useState(false);
   const shown = Math.min(guests, capacityFor(space, layout));
   const furniture = furnitureFor(layout, shown);
   const columns = space === 1 ? 3 : 5;
@@ -25,24 +26,41 @@ function FloorLayout({ layout, guests, space }: { layout: Layout; guests: number
   const seats = Array.from({ length: furniture.seats }, (_, i) => {
     if (layout === "Ceremony") {
       const col = i % ceremonyColumns;
-      return { x: floor.x + (col + .5 + (col >= ceremonyColumns / 2 ? 1 : 0)) * floor.width / (ceremonyColumns + 1), y: floor.y + (Math.floor(i / ceremonyColumns) + .5) * floor.height / ceremonyRows };
+      return { x: floor.x + (col + .5 + (col >= ceremonyColumns / 2 ? 1 : 0)) * floor.width / (ceremonyColumns + 1), y: floor.y + (Math.floor(i / ceremonyColumns) + .5) * floor.height / ceremonyRows, angle: 0 };
     }
     const center = tableAt(Math.floor(i / 8));
     const angle = (i % 8) * Math.PI / 4;
-    return { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius };
+    return { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius, angle: (i % 8) * 45 + 90 };
   });
   return <>
     <div className="lab-floor">
       <Image src={`/assets/lab/${floor.image}.webp`} alt={`Distinct illustrated ${spaces[space].name} concept viewed from above`} width={1536} height={1024} sizes="(max-width:850px) 94vw, 60vw" />
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-label={`${furniture.seats} seats and ${furniture.tables} tables in this illustrative configuration`} role="img">
-        <title>{`${layout}: ${shown} displayed guests`}</title>
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-label={`${furniture.seats} chairs, ${furniture.tables} dressed tables, a ${layout === "Ceremony" ? "ceremony focal point" : "music station"} and separate catering station`} role="img">
+        <title>{`${layout}: ${shown} displayed guests with reserved vendor spaces`}</title>
+        <defs><linearGradient id={`linen-${space}`} x2="1" y2="1"><stop stopColor="#fffcf0"/><stop offset="1" stopColor="#d7c4b4"/></linearGradient></defs>
         <path d={floor.entry} className="lab-circulation" />
-        <rect {...floor.stage} className="lab-stage" />
-        {Array.from({ length: furniture.tables }, (_, i) => { const p = tableAt(i); return <ellipse key={i} cx={p.x} cy={p.y} rx={radius * .65} ry={radius * .65} className="lab-table" />; })}
-        {seats.map((p, i) => <rect key={i} x={p.x - .35} y={p.y - .4} width=".7" height=".8" rx=".1" className="lab-chair" />)}
+        <g className={`lab-vendor-staging ${showVendors ? "highlighted" : ""}`}>
+          <rect {...floor.service} rx=".4" className="lab-service-counter" />
+          {[0,1,2].map(i=><g key={i}><rect x={floor.service.x + 1 + i * 2.4} y={floor.service.y + .7} width="1.7" height="1.1" rx=".2" fill="#ede3d1" stroke="#9c8874" strokeWidth=".15"/><ellipse cx={floor.service.x + 1.8 + i * 2.4} cy={floor.service.y + 1.2} rx=".5" ry=".35" fill="#9aab82"/></g>)}
+          <rect x={floor.stage.x} y={floor.stage.y} width={floor.stage.width} height={floor.stage.height} rx=".4" className={layout === "Ceremony" ? "lab-ceremony-platform" : "lab-music-station"}/>
+          {layout === "Ceremony" ? <><ellipse cx={floor.stage.x + floor.stage.width/2} cy={floor.stage.y + 1.3} rx="1.2" ry=".8" fill="#7e956b"/><ellipse cx={floor.stage.x + floor.stage.width/2} cy={floor.stage.y + floor.stage.height-1.3} rx="1.2" ry=".8" fill="#7e956b"/></> : <><rect x={floor.stage.x+.6} y={floor.stage.y+.8} width={floor.stage.width-1.2} height="1.7" fill="#373039"/><rect x={floor.stage.x+.6} y={floor.stage.y+floor.stage.height-2.5} width={floor.stage.width-1.2} height="1.7" fill="#373039"/><path d={`M${floor.stage.x+.8} ${floor.stage.y+floor.stage.height/2} h${floor.stage.width-1.6}`} stroke="#c6a490" strokeWidth=".6"/></>}
+          {showVendors ? <path d={floor.vendorRoute} className="lab-vendor-route"/> : null}
+        </g>
+        {Array.from({ length: furniture.tables }, (_, i) => {
+          const p = tableAt(i), tableRadius = radius * (layout === "Seated dinner" ? .7 : .5);
+          return <g key={i}>
+            <ellipse cx={p.x+.12} cy={p.y+.22} rx={tableRadius} ry={tableRadius} fill="#463b3440"/>
+            <ellipse cx={p.x} cy={p.y} rx={tableRadius} ry={tableRadius} fill={`url(#linen-${space})`} stroke="#ad9681" strokeWidth=".12"/>
+            {layout === "Seated dinner" ? Array.from({length:Math.min(8,shown-i*8)},(_,j)=>{const a=j*Math.PI/4;return <ellipse key={j} cx={p.x+Math.cos(a)*tableRadius*.72} cy={p.y+Math.sin(a)*tableRadius*.72} rx={tableRadius*.15} ry={tableRadius*.15} fill="#fffef9" stroke="#b6a88f" strokeWidth=".08"/>;}) : null}
+            <ellipse cx={p.x} cy={p.y} rx={tableRadius*.22} ry={tableRadius*.25} fill="#738769"/>
+            <ellipse cx={p.x-.12} cy={p.y-.1} rx={tableRadius*.11} ry={tableRadius*.12} fill="#ce9eb0"/>
+          </g>;
+        })}
+        {seats.map((p, i) => { const size = layout === "Ceremony" ? Math.min(.65, floor.height / ceremonyRows * .6) : radius*.32; return <g key={i} transform={`translate(${p.x} ${p.y}) rotate(${p.angle})`}><rect x={-size*.5} y={-size*.5} width={size} height={size} rx=".12" fill="#e9ddc7" stroke="#8c725b" strokeWidth=".13"/><path d={`M${-size*.6} ${size*.45} h${size*1.2}`} stroke="#745f4b" strokeWidth=".22"/></g>; })}
       </svg>
     </div>
-    <p className="lab-caption">{space === 1 ? "Gathering salon only; the stair hall and drawing room remain furnished." : space === 2 ? "An open-air ceremony lawn, with paths and planted terraces around it." : "Gathering floor between the west vestibule and the curved botanical alcove."} {shown < guests ? `The overlay shows ${shown} guests; your requested count exceeds the demo limit.` : ""}</p>
+    <div className="lab-staging-key"><span>Ivory linen · floral centers · guest seating</span><span>{layout === "Ceremony" ? "Ceremony focal point" : "Music / production"} · catering / service counter</span><button className="lab-secondary" type="button" aria-pressed={showVendors} onClick={()=>setShowVendors(v=>!v)}>{showVendors ? "Hide vendor routes" : "Show vendor routes"}</button></div>
+    <p className="lab-caption">Vendor stations stay outside the seating area. {space === 1 ? "Gathering salon only; the stair hall and drawing room remain furnished." : space === 2 ? "An open-air ceremony lawn, with paths and planted terraces around it." : "Gathering floor between the west vestibule and the curved botanical alcove."} {shown < guests ? `The overlay shows ${shown} guests; your requested count exceeds the demo limit.` : ""}</p>
   </>;
 }
 function InnPlan({ room, onRoom }: { room: number; onRoom: (index: number) => void }) {
