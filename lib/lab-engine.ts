@@ -66,5 +66,5 @@ export function conversionStrategy(intent:keyof typeof journeyRules,goal:string,
  if (!tailored) return {order:[2,1,0],reason:"A generic page leads with the brand story and gives everyone the same next step."};
  if (goal==="Build trust") return {order:[0,2,1],reason:"Lead with useful details, then show the approach before asking visitors to choose."};
  if (goal==="Less admin") return {order:[1,0,2],reason:"Bring the guided selection forward, supported by clear expectations for the next step."};
- return {order:intent==="Discovering"?[2,1,0]:intent==="Comparing"?[0,1,2]:[1,0,2],reason:journeyRules[intent].reason};
+ return {order:intent==="Discovering"?[2,1,0]:intent==="Comparing"?[0,1,2]:[1,0,2],reason:intent==="Discovering"?"Introduce the business and its approach before asking for commitment.":intent==="Comparing"?"Move useful differences and decision details closer to the choice.":"Bring the options and next step forward, with a clear path to a selection or guided request."};
 }
