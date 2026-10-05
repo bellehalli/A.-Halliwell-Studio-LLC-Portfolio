@@ -55,3 +55,15 @@ test('adaptive content has distinct section orders for all visitor intents',()=>
  assert.equal(new Set(orders).size,3);
  assert.notEqual(lab.journeyRules.Discovering.cta,lab.journeyRules['Ready to buy'].cta);
 });
+test('conversion strategy preserves a generic baseline and explains goal-specific content priorities',()=>{
+ for (const intent of Object.keys(lab.journeyRules)) {
+  assert.equal(lab.conversionStrategy(intent,'Product sales',false).order.join(','),'2,1,0');
+  assert.equal(lab.conversionStrategy(intent,'Build trust',false).order.join(','),'2,1,0');
+ }
+ assert.equal(lab.conversionStrategy('Discovering','Product sales').order.join(','),'2,1,0');
+ assert.equal(lab.conversionStrategy('Comparing','Qualified inquiries').order.join(','),'0,1,2');
+ assert.equal(lab.conversionStrategy('Ready to buy','Product sales').order.join(','),'1,0,2');
+ assert.equal(lab.conversionStrategy('Ready to buy','Build trust').order.join(','),'0,2,1');
+ assert.match(lab.conversionStrategy('Ready to buy','Build trust').reason,/useful details/);
+ assert.equal(lab.conversionStrategy('Discovering','Less admin').order.join(','),'1,0,2');
+});

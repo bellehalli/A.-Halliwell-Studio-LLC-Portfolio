@@ -61,3 +61,10 @@ export const journeyRules={
  Comparing:{heading:"Find the piece that fits your everyday.",reason:"Move useful differences closer to the choice: material, scale and care.",order:["Materials + care","Collection","Story + atmosphere"],cta:"Compare the collection"},
  "Ready to buy":{heading:"Your next everyday favorite.",reason:"Bring selection and price forward, with a clear path to the demo bag.",order:["Collection","Materials + care","Story + atmosphere"],cta:"Review your demo bag"},
 } as const;
+
+export function conversionStrategy(intent:keyof typeof journeyRules,goal:string,tailored=true) {
+ if (!tailored) return {order:[2,1,0],reason:"A generic page leads with the brand story and gives everyone the same next step."};
+ if (goal==="Build trust") return {order:[0,2,1],reason:"Lead with useful details, then show the approach before asking visitors to choose."};
+ if (goal==="Less admin") return {order:[1,0,2],reason:"Bring the guided selection forward, supported by clear expectations for the next step."};
+ return {order:intent==="Discovering"?[2,1,0]:intent==="Comparing"?[0,1,2]:[1,0,2],reason:journeyRules[intent].reason};
+}
