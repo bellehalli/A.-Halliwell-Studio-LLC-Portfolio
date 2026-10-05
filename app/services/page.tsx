@@ -15,7 +15,7 @@ import { serviceSchema } from "@/lib/schema";
 export const metadata: Metadata = pageMetadata({
   path: "/services",
   title: "Custom Web Design, Development & Digital Systems",
-  description: "Custom web design, development, interactive experiences, property maps and digital systems for businesses that need the website to do more.",
+  description: "Custom web design, development, interactive experiences, property maps and digital systems for businesses worldwide that need the website to do more.",
 });
 
 const blocks = [
@@ -32,7 +32,7 @@ export default function Page() {
     <main className="destination-page services-route">
       <JsonLd data={serviceSchema({
         name: "Custom Web Design, Development & Digital Systems",
-        description: "Custom websites, interactive digital experiences and digital systems for experience-driven businesses.",
+        description: "Custom websites, interactive digital experiences and digital systems for experience-driven businesses worldwide.",
         path: "/services",
       })} />
       <div className="site-background" aria-hidden="true" />
@@ -42,6 +42,7 @@ export default function Page() {
           <small>CUSTOM WEB DESIGN + DEVELOPMENT + INTERACTIVE DIGITAL EXPERIENCES</small>
           <h1>The website should participate in the business.</h1>
           <p>A. Halliwell Studio combines strategy, custom web design and development to build digital experiences that help people understand, choose, buy, book, inquire, plan or get something done.</p>
+          <p>Working with businesses worldwide through remote strategy, design and development. Based in Detroit, available wherever your project takes shape.</p>
           <p><strong>{pricingSummary}</strong></p>
         </section>
 

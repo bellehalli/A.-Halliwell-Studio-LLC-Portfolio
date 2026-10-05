@@ -8,17 +8,13 @@ export const organizationSchema = {
   url: SITE_URL,
   logo: `${SITE_URL}/favicon.svg`,
   description:
-    "Independent web design and development studio creating custom websites, interactive digital experiences and digital systems for experience-driven businesses.",
+    "Independent web design and development studio creating custom websites, interactive digital experiences and digital systems for experience-driven businesses worldwide.",
   founder: {
     "@type": "Person",
     name: "Arabella Payton-Halliwell",
     jobTitle: "Founder & Creative Developer",
   },
-  areaServed: [
-    { "@type": "State", name: "Michigan" },
-    { "@type": "Country", name: "United States" },
-    "Worldwide",
-  ],
+  areaServed: "Worldwide",
 };
 
 export const websiteSchema = {

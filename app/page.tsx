@@ -28,12 +28,12 @@ export default function Home() {
       <section className="hero home-hero" aria-labelledby="home-heading">
         <div className="home-art-stage">
           <div className="home-hero-copy">
-            <p className="home-hero-index">CUSTOM WEB DESIGN + DEVELOPMENT<br/>DETROIT BASED · WORKING WORLDWIDE</p>
+            <p className="home-hero-index">CUSTOM WEB DESIGN + DEVELOPMENT<br/>WORKING WORLDWIDE · DETROIT BASED</p>
             <h1 id="home-heading" tabIndex={-1} className="home-hero-title">
               <span>Websites</span><span>that actually</span><em>do things.<b aria-hidden="true">♥︎</b></em>
             </h1>
             <p className="home-hero-description">
-              A. Halliwell Studio creates custom websites, interactive digital experiences and digital systems for businesses that need more than a beautiful template.
+              A. Halliwell Studio creates custom websites, interactive digital experiences and digital systems for businesses worldwide that need more than a beautiful template.
             </p>
             <div className="home-hero-actions">
               <a className="button button-primary" href="#start">START A PROJECT <Image className="glitter-cursor" src={CURSOR} alt="" width={26} height={26} aria-hidden="true" /></a>
@@ -104,7 +104,7 @@ export default function Home() {
               <h2>The person<br/>behind the <em>cursor.</em></h2>
               <p className="studio-lead">Hello, I&apos;m Arabella. I design and develop custom websites with personality and a real job to do.</p>
               <p>My background in psychology and hospitality shapes how I think about digital experiences: what people need to understand, where they hesitate, what builds trust and what makes the next step feel easy.</p>
-              <p>A. Halliwell Studio is based in Detroit, Michigan and works with businesses wherever the right project happens to be.</p>
+              <p>A. Halliwell Studio works with businesses worldwide, from Michigan and New York to Saint-Tropez and beyond. Strategy, design and development can happen remotely, wherever your business is based.</p>
               <div className="studio-note"><span>STRATEGY</span><span>DESIGN</span><span>CODE</span><span>SYSTEMS ♥</span></div>
               <a className="button" href="/studio">MEET THE STUDIO</a>
             </div>

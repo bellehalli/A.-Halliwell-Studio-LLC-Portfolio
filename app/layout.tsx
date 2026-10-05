@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | A. Halliwell Studio",
   },
   description:
-    "A. Halliwell Studio creates custom websites, interactive digital experiences and digital systems for experience-driven businesses. Based in Detroit, working worldwide.",
+    "A. Halliwell Studio creates custom websites, interactive digital experiences and digital systems for businesses worldwide. Custom web design and development, wherever you are based.",
   applicationName: "A. Halliwell Studio",
   alternates: { canonical: "/" },
   openGraph: {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: "A. Halliwell Studio",
     title: "A. Halliwell Studio | Custom Web Design, Development & Digital Experiences",
     description:
-      "Custom websites, interactive experiences and digital systems built around what your business actually needs the internet to do.",
+      "Custom websites, interactive experiences and digital systems for businesses worldwide, built around what your business needs the internet to do.",
     images: [{
       url: "/og-image.png",
       width: 1200,
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "A. Halliwell Studio | Custom Web Design, Development & Digital Experiences",
     description:
-      "Custom websites, interactive experiences and digital systems for experience-driven businesses.",
+      "Custom websites, interactive experiences and digital systems for experience-driven businesses worldwide.",
     images: ["/og-image.png"],
   },
 };

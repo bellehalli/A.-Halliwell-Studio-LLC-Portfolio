@@ -6,14 +6,14 @@ import { serviceSchema } from "@/lib/schema";
 export const metadata: Metadata = pageMetadata({
   path: "/web-development",
   title: "Custom Web Development & Interactive Websites",
-  description: "Custom web development for responsive websites, interactive tools, booking flows, portals, integrations and business-specific digital systems.",
+  description: "Custom web development for businesses worldwide: responsive websites, interactive tools, booking flows, portals, integrations and business-specific digital systems.",
 });
 
 export default function Page() {
   return <SeoLandingPage
     eyebrow="CUSTOM WEB DEVELOPMENT · FRONT-END + INTERACTIVE SYSTEMS"
     title="Development for websites with a real job to do."
-    intro="A. Halliwell Studio develops custom web experiences that go beyond static pages, from responsive marketing sites to interactive maps, planning tools, portals, booking flows and business-specific systems."
+    intro="A. Halliwell Studio works remotely with businesses worldwide to develop custom web experiences that go beyond static pages, from responsive marketing sites to interactive maps, planning tools, portals, booking flows and business-specific systems."
     sections={[
       { eyebrow: "01 / FRONT-END DEVELOPMENT", title: "Build the interface intentionally.", body: "Responsive interfaces are developed with modern web technologies and structured around performance, accessibility and maintainability." },
 { eyebrow: "02 / INTERACTIVE FEATURES", title: "Make the site participate.", body: "Interactive maps, filters, builders, calculators, personalized journeys and custom components turn passive browsing into useful action." },
@@ -27,7 +27,7 @@ export default function Page() {
     ]}
     schema={serviceSchema({
       name: "Custom Web Development & Interactive Websites",
-      description: "Custom web development for responsive websites, interactive tools, booking flows, portals, integrations and business-specific digital systems.",
+      description: "Custom web development for businesses worldwide: responsive websites, interactive tools, booking flows, portals, integrations and business-specific digital systems.",
       path: "/web-development",
     })}
   />;
