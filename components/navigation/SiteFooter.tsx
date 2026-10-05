@@ -15,6 +15,8 @@ export default function SiteFooter() {
       </div>
       <div className="conversion-footer-action"><span>HAVE A DIGITAL PROBLEM TO SOLVE?</span><a className="button button-primary" href="/start">START A PROJECT ↗</a><a href={`mailto:${studio.email}`}>{studio.email}</a></div>
       <nav aria-label="Footer navigation"><a href="/work">Work</a><a href="/services">Services</a><a href="/services#faqs">FAQs</a><a href="/studio">Studio</a><a href="/lab">Lab</a><a href="/resources">Resources</a><a href="/portal">Client Portal</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies &amp; storage</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a></nav>
+      <nav aria-label="Explore studio services"><a href="/web-design">Custom web design</a><a href="/web-development">Web development</a><a href="/interactive-experiences">Interactive experiences</a><a href="/michigan-web-design">Michigan web design</a><a href="/detroit-web-design">Detroit web design</a></nav>
+      <nav aria-label="Industries we design for"><a href="/industries/wedding-venues">Wedding venues</a><a href="/industries/hospitality">Hospitality</a><a href="/industries/med-spas">Med spas</a><a href="/industries/nightlife">Nightlife</a><a href="/industries/home-services">Home services</a></nav>
     </div>
   </footer>;
 }

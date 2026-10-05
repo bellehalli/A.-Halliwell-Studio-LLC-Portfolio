@@ -45,6 +45,12 @@ function formHarness(window) {
   return { render, nodes, get submitted() { return submitted; }, get focus() { return focus; } };
 }
 (async () => {
+  const labWindow = { location: { search: '?labScope=' + encodeURIComponent(JSON.stringify({ projectType: 'Hospitality / venue', needs: ['Custom interactive feature', 'Illustration / property map'], successGoal: 'Experience Atlas project' })) }, addEventListener() {}, removeEventListener() {} };
+  for (const key of ['localStorage', 'sessionStorage']) Object.defineProperty(labWindow, key, { get() { throw Error('storage denied'); } });
+  const labForm = formHarness(labWindow); labForm.render();
+  assert.equal(labForm.nodes().find(n => n.type === 'button' && n.props.children === 'Hospitality / venue').props['aria-pressed'], true);
+  assert.equal(labForm.nodes().find(n => n.type === 'button' && n.props.children === 'Illustration / property map').props['aria-pressed'], true);
+  assert(labForm.nodes().some(n => n.type === 'textarea' && n.props.value === 'Experience Atlas project'));
   const h = formHarness(deniedWindow); h.render();
   const illustration = h.nodes().find(n => n.type === 'button' && n.props.children === 'Illustration / property map');
   assert.equal(illustration.props['aria-pressed'], true);

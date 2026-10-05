@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 
-const studioName = "A. Halliwell Studio";
+export const SITE_URL = "https://www.ahalliwellstudio.com";
+export const STUDIO_NAME = "A. Halliwell Studio";
+export const DEFAULT_OG_IMAGE = "/og-image.png";
+
 const image = {
-  url: "/og-image.png",
+  url: DEFAULT_OG_IMAGE,
   width: 1200,
   height: 630,
-  alt: "A. Halliwell Studio — websites that actually do things",
+  alt: "A. Halliwell Studio — custom web design, development and digital systems",
 };
 
 export function socialMetadata(path: string, title: string, description: string): Metadata {
-  const fullTitle = `${title} | ${studioName}`;
+  const fullTitle = `${title} | ${STUDIO_NAME}`;
   return {
     openGraph: {
       type: "website",
-      siteName: studioName,
+      siteName: STUDIO_NAME,
       url: path,
       title: fullTitle,
       description,
@@ -25,5 +28,22 @@ export function socialMetadata(path: string, title: string, description: string)
       description,
       images: [image.url],
     },
+  };
+}
+
+export function pageMetadata({
+  path,
+  title,
+  description,
+}: {
+  path: string;
+  title: string;
+  description: string;
+}): Metadata {
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    ...socialMetadata(path, title, description),
   };
 }
