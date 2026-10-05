@@ -1,11 +1,18 @@
 export type Layout = "Seated dinner" | "Ceremony" | "Cocktail reception";
 export const spaces = [
   {name:"The Conservatory",x:81,y:44,capacity:160,description:"Glazed architecture, garden views and a flexible event floor."},
-  {name:"The Manor",x:49,y:32,capacity:80,description:"An intimate gathering space opening onto the courtyard."},
+  {name:"The Manor",x:49,y:32,capacity:24,description:"A grand stair hall, octagonal drawing room and intimate parquet gathering salon."},
   {name:"Ceremony Garden",x:29,y:52,capacity:160,description:"An open-air setting connected to the estate paths."},
-  {name:"Guest Inn",x:15,y:20,capacity:40,description:"A smaller setting for welcome gatherings and private dinners."},
+  {name:"Guest Inn",x:15,y:20,capacity:6,description:"A country guesthouse with two king bedrooms, a twin bedroom, two bathrooms and a shared lounge."},
 ] as const;
-export function capacityFor(space:number,layout:Layout) { return Math.round(spaces[space].capacity * (layout === "Seated dinner" ? .75 : layout === "Ceremony" ? 1 : 1.25)); }
+export function capacityFor(space:number,layout:Layout) { return space === 3 ? spaces[space].capacity : Math.round(spaces[space].capacity * (layout === "Seated dinner" ? .75 : layout === "Ceremony" ? 1 : 1.25)); }
+export const innRooms = [
+  {name:"Garden king bedroom",x:26,y:22,sleeps:2,description:"One king bed, garden outlook and space to settle in."},
+  {name:"Courtyard king bedroom",x:73,y:22,sleeps:2,description:"One king bed with a quiet courtyard outlook."},
+  {name:"Twin bedroom",x:23,y:55,sleeps:2,description:"Two single beds for friends or family sharing."},
+  {name:"Shared lounge",x:50,y:53,sleeps:0,description:"A sitting room and breakfast table shared by the guesthouse."},
+  {name:"Shared bathrooms",x:78,y:51,sleeps:0,description:"Two shared bathrooms: one off the central hall and one beside the lounge."},
+] as const;
 export function furnitureFor(layout:Layout,guests:number) {
   const count=Math.max(0,Math.min(200,Math.round(guests)));
   return {seats:layout === "Cocktail reception" ? 0 : count,tables:layout === "Seated dinner" ? Math.ceil(count/8) : layout === "Cocktail reception" ? Math.ceil(count/12) : 0};

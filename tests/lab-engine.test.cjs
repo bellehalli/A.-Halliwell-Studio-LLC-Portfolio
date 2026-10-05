@@ -13,7 +13,13 @@ test('event layout counts and capacity change with configuration and space',()=>
  assert.equal(lab.furnitureFor('Cocktail reception',100).seats,0);
  assert.equal(lab.capacityFor(0,'Seated dinner'),120);
  assert.equal(lab.capacityFor(0,'Ceremony'),160);
- assert.equal(lab.capacityFor(3,'Seated dinner'),30);
+ assert.equal(lab.capacityFor(1,'Seated dinner'),18);
+ assert.equal(lab.capacityFor(3,'Seated dinner'),6);
+});
+test('guesthouse sleeping places stay independent of event layouts',()=>{
+ assert.equal(lab.innRooms.reduce((total,room)=>total+room.sleeps,0),6);
+ assert.equal(lab.innRooms.filter(room=>room.sleeps>0).length,3);
+ for (const layout of ['Seated dinner','Ceremony','Cocktail reception']) assert.equal(lab.capacityFor(3,layout),6);
 });
 test('night selection excludes unsuitable groups and updates late-arrival price and midnight itinerary',()=>{
  assert.equal(lab.suitableSections('VIP',6).length,3);
