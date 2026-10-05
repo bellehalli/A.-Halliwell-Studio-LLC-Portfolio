@@ -546,3 +546,6 @@ img { max-width: 100%; }
 .work-page .case-sheet{padding-top:clamp(36px,5vw,66px)}
 .work-page .case-hero h1{font-size:clamp(64px,8vw,118px)}
 .work-page .case-story{margin-top:clamp(32px,4vw,54px);padding-top:24px}
+
+/* Vector marks stay consistent across devices and cannot render as emoji. */
+.studio-icon { display: inline-block; flex-shrink: 0; vertical-align: -0.125em; }

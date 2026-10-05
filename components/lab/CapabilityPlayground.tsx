@@ -1,4 +1,5 @@
 "use client";
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -22,7 +23,7 @@ export default function CapabilityPlayground({ inHome = false }: { inHome?: bool
   const current = experiments[selected];
   const Experiment = current.component;
   return <section className="flagship-lab" id="capabilities" aria-label="A. Halliwell Studio interactive Lab">
-    <div className="flagship-lab-heading"><small>03 / THE LAB</small><h2>See what your<br /><em>website could do.</em></h2><p>Choose a business need. Try the experience. Picture what we could build for yours.</p>{inHome ? <Link href="/lab">Explore the full Lab ↗</Link> : null}</div>
+    <div className="flagship-lab-heading"><small>03 / THE LAB</small><h2>See what your<br /><em>website could do.</em></h2><p>Choose a business need. Try the experience. Picture what we could build for yours.</p>{inHome ? <Link href="/lab">Explore the full Lab <ArrowUpRight /></Link> : null}</div>
     <nav className="lab-experiment-tabs" aria-label="Choose a Lab experiment">{experiments.map((experiment, i) => <button key={experiment.name} type="button" aria-pressed={selected === i} aria-controls="lab-active-experiment" onClick={() => setSelected(i)}><span>0{i + 1}</span><strong>{experiment.name}</strong><small>{experiment.proof}</small></button>)}</nav>
     <div id="lab-active-experiment" className="lab-active-experiment">
       <section className="lab-business-case" aria-label={`${current.name} for your business`}>

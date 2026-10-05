@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { useState } from "react";
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
@@ -38,8 +39,8 @@ export default function WorkIndex({ projects }: { projects: Project[] }) {
         </div>}
         <ProjectMedia project={project} />
         {project.inDevelopment ? <p className="work-index-pending">Coming soon · The full case file and site are in development.</p> : <div className="case-actions">
-          <Link className="button button-primary" href={`/work/${project.slug}`}>View case study ↗</Link>
-          <a className="button" href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}>Visit live build ↗</a>
+          <Link className="button button-primary" href={`/work/${project.slug}`}>View case study <ArrowUpRight /></Link>
+          <a className="button" href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}>Visit live build <ArrowUpRight /></a>
         </div>}
       </article>)}
     </div>

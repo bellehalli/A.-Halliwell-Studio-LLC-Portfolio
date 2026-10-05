@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import StudioProcess from "@/components/studio/StudioProcess";
 import ClientExperience from "@/components/studio/ClientExperience";
 import StudioContinuity from "@/components/studio/StudioContinuity";
@@ -51,9 +52,9 @@ export default function Page() {
         <section className="destination-block">
           <small>EXPLORE BY SERVICE</small>
           <h2>Choose the problem you need solved.</h2>
-          <p><Link href="/web-design">Custom web design ↗</Link></p>
-          <p><Link href="/web-development">Custom web development ↗</Link></p>
-          <p><Link href="/interactive-experiences">Interactive digital experiences ↗</Link></p>
+          <p><Link href="/web-design">Custom web design <ArrowUpRight /></Link></p>
+          <p><Link href="/web-development">Custom web development <ArrowUpRight /></Link></p>
+          <p><Link href="/interactive-experiences">Interactive digital experiences <ArrowUpRight /></Link></p>
         </section>
 
         <section className="destination-block" id="illustration">
@@ -63,7 +64,7 @@ export default function Page() {
             <p>Custom illustrations and property maps that help guests understand a venue, explore the grounds and imagine being there. Built for websites, brochures, welcome guides and other agreed uses.</p>
             <p>A standalone illustration and an interactive website map are separate scopes. Interactive maps can add clickable spaces, layouts, guest counts, journeys and planning information.</p>
             <p><strong>Priced by scope.</strong> Your agreement defines the commercial usage license for final artwork and any additional uses.</p>
-            <Link className="button button-primary" href="/start">Discuss your project ↗</Link>
+            <Link className="button button-primary" href="/start">Discuss your project <ArrowUpRight /></Link>
           </div>
         </section>
 
@@ -72,7 +73,7 @@ export default function Page() {
         <StudioContinuity />
         <StudioFaq />
         <ConsultationLink />
-        <section className="case-end"><small>THE BUSINESS TELLS US WHAT TO BUILD</small><h2>Start with the<br />problem, not the template.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
+        <section className="case-end"><small>THE BUSINESS TELLS US WHAT TO BUILD</small><h2>Start with the<br />problem, not the template.</h2><Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link></section>
       </article>
     </main>
   );

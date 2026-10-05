@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import Link from "next/link";
 import Navigation from "@/components/navigation/Navigation";
 
@@ -12,8 +13,8 @@ export default function NotFound() {
           <h1>This page wandered off.</h1>
           <p>The experience you were looking for is not available. Return to the studio and explore the work, services, or start a project.</p>
           <div className="case-actions">
-            <Link className="button button-primary" href="/">Return home ↗</Link>
-            <Link className="button" href="/start">Start a project ↗</Link>
+            <Link className="button button-primary" href="/">Return home <ArrowUpRight /></Link>
+            <Link className="button" href="/start">Start a project <ArrowUpRight /></Link>
           </div>
         </section>
       </article>

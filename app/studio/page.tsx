@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { studio } from "@/lib/studio-config";
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -46,8 +47,8 @@ export default function Page() {
 
         <section className="destination-grid">{blocks.map(([label, title, body]) => <article key={label + title} className="destination-block"><small>{label}</small><h2>{title}</h2><p>{body}</p></article>)}</section>
         <section className="studio-commercial-section studio-capabilities" aria-labelledby="capabilities-heading"><small>CAPABILITIES / THE TOOLS BEHIND THE EXPERIENCE</small><h2 id="capabilities-heading">Designed with intention.<br/><em>Engineered to work.</em></h2><p>I connect the visible experience to the systems it needs, from a responsive interface to the payment, data, and email flows behind it. The technology follows the scope.</p><ul><li>Front-end development with HTML, CSS, JavaScript, and TypeScript</li><li>React / Next.js and custom interaction systems</li><li>APIs, integrations, and database-backed workflows</li><li>Stripe payments, private file delivery, and transactional email</li></ul></section>
-        <section className="studio-integrity"><small>ABOUT THE WORK YOU SEE HERE</small><h2>No borrowed credibility.</h2><p>The portfolio uses original studio concepts to show strategy, design and development across industries. The brands are clearly labeled as concepts, and the studio does not publish invented testimonials, client logos or performance results.</p><div><Link className="button" href="/work">Inspect the work ↗</Link><Link className="button button-primary" href="/start">Start a project ↗</Link></div></section>
-        <section className="case-end"><small>HAVE A DIGITAL PROBLEM TO SOLVE?</small><h2>Tell me what the<br />website needs to do.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
+        <section className="studio-integrity"><small>ABOUT THE WORK YOU SEE HERE</small><h2>No borrowed credibility.</h2><p>The portfolio uses original studio concepts to show strategy, design and development across industries. The brands are clearly labeled as concepts, and the studio does not publish invented testimonials, client logos or performance results.</p><div><Link className="button" href="/work">Inspect the work <ArrowUpRight /></Link><Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link></div></section>
+        <section className="case-end"><small>HAVE A DIGITAL PROBLEM TO SOLVE?</small><h2>Tell me what the<br />website needs to do.</h2><Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link></section>
       </article>
     </main>
   );

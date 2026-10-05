@@ -1,4 +1,5 @@
 "use client";
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import Image from "next/image";
 import { useRef, useState, type ReactNode } from "react";
 import { writeStorage } from "@/lib/browser-storage";
@@ -7,7 +8,7 @@ export function Choices({label,options,value,onChange}:{label:string;options:rea
 export function BriefLink({name,projectType,needs,summary,inHome=false,label="Build this for my business"}:{name:string;projectType:string;needs:string[];summary:string;inHome?:boolean;label?:string}){
  const scope={projectType,needs,successGoal:`Inspired by ${name} in the AHS Lab. ${summary}`};
  const href=inHome?"#start":`/start?labScope=${encodeURIComponent(JSON.stringify(scope))}`;
- return <a className="lab-brief-link" href={href} onClick={()=>{writeStorage("session","ahs-lab-scope-v1",JSON.stringify(scope));window.dispatchEvent(new CustomEvent("ahs:lab-scope",{detail:scope}));}}>{label}<span aria-hidden="true">↗</span></a>;
+ return <a className="lab-brief-link" href={href} onClick={()=>{writeStorage("session","ahs-lab-scope-v1",JSON.stringify(scope));window.dispatchEvent(new CustomEvent("ahs:lab-scope",{detail:scope}));}}>{label}<span aria-hidden="true"><ArrowUpRight /></span></a>;
 }
 export function Preview({title,children,disabled=false}:{title:string;children:ReactNode;disabled?:boolean}){
  const ref=useRef<HTMLDialogElement>(null);

@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import Link from "next/link";
 import Navigation from "@/components/navigation/Navigation";
 import JsonLd from "@/components/seo/JsonLd";
@@ -33,7 +34,7 @@ export default function SeoLandingPage({
           <small>{eyebrow}</small>
           <h1>{title}</h1>
           <p>{intro}</p>
-          <Link className="button button-primary" href="/start">Start a project ↗</Link>
+          <Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link>
         </section>
 
         <section className="destination-grid">
@@ -53,7 +54,7 @@ export default function SeoLandingPage({
             <p>Explore relevant case studies, live concepts and practical resources from the studio.</p>
             <div>
               {proofLinks.map((link) => (
-                <p key={link.href}><Link href={link.href}>{link.label} ↗</Link></p>
+                <p key={link.href}><Link href={link.href}>{link.label} <ArrowUpRight /></Link></p>
               ))}
             </div>
           </section>
@@ -62,7 +63,7 @@ export default function SeoLandingPage({
         <section className="case-end">
           <small>NEED MORE THAN A TEMPLATE?</small>
           <h2>Build around what<br />the business needs to do.</h2>
-          <Link className="button button-primary" href="/start">Start a project ↗</Link>
+          <Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link>
         </section>
       </article>
     </main>

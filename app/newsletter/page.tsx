@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -24,8 +25,8 @@ export default function NewsletterPage() {
           <p>A future editorial publication about websites, digital experiences, systems and the business behind them.</p>
           <p><strong>Subscriptions are not open yet.</strong> When the actual publication workflow is ready, this page becomes the front door. Until then, there is no fake signup form and no dead promise.</p>
           <div className="case-actions">
-            <Link className="button" href="/resources">Read current resources ↗</Link>
-            <Link className="button button-primary" href="/start">Start a project ↗</Link>
+            <Link className="button" href="/resources">Read current resources <ArrowUpRight /></Link>
+            <Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link>
           </div>
         </section>
       </article>

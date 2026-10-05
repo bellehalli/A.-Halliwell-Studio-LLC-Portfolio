@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -42,18 +43,18 @@ export default function ResourcesPage() {
               <small>{item.type}</small>
               <h2>{item.title}</h2>
               <p>{item.body}</p>
-              <strong>Read ↗</strong>
+              <strong>Read <ArrowUpRight /></strong>
             </Link>
           ))}
         </section>
         <section className="destination-block">
           <small>LOOKING FOR THE STUDIO?</small>
           <h2>Explore services and proof.</h2>
-          <p><Link href="/services">Custom web design + development services ↗</Link></p>
-          <p><Link href="/work">Selected work + case studies ↗</Link></p>
-          <p><Link href="/lab">Interactive capability Lab ↗</Link></p>
+          <p><Link href="/services">Custom web design + development services <ArrowUpRight /></Link></p>
+          <p><Link href="/work">Selected work + case studies <ArrowUpRight /></Link></p>
+          <p><Link href="/lab">Interactive capability Lab <ArrowUpRight /></Link></p>
         </section>
-        <section className="case-end"><small>NEED MORE THAN A CHECKLIST?</small><h2>Let&apos;s talk about<br />the actual project.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
+        <section className="case-end"><small>NEED MORE THAN A CHECKLIST?</small><h2>Let&apos;s talk about<br />the actual project.</h2><Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link></section>
       </article>
     </main>
   );

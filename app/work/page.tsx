@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { socialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -36,7 +37,7 @@ export default function WorkPage() {
         <section className="case-end">
           <small>HAVE A DIGITAL PROBLEM TO SOLVE?</small>
           <h2>Tell me what the<br />website needs to do.</h2>
-          <Link className="button button-primary" href="/start">Start a project ↗</Link>
+          <Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link>
         </section>
       </section>
     </main>

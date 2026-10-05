@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Navigation from "@/components/navigation/Navigation";
@@ -104,8 +105,8 @@ export default async function ResourcePage({ params }: Props) {
         <section className="case-end">
           <small>KEEP EXPLORING</small>
           <h2>Bring the idea<br />into the studio.</h2>
-          <Link className="button" href="/resources">More resources ↗</Link>
-          <Link className="button button-primary" href="/start">Start a project ↗</Link>
+          <Link className="button" href="/resources">More resources <ArrowUpRight /></Link>
+          <Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link>
         </section>
       </article>
     </main>

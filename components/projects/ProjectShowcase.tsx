@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import Link from "next/link";
 import ProjectMedia from "@/components/ProjectMedia";
 import type { Project } from "@/data/projects";
@@ -30,8 +31,8 @@ export default function ProjectShowcase({ project }: { project: Project }) {
           <p>{project.description}</p>
           {!comingSoon && <div className="project-context"><p><strong>Challenge</strong>{project.challenge}</p><p><strong>Built for</strong>{project.approach.slice(0,2).join(" · ")}</p></div>}
           <div className="project-links work-gallery-links">
-            {!comingSoon && <Link href={`/work/${project.slug}`}>Explore the case file <span aria-hidden="true">↗︎</span></Link>}
-            {!comingSoon && <a href={project.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>Open the full site <span aria-hidden="true">↗︎</span></a>}
+            {!comingSoon && <Link href={`/work/${project.slug}`}>Explore the case file <span aria-hidden="true"><ArrowUpRight /></span></Link>}
+            {!comingSoon && <a href={project.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>Open the full site <span aria-hidden="true"><ArrowUpRight /></span></a>}
           </div>
         </div>
 

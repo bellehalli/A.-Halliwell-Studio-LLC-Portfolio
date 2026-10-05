@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -33,14 +34,14 @@ export default async function ProjectPage({ params }: Props) {
       {project.inDevelopment ? <article className={`case-sheet project-${project.tone}`}>
         <section className="case-hero"><div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div><h1>{project.name}</h1><p>{project.description}</p><p className="demo-disclosure">Concept in development · The complete website and case file are coming soon.</p></section>
         <ProjectMedia project={project} mode="live" />
-        <section className="case-end"><small>MORE OF THE STUDIO</small><h2>See what is<br />ready to explore.</h2><Link className="button" href="/work">Explore the work ↗</Link><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
+        <section className="case-end"><small>MORE OF THE STUDIO</small><h2>See what is<br />ready to explore.</h2><Link className="button" href="/work">Explore the work <ArrowUpRight /></Link><Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link></section>
       </article> : caseStudies[project.slug] ? <CaseStudyWorld project={project} study={caseStudies[project.slug]} /> : <article className={`case-sheet project-${project.tone}`}>
         <section className="case-hero">
           <div className="case-index"><span>PROJECT {project.number}</span><span>{project.category}</span></div>
           <h1>{project.name}</h1>
           <p>{project.description}</p>
           <p className="demo-disclosure">{project.disclosure}</p>
-          <div className="project-links"><a href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}>Visit live build ↗</a></div>
+          <div className="project-links"><a href={project.url} target={project.url.startsWith("http") ? "_blank" : undefined} rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}>Visit live build <ArrowUpRight /></a></div>
         </section>
 
         <ProjectMedia project={project} />
@@ -65,7 +66,7 @@ export default async function ProjectPage({ params }: Props) {
           <div className="case-capabilities"><small>06 / CAPABILITIES</small><div>{project.details.map((d) => <span key={d}>{d}</span>)}</div></div>
         </section>
 
-        <section className="case-end"><small>NEED A SITE WITH A JOB TO DO?</small><h2>Build around the<br />business problem.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
+        <section className="case-end"><small>NEED A SITE WITH A JOB TO DO?</small><h2>Build around the<br />business problem.</h2><Link className="button button-primary" href="/start">Start a project <ArrowUpRight /></Link></section>
       </article>}
     </main>
   );
