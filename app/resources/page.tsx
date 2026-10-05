@@ -1,27 +1,26 @@
-import { socialMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SceneProps from "@/components/visual/SceneProps";
 import Navigation from "@/components/navigation/Navigation";
 
-export const metadata: Metadata = {
-  title: "Resources",
-  description: "Practical notes from A. Halliwell Studio about websites, digital experiences and business systems.",
-  alternates: { canonical: "/resources" },
-  ...socialMetadata("/resources", "Resources", "Practical notes from A. Halliwell Studio about websites, digital experiences and business systems."),
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/resources",
+  title: "Web Design Resources & Guides",
+  description: "Practical web design guides from A. Halliwell Studio about website strategy, customer journeys, redesigns, hospitality websites and digital experiences.",
+});
 
 const resources = [
   {
-    type: "GUIDE",
+    type: "WEDDING VENUE GUIDE",
     title: "What should a wedding venue website include?",
-    body: "A practical framework for helping prospective couples understand the property, offer and next step.",
+    body: "A practical framework for helping prospective couples understand the property, offering, investment and next step.",
     href: "/resources/wedding-venue-website",
   },
   {
-    type: "CHECKLIST",
+    type: "REDESIGN CHECKLIST",
     title: "Website redesign checklist",
-    body: "What to examine before rebuilding a website simply because it looks dated.",
+    body: "What to audit before rebuilding a website, including SEO equity, customer journey, integrations, accessibility and conversion paths.",
     href: "/resources/website-redesign-checklist",
   },
 ];
@@ -33,9 +32,9 @@ export default function ResourcesPage() {
       <Navigation />
       <article className="destination-sheet resources-destination"><SceneProps scene="resources"/>
         <section className="destination-hero">
-          <small>JOURNAL + RESOURCES</small>
-          <h1>Useful things for better websites.</h1>
-          <p>Practical notes about custom websites, customer journeys and the systems behind them.</p>
+          <small>WEB DESIGN RESOURCES + GUIDES</small>
+          <h1>Useful thinking for better websites.</h1>
+          <p>Practical guides about custom web design, customer journeys, digital experiences and the systems behind them.</p>
         </section>
         <section className="destination-grid">
           {resources.map(item => (
@@ -46,6 +45,13 @@ export default function ResourcesPage() {
               <strong>Read ↗</strong>
             </Link>
           ))}
+        </section>
+        <section className="destination-block">
+          <small>LOOKING FOR THE STUDIO?</small>
+          <h2>Explore services and proof.</h2>
+          <p><Link href="/services">Custom web design + development services ↗</Link></p>
+          <p><Link href="/work">Selected work + case studies ↗</Link></p>
+          <p><Link href="/lab">Interactive capability Lab ↗</Link></p>
         </section>
         <section className="case-end"><small>NEED MORE THAN A CHECKLIST?</small><h2>Let&apos;s talk about<br />the actual project.</h2><Link className="button button-primary" href="/start">Start a project ↗</Link></section>
       </article>
