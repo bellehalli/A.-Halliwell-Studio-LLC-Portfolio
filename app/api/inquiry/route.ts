@@ -186,9 +186,11 @@ export async function POST(request: Request) {
     const destination = process.env.INQUIRY_TO_EMAIL;
 
     const classification = classifyLead(needs, projectType);
-    const source = referralSource === "Other" && referralOther ? `Other: ${referralOther}` : referralSource || "Not provided";
+    const labCapability = clean(body.labCapability, 100);
+    const referral = referralSource === "Other" && referralOther ? `Other: ${referralOther}` : referralSource || "Not provided";
     const submissionId = clean(body.submissionId, 36) || randomUUID();
     if (!/^[a-f0-9-]{36}$/.test(submissionId)) return json({ success: false, message: "Invalid submission reference." }, 400);
+    const source = labCapability ? `AHS Lab: ${labCapability} | ${referral}` : referral;
     const lead = await saveInquiryLead(submissionId, { name, email: email.toLowerCase(), business, projectType, classification, needs, timing, investment, currentUrl, currentProblem, successGoal, whyNow, assets, source, productCount, bookingType, guestPain });
     if (lead.conflict) return json({ success: false, message: "This submission reference was already used. Please try again." }, 409);
     savedLeadId = lead.id;
