@@ -44,6 +44,14 @@ export const homeSymptoms = [
   "Water is leaking or not draining",
   "Lights or outlets are not working",
   "I want better comfort or efficiency",
+  "The heating or cooling will not turn on",
+  "Some rooms feel warmer or colder than others",
+  "Very little air is coming from a vent",
+  "My sink, tub or shower drains slowly",
+  "A faucet keeps dripping",
+  "Water pressure seems lower than usual",
+  "Lights flicker or dim",
+  "A breaker keeps tripping",
   "Something else / not sure",
 ] as const;
 export function homeServicePath(symptom: string, system: string) {

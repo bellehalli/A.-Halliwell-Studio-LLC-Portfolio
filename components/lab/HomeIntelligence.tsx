@@ -8,6 +8,7 @@ import {
 import { Choices, usePublishLabBrief } from "./LabShared";
 import RoutingEngine from "./RoutingEngine";
 import ServiceCommand from "./ServiceCommand";
+import HomeIntelligenceHouse from "./HomeIntelligenceHouse";
 const systems = [
   "Heating / cooling",
   "Water / drains",
@@ -56,7 +57,7 @@ export default function HomeIntelligence({
     },
   ];
   return (
-    <div className="lab-experiment lab-service">
+    <div className="lab-experiment lab-service lab-home-intelligence">
       <header className="lab-experiment-head">
         <div>
           <small>04 / HOME INTELLIGENCE</small>
@@ -79,56 +80,7 @@ export default function HomeIntelligence({
       />
       {symptom ? (
         <>
-          <div
-            className="lab-house"
-            aria-label="Interactive house system selector"
-          >
-            <svg
-              viewBox="0 0 500 270"
-              preserveAspectRatio="none"
-              role="img"
-              aria-label="House diagram: roof, living space, utility and water systems"
-            >
-              <path
-                d="M30 110 L250 15 L470 110 M65 95 V250 H435 V95 M65 165 H435 M250 95 V250"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-              />
-              <rect
-                x="95"
-                y="190"
-                width="70"
-                height="60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-              />
-              <rect
-                x="310"
-                y="110"
-                width="55"
-                height="35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-              />
-            </svg>
-            {systems.slice(0, 4).map((s, i) => (
-              <button
-                type="button"
-                key={s}
-                aria-pressed={system === s}
-                style={{
-                  left: `${[28, 70, 70, 30][i]}%`,
-                  top: `${[72, 75, 46, 38][i]}%`,
-                }}
-                onClick={() => setSystem(s)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+          <HomeIntelligenceHouse system={system} onSelect={setSystem} />
           <Choices
             label="Area / system you want to discuss"
             options={systems}
