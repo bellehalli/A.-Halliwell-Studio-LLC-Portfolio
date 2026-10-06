@@ -7,9 +7,10 @@ import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 import { readStorage, writeStorage, removeStorage } from "@/lib/browser-storage";
 
 type Status = "idle" | "sending" | "success" | "error";
-type LabScope = { projectType: string; needs: string[]; successGoal: string };
+type LabScope = { capability?: string; projectType: string; needs: string[]; successGoal: string };
 
 type Draft = {
+  labCapability?: string;
   projectType: string;
   needs: string[];
   timing: string;
@@ -99,6 +100,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   const [draftSaved, setDraftSaved] = useState(false);
   const [invalidField, setInvalidField] = useState("");
   const Heading = inHome ? "h2" : "h1";
+  const [labCapability, setLabCapability] = useState("");
   const [projectType, setProjectType] = useState("");
   const [needs, setNeeds] = useState<string[]>([]);
   const [timing, setTiming] = useState("");
@@ -168,6 +170,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       const saved = readStorage("local", DRAFT_KEY);
       if (saved) {
         const draft = JSON.parse(saved) as Partial<Draft>;
+        setLabCapability(draftText(draft.labCapability, 100));
         setProjectType(projectTypes.includes(draft.projectType || "") ? draft.projectType! : "");
         setNeeds(draftList(draft.needs, projectNeeds));
         setTiming(timingOptions.includes(draft.timing || "") ? draft.timing! : "");
@@ -195,6 +198,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       if (fromLab) {
         const scope = JSON.parse(fromLab) as LabScope;
         if (projectTypes.includes(scope.projectType) && Array.isArray(scope.needs) && typeof scope.successGoal === "string") {
+          setLabCapability(draftText(scope.capability, 100));
           setProjectType(scope.projectType);
           setNeeds(draftList(scope.needs, projectNeeds));
           setSuccessGoal(draftText(scope.successGoal, 3000));
@@ -219,6 +223,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     if (!draftReady || status === "success") return;
 
     const draft: Draft = {
+      labCapability,
       projectType,
       needs,
       timing,
@@ -243,6 +248,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   }, [
     draftReady,
     status,
+    labCapability,
     projectType,
     needs,
     timing,
@@ -267,6 +273,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
     const receiveScope = (event: Event) => {
       const scope = (event as CustomEvent<LabScope>).detail;
       if (!scope || !projectTypes.includes(scope.projectType) || !Array.isArray(scope.needs) || typeof scope.successGoal !== "string") return;
+      setLabCapability(draftText(scope.capability, 100));
       setProjectType(scope.projectType);
       setNeeds(draftList(scope.needs, projectNeeds));
       setSuccessGoal(draftText(scope.successGoal, 3000));
@@ -326,6 +333,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           submissionId: submissionRef.current,
+          labCapability,
           name,
           email,
           business,
@@ -370,7 +378,8 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
 
   function clearDraft() {
     setProjectType(""); setNeeds([]); setTiming(""); setInvestment(""); setName(""); setEmail(""); setBusiness("");
-    setCurrentUrl(""); setCurrentProblem(""); setSuccessGoal(""); setWhyNow(""); setWhyNowOther(""); setAssets([]); setReferralSource(""); setReferralOther("");
+    setCurrentUrl(""); setCurrentProblem(""); setSuccessGoal("");
+    setLabCapability(""); setWhyNow(""); setWhyNowOther(""); setAssets([]); setReferralSource(""); setReferralOther("");
     setProductCount(""); setBookingType(""); setGuestPain(""); setWebsite(""); setAttempted(false); setInvalidField(""); setStatus("idle"); setFeedback("");
     submissionRef.current = "";
     removeStorage("local", DRAFT_KEY); removeStorage("session", "ahs-inquiry-submission"); removeStorage("session", LAB_SCOPE_KEY);
@@ -419,6 +428,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
           </p>
         </div>
 
+        {labCapability ? <p className="project-lab-context" role="status">From the AHS Lab: {labCapability}. Your selected brief is included below.</p> : null}
         <form ref={formRef} className="project-builder" onSubmit={submit} onInput={() => setInvalidField("")} noValidate>
           <p className="builder-hint">Answers marked * are required. Everything else can be shaped together.</p>
           <fieldset className="builder-step" data-required="projectType" aria-invalid={attempted && !projectType} aria-describedby={attempted && !projectType ? `${errorPrefix}-projectType` : undefined}>

@@ -1,18 +1,26 @@
 "use client";
 import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import Image from "next/image";
-import { useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { writeStorage } from "@/lib/browser-storage";
 
+export type LabBrief = { name: string; projectType: string; needs: string[]; summary: string };
+export const LabBriefContext = createContext<((brief: LabBrief) => void) | null>(null);
+export function usePublishLabBrief(brief: LabBrief, enabled = true) {
+ const publish = useContext(LabBriefContext);
+ const serialized = JSON.stringify(brief);
+ useEffect(() => { if (enabled) publish?.(JSON.parse(serialized) as LabBrief); }, [enabled, publish, serialized]);
+}
 export function Choices({label,options,value,onChange}:{label:string;options:readonly string[];value:string;onChange:(value:string)=>void}){return <fieldset className="lab-choices"><legend>{label}</legend><div>{options.map(option=><button key={option} type="button" aria-pressed={value===option} onClick={()=>onChange(option)}>{option}</button>)}</div></fieldset>;}
-export function BriefLink({name,projectType,needs,summary,inHome=false,label="Build this for my business"}:{name:string;projectType:string;needs:string[];summary:string;inHome?:boolean;label?:string}){
- const scope={projectType,needs,successGoal:`Inspired by ${name} in the AHS Lab. ${summary}`};
+export function BriefLink({name,projectType,needs,summary,inHome=false,label="Build this for my business",publish=false,className="lab-brief-link"}:{name:string;projectType:string;needs:string[];summary:string;inHome?:boolean;label?:string;publish?:boolean;className?:string}){
+ usePublishLabBrief({name,projectType,needs,summary},publish);
+ const scope={projectType,needs,capability:name,successGoal:`Inspired by ${name} in the AHS Lab. ${summary}`};
  const href=inHome?"#start":`/start?labScope=${encodeURIComponent(JSON.stringify(scope))}`;
- return <a className="lab-brief-link" href={href} onClick={()=>{writeStorage("session","ahs-lab-scope-v1",JSON.stringify(scope));window.dispatchEvent(new CustomEvent("ahs:lab-scope",{detail:scope}));}}>{label}<span aria-hidden="true"><ArrowUpRight /></span></a>;
+ return <a className={className} href={href} onClick={()=>{writeStorage("session","ahs-lab-scope-v1",JSON.stringify(scope));window.dispatchEvent(new CustomEvent("ahs:lab-scope",{detail:scope}));}}>{label}<span aria-hidden="true"><ArrowUpRight /></span></a>;
 }
 export function Preview({title,children,disabled=false}:{title:string;children:ReactNode;disabled?:boolean}){
  const ref=useRef<HTMLDialogElement>(null);
- return <><button className="lab-primary" type="button" disabled={disabled} onClick={()=>ref.current?.showModal()}>{title}</button><dialog className="lab-dialog" ref={ref}><button className="lab-close" type="button" onClick={()=>ref.current?.close()} aria-label="Close preview">Close ×</button><small>LOCAL DEMONSTRATION</small><h3>{title}</h3>{children}<p className="lab-disclosure">Nothing is submitted. This preview demonstrates the information a connected system could carry forward.</p></dialog></>;
+ return <><button className="lab-primary" type="button" disabled={disabled} onClick={()=>ref.current?.showModal()}>{title}</button><dialog className="lab-dialog" ref={ref} aria-label={title}><button className="lab-close" type="button" onClick={()=>ref.current?.close()} aria-label="Close preview">Close ×</button><small>LOCAL DEMONSTRATION</small><h3>{title}</h3>{children}<p className="lab-disclosure">Nothing is submitted. This preview demonstrates the information a connected system could carry forward.</p></dialog></>;
 }
 export function SpatialScene({src,alt,children}:{src:string;alt:string;children?:ReactNode}){
  const [zoom,setZoom]=useState(1);const [pan,setPan]=useState({x:0,y:0});const drag=useRef<{x:number;y:number;px:number;py:number}|null>(null);

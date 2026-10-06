@@ -63,6 +63,10 @@ async function run() {
   assert.equal(savedBrief.whyNow, '<Upcoming launch>');
   assert(sent.at(-2).html.includes('&lt;Upcoming launch&gt;'));
   assert(sent.at(-1).text.includes('Why now: <Upcoming launch>'));
+  await inquiry.POST(request({ ...payload, labCapability: 'Home Intelligence', successGoal: 'Observation: Water leak\nService path: Plumbing service conversation' }));
+  assert.equal(savedBrief.source, 'AHS Lab: Home Intelligence | Not provided');
+  assert.match(savedBrief.successGoal, /Plumbing service conversation/);
+  assert(sent.at(-2).text.includes('AHS Lab: Home Intelligence'));
   const sentBeforeRetry = sent.length;
   duplicate = true; await inquiry.POST(request(payload)); assert.equal(sent.length, sentBeforeRetry); duplicate = false;
   emailFails = true; response = await inquiry.POST(request(payload)); const receipt = await response.json(); assert.equal(receipt.success, true); assert.equal(receipt.confirmationSent, false);
