@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Page() {
  return <main className="destination-page lab-route"><div className="site-background" aria-hidden="true"/>
  <Navigation />
- <article className="destination-sheet lab-destination"><section className="destination-hero"><small>IDEAS FOR YOUR BUSINESS</small><h1>Your website can<br/>do more for you.</h1><p>Help people choose. Make inquiries more useful. Connect the work behind the scenes. Try six working examples of what A. Halliwell Studio can build for your business.</p></section>
+ <article className="destination-sheet lab-destination"><section className="destination-hero"><small>IDEAS FOR YOUR BUSINESS</small><h1>Your website can<br/>do more for you.</h1><p>Help people choose. Make inquiries more useful. Connect the work behind the scenes. Try working examples of what A. Halliwell Studio can build for your business.</p></section>
  <CapabilityPlayground />
 </article></main>;
 }
