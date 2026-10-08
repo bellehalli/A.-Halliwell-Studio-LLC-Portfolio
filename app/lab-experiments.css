@@ -56,3 +56,160 @@
 .lab-medspa-pro{background:#f3e9ed}.lab-medspa-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;padding:0;margin:0 0 28px;border-top:1px solid var(--lab-line)}.lab-medspa-progress li{padding:16px 10px;border-bottom:1px solid var(--lab-line);font-size:14px}.lab-medspa-progress li[aria-current=step]{background:#38213b;color:#fffaf5}.lab-medspa-progress span{display:block;font:12px Arial,sans-serif;margin-bottom:8px}.lab-medspa-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:30px}.lab-medspa-editorial{position:relative;min-height:420px;overflow:hidden;background:#38213b;border-radius:48% 48% 2px 2px}.lab-medspa-editorial>img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}.lab-medspa-editorial>div{position:absolute;inset:auto 0 0;padding:60px 24px 24px;background:linear-gradient(transparent,#38213bed);color:#fffaf5}.lab-medspa-editorial p{font-size:clamp(26px,3vw,40px);line-height:1.1;margin-bottom:0}.lab-medspa-step{align-self:center;min-width:0}.lab-medspa-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.lab-medspa-summary>div{padding-bottom:16px;border-bottom:1px solid var(--lab-line);min-width:0}.lab-medspa-summary dd{margin:8px 0;overflow-wrap:anywhere}.lab-medspa-summary button{min-height:44px;border:1px solid var(--lab-line);background:#fffaf5;color:#38213b;padding:8px 14px}.lab-medspa-pro button:focus-visible,.lab-medspa-ecosystem a:focus-visible{outline:3px solid #704054;outline-offset:4px}
 @media(max-width:850px){.lab-medspa-workspace,.lab-medspa-ecosystem{grid-template-columns:1fr}.lab-medspa-editorial{min-height:300px}.lab-medspa-editorial>img{object-position:center 40%}}
 @media(max-width:500px){.lab-medspa-progress{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-medspa-summary{grid-template-columns:1fr}.lab-medspa-editorial{min-height:260px}}
+/* Premium med-spa products: scoped presentation, shared routing remains intact. */
+.medspa-product {
+  --lab-paper:#fffaf7; --lab-ink:#39243f; --lab-accent:#594264; --lab-line:#cbbacf;
+  background:radial-gradient(ellipse at top right,#e2d0e8 0,transparent 52%),#f7f0f7;
+  position:relative; isolation:isolate; padding:clamp(20px,3.5vw,52px);
+}
+.medspa-product::before {
+  content:"";position:absolute;inset:0 0 auto auto;width:min(45%,420px);height:360px;
+  background:url('/assets/decorations/florals/Portfolio Assets A.Halliwell  - 33.webp') center/contain no-repeat;
+  opacity:.09;pointer-events:none;z-index:-1;
+}
+.medspa-product * {box-sizing:border-box}
+.medspa-product button,.medspa-product a,.medspa-product summary {touch-action:manipulation}
+.medspa-product button:focus-visible,.medspa-product a:focus-visible,.medspa-product summary:focus-visible,.medspa-product [tabindex="-1"]:focus {
+  outline:2px solid #694176;outline-offset:5px;
+}
+.medspa-product button {cursor:pointer;font-family:inherit}
+.medspa-product button:disabled {cursor:default;opacity:.48}
+.medspa-product [hidden] {display:none!important}
+.medspa-product-heading {display:flex;justify-content:space-between;gap:32px;align-items:end;margin-bottom:36px}
+.medspa-product-heading h3 {font-size:clamp(36px,4.3vw,64px);line-height:1.02;letter-spacing:-.04em;margin:14px 0 0;max-width:770px}
+.medspa-product-heading>p {max-width:270px;font-size:15px;margin:0;line-height:1.65}
+.medspa-product small,.medspa-eyebrow {font:10px/1.6 Arial,sans-serif;letter-spacing:.14em}
+.medspa-product em {font-weight:400}
+.medspa-product fieldset {border:0;padding:0;margin:0;min-width:0}
+.medspa-product details>summary {min-height:44px;cursor:pointer;font:12px/1.6 Arial,sans-serif;letter-spacing:.02em;padding:12px 0}
+.medspa-sr-only {position:absolute!important;width:1px;height:1px;padding:0!important;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.medspa-action {display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:52px;border:1px solid #594264;background:#594264;color:#fffaf7;padding:14px 22px;font-size:14px;transition:background .2s ease,transform .2s ease; text-align:left}
+.medspa-action:not(:disabled):hover {background:#39243f;transform:translateY(-2px)}
+.medspa-text-button {border:0;border-bottom:1px solid currentColor;background:transparent;color:var(--lab-ink);padding:10px 0;min-height:44px;font-size:13px}
+.medspa-explorer-workspace {display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:clamp(20px,3vw,42px);align-items:start}
+.medspa-visual-column,.medspa-discovery-panel {min-width:0}
+.medspa-scene-toolbar {display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.medspa-scene-toolbar .lab-choices {margin:0}
+.medspa-scene-toolbar .lab-choices legend {font-size:10px;margin-bottom:7px}
+.medspa-scene-toolbar .lab-choices button {min-height:44px;padding:8px 18px;border-radius:40px;font-size:13px}
+.medspa-scene-toolbar>span {font:9px/1.6 Arial,sans-serif;letter-spacing:.1em}
+.medspa-explorer .medspa-explorer-scene {border:1px solid #b9a6c1;border-radius:180px 180px 8px 8px;box-shadow:0 24px 60px #59426422;max-width:none;margin:0;background:#c9bac5;overflow:hidden;height:auto}
+.medspa-scene-image {position:relative}
+.medspa-scene-image>img {display:block;width:100%;height:auto}
+.medspa-scene-image>.lab-hotspot {width:44px;height:44px;transition:background .2s ease,box-shadow .2s ease}
+.medspa-scene-image>.lab-hotspot.selected {background:#594264;box-shadow:0 0 0 7px #ffffff77}
+.medspa-explorer-scene .medspa-scene-caption {position:absolute;inset:auto 0 0;padding:64px 24px 22px;background:linear-gradient(transparent,#251d2ed9);color:#fff;pointer-events:none}
+.medspa-scene-caption p {font-size:clamp(25px,2.5vw,38px);line-height:1.05;margin:7px 0 0}
+.medspa-explorer-scene.lab-body .medspa-scene-image {max-width:440px;margin:auto}
+.medspa-area-alternative {margin-top:12px}
+.medspa-area-discussion {padding:28px 0 24px;border-top:1px solid var(--lab-line)}
+.medspa-area-discussion h4 {font-size:clamp(32px,3.4vw,48px);margin:12px 0 22px}
+.medspa-area-discussion h4 em {display:block;font-size:16px;letter-spacing:0;margin-top:8px}
+.medspa-area-discussion>p {font-size:14px}
+.medspa-concern-tiles {display:grid;grid-template-columns:1fr;gap:8px;margin:20px 0}
+.medspa-concern-tiles button {display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:56px;padding:16px 18px;background:#fffaf7;border:1px solid #cbbacf;color:#39243f;font-size:17px;text-align:left;transition:background .2s ease,border-color .2s ease}
+.medspa-concern-tiles button[aria-pressed=true] {background:#e1d3e8;border-color:#694176}
+.medspa-concern-tiles button>span:last-child {font:20px Arial,sans-serif}
+.medspa-profile {border-top:1px solid var(--lab-line);padding-top:24px}
+.medspa-profile-title {display:flex;justify-content:space-between;gap:12px;align-items:center}
+.medspa-profile-title>span {background:#e5d8eb;border-radius:40px;padding:7px 11px;font:11px Arial,sans-serif;white-space:nowrap}
+.medspa-profile h4 {font-size:27px;margin:16px 0 12px}
+.medspa-profile p {font-size:13px;line-height:1.65}
+.medspa-profile>.medspa-action {width:100%;margin-top:22px}
+.medspa-profile .lab-primary {background:transparent;border:0;border-bottom:1px solid var(--lab-line);color:#594264;text-align:left;padding:12px 0;font-size:13px}
+.medspa-treatment-library {margin-top:52px;padding-top:32px;border-top:1px solid var(--lab-line)}
+.medspa-section-heading {display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:24px}
+.medspa-section-heading h4 {font-size:clamp(34px,3.5vw,49px);margin:12px 0 0}
+.medspa-section-heading>p {font-size:14px;max-width:330px;margin:0}
+.medspa-treatment-cards {display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,32%);gap:18px;overflow-x:auto;scroll-snap-type:x proximity;padding:5px 5px 16px;margin:-5px}
+.medspa-treatment-cards>button {display:flex;flex-direction:column;gap:12px;scroll-snap-align:start;text-align:left;background:#fffaf7;border:1px solid #cbbacf;padding:0 0 20px;color:#39243f;transition:transform .25s ease,box-shadow .25s ease;overflow:hidden}
+.medspa-treatment-cards>button:hover,.medspa-treatment-cards>button[aria-pressed=true] {transform:translateY(-3px);box-shadow:0 10px 24px #59426418;border-color:#694176}
+.medspa-treatment-card-image {position:relative;width:100%;aspect-ratio:1.1;overflow:hidden;background:#d6c4dc}
+.medspa-treatment-card-image img {width:100%;height:100%;object-fit:cover;transform:scale(1.45);transition:transform .6s ease}
+.medspa-treatment-cards>button:hover img {transform:scale(1.55)}
+.medspa-treatment-card-image>span {position:absolute;inset:12px auto auto 12px;color:#fff;background:#39243fbb;padding:8px 10px;font:11px Arial,sans-serif}
+.medspa-treatment-cards>button>small,.medspa-treatment-cards>button>strong,.medspa-treatment-cards>button>.medspa-card-link {margin-inline:18px}
+.medspa-treatment-cards strong {font-size:23px;font-weight:400;line-height:1.15;min-height:54px}
+.medspa-card-link {display:flex;justify-content:space-between;gap:14px;font:12px/1.5 Arial,sans-serif;margin-top:auto}
+.medspa-education-detail {display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:32px;margin-top:24px;padding:28px;background:#eee2f0;border:1px solid #cbbacf}
+.medspa-education-detail p {font-size:15px;max-width:680px}.medspa-education-detail a {font-size:13px;text-underline-offset:4px}
+.medspa-education-detail>div:last-child {display:flex;flex-direction:column;align-items:start;justify-content:center;gap:14px}
+.medspa-consultation-stage {margin-top:40px;padding:32px;background:#fffaf7;border:1px solid var(--lab-line)}
+.medspa-visit-preferences {border-block:1px solid var(--lab-line);margin-top:20px}
+.medspa-product-footer {display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;border-top:1px solid var(--lab-line);padding-top:24px;margin-top:32px}
+.medspa-product-footer p {font-size:14px;max-width:480px}.medspa-product-footer .lab-brief-link {align-self:center;margin:0}
+.medspa-product .medspa-option-grid {display:grid;grid-template-columns:1fr;gap:10px;margin-top:22px}
+.medspa-option-grid>button {display:flex;gap:16px;align-items:center;text-align:left;min-height:68px;border:1px solid #cbbacf;background:#fffaf7;color:#39243f;padding:17px 18px;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.medspa-option-grid>button:not(:disabled):hover {border-color:#694176;transform:translateY(-2px)}
+.medspa-option-grid>button[aria-pressed=true] {background:#e8dded;border-color:#694176;box-shadow:inset 3px 0 #694176}
+.medspa-option-copy {flex:1;min-width:0;display:grid;gap:7px}
+.medspa-option-copy strong {font-size:20px;line-height:1.12;font-weight:400}
+.medspa-option-copy>span {font:12px/1.6 Arial,sans-serif;color:#65556c}
+.medspa-option-number {font:11px Arial,sans-serif;color:#6c5177}
+.medspa-option-mark {display:grid;place-items:center;min-width:24px;min-height:24px;font:17px Arial,sans-serif}
+.medspa-product .medspa-option-grid-visual {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.medspa-option-grid-visual>button {position:relative;display:flex;flex-direction:column;align-items:stretch;padding:0 0 18px;gap:16px;overflow:hidden}
+.medspa-option-grid-visual>button:last-child:nth-child(odd) {grid-column:1/-1;flex-direction:row;align-items:center;padding:18px}
+.medspa-option-grid-visual>button:last-child:nth-child(odd)>.medspa-option-image {display:none}
+.medspa-option-grid-visual .medspa-option-copy {padding:0 18px}
+.medspa-option-grid-visual>button:last-child:nth-child(odd)>.medspa-option-copy {padding:0}
+.medspa-option-grid-visual .medspa-option-mark {position:absolute;right:10px;top:10px;color:#39243f;background:#fffaf7e6;border-radius:50%;width:30px;height:30px}
+.medspa-option-grid-visual>button:last-child:nth-child(odd)>.medspa-option-mark {position:static;background:transparent}
+.medspa-option-image {position:relative;width:100%;aspect-ratio:1.8;overflow:hidden;background:#ddcde0}
+.medspa-option-image>img {width:100%;height:100%;object-fit:cover;object-position:center 38%}
+.medspa-option-image>span {position:absolute;left:12px;top:12px;font:11px Arial,sans-serif;color:white}
+.medspa-decision-actions {display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin:26px 0 0}
+.medspa-decision-actions>.medspa-action {margin-left:auto}
+.medspa-decision-actions>span {flex-basis:100%;font:11px/1.5 Arial,sans-serif;color:#65556c;text-align:right}
+.medspa-routing-workspace {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(24px,4vw,56px);align-items:start}
+.medspa-routing-editorial {position:relative;min-height:540px;overflow:hidden;border-radius:160px 160px 4px 4px;background:#39243f;color:white}
+.medspa-routing-editorial>img {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center}
+.medspa-routing-editorial>div {position:absolute;inset:auto 0 0;padding:80px 28px 32px;background:linear-gradient(transparent,#24162deb)}
+.medspa-routing-editorial h4 {font-size:38px}.medspa-routing-editorial p {font-size:13px;max-width:270px}.medspa-routing-editorial span {font:9px/1.5 Arial,sans-serif;letter-spacing:.14em}
+.medspa-product .medspa-routing {border-top:0;padding:0;margin:0}
+.medspa-routing-progress {display:flex;flex-wrap:wrap;gap:12px;align-items:center;font:11px/1.6 Arial,sans-serif}
+.medspa-routing-progress p {margin:0!important}.medspa-routing-progress>span {margin-left:auto;color:#65556c}
+.medspa-product progress {height:3px;width:100%;appearance:none;border:0;background:#ddd0e2;color:#694176}
+.medspa-product progress::-webkit-progress-bar {background:#ddd0e2}.medspa-product progress::-webkit-progress-value {background:#694176;transition:width .3s ease}.medspa-product progress::-moz-progress-bar {background:#694176}
+.medspa-routing-decision {margin-top:28px!important}.medspa-routing-decision legend {font-size:clamp(28px,3vw,40px);line-height:1.08;letter-spacing:-.02em;max-width:100%}
+.medspa-route-receipt {margin-top:30px;border-top:1px solid var(--lab-line);padding-top:20px}.medspa-route-receipt>p {font-size:17px;line-height:1.4}
+.medspa-selection-summary {margin:14px 0 0!important}.medspa-selection-summary>div {position:relative;padding:14px 60px 14px 0!important;border-bottom:1px solid var(--lab-line)}
+.medspa-selection-summary dt {font:11px/1.5 Arial,sans-serif!important;color:#65556c}.medspa-selection-summary dd {font-size:15px!important;margin:7px 0 0!important;overflow-wrap:anywhere}
+.medspa-selection-summary button {position:absolute;right:0;top:14px;border:0;background:transparent;color:#594264;padding:8px;min-height:44px;font:11px Arial,sans-serif;text-decoration:underline;text-underline-offset:4px}
+.medspa-complete-actions {margin-top:20px}.medspa-complete-actions .lab-brief-link {font-size:13px}
+.medspa-concierge-shell {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.65fr);background:#fffaf7;border:1px solid #cbbacf;box-shadow:0 28px 60px #59426416}
+.medspa-concierge-story {position:relative;min-height:730px;overflow:hidden;background:#3f2b49;color:#fffaf7}
+.medspa-concierge-image {position:absolute;inset:0}.medspa-concierge-image img {width:100%;height:100%;object-fit:cover;object-position:60% center;opacity:.75}
+.medspa-concierge-story-copy {position:absolute;inset:auto 0 0;padding:100px 28px 30px;background:linear-gradient(transparent,#2b1b35 55%)}
+.medspa-concierge-story-copy h4 {font-size:clamp(33px,3.2vw,48px);line-height:1.08;margin:16px 0 24px}
+.medspa-concierge-story-copy>p {font-size:14px;line-height:1.65}
+.medspa-concierge-progress {margin-top:32px;display:grid;gap:12px;font:10px/1.5 Arial,sans-serif}.medspa-concierge-progress progress {background:#786383}.medspa-concierge-progress progress::-webkit-progress-value {background:#e1caeb}
+.medspa-concierge-main {min-width:0;padding:clamp(20px,3vw,38px)}
+.medspa-concierge-stages {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-bottom:1px solid var(--lab-line);padding-bottom:18px}
+.medspa-concierge-stages button {background:transparent;border:0;color:#65556c;padding:8px 0;text-align:left;min-height:44px;font:9px/1.3 Arial,sans-serif;display:flex;gap:7px;align-items:start}
+.medspa-concierge-stages button>span:first-child {font-size:11px}
+.medspa-concierge-stages button[aria-current=step] {color:#39243f;font-weight:700;border-bottom:2px solid #694176}
+.medspa-concierge-decision {margin-top:28px}.medspa-concierge-decision h4 {font-size:clamp(30px,3.1vw,44px);line-height:1.08;letter-spacing:-.03em;margin:10px 0 18px}.medspa-concierge-decision>.medspa-reveal>p {font-size:14px;color:#65556c;line-height:1.65}
+.medspa-concierge-brief {margin-top:26px;padding-top:20px;border-top:1px solid var(--lab-line)}.medspa-concierge-brief p {font-size:17px;margin:8px 0}
+.medspa-concierge-complete {display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:30px;margin-top:28px;padding:30px;background:#e8dcec;border:1px solid var(--lab-line)}
+.medspa-concierge-complete h4 {font-size:38px}.medspa-concierge-complete p {font-size:14px}.medspa-concierge-complete>div:last-child {align-self:center}
+.medspa-reveal {animation:medspa-enter .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes medspa-enter {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1100px){.medspa-product-heading{display:block}.medspa-product-heading>p{max-width:530px;margin-top:20px}.medspa-concierge-story{min-height:770px}.medspa-option-copy strong{font-size:18px}}
+@media(max-width:850px){
+ .medspa-explorer-workspace,.medspa-routing-workspace,.medspa-concierge-shell{grid-template-columns:1fr}
+ .medspa-discovery-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.medspa-profile{padding-top:28px}
+ .medspa-explorer .medspa-explorer-scene{max-width:640px;margin:auto}.medspa-explorer-scene.lab-body .medspa-scene-image{max-width:340px}
+ .medspa-routing-editorial{min-height:260px;border-radius:100px 100px 4px 4px}.medspa-routing-editorial>img{object-position:center 42%}.medspa-routing-editorial>div{padding:70px 24px 24px}.medspa-routing-editorial h4{font-size:30px;margin-bottom:10px}.medspa-routing-editorial p{display:none}
+ .medspa-concierge-story{min-height:280px}.medspa-concierge-image img{object-position:center 40%}.medspa-concierge-story-copy{padding:45px 24px 22px;background:linear-gradient(transparent,#2b1b35dc)}.medspa-concierge-story-copy h4{font-size:29px;margin:10px 0 12px}.medspa-concierge-story-copy h4 br{display:none}.medspa-concierge-story-copy>p{max-width:510px;margin-bottom:0}.medspa-concierge-progress{margin-top:16px}
+ .medspa-treatment-cards{grid-auto-columns:minmax(210px,40%)}
+}
+@media(max-width:520px){
+ .medspa-product{padding:24px 16px}.medspa-product-heading{margin-bottom:26px}.medspa-product-heading h3{font-size:36px}.medspa-product-heading>p{font-size:14px}
+ .medspa-discovery-panel,.medspa-education-detail,.medspa-product-footer,.medspa-concierge-complete{grid-template-columns:1fr}
+ .medspa-section-heading{display:block}.medspa-section-heading>p{margin-top:16px}.medspa-treatment-cards{grid-auto-columns:80%}.medspa-treatment-library{margin-top:32px}.medspa-education-detail,.medspa-consultation-stage{padding:20px 16px}
+ .medspa-scene-caption p{font-size:23px}.medspa-explorer-scene .medspa-scene-caption{padding:44px 18px 16px}.medspa-scene-toolbar>span{display:none}.medspa-explorer .medspa-explorer-scene{border-radius:100px 100px 4px 4px}
+ .medspa-concierge-main{padding:20px 16px}.medspa-concierge-stages{grid-template-columns:repeat(2,minmax(0,1fr))}.medspa-concierge-story{min-height:310px}.medspa-concierge-story-copy>p{font-size:12px}.medspa-concierge-story-copy{padding-inline:20px}.medspa-product .medspa-option-grid-visual{grid-template-columns:1fr}.medspa-option-grid-visual>button:last-child:nth-child(odd){grid-column:auto}.medspa-option-image{aspect-ratio:2.4}
+ .medspa-option-grid>button{padding:14px;gap:12px}.medspa-option-grid-visual>button{padding:0 0 16px}.medspa-option-copy strong{font-size:19px}.medspa-decision-actions>.medspa-action{padding:14px 16px;font-size:12px;gap:12px}.medspa-routing-progress>span{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.medspa-reveal{animation:none}.medspa-product button,.medspa-product img,.medspa-product progress::-webkit-progress-value{transition:none}.medspa-product button:hover{transform:none}}
