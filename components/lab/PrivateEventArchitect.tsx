@@ -1,39 +1,39 @@
 "use client";
-import { eventSteps } from "@/lib/lab-routing";
-import RoutingEngine from "./RoutingEngine";
-export default function PrivateEventArchitect({
-  inHome = false,
-}: {
-  inHome?: boolean;
-}) {
-  return (
-    <div className="lab-experiment">
-      <header className="lab-experiment-head">
-        <div>
-          <small>06 / PRIVATE EVENT ARCHITECT</small>
-          <h3>
-            One event.
-            <br />
-            <em>A useful sales brief.</em>
-          </h3>
-        </div>
-        <p>
-          For hotels, restaurants, venues, cultural spaces and retreat
-          properties.
-        </p>
-      </header>
-      <RoutingEngine
-        steps={eventSteps}
-        name="Private Event Architect"
-        projectType="Hospitality / venue"
-        needs={[
-          "Quote or lead flow",
-          "Custom interactive feature",
-          "Booking or scheduling",
-        ]}
-        disclosure="Preferences for a sales conversation. Your venue team confirms capacity, accessibility, availability, production and lodging. No reservation or quote is made."
-        inHome={inHome}
-      />
-    </div>
-  );
+import {useRef,useState} from "react";
+import {eventSteps,routingBrief,updateRoutingAnswer,type RoutingAnswers} from "@/lib/lab-routing";
+import {BriefLink,Preview,usePublishLabBrief} from "./LabShared";
+export default function PrivateEventArchitect({inHome=false}:{inHome?:boolean}){
+ const [answers,setAnswers]=useState<RoutingAnswers>({});const [index,setIndex]=useState(0);const [view,setView]=useState<"journey"|"summary">("journey");
+ const title=useRef<HTMLHeadingElement>(null);const step=eventSteps[index];const allDone=eventSteps.every(s=>answers[s.key]?.length);const brief=routingBrief(eventSteps,answers);
+ const needs=["Quote or lead flow","Custom interactive feature","Booking or scheduling"];
+ usePublishLabBrief({name:"Private Event Atelier",projectType:"Hospitality / venue",needs,summary:brief});
+ function go(n:number){setIndex(n);setView("journey");requestAnimationFrame(()=>title.current?.focus());}
+ function select(option:string){setAnswers(old=>updateRoutingAnswer(old,eventSteps,index,option));}
+ const visual=["Wedding-related event","Corporate meeting","Celebration","Retreat"];
+ const labels=["The occasion","The guest list","The atmosphere","The setting","The production","The hospitality","The privacy","The stay"];
+ const prompt=["What are we celebrating?","How many guests are you imagining?","How should the gathering feel?","Where does your event unfold?","What will bring it to life?","What will guests enjoy?","How private should it feel?","Will anyone stay overnight?"];
+ const symbols=["✧","◇","❋","⌂","♫","♢","✦","☾"];
+ const hero="/assets/lab/forme-ceramics.webp";
+ return <div className="lab-experiment private-atelier">
+ <header className="lab-experiment-head"><div><small>06 / PRIVATE EVENT ATELIER</small><h3>Extraordinary events.<br/><em>Beautifully imagined.</em></h3></div><p>Explore a thoughtful, interactive event-planning journey that turns guest inspiration into a useful sales conversation.</p></header>
+ <div className="pea-hero"><div className="pea-hero-copy"><small>A. HALLIWELL STUDIO / HOSPITALITY EXPERIENCES</small><h4>Every celebration<br/><em>begins with a vision.</em></h4><p>From a first idea to a beautifully considered brief, every choice helps shape the experience.</p><div className="pea-hero-meta"><span>EVENT DESIGN</span><span>PLANNING JOURNEY</span><span>SALES CONVERSION</span></div></div><div className="pea-hero-art" aria-hidden="true"><span>✿</span><span>❦</span><span>✧</span></div></div>
+ <div className="pea-workspace">
+ <div className="pea-bar"><span>PRIVATE EVENT ATELIER / INTERACTIVE EXPERIENCE</span><span>{String(index+1).padStart(2,"0")} / 08</span></div>
+ <div className="pea-track" role="group" aria-label="Event planning stages">{eventSteps.map((s,i)=><button key={s.key} type="button" aria-label={`Stage ${i+1}: ${labels[i]}`} aria-current={view==="journey"&&index===i?"step":undefined} onClick={()=>go(i)}><span className={answers[s.key]?.length?"complete":""}></span></button>)}</div>
+ {view==="journey"?<div className="pea-stage" key={step.key}><div className="pea-question"><small>CHAPTER {String(index+1).padStart(2,"0")} / {labels[index].toUpperCase()}</small><h4 ref={title} tabIndex={-1}>{prompt[index]}</h4><p>{step.multiple?"Choose all that speak to your vision.":"Select the option that best fits your plans."} You can always refine your selections.</p><div className="pea-selected"><span>{symbols[index]}</span><span>{answers[step.key]?.join(" · ")||"Your story is taking shape"}</span></div></div><div className="pea-options" role="group" aria-label={step.label}>{step.options.map((option,i)=><button type="button" key={option} aria-pressed={!!answers[step.key]?.includes(option)} className={index===0?"visual":""} onClick={()=>select(option)}><span className="pea-option-art" aria-hidden="true">{index===0?["✿","◈","❦","✧","☾","✦"][i]:symbols[(index+i)%symbols.length]}</span><span className="pea-option-text">{option}</span><span className="pea-check" aria-hidden="true">{answers[step.key]?.includes(option)?"✓":"↗"}</span></button>)}</div></div>:<div className="pea-final"><small>YOUR PERSONALIZED EVENT EXPERIENCE</small><h4>The beautiful details,<br/><em>all in one place.</em></h4><p>Every selection becomes part of a structured event-sales brief.</p></div>}
+ <div className="pea-actions"><button type="button" disabled={index===0&&view==="journey"} onClick={()=>view==="summary"?go(7):go(index-1)}>← Back</button><span>{eventSteps.filter(s=>answers[s.key]?.length).length} OF 8 CHAPTERS COMPLETED</span>{view==="journey"?<button className="primary" type="button" disabled={!answers[step.key]?.length} onClick={()=>index===7?setView("summary"):go(index+1)}>{index===7?"Reveal my event brief ✧":"Continue →"}</button>:<button type="button" onClick={()=>go(0)}>Refine selections ↗</button>}</div>
+ </div>
+ <aside className="pea-result" aria-label="Event brief preview"><div className="pea-result-heading"><div><small>THE RESULT / YOUR EVENT VISION</small><h4>A more beautiful way<br/><em>to begin planning.</em></h4><p>Designed to bring the important details into focus before the first conversation.</p></div><div className="pea-seal" aria-hidden="true">✧</div></div><div className="pea-summary">{eventSteps.map((s,i)=><div key={s.key}><small>{String(i+1).padStart(2,"0")} / {labels[i]}</small><p>{answers[s.key]?.join(", ")||"To be decided"}</p></div>)}</div><Preview title="Preview your event brief" disabled={!allDone}><p style={{whiteSpace:"pre-line"}}>{brief}</p><p>Demo only. The venue confirms capacities, accessibility, availability, production and lodging. No reservation or quote has been made.</p></Preview>{allDone?<BriefLink inHome={inHome} name="Private Event Atelier" projectType="Hospitality / venue" needs={needs} summary={brief} label="Discuss an experience like this for my venue"/>:<p className="lab-caption">Complete the eight chapters to explore how this brief can be carried into a project inquiry.</p>}</aside>
+ <p className="lab-caption">This experience uses fictional venue planning choices. It does not check availability, hold event dates or submit bookings.</p>
+ <style jsx>{`
+.private-atelier{--plum:#39223f;--orchid:#8b5479;--muted:#7b697e;color:var(--plum)}
+.pea-hero{position:relative;display:grid;grid-template-columns:1.45fr .55fr;overflow:hidden;min-height:310px;margin:1.3rem 0;border-radius:26px;background:radial-gradient(ellipse at 83% 22%,#f3c7e1 0%,transparent 44%),linear-gradient(112deg,#fbf5fa 0%,#f4e3ee 47%,#ddd1ea 100%);box-shadow:0 18px 50px #533a6118}
+.pea-hero-copy{padding:clamp(1.5rem,4.5vw,3.8rem);position:relative;z-index:1}.pea-hero-copy>small,.pea-question>small,.pea-final>small,.pea-result-heading small{letter-spacing:.19em;font-size:.65rem;font-weight:700}.pea-hero-copy h4{font-family:Georgia,serif;font-weight:400;line-height:1.03;letter-spacing:-.045em;font-size:clamp(2.1rem,5vw,4.6rem);margin:1.1rem 0}.pea-hero-copy em,.pea-question h4 em,.pea-result h4 em{color:#975c8a;font-weight:400}.pea-hero-copy p{max-width:470px}.pea-hero-meta{display:flex;flex-wrap:wrap;gap:1rem;font-size:.62rem;letter-spacing:.15em;margin-top:2rem}.pea-hero-art{display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:7rem;color:#ae7fae;position:relative}.pea-hero-art span:nth-child(2){position:absolute;transform:translate(50px,45px);color:#fff7fc;font-size:9rem}.pea-hero-art span:nth-child(3){position:absolute;transform:translate(-55px,-55px);color:#d6a1c5;font-size:4rem}
+.pea-workspace{border:1px solid #e6d1e6;border-radius:22px;background:linear-gradient(160deg,#fffafd,#f9f0f8);overflow:hidden;box-shadow:0 15px 48px #52315c11}.pea-bar{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 1.6rem;border-bottom:1px solid #ead7e8;font-size:.63rem;letter-spacing:.15em;font-weight:700}.pea-track{display:grid;grid-template-columns:repeat(8,1fr);gap:.55rem;margin:1.2rem 1.6rem}.pea-track button{background:transparent;border:0;cursor:pointer;padding:.6rem 0}.pea-track button span{height:3px;display:block;background:#e5d3e3;border-radius:8px}.pea-track button[aria-current=step] span,.pea-track button span.complete{background:#865277}.pea-track button:focus-visible,.pea-options button:focus-visible,.pea-actions button:focus-visible{outline:3px solid #a16e9e;outline-offset:3px}
+.pea-stage{display:grid;grid-template-columns:minmax(200px,.8fr) minmax(0,1.2fr);gap:2rem;padding:1rem clamp(1.2rem,3vw,3rem) 2.5rem;min-height:400px;animation:pea-enter .33s ease both}.pea-question h4,.pea-final h4{font-family:Georgia,serif;font-weight:400;font-size:clamp(2rem,3.5vw,3.5rem);line-height:1.07;letter-spacing:-.045em;margin:1rem 0}.pea-question p{color:#706078;line-height:1.65}.pea-selected{display:flex;align-items:center;gap:.7rem;margin-top:2.5rem;color:#815c7d;font-size:.82rem}.pea-selected span:first-child{font-size:2.4rem;color:#b884b0}
+.pea-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:.75rem}.pea-options button{min-width:0;min-height:105px;display:flex;align-items:center;gap:.75rem;padding:1rem;border:1px solid #e7d6e8;background:#fffafd;color:#412943;border-radius:16px;text-align:left;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;box-shadow:0 6px 17px #6543610a}.pea-options button:hover{transform:translateY(-3px);box-shadow:0 14px 27px #51325717}.pea-options button[aria-pressed=true]{border-color:#a36d97;background:#f7e5f1;box-shadow:0 0 0 2px #d5b2d5}.pea-option-art{flex-shrink:0;width:40px;height:48px;display:grid;place-items:center;font-family:Georgia,serif;font-size:2rem;color:#b382ab}.pea-option-text{font-size:.85rem;font-weight:600;line-height:1.3}.pea-check{margin-left:auto;opacity:.5}.pea-options button[aria-pressed=true] .pea-check{opacity:1;color:#7d4174;font-weight:800}.pea-options button.visual{min-height:150px;flex-direction:column;align-items:flex-start;justify-content:space-between;background:linear-gradient(155deg,#f9ebf3,#f5f0f8)}.pea-options button.visual .pea-option-art{font-size:3rem}
+.pea-actions{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:1.3rem clamp(1.2rem,3vw,3rem);border-top:1px solid #ebdceb}.pea-actions button{cursor:pointer;border:1px solid #bb9eba;border-radius:999px;padding:.78rem 1.35rem;color:var(--plum);background:#fff9fd}.pea-actions button.primary{background:linear-gradient(110deg,#503154,#92577c);color:white;border-color:transparent}.pea-actions button:disabled{opacity:.35;cursor:not-allowed}.pea-actions span{font-size:.61rem;letter-spacing:.12em;color:#816d83}.pea-final{padding:2rem 3rem;min-height:340px}
+.pea-result{background:radial-gradient(ellipse at right top,#6c4266,#38213e 65%);border-radius:24px;color:#fff8ff;margin:1.5rem 0;padding:clamp(1.5rem,4vw,3rem);box-shadow:0 20px 55px #39223f38}.pea-result-heading{display:flex;justify-content:space-between;align-items:start;gap:1rem}.pea-result h4{font-family:Georgia,serif;font-size:clamp(1.8rem,3.2vw,3.1rem);line-height:1.12;font-weight:400;margin:.9rem 0}.pea-result h4 em{color:#edc2df}.pea-result-heading p{color:#eedbed;max-width:480px}.pea-seal{font-size:5rem;color:#e6bbdb}.pea-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.85rem;margin:2rem 0}.pea-summary div{border-top:1px solid #ffffff5a;padding:.8rem .1rem}.pea-summary small{font-size:.65rem;color:#e1c1de}.pea-summary p{font-size:.87rem;margin:.65rem 0;line-height:1.35}
+@keyframes pea-enter{from{opacity:.2;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}@media(max-width:800px){.pea-stage{grid-template-columns:1fr}.pea-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.pea-hero{grid-template-columns:1fr}.pea-hero-art{display:none}}@media(max-width:500px){.pea-options{grid-template-columns:1fr}.pea-options button.visual{min-height:110px;flex-direction:row;align-items:center}.pea-track{margin:1rem}.pea-bar{padding:1rem}.pea-actions span{display:none}.pea-stage{gap:1rem}.pea-summary{grid-template-columns:1fr 1fr}}@media(prefers-reduced-motion:reduce){.pea-stage{animation:none}.pea-options button{transition:none}}
+ `}</style></div>;
 }
