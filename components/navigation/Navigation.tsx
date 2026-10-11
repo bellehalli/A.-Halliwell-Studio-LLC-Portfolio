@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect,useRef,useState } from "react";
 import { usePathname } from "next/navigation";
 const HEART="/assets/hearts/Portfolio Assets A.Halliwell  - 1.webp";
-const links=[["HOME","/"],["WORK","/work"],["SERVICES","/services"],["STUDIO","/studio"],["LAB","/lab"],["CLIENT PORTAL","/portal"]];
+const links=[["HOME","/"],["WORK","/work"],["SERVICES","/services"],["SHOP","/shop"],["STUDIO","/studio"],["LAB","/lab"],["CLIENT PORTAL","/portal"]];
 export default function Navigation(){
  const [open,setOpen]=useState(false),[scrolled,setScrolled]=useState(false);
  const pathname=usePathname();
