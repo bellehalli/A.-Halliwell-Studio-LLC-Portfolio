@@ -28,14 +28,14 @@ export default function ShopPage() {
           <h2 style={{ fontFamily: "Georgia,serif", fontSize: "clamp(27px,3vw,37px)", lineHeight: 1.16, margin: "19px 0" }}>{product.title}</h2>
           <p style={{ fontSize: 30, fontFamily: "Georgia,serif", margin: "0 0 14px" }}>From {product.amount}</p>
           <p style={{ lineHeight: 1.7, minHeight: 110 }}>{product.description}</p>
-          <a href={product.preview} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", textDecoration: "underline", textUnderlineOffset: 4, margin: "8px 20px 16px 0", color: "#5b3366" }}>Explore live concept ↗</a>
-          <a href={inquiry(product.title)} style={{ display: "inline-block", padding: "13px 19px", background: "#5a3564", color: "white", borderRadius: 100, fontWeight: 700, textDecoration: "none", marginBottom: 14 }}>Ask about this launch ↗</a>
+          <a href={product.preview} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", textDecoration: "underline", textUnderlineOffset: 4, margin: "8px 20px 16px 0", color: "#5b3366" }}>Explore live concept →</a>
+          <a href={inquiry(product.title)} style={{ display: "inline-block", padding: "13px 19px", background: "#5a3564", color: "white", borderRadius: 100, fontWeight: 700, textDecoration: "none", marginBottom: 14 }}>Ask about this launch →</a>
         </article>)}
       </div>
       <section style={{ marginTop: 44, borderTop: "1px solid #cfbdd2", paddingTop: 32 }}>
         <h2 style={{ fontFamily: "Georgia,serif", fontSize: 32 }}>Prefer something entirely your own?</h2>
         <p style={{ lineHeight: 1.7, maxWidth: 700 }}>Our bespoke websites and advanced interactive systems remain available as separately scoped studio engagements. These ready-to-launch offerings are deliberately more limited.</p>
-        <a href="/start" style={{ color: "#5b3366", fontWeight: 700, textUnderlineOffset: 4 }}>Discuss a custom project ↗</a>
+        <a href="/start" style={{ color: "#5b3366", fontWeight: 700, textUnderlineOffset: 4 }}>Discuss a custom project →</a>
       </section>
       <p style={{ fontSize: 13, lineHeight: 1.7, marginTop: 55, opacity: .75 }}>Launch package inclusions, hosting, third-party costs, licensing, revisions and timelines are defined in the written proposal before purchase. No medical claims, business credentials, sample ratings or demo contact details are transferred as factual client information.</p>
     </div>
