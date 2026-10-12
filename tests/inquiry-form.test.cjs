@@ -29,7 +29,7 @@ function formHarness(window) {
     useEffect(fn, deps) { const i = cursor++; if (!slots[i] || deps.some((v,j) => !Object.is(v, slots[i][j]))) { slots[i] = deps; effects.push(fn); } },
   };
   const safeStorage = load('lib/browser-storage.ts', {}, { window });
-  const Component = load('components/forms/StartProject.tsx', { react, '@/lib/browser-storage': safeStorage, '@vercel/analytics': { track() { throw Error('analytics unavailable'); } } }, {
+  const Component = load('components/forms/StartProject.tsx', { react, '@/lib/browser-storage': safeStorage, '@vercel/analytics': { track() { throw Error('analytics unavailable'); } }, '@/lib/google-analytics': { googleEvent() {} } }, {
     window, requestAnimationFrame: fn => fn(), fetch: async (_, options) => { submitted = JSON.parse(options.body); return { status: 200, ok: true, json: async () => ({ success: true, confirmationSent: false }) }; },
   }).default;
   function nodes(node) { if (arguments.length === 0) node = tree; if (!node || typeof node !== 'object') return []; return [node, ...[node.props?.children].flat(Infinity).flatMap(x => nodes(x))]; }

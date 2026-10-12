@@ -11,8 +11,10 @@ export const metadata: Metadata = {
 export default function Cookies() {
   return <main className="legal-page">
     <h1>Cookies &amp; storage</h1>
-    <p className="legal-updated">Updated September 30, 2026</p>
+    <p className="legal-updated">Updated October 12, 2026</p>
     <p>The public portfolio does not use advertising cookies. Vercel Web Analytics works without analytics cookies. The site uses browser storage for a few conveniences and essential cookies for private workspaces.</p>
+    <h2>Optional Google Analytics cookies</h2>
+    <p>Google Analytics loads after you accept analytics cookies. It uses _ga cookies to measure public visits and inquiry actions, with a configured expiration of 90 days. Advertising features are disabled. Your analytics choice is saved in local storage under ahs-google-analytics-consent. Use Cookie preferences to change your choice; declining stops Google Analytics collection and clears its cookies for this site. Vercel&apos;s separate cookie-free analytics remains active.</p>
     <h2>Browser storage</h2>
     <ul>
       <li><strong>Project inquiry draft:</strong> local storage saves your answers on this device while you fill out the form. It is removed after successful submission; you can clear site data in your browser sooner.</li>

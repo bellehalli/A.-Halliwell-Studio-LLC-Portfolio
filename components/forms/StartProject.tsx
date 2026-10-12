@@ -1,6 +1,7 @@
 "use client";
 import { investmentOptions, projectReasons, studio } from "@/lib/studio-config";
 import { track } from "@vercel/analytics";
+import { googleEvent } from "@/lib/google-analytics";
 
 import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 
@@ -363,6 +364,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       removeStorage("session", "ahs-inquiry-submission");
       setConfirmationSent(Boolean(result.confirmationSent));
       setStatus("success");
+      googleEvent("generate_lead", { project_type: projectType });
       try { track("Form completion", { projectType }); } catch { /* Analytics cannot change a saved receipt. */ }
       setFeedback(
         result.confirmationSent
