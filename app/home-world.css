@@ -299,6 +299,30 @@ vercel-live-feedback { display: none !important; }
 .work-gallery-details .project-tags { display: flex; flex-wrap: wrap; gap: 7px; }
 .work-gallery-details > p { flex-basis: 100%; margin: 0; font: 500 12px/1.5 var(--font-sans),sans-serif; }
 @media (max-width: 700px) {
+  /* Keep the homepage venue examples compact without shrinking case files. */
+  .home-world #work-gallery .work-gallery { padding: 40px 16px 32px; }
+  .home-world #work-gallery .work-gallery-heading { margin-bottom: 20px; }
+  .home-world #work-gallery .work-gallery-heading h2 {
+    margin: 14px 0; font-size: clamp(40px,11vw,58px);
+  }
+  .home-world #work-gallery .work-gallery-links { margin-top: 14px; }
+  .home-world #work-gallery .work-gallery-links a {
+    display: inline-flex; align-items: center; min-height: 44px;
+  }
+  .home-world #work-gallery .project-media-stack { gap: 16px; }
+  .home-world #work-gallery .project-live-preview iframe,
+  .home-world #work-gallery .project-preview-scroll {
+    height: clamp(260px,70vw,330px);
+  }
+  .home-world #work-gallery .project-evidence-gallery {
+    min-height: 0; padding: 20px 12px; gap: 14px;
+  }
+  .home-world #work-gallery .project-evidence-gallery figure {
+    flex-basis: 152px; width: 152px; height: 200px;
+    border-width: 6px; border-top-width: 24px; border-bottom-width: 25px;
+  }
+  .home-world #work-gallery .project-evidence-gallery figure::before { top: -21px; }
+  .home-world #work-gallery .work-gallery-details { margin-top: 16px; gap: 10px; }
   .work-gallery { padding: 66px 16px 52px; }
   .work-gallery::before { height: 230px; background-size: auto 230px; }
   .work-gallery-heading { margin-bottom: 32px; }
