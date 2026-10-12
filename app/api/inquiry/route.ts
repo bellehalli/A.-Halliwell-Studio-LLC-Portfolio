@@ -302,6 +302,7 @@ export async function POST(request: Request) {
       });
   
       if (!error) studioStatus = "accepted";
+      else console.warn("Inquiry studio email rejected; lead is saved.", { name: error.name });
     } catch { console.warn("Inquiry studio email was not accepted; lead is saved."); }
 
     try {
@@ -360,6 +361,7 @@ export async function POST(request: Request) {
       });
   
       if (!confirmation.error) confirmationStatus = "accepted";
+      else console.warn("Inquiry confirmation email rejected; lead is saved.", { name: confirmation.error.name });
     } catch { console.warn("Inquiry confirmation email was not accepted; lead is saved."); }
     await leadEmailStatus(lead.id, studioStatus, confirmationStatus);
     return json({ success: true, message: "Your project inquiry has been received.", confirmationSent: confirmationStatus === "accepted" });
