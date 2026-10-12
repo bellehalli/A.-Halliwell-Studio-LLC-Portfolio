@@ -22,7 +22,7 @@ export default function ProjectShowcase({ project }: { project: Project }) {
   const galleryTone = Number(project.number) % 2 ? "willow" : "maison";
 
   return (
-    <article className={`project-world project-world-${project.tone} work-gallery work-gallery-${galleryTone} project-gallery`} aria-labelledby={`world-${project.slug}`}>
+    <article className={`project-world project-world-${project.tone} work-gallery work-gallery-${galleryTone} project-gallery`} data-project-slug={project.slug} aria-labelledby={`world-${project.slug}`}>
       <div className="project-world-paper">
         <div className="project-world-title work-gallery-heading">
           <p className="work-gallery-kicker">{project.number} — Selected Work <span aria-hidden="true">✦</span> {project.category}</p>
