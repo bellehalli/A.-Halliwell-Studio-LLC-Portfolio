@@ -6,9 +6,16 @@ import { Analytics, type BeforeSend } from "@vercel/analytics/next";
 import { track } from "@vercel/analytics";
 
 const isPrivatePath = (path: string) => /^\/(portal|fax|api|admin|dashboard|checkout|onboarding)(?:\/|$)/.test(path);
+const outreachKey = "ahs-outreach-ref";
+function outreachRef() {
+  try {
+    const value = window.sessionStorage.getItem(outreachKey) || "";
+    return /^[a-f0-9]{24}$/.test(value) ? value : "";
+  } catch { return ""; }
+}
 // Tracking must never interfere with navigation when the analytics service fails.
 function safeTrack(name: string, properties: Record<string, string>) {
-  try { track(name, properties); } catch { /* Navigation remains available. */ }
+  try { const ref = outreachRef(); track(name, ref ? { ...properties, outreachRef: ref } : properties); } catch { /* Navigation remains available. */ }
 }
 const publicEvent: BeforeSend = (event) => {
   try {
@@ -22,6 +29,17 @@ const publicEvent: BeforeSend = (event) => {
 
 export default function SiteAnalytics() {
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (isPrivatePath(window.location.pathname)) return;
+    try {
+      const query = new URLSearchParams(window.location.search);
+      const ref = query.get("ref") || "";
+      if (query.get("utm_source") !== "outreach" || query.get("utm_campaign") !== "october_12_14" || !/^[a-f0-9]{24}$/.test(ref)) return;
+      window.sessionStorage.setItem(outreachKey, ref);
+      safeTrack("Outreach visit", { campaign: "october_12_14", route: window.location.pathname });
+    } catch { /* A tracking failure must leave the portfolio usable. */ }
+  }, []);
 
   useEffect(() => {
     if (pathname === "/work" || pathname.startsWith("/work/")) safeTrack("Work view", { route: pathname });
