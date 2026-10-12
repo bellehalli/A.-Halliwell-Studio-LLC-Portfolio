@@ -367,7 +367,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       setFeedback(
         result.confirmationSent
           ? "Your project is officially in my inbox, and a confirmation copy is headed to your email. ♥"
-          : "Your project is officially in my inbox. I'll review it and be in touch soon. ♥"
+          : "Your project inquiry has been saved. I'll review it and be in touch soon. ♥"
       );
     } catch (error) {
       setStatus("error");
