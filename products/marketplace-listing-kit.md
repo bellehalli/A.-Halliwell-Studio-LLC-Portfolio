@@ -4,16 +4,16 @@
 
 **Collection name:** The AHS Studio Template Edit  
 **Focused DIY price:** $149 one-time for Beauty, Booked.; Rooted Rituals; Nail Theory; Set & Stare; and Stillwater Skin  
-**Advanced DIY price:** $999 one-time for Élan Aesthetics, Vanta Social, and Northstar Heating & Home  
+**Advanced DIY price:** $999 one-time for Élan Aesthetics and Vanta Social; **Northstar full website package:** $399 one-time  
 **Focused implementation:** $1,250 for one focused template personalized and launched by A. Halliwell Studio  
 **Advanced implementation:** starts at $5,000 for Élan, Vanta, or Northstar; project scope is confirmed before work begins  
 **Format:** Instant digital download when sold through a marketplace  
-**Files:** Six responsive HTML pages, CSS, JavaScript, editable business details, a niche-specific `SETUP.md` in every template ZIP, README/license, and sample hero image  
+**Files:** Each ZIP includes its template’s page count and assets, responsive HTML, CSS, JavaScript, editable business details, setup guide, README/license, and documentation. The complete Northstar ZIP includes all 12 HTML pages, CSS/JavaScript/configuration, 10 original project photos, and customer guides.  
 **Best for:** Business owners who can edit and upload static website files, or who want AHS to handle implementation
 
 ### Reusable product description
 
-A polished six-page website starter made for a specific kind of business. Update your business name, colors, copy, services, contact details, photos, and booking or inquiry link. The download includes responsive HTML, CSS, JavaScript, and a step-by-step guide.
+A coded website template made for a specific kind of business. Page counts and included assets vary by product. Northstar includes the full 12-page HVAC website, all 10 project photos, responsive HTML/CSS/JavaScript, setup and customization guides, and a single-business license. Update your business name, colors, copy, services, contact details, photos, and inquiry link.
 
 This is a coded website template. It is not a Squarespace, Wix, Canva, Shopify, WordPress, or Webflow theme. It does not include hosting, a domain, a booking engine, ticket sales, payment processing, custom copywriting, or ongoing maintenance. Connect the external service you already use for appointments, tickets, or inquiries.
 
@@ -79,16 +79,16 @@ One purchase covers one business and one website. Source files may not be resold
 
 **Marketplace title:** HVAC Contractor Website Template HTML | Heating, Cooling, Repair & Service Request Website
 
-**Short description:** A practical website starter for HVAC and home-service businesses. Help homeowners find a service path for urgent concerns, repair, maintenance, and replacement inquiries, then connect your dispatch or contact system. **DIY: $999. AHS implementation: from $5,000.**
+**Short description:** The complete 12-page Northstar HVAC website template for heating, cooling, indoor air quality, maintenance, replacement, reviews, service areas, about, policies, service requests, homepage, and 404. Includes all 10 original project photos, editable source files, and customer setup guides. The request form validates and displays a demo confirmation; connect a form service to receive submissions. **DIY: $399. AHS implementation: from $5,000.**
 
 **Tags:** HVAC website template, heating contractor site, AC repair website, home services website, contractor HTML template, service request site, maintenance website, responsive small business, home comfort website, HVAC web design, HTML CSS JS, local service website, mobile contractor site
 
 ## Social listing captions
 
-**Collection launch:** Meet The AHS Studio Template Edit: eight coded website starters made for the businesses behind the appointment, event night, and next home-service call. Hair, nails, lashes, skincare, aesthetics, nightlife, and home services. Five focused templates are $149 DIY / $1,250 implemented. Élan, Vanta, and Northstar are $999 DIY / implementation from $5,000. Every download includes a niche-specific setup guide. Link in bio.
+**Collection launch:** Meet The AHS Studio Template Edit: eight coded website starters made for the businesses behind the appointment, event night, and next home-service call. Hair, nails, lashes, skincare, aesthetics, nightlife, and home services. Five focused templates are $149 DIY / $1,250 implemented. Élan and Vanta are $999 DIY; Northstar is $399 for the full 12-page package / implementation from $5,000. Every download includes a niche-specific setup guide. Link in bio.
 
 **Hair feature:** Hairstylists, braiders, and locticians deserve a website that speaks hair from the first click. Beauty, Booked. gives your services, style portfolio, policies, and booking link a home of their own. DIY template $149; implementation $1,250.
 
-**Vanta feature:** Your next night out starts before guests reach the door. Vanta Social gives events, guest-list details, VIP inquiries, and venue info a home online. DIY website template $999; implementation from $5,000.
+**Vanta feature:** Your next night out starts before guests reach the door. Vanta Social gives events, guest-list details, VIP inquiries, and venue info a home online. DIY website template $399 for all 12 pages + 10 project photos; implementation from $5,000.
 
 **Northstar feature:** Give homeowners a clearer next step when the heat or AC needs attention. Northstar Heating & Home organizes service options, verified business details, and your service request link. DIY website template $999; implementation from $5,000.
