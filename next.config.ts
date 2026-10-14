@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
       "./products/downloads/skin-studio-template.zip",
       "./products/downloads/elan-aesthetics-template.zip",
       "./products/downloads/vanta-social-template.zip",
-      "./products/downloads/northstar-home-service-template.zip",
+      "./products/downloads/northstar-home-service-template.zip.part1",
+      "./products/downloads/northstar-home-service-template.zip.part2",
     ],
   },
   async headers() {
