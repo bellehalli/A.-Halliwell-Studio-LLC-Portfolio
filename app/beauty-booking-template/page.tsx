@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     description: "A beauty website designed to turn your best work into easier bookings.",
     url: "/beauty-booking-template",
     type: "website",
+    images: [{ url: "/assets/templates/beauty-studio-editorial.webp", width: 1672, height: 941, alt: "Beauty, Booked. salon website template preview" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Beauty, Booked. — A. Halliwell Studio",
+    description: "A beauty website template for independent salon and beauty professionals.",
+    images: ["/assets/templates/beauty-studio-editorial.webp"],
   },
 };
 
@@ -46,7 +53,7 @@ function PreviewSite() {
 export default function BeautyBookingTemplatePage() {
   return <main className={styles.page}>
     <Navigation/>
-    <div className={styles.shell}>
+    <div className={styles.shell} id="main-content">
       <section className={styles.hero} aria-labelledby="beauty-heading">
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}><span className={styles.star}>✦</span> A. HALLIWELL STUDIO / BEAUTY DIGITAL</p>
