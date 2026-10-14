@@ -8,6 +8,18 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/api/templates/download": [
+      "./products/downloads/beauty-booking-template.zip",
+      "./products/downloads/protective-style-template.zip",
+      "./products/downloads/nail-artist-template.zip",
+      "./products/downloads/lash-brow-template.zip",
+      "./products/downloads/skin-studio-template.zip",
+      "./products/downloads/elan-aesthetics-template.zip",
+      "./products/downloads/vanta-social-template.zip",
+      "./products/downloads/northstar-home-service-template.zip",
+    ],
+  },
   async headers() {
     return [
       {
@@ -33,6 +45,13 @@ const nextConfig: NextConfig = {
       {
         source: "/portal/:path*",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
+      },
+      {
+        source: "/template-purchase/success",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+        ],
       },
       {
         source: "/api/:path*",

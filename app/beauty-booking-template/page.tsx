@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Navigation from "@/components/navigation/Navigation";
+import TemplateCheckoutButton from "./TemplateCheckoutButton";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -80,11 +81,12 @@ export default function BeautyBookingTemplatePage() {
       <section className={styles.details} aria-label="Template benefits"><div><span>01</span><h2>Built for beauty work.</h2><p>Service menu, gallery, policies, location, and booking, event, and inquiry paths in one considered experience.</p></div><div><span>02</span><h2>Easy to make yours.</h2><p>Update your name, services, colors, photos, and booking link with the included guide.</p></div><div><span>03</span><h2>Made to move.</h2><p>Responsive layouts designed to feel intentional on a phone, where many clients find you.</p></div></section>
 
       <section className={styles.collection} aria-labelledby="collection-heading">
+        <span id="templates" aria-hidden="true" />
         <div className={styles.collectionHeading}><p className={styles.overline}>FIVE FOCUSED TEMPLATES / THREE ADVANCED CONCEPTS</p><h2 id="collection-heading">Find your<br/><em>starting point.</em></h2><p>Five focused service templates are $149 DIY or $1,250 with implementation. Élan, Vanta, and Northstar are advanced concept templates at $999 DIY, with implementation starting at $5,000.</p></div>
         <div className={styles.collectionGrid}>
           {templates.map((template, i) => <article className={styles.templateCard} key={template.slug}>
             <a className={styles.templateImage} href="#offers" aria-label={`View purchase options for ${template.name}`}><Image src={`/assets/templates/${template.image}`} alt={template.alt} fill sizes="(max-width: 620px) 100vw, (max-width: 1000px) 50vw, 25vw"/><span>0{i + 1} / AHS TEMPLATE</span></a>
-            <div className={styles.templateBody}><p>{template.niche}</p><h3>{template.name}</h3><span>{template.description}</span><div className={styles.templateActions}><a href={orderLink(`${template.name} DIY website template`, template.price)}>DIY {template.price}</a><a href={orderLink(`${template.name} template + implementation`, template.implementation)}>{template.implementation === "$1,250" ? "AHS setup " : "Implementation "}{template.implementation}</a></div></div>
+            <div className={styles.templateBody}><p>{template.niche}</p><h3>{template.name}</h3><span>{template.description}</span><div className={styles.templateActions}><TemplateCheckoutButton slug={template.slug} label={`BUY DIY ${template.price}`} className={styles.checkoutButton}/><a href={orderLink(`${template.name} template + implementation`, template.implementation)}>{template.implementation === "$1,250" ? "AHS setup " : "Implementation "}{template.implementation}</a></div></div>
           </article>)}
         </div>
       </section>
@@ -98,7 +100,7 @@ export default function BeautyBookingTemplatePage() {
             <p className={styles.offerDescription}>Five focused templates are $149 each. Élan, Vanta, and Northstar are $999 each, with a niche-specific setup guide included.</p>
             <ul>{["Six coordinated page layouts", "Mobile-ready design", "Industry-specific page layouts", "Step-by-step setup guide", "Single-business use license"].map(item => <li key={item}><b aria-hidden="true">✓</b>{item}</li>)}</ul>
             <p className={styles.fitNote}>Best if you’re comfortable updating website files and arranging your own domain and hosting.</p>
-            <a className={styles.secondaryButton} href={orderLink("DIY website template of your choice", "$149–$999 by design")}>ORDER THE TEMPLATE <span aria-hidden="true"></span></a>
+            <a className={styles.secondaryButton} href="#templates">CHOOSE A TEMPLATE ABOVE <span aria-hidden="true"></span></a>
           </article>
           <article className={`${styles.offerCard} ${styles.featuredCard}`}>
             <div className={styles.offerTop}><span>02 / THE STUDIO SETUP</span><span className={styles.offerMark}>♡</span></div>
@@ -111,7 +113,7 @@ export default function BeautyBookingTemplatePage() {
         </div>
       </section>
 
-      <section className={styles.finePrint}><span>THE DETAILS, BEAUTIFULLY CLEAR</span><p>All prices are one-time. DIY prices are $149 for the five focused templates and $999 for Élan, Vanta, or Northstar. Implementation is $1,250 for focused templates and starts at $5,000 for the advanced concepts. Appointment, ticketing, inquiry software, domain registration, and hosting are separate costs. The DIY template is a coded HTML/CSS/JavaScript product, not a Squarespace, Wix, or Canva theme. Sample business, service names, and pricing shown in the preview are illustrative and are not transferred as client facts. After you choose an option, AHS will send secure payment instructions and the next steps.</p><a href={`mailto:${email}?subject=${encodeURIComponent("Question about the Beauty, Booked. template")}`}>Questions before you choose? Email the studio</a></section>
+      <section className={styles.finePrint}><span>THE DETAILS, BEAUTIFULLY CLEAR</span><p>All prices are one-time. DIY prices are $149 for the five focused templates and $999 for Élan, Vanta, or Northstar. Implementation is $1,250 for focused templates and starts at $5,000 for the advanced concepts. Appointment, ticketing, inquiry software, domain registration, and hosting are separate costs. The DIY template is a coded HTML/CSS/JavaScript product, not a Squarespace, Wix, or Canva theme. Sample business, service names, and pricing shown in the preview are illustrative and must be replaced before launch. Each purchase grants one business a license for one website; the source files may not be resold, shared, or used for another business, and AHS retains the original template intellectual property. Payment is processed by Stripe, with the matching ZIP available immediately after successful checkout. Read the <a href="/terms">template terms</a> before purchase.</p><a href={`mailto:${email}?subject=${encodeURIComponent("Question about the AHS Studio Template Edit")}`}>Questions before you choose? Email the studio</a></section>
     </div>
   </main>;
 }
