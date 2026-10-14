@@ -33,14 +33,14 @@ const services = [
 ];
 
 const templates = [
-  { name: "Beauty, Booked.", niche: "HAIR STUDIO", image: "beauty-studio-editorial.webp", alt: "A stylist caring for a client's natural curls", description: "A polished home for textured hair care, protective styling, and independent hair artists.", slug: "beauty-booking-template" },
-  { name: "Rooted Rituals", niche: "BRAIDS + PROTECTIVE STYLES", image: "beauty-studio-editorial.webp", alt: "A hair stylist working in a welcoming studio", description: "Made for braid artists, locticians, and protective style specialists.", slug: "protective-style-template" },
-  { name: "Nail Theory", niche: "NAIL ARTIST", image: "template-nails.webp", alt: "Burgundy and rose chrome nail art", description: "Showcase custom sets, service details, prep notes, and your booking path.", slug: "nail-artist-template" },
-  { name: "Set & Stare", niche: "LASH + BROW ARTIST", image: "template-lashes.webp", alt: "A lash artist working in a warm private studio", description: "A clear, elegant online home for lash and brow artists.", slug: "lash-brow-template" },
-  { name: "Stillwater Skin", niche: "SKINCARE STUDIO", image: "template-skin.webp", alt: "A skincare provider caring for a client", description: "A calm and considered service menu for estheticians and skincare studios.", slug: "skin-studio-template" },
-  { name: "Élan Aesthetics", niche: "AESTHETICS + WELLNESS", image: "template-elan.webp", alt: "A calm, elegant aesthetics studio", description: "Consultation-first service discovery for independent aesthetics practices.", slug: "elan-aesthetics-template" },
-  { name: "Vanta Social", niche: "NIGHTLIFE + EVENTS", image: "template-vanta.webp", alt: "A dramatic venue ready for an evening event", description: "Events, guest-list details, VIP inquiries, and the practical details guests need.", slug: "vanta-social-template" },
-  { name: "Northstar Heating & Home", niche: "HOME SERVICES", image: "template-northstar.webp", alt: "A heating and cooling professional working at a home", description: "A straightforward service request experience for HVAC and home-service businesses.", slug: "northstar-home-service-template" },
+  { name: "Beauty, Booked.", niche: "HAIR STUDIO", image: "beauty-studio-editorial.webp", alt: "A stylist caring for a client's natural curls", description: "A polished home for textured hair care, protective styling, and independent hair artists.", slug: "beauty-booking-template", price: "$149", implementation: "$1,250" },
+  { name: "Rooted Rituals", niche: "BRAIDS + PROTECTIVE STYLES", image: "beauty-studio-editorial.webp", alt: "A hair stylist working in a welcoming studio", description: "Made for braid artists, locticians, and protective style specialists.", slug: "protective-style-template", price: "$149", implementation: "$1,250" },
+  { name: "Nail Theory", niche: "NAIL ARTIST", image: "template-nails.webp", alt: "Burgundy and rose chrome nail art", description: "Showcase custom sets, service details, prep notes, and your booking path.", slug: "nail-artist-template", price: "$149", implementation: "$1,250" },
+  { name: "Set & Stare", niche: "LASH + BROW ARTIST", image: "template-lashes.webp", alt: "A lash artist working in a warm private studio", description: "A clear, elegant online home for lash and brow artists.", slug: "lash-brow-template", price: "$149", implementation: "$1,250" },
+  { name: "Stillwater Skin", niche: "SKINCARE STUDIO", image: "template-skin.webp", alt: "A skincare provider caring for a client", description: "A calm and considered service menu for estheticians and skincare studios.", slug: "skin-studio-template", price: "$149", implementation: "$1,250" },
+  { name: "Élan Aesthetics", niche: "AESTHETICS + WELLNESS", image: "template-elan.webp", alt: "A calm, elegant aesthetics studio", description: "Consultation-first service discovery for independent aesthetics practices.", slug: "elan-aesthetics-template", price: "$999", implementation: "From $5,000" },
+  { name: "Vanta Social", niche: "NIGHTLIFE + EVENTS", image: "template-vanta.webp", alt: "A dramatic venue ready for an evening event", description: "Events, guest-list details, VIP inquiries, and the practical details guests need.", slug: "vanta-social-template", price: "$999", implementation: "From $5,000" },
+  { name: "Northstar Heating & Home", niche: "HOME SERVICES", image: "template-northstar.webp", alt: "A heating and cooling professional working at a home", description: "A straightforward service request experience for HVAC and home-service businesses.", slug: "northstar-home-service-template", price: "$999", implementation: "From $5,000" },
 ];
 
 function PreviewSite() {
@@ -80,11 +80,11 @@ export default function BeautyBookingTemplatePage() {
       <section className={styles.details} aria-label="Template benefits"><div><span>01</span><h2>Built for beauty work.</h2><p>Service menu, gallery, policies, location, and booking, event, and inquiry paths in one considered experience.</p></div><div><span>02</span><h2>Easy to make yours.</h2><p>Update your name, services, colors, photos, and booking link with the included guide.</p></div><div><span>03</span><h2>Made to move.</h2><p>Responsive layouts designed to feel intentional on a phone, where many clients find you.</p></div></section>
 
       <section className={styles.collection} aria-labelledby="collection-heading">
-        <div className={styles.collectionHeading}><p className={styles.overline}>THE FIRST EIGHT / BUILT TO ADAPT</p><h2 id="collection-heading">Find your<br/><em>starting point.</em></h2><p>Every design comes with six coordinated pages, a mobile-ready layout, and a clear path to your next customer. Choose a template for your business, then make it yours.</p></div>
+        <div className={styles.collectionHeading}><p className={styles.overline}>FIVE FOCUSED TEMPLATES / THREE ADVANCED CONCEPTS</p><h2 id="collection-heading">Find your<br/><em>starting point.</em></h2><p>Five focused service templates are $149 DIY or $1,250 with implementation. Élan, Vanta, and Northstar are advanced concept templates at $999 DIY, with implementation starting at $5,000.</p></div>
         <div className={styles.collectionGrid}>
           {templates.map((template, i) => <article className={styles.templateCard} key={template.slug}>
             <a className={styles.templateImage} href="#offers" aria-label={`View purchase options for ${template.name}`}><Image src={`/assets/templates/${template.image}`} alt={template.alt} fill sizes="(max-width: 620px) 100vw, (max-width: 1000px) 50vw, 25vw"/><span>0{i + 1} / AHS TEMPLATE</span></a>
-            <div className={styles.templateBody}><p>{template.niche}</p><h3>{template.name}</h3><span>{template.description}</span><div className={styles.templateActions}><a href={orderLink(`${template.name} DIY website template`, "$149")}>DIY $149</a><a href={orderLink(`${template.name} template + implementation`, "$1,250")}>AHS setup $1,250</a></div></div>
+            <div className={styles.templateBody}><p>{template.niche}</p><h3>{template.name}</h3><span>{template.description}</span><div className={styles.templateActions}><a href={orderLink(`${template.name} DIY website template`, template.price)}>DIY {template.price}</a><a href={orderLink(`${template.name} template + implementation`, template.implementation)}>{template.implementation === "$1,250" ? "AHS setup " : "Implementation "}{template.implementation}</a></div></div>
           </article>)}
         </div>
       </section>
@@ -94,24 +94,24 @@ export default function BeautyBookingTemplatePage() {
         <div className={styles.offerCards}>
           <article className={styles.offerCard}>
             <div className={styles.offerTop}><span>01 / MAKE IT YOURS</span><span className={styles.offerMark}>✧</span></div>
-            <h3>The DIY template</h3><p className={styles.price}>$149 <small>one-time</small></p>
-            <p className={styles.offerDescription}>One complete HTML, CSS, and JavaScript website template with a guided setup kit.</p>
+            <h3>The DIY template</h3><p className={styles.price}>$149–$999 <small>one-time</small></p>
+            <p className={styles.offerDescription}>Five focused templates are $149 each. Élan, Vanta, and Northstar are $999 each, with a niche-specific setup guide included.</p>
             <ul>{["Six coordinated page layouts", "Mobile-ready design", "Industry-specific page layouts", "Step-by-step setup guide", "Single-business use license"].map(item => <li key={item}><b aria-hidden="true">✓</b>{item}</li>)}</ul>
             <p className={styles.fitNote}>Best if you’re comfortable updating website files and arranging your own domain and hosting.</p>
-            <a className={styles.secondaryButton} href={orderLink("DIY website template of your choice", "$149")}>ORDER THE TEMPLATE <span aria-hidden="true"></span></a>
+            <a className={styles.secondaryButton} href={orderLink("DIY website template of your choice", "$149–$999 by design")}>ORDER THE TEMPLATE <span aria-hidden="true"></span></a>
           </article>
           <article className={`${styles.offerCard} ${styles.featuredCard}`}>
             <div className={styles.offerTop}><span>02 / THE STUDIO SETUP</span><span className={styles.offerMark}>♡</span></div>
-            <h3>Template + implementation</h3><p className={styles.price}>$1,250 <small>one-time</small></p>
-            <p className={styles.offerDescription}>Any one template, personalized and launched by A. Halliwell Studio.</p>
+            <h3>Template + implementation</h3><p className={styles.price}>$1,250+ <small>one-time</small></p>
+            <p className={styles.offerDescription}>Focused templates: $1,250. Élan, Vanta, and Northstar advanced implementations start at $5,000 and receive a project-specific scope.</p>
             <ul>{["Your brand colors, logo + photos", "Your content + business details", "Booking, event, or inquiry link connected", "Up to one revision round", "Mobile launch check + handoff"].map(item => <li key={item}><b aria-hidden="true">✓</b>{item}</li>)}</ul>
             <p className={styles.fitNote}>You provide your brand assets, service details, and booking account. AHS handles the setup.</p>
-            <a className={styles.primaryButton} href={orderLink("template plus implementation", "$1,250")}>CHOOSE AHS IMPLEMENTATION <span aria-hidden="true"></span></a>
+            <a className={styles.primaryButton} href={orderLink("template plus implementation", "$1,250 focused / $5,000+ advanced")}>CHOOSE AHS IMPLEMENTATION <span aria-hidden="true"></span></a>
           </article>
         </div>
       </section>
 
-      <section className={styles.finePrint}><span>THE DETAILS, BEAUTIFULLY CLEAR</span><p>Both options are one-time purchases. Booking buttons connect to the scheduling service you already use; appointment software, domain registration, and hosting are separate costs. The DIY template is a coded HTML/CSS/JavaScript product, not a Squarespace, Wix, or Canva theme. Sample business, service names, and pricing shown in the preview are illustrative and are not transferred as client facts. After you choose an option, AHS will send secure payment instructions and the next steps.</p><a href={`mailto:${email}?subject=${encodeURIComponent("Question about the Beauty, Booked. template")}`}>Questions before you choose? Email the studio</a></section>
+      <section className={styles.finePrint}><span>THE DETAILS, BEAUTIFULLY CLEAR</span><p>All prices are one-time. DIY prices are $149 for the five focused templates and $999 for Élan, Vanta, or Northstar. Implementation is $1,250 for focused templates and starts at $5,000 for the advanced concepts. Appointment, ticketing, inquiry software, domain registration, and hosting are separate costs. The DIY template is a coded HTML/CSS/JavaScript product, not a Squarespace, Wix, or Canva theme. Sample business, service names, and pricing shown in the preview are illustrative and are not transferred as client facts. After you choose an option, AHS will send secure payment instructions and the next steps.</p><a href={`mailto:${email}?subject=${encodeURIComponent("Question about the Beauty, Booked. template")}`}>Questions before you choose? Email the studio</a></section>
     </div>
   </main>;
 }
