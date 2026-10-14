@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     if (!product || session.mode !== "payment" || session.status !== "complete" || session.payment_status !== "paid" || session.currency !== "usd" || session.amount_total !== product.amount) {
       return failure(403, "A completed payment for this template could not be confirmed.");
     }
-    const downloadName = "northstar-home-service-template.zip";
+    const downloadName = "parts" in product ? "northstar-home-service-template.zip" : product.file;
     const downloadPath = path.join(process.cwd(), "products", "downloads");
     const bytes = "parts" in product
       ? Buffer.concat(await Promise.all(product.parts.map((part) => readFile(path.join(downloadPath, part)))))
