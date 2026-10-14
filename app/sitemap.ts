@@ -6,6 +6,7 @@ const baseUrl = "https://www.ahalliwellstudio.com";
 const coreRoutes = [
   { path: "", priority: 1, changeFrequency: "weekly" as const },
   { path: "/services", priority: 0.9, changeFrequency: "monthly" as const },
+  { path: "/beauty-booking-template", priority: 0.85, changeFrequency: "monthly" as const },
   { path: "/web-design", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/web-development", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/interactive-experiences", priority: 0.9, changeFrequency: "monthly" as const },
