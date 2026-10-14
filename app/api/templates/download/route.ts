@@ -14,7 +14,7 @@ const products = {
   "skin-studio-template": { file: "skin-studio-template.zip", amount: 14900 },
   "elan-aesthetics-template": { file: "elan-aesthetics-template.zip", amount: 99900 },
   "vanta-social-template": { file: "vanta-social-template.zip", amount: 99900 },
-  "northstar-home-service-template": { file: "northstar-home-service-template.zip", amount: 39900 },
+  "northstar-home-service-template": { parts: ["northstar-home-service-template.zip.part1", "northstar-home-service-template.zip.part2"], amount: 39900 },
 } as const;
 
 const failure = (status: number, message: string) => new NextResponse(message, { status, headers: { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" } });
@@ -34,11 +34,15 @@ export async function GET(request: Request) {
     if (!product || session.mode !== "payment" || session.status !== "complete" || session.payment_status !== "paid" || session.currency !== "usd" || session.amount_total !== product.amount) {
       return failure(403, "A completed payment for this template could not be confirmed.");
     }
-    const bytes = await readFile(path.join(process.cwd(), "products", "downloads", product.file));
+    const downloadName = "northstar-home-service-template.zip";
+    const downloadPath = path.join(process.cwd(), "products", "downloads");
+    const bytes = "parts" in product
+      ? Buffer.concat(await Promise.all(product.parts.map((part) => readFile(path.join(downloadPath, part)))))
+      : await readFile(path.join(downloadPath, product.file));
     return new NextResponse(bytes, {
       headers: {
         "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${product.file}"`,
+        "Content-Disposition": `attachment; filename="${downloadName}"`,
         "Content-Length": String(bytes.byteLength),
         "Cache-Control": "private, no-store, max-age=0",
         "Referrer-Policy": "no-referrer",
