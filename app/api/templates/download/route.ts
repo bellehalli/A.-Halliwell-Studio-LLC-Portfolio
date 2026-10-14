@@ -14,7 +14,7 @@ const products = {
   "skin-studio-template": { file: "skin-studio-template.zip", amount: 14900 },
   "elan-aesthetics-template": { file: "elan-aesthetics-template.zip", amount: 99900 },
   "vanta-social-template": { file: "vanta-social-template.zip", amount: 99900 },
-  "northstar-home-service-template": { file: "northstar-home-service-template.zip", amount: 99900 },
+  "northstar-home-service-template": { file: "northstar-home-service-template.zip", amount: 39900 },
 } as const;
 
 const failure = (status: number, message: string) => new NextResponse(message, { status, headers: { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" } });
