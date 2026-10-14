@@ -12,7 +12,7 @@ const products = {
   "skin-studio-template": { name: "Stillwater Skin — Skincare Studio", amount: 14900 },
   "elan-aesthetics-template": { name: "Élan Aesthetics", amount: 99900 },
   "vanta-social-template": { name: "Vanta Social — Nightlife + Events", amount: 99900 },
-  "northstar-home-service-template": { name: "Northstar Heating & Home", amount: 99900 },
+  "northstar-home-service-template": { name: "Northstar Heating & Home — 12-Page HVAC Website + 10 Photos", amount: 39900 },
 } as const;
 
 const headers = { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" };
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
           unit_amount: product.amount,
           product_data: {
             name: product.name,
-            description: "One-time coded website template. Includes a niche-specific setup guide and a single-business use license.",
+            description: slug === "northstar-home-service-template" ? "Complete 12-page HVAC website template with 10 included project photos, setup guides, and a single-business license. Demo service-request form requires a buyer-connected form service to deliver submissions." : "One-time coded website template. Includes a niche-specific setup guide and a single-business use license.",
             metadata: { productSlug: slug },
           },
         },
