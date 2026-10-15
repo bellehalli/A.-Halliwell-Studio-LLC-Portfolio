@@ -48,6 +48,9 @@ const projectTypes = [
 ];
 
 const projectNeeds = [
+  "Quick Fix",
+  "One-Page Launch",
+  "Small Business Site",
   "One-page website",
   "Multi-page website",
   "Website redesign",
@@ -130,7 +133,7 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
   const hasBooking = needs.includes("Booking or scheduling");
   const isHospitality = projectType === "Hospitality / venue";
   const isExistingSite = needs.some((x) =>
-    ["Website redesign", "Website Refinement", "Add to an existing website", "Ongoing support"].includes(x)
+    ["Quick Fix", "Website redesign", "Website Refinement", "Add to an existing website", "Ongoing support"].includes(x)
   );
   const hasProjectSpecificDetails = isCommerce || hasBooking || isHospitality || isExistingSite;
   const step = {

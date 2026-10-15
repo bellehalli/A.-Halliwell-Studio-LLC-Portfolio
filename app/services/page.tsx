@@ -2,7 +2,7 @@ import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import StudioProcess from "@/components/studio/StudioProcess";
 import ClientExperience from "@/components/studio/ClientExperience";
 import StudioContinuity from "@/components/studio/StudioContinuity";
-import { pricingSummary } from "@/lib/studio-config";
+import { pricingSummary, serviceOffers, servicePaymentTerms } from "@/lib/studio-config";
 import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -45,6 +45,12 @@ export default function Page() {
           <p>A. Halliwell Studio combines strategy, custom web design and development to build digital experiences that help people understand, choose, buy, book, inquire, plan or get something done.</p>
           <p>Working with businesses worldwide through remote strategy, design and development. Based in Detroit, available wherever your project takes shape.</p>
           <p><strong>{pricingSummary}</strong></p>
+        </section>
+
+        <section aria-labelledby="website-packages">
+          <h2 id="website-packages">Choose your website service.</h2>
+          <div className="destination-grid">{serviceOffers.map(([name, heading, price, description]) => <article className="destination-block" key={name}><small>{name}</small><h3>{heading}</h3><p><strong>{price}</strong></p><p>{description}</p><Link className="button button-primary" href="/start">Inquire about {name} <ArrowUpRight /></Link></article>)}</div>
+          <p>{servicePaymentTerms}</p>
         </section>
 
         <section className="destination-grid">{blocks.map(([label, t, b]) => <article key={label + t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>

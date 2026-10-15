@@ -1,4 +1,4 @@
-import { pricingSummary, studio } from "@/lib/studio-config";
+import { pricingSummary, servicePaymentTerms, studio } from "@/lib/studio-config";
 
 export const studioFaqs = [
   {
@@ -10,12 +10,12 @@ export const studioFaqs = [
     "answer": `${pricingSummary} You’ll receive a proposal outlining the deliverables and investment before you commit.`
   },
   {
-    "question": "What is Website Refinement?",
-    "answer": "A focused engagement to improve an existing website’s design, usability, content structure, or customer journey. We’ll identify the priorities and agree on specific improvements before work begins. More extensive changes may require a custom website project."
+    "question": "What is included in the Small Business Site?",
+    "answer": "Up to five pages with mobile-ready design, basic SEO setup, a simple inquiry form or an existing booking link, and two revision rounds. You supply copy, logo and photos. New booking systems, commerce and custom integrations are separate scopes."
   },
   {
     "question": "How do payments work?",
-    "answer": "The standard payment schedule is 50% to reserve your project and begin work, 25% at the milestone outlined in your proposal, and 25% before final delivery or website launch.\n\nYour invoice and private client portal provide the available payment methods and instructions for your project."
+    "answer": servicePaymentTerms
   },
   {
     "question": "How long does a project take?",
@@ -23,7 +23,7 @@ export const studioFaqs = [
   },
   {
     "question": "How many revisions are included?",
-    "answer": "Every project includes at least two rounds of revisions. Larger engagements may include additional rounds, as specified in your proposal. Each round is one consolidated set of feedback on the presented work. New features or a change in direction may require additional scope."
+    "answer": "One-Page Launch and Small Business Site include two rounds of revisions. Quick Fix covers one agreed issue and verification that the fix works. Larger engagements may include additional rounds, as specified in your proposal. Each round is one consolidated set of feedback on the presented work. New features or a change in direction may require additional scope."
   },
   {
     "question": "Do I need my copy, photos, and branding ready?",

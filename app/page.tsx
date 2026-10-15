@@ -1,5 +1,5 @@
 import BusinessValue from "@/components/studio/BusinessValue";
-import { studio, websiteStartingPrice, refinementStartingPrice } from "@/lib/studio-config";
+import { studio, serviceOffers, servicePaymentTerms } from "@/lib/studio-config";
 import Image from "next/image";
 import ConsultationLink from "@/components/ConsultationLink";
 import CapabilityPlayground from "@/components/lab/CapabilityPlayground";
@@ -13,11 +13,7 @@ import { publicProjects } from "@/data/projects";
 
 const CURSOR = "/assets/ui/Portfolio Assets A.Halliwell  - 24.webp";
 
-const offers = [
-  [studio.offers.website, "Give the whole story room.", websiteStartingPrice, "Custom website strategy, design and development for a complete journey through your business."],
-  [studio.offers.custom, "Make the missing piece happen.", "Priced by scope", "Interactive tools, booking, commerce, portals, quote builders, maps, integrations and business-specific digital systems."],
-  [studio.offers.refinement, "Make what you have work harder.", refinementStartingPrice, "Focused website redesign and improvements to usability, content structure, conversion paths and customer experience."],
-];
+const offers = serviceOffers;
 
 export default function Home() {
   return <main id="top" className="full-picture home-world">
@@ -85,9 +81,10 @@ export default function Home() {
             <div className="offer-receipt">
               <div className="receipt-masthead"><span className="receipt-monogram">A.</span><span>A. HALLIWELL<br/>STUDIO</span><small>Investment · 2026</small></div>
               <div className="offer-heading"><h2>For the next version<br/>of <em>your business.</em></h2><p>Website design, development and digital systems shaped around the customer journey and the job the business needs the internet to do.</p></div>
-              <p className="offer-price-note">Custom websites: {websiteStartingPrice.toLowerCase()}.</p>
+              <p className="offer-price-note">Website services from $300. Choose the scope that fits your next step.</p>
               <div className="receipt-columns" aria-hidden="true"><span>THE POSSIBILITIES</span><span>INVESTMENT</span></div>
               <div className="offer-grid">{offers.map(o => <article key={o[0]}><small>{o[0]}</small><h3>{o[1]}</h3><strong>{o[2]}</strong><p>{o[3]}</p></article>)}</div>
+              <p className="offer-price-note">{servicePaymentTerms}</p>
               <div className="receipt-signoff" aria-hidden="true">A. Halliwell Studio <span>✦</span> Made for the work ahead.</div>
             </div>
             <div className="offer-card" aria-hidden="true"><div className="offer-card-chip"/><span className="offer-card-monogram">A<span>h</span></span><span className="offer-card-number">A. HALLIWELL STUDIO</span><span className="offer-card-circles"/></div>

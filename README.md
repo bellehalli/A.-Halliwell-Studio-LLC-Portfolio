@@ -18,7 +18,7 @@ Included:
 
 `lib/studio-config.ts` is the source for public website/refinement pricing,
 offer names, inquiry investment tiers, studio email, and consultation URL.
-Custom websites start at $7,000; Website Refinement starts at $2,500. Other
+Website services: Quick Fix $300; One-Page Launch $1,200; Small Business Site $2,500; Custom Website $7,000+. Other
 projects remain priced by scope.
 
 Keep only production assets in `public/`. Add intentional artwork and reference
