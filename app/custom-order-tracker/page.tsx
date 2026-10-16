@@ -4,7 +4,7 @@ import CheckoutButton from "./CheckoutButton";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Custom Order Tracker & Production Planner | A. Halliwell Studio",
+  title: "Custom Order Tracker & Production Planner",
   description: "Keep custom orders, payment balances, deadlines, and weekly production capacity in one editable Excel workbook.",
   alternates: { canonical: "/custom-order-tracker" },
   openGraph: {

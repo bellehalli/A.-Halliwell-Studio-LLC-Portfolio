@@ -3,7 +3,7 @@ import Navigation from "@/components/navigation/Navigation";
 import { studio } from "@/lib/studio-config";
 
 export const metadata: Metadata = {
-  title: "Digital Products & Website Launches | A. Halliwell Studio",
+  title: "Digital Products & Website Launches",
   description: "Download practical tools for custom-order shops or explore A. Halliwell Studio website launch concepts.",
   alternates: { canonical: "/shop" },
 };
