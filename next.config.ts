@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   outputFileTracingIncludes: {
     "/api/templates/download": [
+      "./products/downloads/custom-order-tracker.zip",
       "./products/downloads/beauty-booking-template.zip",
       "./products/downloads/protective-style-template.zip",
       "./products/downloads/nail-artist-template.zip",

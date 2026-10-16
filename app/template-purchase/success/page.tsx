@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Your AHS Template Download", robots: { index: false, follow: false } };
 
 const products: Record<string, { name: string; amount: number }> = {
+  "custom-order-tracker": { name: "Custom Order Tracker & Production Planner", amount: 1999 },
   "beauty-booking-template": { name: "Beauty, Booked.", amount: 14900 },
   "protective-style-template": { name: "Rooted Rituals", amount: 14900 },
   "nail-artist-template": { name: "Nail Theory", amount: 14900 },
@@ -31,15 +32,15 @@ export default async function TemplatePurchaseSuccess({ searchParams }: { search
     <section style={{ width: "min(100%,620px)", padding: "clamp(28px,6vw,56px)", border: "1px solid #ddc8d3", borderRadius: 24, background: "white", textAlign: "center", boxShadow: "0 20px 65px #32142512" }}>
       <p style={{ fontSize: 11, letterSpacing: ".18em", fontWeight: 800 }}>A. HALLIWELL STUDIO / TEMPLATE EDIT</p>
       {product ? <>
-        <h1 style={{ margin: "20px 0 12px", font: "400 clamp(36px,8vw,58px)/1.05 Georgia,serif" }}>Your template<br/><em>is ready.</em></h1>
-        <p style={{ lineHeight: 1.7 }}>Payment confirmed for <strong>{product.name}</strong>. Download your ZIP below. Your setup guides, customization instructions, and included project files are inside the ZIP.</p>
-        <a href={`/api/templates/download?session_id=${encodeURIComponent(sessionId)}`} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: 52, margin: "18px 0 10px", padding: "0 24px", borderRadius: 999, background: "#5b2344", color: "white", textDecoration: "none", fontSize: 11, fontWeight: 800, letterSpacing: ".12em" }}>DOWNLOAD YOUR TEMPLATE</a>
+        <h1 style={{ margin: "20px 0 12px", font: "400 clamp(36px,8vw,58px)/1.05 Georgia,serif" }}>Your download<br/><em>is ready.</em></h1>
+        <p style={{ lineHeight: 1.7 }}>Payment confirmed for <strong>{product.name}</strong>. Download your ZIP below. It includes the workbook, quick-start guide, and single-business license.</p>
+        <a href={`/api/templates/download?session_id=${encodeURIComponent(sessionId)}`} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: 52, margin: "18px 0 10px", padding: "0 24px", borderRadius: 999, background: "#5b2344", color: "white", textDecoration: "none", fontSize: 11, fontWeight: 800, letterSpacing: ".12em" }}>DOWNLOAD YOUR PURCHASE</a>
         <p style={{ fontSize: 13, lineHeight: 1.6 }}>Keep your Stripe receipt. This purchase license covers one business and one website. Questions? <a href="mailto:hello@ahalliwellstudio.com">Email the studio</a>.</p>
       </> : <>
         <h1 style={{ margin: "20px 0 12px", font: "400 clamp(36px,8vw,58px)/1.05 Georgia,serif" }}>We couldn’t<br/><em>verify payment.</em></h1>
         <p style={{ lineHeight: 1.7 }}>No download was released. If you completed checkout, keep your Stripe receipt and <a href="mailto:hello@ahalliwellstudio.com">contact the studio</a> so we can help.</p>
       </>}
-      <Link href="/beauty-booking-template" style={{ display: "inline-block", marginTop: 16, color: "#5b2344", textUnderlineOffset: 4 }}>Back to the template collection</Link>
+      <Link href="/shop" style={{ display: "inline-block", marginTop: 16, color: "#5b2344", textUnderlineOffset: 4 }}>Back to the shop</Link>
     </section>
   </main>;
 }

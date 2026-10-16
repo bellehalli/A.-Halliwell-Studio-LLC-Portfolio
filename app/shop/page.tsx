@@ -3,8 +3,8 @@ import Navigation from "@/components/navigation/Navigation";
 import { studio } from "@/lib/studio-config";
 
 export const metadata: Metadata = {
-  title: "Ready-to-Launch Websites | A. Halliwell Studio",
-  description: "Explore existing A. Halliwell Studio concept websites available as the starting point for a paid, scoped website installation and customization.",
+  title: "Digital Products & Website Launches | A. Halliwell Studio",
+  description: "Download practical tools for custom-order shops or explore A. Halliwell Studio website launch concepts.",
   alternates: { canonical: "/shop" },
 };
 
@@ -23,6 +23,10 @@ export default function ShopPage() {
       <h1 style={{ fontFamily: "Georgia,serif", fontSize: "clamp(48px,7.5vw,92px)", letterSpacing: "-.06em", lineHeight: 1.04, margin: "22px 0" }}>Good design.<br/><em>Less starting over.</em></h1>
       <p style={{ maxWidth: 670, fontSize: "clamp(17px,2vw,21px)", lineHeight: 1.6 }}>Choose an existing studio concept as the starting point for your next website. We customize and launch it for your business, with clear scope and a straightforward inquiry process.</p>
       <p style={{ maxWidth: 680, fontSize: 14, lineHeight: 1.7, opacity: .75 }}>These are paid implementation offers, not instant downloadable purchases. The portfolio demos are fictional studio concepts. A branded production website, project specifics and delivery schedule are confirmed before payment.</p>
+      <a href="/custom-order-tracker" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 22, marginTop: 36, padding: "24px 28px", borderRadius: 20, border: "1px solid #ba91c3", background: "linear-gradient(110deg,#321425,#5b2344 60%,#8e2451)", color: "#fffaf5", textDecoration: "none", boxShadow: "0 14px 40px rgba(50,20,37,.16)" }}>
+        <span><strong style={{ display: "block", fontSize: 11, letterSpacing: ".16em", color: "#f1c5d6" }}>FIRST DIGITAL DOWNLOAD / $19.99</strong><span style={{ display: "block", marginTop: 8, fontFamily: "Georgia,serif", fontSize: "clamp(23px,4vw,36px)" }}>Custom orders, under control.</span><span style={{ display: "block", marginTop: 8, color: "#f4e8ee", fontSize: 13 }}>A practical order and production planner for made-to-order shops.</span></span>
+        <span aria-hidden="true" style={{ flex: "0 0 auto", display: "grid", placeItems: "center", width: 48, height: 48, border: "1px solid #ffffff99", borderRadius: "50%", fontSize: 12, fontWeight: 800, letterSpacing: ".08em" }}>VIEW</span>
+      </a>
       <a href="/beauty-booking-template" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 22, marginTop: 36, padding: "24px 28px", borderRadius: 20, border: "1px solid #ba91c3", background: "linear-gradient(110deg,#321425,#5b2344 60%,#8e2451)", color: "#fffaf5", textDecoration: "none", boxShadow: "0 14px 40px rgba(50,20,37,.16)" }}>
         <span><strong style={{ display: "block", fontSize: 11, letterSpacing: ".16em", color: "#f1c5d6" }}>NEW / EIGHT AHS STUDIO TEMPLATES</strong><span style={{ display: "block", marginTop: 8, fontFamily: "Georgia,serif", fontSize: "clamp(23px,4vw,36px)" }}>A considered starting point for your business.</span><span style={{ display: "block", marginTop: 8, color: "#f4e8ee", fontSize: 13 }}>Focused $149 / $1,250 · Advanced $999 / $5,000+</span></span>
         <span aria-hidden="true" style={{ flex: "0 0 auto", display: "grid", placeItems: "center", width: 48, height: 48, border: "1px solid #ffffff99", borderRadius: "50%", fontSize: 12, fontWeight: 800, letterSpacing: ".08em" }}>VIEW</span>

@@ -5,6 +5,7 @@ import { checkRequestLimit } from "@/lib/request-rate-limit";
 export const runtime = "nodejs";
 
 const products = {
+  "custom-order-tracker": { name: "Custom Order Tracker & Production Planner", amount: 1999 },
   "beauty-booking-template": { name: "Beauty, Booked. — Hair Studio", amount: 14900 },
   "protective-style-template": { name: "Rooted Rituals — Protective Styles", amount: 14900 },
   "nail-artist-template": { name: "Nail Theory — Nail Artist", amount: 14900 },
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
           unit_amount: product.amount,
           product_data: {
             name: product.name,
-            description: slug === "northstar-home-service-template" ? "Complete 12-page HVAC website template with 10 included project photos, setup guides, and a single-business license. Demo service-request form requires a buyer-connected form service to deliver submissions." : "One-time coded website template. Includes a niche-specific setup guide and a single-business use license.",
+            description: slug === "custom-order-tracker" ? "Editable Excel workbook for handmade and made-to-order shops. Track orders, due dates, payments, attention items, and weekly production capacity. Manual entry; no Etsy sync." : slug === "northstar-home-service-template" ? "Complete 12-page HVAC website template with 10 included project photos, setup guides, and a single-business license. Demo service-request form requires a buyer-connected form service to deliver submissions." : "One-time coded website template. Includes a niche-specific setup guide and a single-business use license.",
             metadata: { productSlug: slug },
           },
         },
@@ -66,7 +67,7 @@ export async function POST(request: Request) {
       metadata: { productSlug: slug },
       payment_intent_data: { metadata: { productSlug: slug } },
       success_url: `${appOrigin}/template-purchase/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appOrigin}/beauty-booking-template?checkout=cancelled#templates`,
+      cancel_url: `${appOrigin}/${slug === "custom-order-tracker" ? "custom-order-tracker" : "beauty-booking-template"}?checkout=cancelled`,
       custom_text: {
         submit: { message: "Digital download delivered after successful payment. One purchase covers one business and one website; see the AHS template license and terms on the product page." },
       },

@@ -7,6 +7,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const products = {
+  "custom-order-tracker": { file: "custom-order-tracker.zip", amount: 1999 },
   "beauty-booking-template": { file: "beauty-booking-template.zip", amount: 14900 },
   "protective-style-template": { file: "protective-style-template.zip", amount: 14900 },
   "nail-artist-template": { file: "nail-artist-template.zip", amount: 14900 },
