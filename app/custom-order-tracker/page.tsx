@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Custom Order Tracker & Production Planner",
     description: "Know what is due, what is paid, and whether you have room for the next custom order.",
     url: "/custom-order-tracker",
-    type: "product",
+    type: "website",
   },
 };
 const features=[
