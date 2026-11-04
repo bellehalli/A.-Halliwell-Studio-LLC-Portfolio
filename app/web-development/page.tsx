@@ -11,6 +11,10 @@ export const metadata: Metadata = pageMetadata({
 
 export default function Page() {
   return <SeoLandingPage
+    theme="development"
+    lead="The right technology should remove friction, not create more of it."
+    outcomes={["Customer inquiry forms with notifications and confirmations","Appointment requests and booking integrations","Responsive websites with purposeful functionality","Custom workflows and integrations scoped to your operations"]}
+    pricingNote="Lead Capture Installation starts at $499. Full website development starts at $1,200 for a one-page launch, with larger builds quoted by page count and technical scope."
     eyebrow="CUSTOM WEB DEVELOPMENT · FRONT-END + INTERACTIVE SYSTEMS"
     title="Development for websites with a real job to do."
     intro="A. Halliwell Studio works remotely with businesses worldwide to develop custom web experiences that go beyond static pages, from responsive marketing sites to interactive maps, planning tools, portals, booking flows and business-specific systems."
