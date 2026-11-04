@@ -200,3 +200,38 @@
 @media (prefers-reduced-motion: reduce) {
   :is(.destination-page,.work-page,.case-page,.portal-page,.digital-card-page) > .site-nav.floating-heart-nav .heart-dock { transition: none !important; }
 }
+
+
+/* Scoped repair: service price rows have five children, not three. */
+.services-route .service-price-list { display: block; width: 100%; min-width: 0; }
+.services-route .service-price-list > .service-price-item,
+.services-route .service-price-list > .service-price-item:nth-child(3n + 2) {
+  display: grid;
+  grid-template-columns: minmax(120px, .7fr) minmax(0, 1.65fr) minmax(90px, .55fr);
+  grid-template-areas: "label heading amount" ". description action";
+  gap: 16px clamp(18px, 2.6vw, 38px);
+  align-items: start; min-width: 0; min-height: 0;
+  padding: clamp(25px, 3vw, 42px) 0;
+}
+.services-route .service-price-item .service-price-label { grid-area: label; min-width: 0; }
+.services-route .service-price-item .service-price-heading { grid-area: heading; min-width: 0; margin: 0; font-size: clamp(25px, 2.7vw, 39px); line-height: 1.1; }
+.services-route .service-price-item .service-price-amount { grid-area: amount; margin: 0; text-align: right; white-space: nowrap; font-size: clamp(19px, 2vw, 26px); }
+.services-route .service-price-item .service-price-description { grid-area: description; min-width: 0; max-width: 62ch; margin: 0; overflow-wrap: normal; }
+.services-route .service-price-item .service-price-action { grid-area: action; min-width: 0; max-width: 100%; width: 100%; white-space: normal; text-align: center; justify-content: center; font-size: 11px; overflow-wrap: anywhere; }
+.services-route .destination-hero > p:has(strong) { font-size: clamp(14px, 1.25vw, 17px); line-height: 1.55; max-width: 900px; }
+@media (max-width: 1050px) {
+  .services-route .service-price-list > .service-price-item,
+  .services-route .service-price-list > .service-price-item:nth-child(3n + 2) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "label amount" "heading heading" "description description" "action action";
+    gap: 12px 20px;
+  }
+  .services-route .service-price-item .service-price-amount { text-align: right; }
+  .services-route .service-price-item .service-price-action { width: fit-content; max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .services-route .service-price-list > .service-price-item,
+  .services-route .service-price-list > .service-price-item:nth-child(3n + 2) { padding: 26px 0; gap: 12px; }
+  .services-route .service-price-item .service-price-heading { font-size: clamp(28px, 8vw, 37px); }
+  .services-route .service-price-item .service-price-action { width: 100%; }
+}
