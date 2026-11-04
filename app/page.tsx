@@ -81,7 +81,7 @@ export default function Home() {
             <div className="offer-receipt">
               <div className="receipt-masthead"><span className="receipt-monogram">A.</span><span>A. HALLIWELL<br/>STUDIO</span><small>Investment · 2026</small></div>
               <div className="offer-heading"><h2>For the next version<br/>of <em>your business.</em></h2><p>Website design, development and digital systems shaped around the customer journey and the job the business needs the internet to do.</p></div>
-              <p className="offer-price-note">Website services from $300. Choose the scope that fits your next step.</p>
+              <p className="offer-price-note">Website services from $350. Choose the scope that fits your next step.</p>
               <div className="receipt-columns" aria-hidden="true"><span>THE POSSIBILITIES</span><span>INVESTMENT</span></div>
               <div className="offer-grid">{offers.map(o => <article key={o[0]}><small>{o[0]}</small><h3>{o[1]}</h3><strong>{o[2]}</strong><p>{o[3]}</p></article>)}</div>
               <p className="offer-price-note">{servicePaymentTerms}</p>
