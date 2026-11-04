@@ -1,5 +1,5 @@
 "use client";
-import { investmentOptions, projectReasons, studio } from "@/lib/studio-config";
+import { investmentOptions, projectReasons, serviceOffers, studio } from "@/lib/studio-config";
 import { track } from "@vercel/analytics";
 import { googleEvent } from "@/lib/google-analytics";
 
@@ -222,6 +222,17 @@ export default function StartProject({ inHome = false }: { inHome?: boolean }) {
       }
       if (service === "support") {
         setNeeds(current => current.includes("Ongoing support") ? current : [...current, "Ongoing support"]);
+      }
+      // Pricing cards use the exact public offer name. Override stale draft
+      // selections so the clicked offer is reflected in both the needs and
+      // investment fields, while retaining the visitor's contact details.
+      const selectedOffer = serviceOffers.find(([name]) => name === service);
+      if (selectedOffer) {
+        const offerIndex = serviceOffers.indexOf(selectedOffer);
+        const need = projectNeeds.find(option => option === selectedOffer[0] || option.startsWith(selectedOffer[0] + " ("));
+        if (need) setNeeds([need]);
+        const matchingInvestment = investmentOptions[offerIndex];
+        if (matchingInvestment) setInvestment(matchingInvestment);
       }
       setDraftReady(true);
     }
