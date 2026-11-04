@@ -55,12 +55,14 @@ export default function Page() {
 
         <section className="destination-grid">{blocks.map(([label, t, b]) => <article key={label + t} className="destination-block"><small>{label}</small><h2>{t}</h2><p>{b}</p></article>)}</section>
 
-        <section className="destination-block">
+        <section className="service-explore" aria-labelledby="service-explore-title">
           <small>EXPLORE BY SERVICE</small>
-          <h2>Choose the problem you need solved.</h2>
-          <p><Link href="/web-design">Custom web design <ArrowUpRight /></Link></p>
-          <p><Link href="/web-development">Custom web development <ArrowUpRight /></Link></p>
-          <p><Link href="/interactive-experiences">Interactive digital experiences <ArrowUpRight /></Link></p>
+          <h2 id="service-explore-title">Choose the problem you need solved.</h2>
+          <nav className="service-explore-links" aria-label="Explore services">
+            <Link href="/web-design"><span>Custom web design</span><ArrowUpRight /></Link>
+            <Link href="/web-development"><span>Custom web development</span><ArrowUpRight /></Link>
+            <Link href="/interactive-experiences"><span>Interactive digital experiences</span><ArrowUpRight /></Link>
+          </nav>
         </section>
 
         <section className="destination-block" id="illustration">
