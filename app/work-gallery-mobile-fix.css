@@ -1,0 +1,95 @@
+/* Responsive featured venue gallery.
+   The featured sections render as .work-gallery, not .project-gallery.
+   Match that structure so the authored MP3 artwork stays visible on phones. */
+@media (max-width:700px) {
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-evidence-gallery,
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery {
+    position:relative;
+    display:block;
+    width:100%;
+    height:auto;
+    min-height:0;
+    aspect-ratio:1366 / 390;
+    padding:0;
+    gap:0;
+    overflow:hidden;
+    scroll-snap-type:none;
+    background:url('/assets/templates/work/A. Halliwell Studio Website Design  - 5.webp') center / 100% 100% no-repeat;
+  }
+
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery {
+    background-image:url('/assets/templates/work/A. Halliwell Studio Website Design  - 6.webp');
+  }
+
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-evidence-gallery figure,
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery figure {
+    position:absolute;
+    display:block;
+    top:22.3%;
+    left:5.8%;
+    width:12.8%;
+    height:50%;
+    margin:0;
+    padding:0;
+    flex:none;
+    aspect-ratio:auto;
+    border:0;
+    border-radius:4px;
+    box-shadow:none;
+    overflow:hidden;
+    background:#fff;
+  }
+
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-evidence-gallery figure:nth-child(2) {left:43.6%}
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-evidence-gallery figure:nth-child(3) {left:81.1%}
+
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery figure {
+    top:28.7%;
+    left:6.8%;
+    width:11.5%;
+    height:43%;
+  }
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery figure:nth-child(2) {left:44.45%}
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery figure:nth-child(3) {left:82%}
+
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-evidence-gallery figure img,
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery figure img {
+    display:block;
+    width:100%;
+    height:100%;
+    margin:0;
+    max-height:none;
+    aspect-ratio:auto;
+    object-fit:cover;
+    object-position:top center;
+  }
+
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-evidence-gallery figcaption,
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-evidence-gallery figcaption {
+    position:absolute;
+    inset:auto 0 0;
+    padding:3px 1px 1px;
+    font-size:clamp(3px,.6vw,9px);
+    line-height:1.1;
+    background:linear-gradient(transparent,rgba(44,23,50,.86));
+    color:#fff;
+  }
+
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-preview-window,
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-preview-window {
+    width:100%;
+    min-width:0;
+    overflow:hidden;
+  }
+
+  .home-world #work-gallery .work-gallery[data-project-slug="willow-lily"] .project-preview-window iframe,
+  .home-world #work-gallery .work-gallery[data-project-slug="maison-riviere"] .project-preview-window iframe {
+    display:block;
+    width:100%;
+    max-width:100%;
+    height:clamp(420px,72svh,560px);
+    min-height:0;
+    border:0;
+    background:#fff;
+  }
+}
