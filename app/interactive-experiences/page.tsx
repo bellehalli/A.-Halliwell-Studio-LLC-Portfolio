@@ -11,6 +11,10 @@ export const metadata: Metadata = pageMetadata({
 
 export default function Page() {
   return <SeoLandingPage
+    theme="interactive"
+    lead="Help visitors explore, compare, plan and decide instead of simply scrolling."
+    outcomes={["Clickable venue and property maps","Service or treatment exploration tools","Interactive estimates, calculators and configurators","Guided customer journeys and planning experiences"]}
+    pricingNote="Interactive experiences are quoted by scope, including design, development, integrations and any licensing requirements. A written proposal defines the deliverables."
     eyebrow="INTERACTIVE DIGITAL EXPERIENCES + CUSTOM WEB TOOLS"
     title="Give people something useful to do."
     intro="For businesses worldwide, A. Halliwell Studio creates interactive experiences that help customers explore a property, compare options, plan a visit, understand a service or build a personalized path. The goal is not interaction for its own sake. The interaction should make the decision easier."
