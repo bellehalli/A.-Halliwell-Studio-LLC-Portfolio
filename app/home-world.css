@@ -739,3 +739,30 @@ vercel-live-feedback { display: none !important; }
   .home-world .offer-card { position: relative; top: auto; right: auto; width: min(290px,80%); margin: -15px 0 0 auto; transform: rotate(7deg); }
   .home-world .offer-card-monogram { font-size: 48px; }
 }
+
+
+/* Pricing receipt: seven service tiers remain aligned at all viewport widths. */
+.home-world .offer-world .offer-receipt { box-sizing: border-box; max-width: 100%; }
+.home-world .offer-world .offer-grid article { min-width: 0; }
+.home-world .offer-world .offer-grid h3,
+.home-world .offer-world .offer-grid p { min-width: 0; overflow-wrap: anywhere; }
+.home-world .offer-world .offer-grid article > strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (min-width: 601px) and (max-width: 1050px) {
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3) {
+    grid-template-columns: minmax(70px, 90px) minmax(0, 1fr) minmax(95px, 125px);
+    column-gap: clamp(8px, 1.4vw, 16px);
+  }
+  .home-world .offer-world .offer-grid h3 { font-size: clamp(22px, 2.8vw, 32px); }
+}
+@media (max-width: 600px) {
+  .home-world .offer-world .offer-receipt { padding: 26px clamp(14px, 4vw, 22px); }
+  .home-world .offer-world .offer-grid article,
+  .home-world .offer-world .offer-grid article:nth-child(2),
+  .home-world .offer-world .offer-grid article:nth-child(3) { width: 100%; min-width: 0; }
+  .home-world .offer-world .offer-grid h3 { font-size: clamp(24px, 7vw, 30px); line-height: 1.12; }
+  .home-world .offer-world .offer-grid article > strong { font-size: 13px; white-space: normal; text-align: left; }
+  .home-world .offer-world .receipt-masthead,
+  .home-world .offer-world .receipt-signoff { flex-wrap: wrap; }
+}
