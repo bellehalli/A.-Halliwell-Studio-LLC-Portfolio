@@ -753,36 +753,3 @@ vercel-live-feedback { display: none !important; }
     border:0; background:#fff;
   }
 }
-
-/* Venue portfolio evidence: keep all three screenshots, but make each
-   legible at phone width rather than shrinking desktop captures to thumbnails.
-   The interactive preview above is deliberately untouched. */
-@media (max-width:700px) {
-  .home-world #work-gallery [data-project-slug="willow-lily"] .project-evidence-gallery,
-  .home-world #work-gallery [data-project-slug="maison-riviere"] .project-evidence-gallery {
-    display:grid; grid-template-columns:minmax(0,1fr); gap:16px;
-    width:100%; height:auto; aspect-ratio:auto; padding:12px 4px;
-    overflow:visible; background:none;
-  }
-  .home-world #work-gallery [data-project-slug="willow-lily"] .project-evidence-gallery figure,
-  .home-world #work-gallery [data-project-slug="maison-riviere"] .project-evidence-gallery figure,
-  .home-world #work-gallery [data-project-slug="willow-lily"] .project-evidence-gallery figure:nth-child(n),
-  .home-world #work-gallery [data-project-slug="maison-riviere"] .project-evidence-gallery figure:nth-child(n) {
-    position:relative; inset:auto; display:block; width:100%; height:auto;
-    min-width:0; aspect-ratio:auto; margin:0; padding:0;
-    border:3px solid #b2c0de; border-radius:12px;
-    overflow:hidden; background:#fff; box-shadow:0 3px 12px rgba(67,25,80,.1);
-  }
-  .home-world #work-gallery [data-project-slug="willow-lily"] .project-evidence-gallery figure img,
-  .home-world #work-gallery [data-project-slug="maison-riviere"] .project-evidence-gallery figure img {
-    display:block; width:100%; height:auto; max-height:none; margin:0;
-    aspect-ratio:auto; object-fit:contain; object-position:center top;
-    background:#fff;
-  }
-  .home-world #work-gallery [data-project-slug="willow-lily"] .project-evidence-gallery figcaption,
-  .home-world #work-gallery [data-project-slug="maison-riviere"] .project-evidence-gallery figcaption {
-    position:static; inset:auto; padding:10px 12px;
-    font-size:11px; line-height:1.4; letter-spacing:.02em;
-    background:#4b2851; color:#fff; overflow-wrap:anywhere;
-  }
-}
