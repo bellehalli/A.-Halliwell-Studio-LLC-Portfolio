@@ -235,3 +235,43 @@
   .services-route .service-price-item .service-price-heading { font-size: clamp(28px, 8vw, 37px); }
   .services-route .service-price-item .service-price-action { width: 100%; }
 }
+
+
+/* Explore by service is a navigation group, not a three-column editorial row. */
+.services-route .service-explore {
+  position: relative; display: block; min-width: 0;
+  padding: clamp(36px, 5vw, 68px) 0;
+  border-top: 1px solid rgba(88,39,72,.48);
+  border-bottom: 1px solid rgba(88,39,72,.48);
+}
+.services-route .service-explore > small {
+  display: block; margin-bottom: 14px;
+  font-size: 13px; font-variant: small-caps; letter-spacing: .08em;
+}
+.services-route .service-explore > h2 {
+  max-width: 850px; margin: 0 0 clamp(24px, 3vw, 40px);
+  font-size: clamp(32px, 4.5vw, 62px); line-height: 1.08;
+}
+.services-route .service-explore-links {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+}
+.services-route .service-explore-links > a {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; min-width: 0; min-height: 94px;
+  padding: 22px clamp(16px, 2vw, 28px);
+  border: 1px solid rgba(88,39,72,.48); border-radius: 8px;
+  background: rgba(255,248,253,.72); color: #4b243c;
+  font-size: clamp(18px, 2vw, 26px); line-height: 1.2;
+  text-decoration: none;
+}
+.services-route .service-explore-links > a span { min-width: 0; }
+.services-route .service-explore-links > a svg { flex-shrink: 0; }
+.services-route .service-explore-links > a:hover,
+.services-route .service-explore-links > a:focus-visible {
+  background: #fff8fb; border-color: #60217d;
+}
+@media (max-width: 900px) {
+  .services-route .service-explore-links { grid-template-columns: minmax(0, 1fr); }
+  .services-route .service-explore-links > a { min-height: 72px; }
+}
