@@ -49,7 +49,7 @@ export default function Page() {
 
         <section aria-labelledby="website-packages">
           <h2 id="website-packages">Choose your website service.</h2>
-          <div className="destination-grid">{serviceOffers.map(([name, heading, price, description]) => <article className="destination-block" key={name}><small>{name}</small><h3>{heading}</h3><p><strong>{price}</strong></p><p>{description}</p><Link className="button button-primary" href="/start">Inquire about {name} <ArrowUpRight /></Link></article>)}</div>
+          <div className="destination-grid service-price-list">{serviceOffers.map(([name, heading, price, description]) => <article className="destination-block service-price-item" key={name}><small className="service-price-label">{name}</small><h3 className="service-price-heading">{heading}</h3><p className="service-price-amount"><strong>{price}</strong></p><p className="service-price-description">{description}</p><Link className="button button-primary service-price-action" href="/start">Inquire about {name} <ArrowUpRight /></Link></article>)}</div>
           <p>{servicePaymentTerms}</p>
         </section>
 
