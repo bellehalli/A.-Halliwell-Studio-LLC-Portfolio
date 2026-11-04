@@ -3,28 +3,33 @@ export const studio = {
   name: "A. Halliwell Studio",
   email: "hello@ahalliwellstudio.com",
   consultationUrl: "https://calendar.app.google/UArjShmAHzt4vGE48",
-  offers: { website: "Custom Website", refinement: "Website Refinement", custom: "Custom Scope", support: "Studio Continuity" },
-  pricing: { quickFix: 300, launch: 1200, website: 7000, refinement: 2500 },
+  offers: { website: "Custom Website", refinement: "Website Enhancement", custom: "Custom Scope", support: "Studio Continuity" },
+  pricing: { quickFix: 350, leadCapture: 499, enhancement: 699, launch: 1200, smallBusiness: 2500, businessPlus: 5000, website: 7000, refinement: 699 },
 } as const;
 export const dollars = (amount: number) => `$${amount.toLocaleString("en-US")}`;
 export const websiteStartingPrice = `Starting at ${dollars(studio.pricing.website)} + scope`;
 export const refinementStartingPrice = `Starting at ${dollars(studio.pricing.refinement)} + scope`;
-export const pricingSummary = "Quick Fix: $300. One-Page Launch: $1,200. Small Business Site: $2,500. Custom Website: $7,000+. Other custom projects are priced by scope.";
+export const pricingSummary = "Quick Fix: $350. Lead Capture Installation: $499. Website Enhancement: $699. One-Page Launch: $1,200. Small Business Website (up to 3 pages): $2,500+. Business Website Plus (up to 5 pages): $5,000+. Custom Website (6+ pages): $7,000+. Final prices depend on scope.";
 export const serviceOffers = [
-  ["Quick Fix", "One problem. A clearer next step.", "$300", "One agreed website issue, such as a mobile layout, contact form or booking-link fix. Reviewed for fit before payment. Delivered in 3–5 business days after access is received; 100% upfront."],
-  ["One-Page Launch", "Get your business online.", "$1,200", "One custom, mobile-ready page with hero, services, about, and a simple inquiry form or existing booking link. Client supplies copy, logo and photos. Two revision rounds; about 10 business days after deposit and content."],
-  ["Small Business Site", "Give your business room to grow.", "$2,500", "Up to five pages, responsive design, basic SEO setup, and a simple inquiry form or existing booking link. Client supplies content. Two revision rounds; timeline agreed in your proposal."],
-  ["Custom Website", "Build around the bigger vision.", "$7,000+", "Custom strategy, design and development for a more extensive website or customer journey. Pages, features, integrations, revisions and timeline are defined in your proposal."],
+  ["Website Quick Fix", "Resolve the small things that matter.", "$350", "Up to three minor corrections to an existing accessible website, such as hours, links, text, images or calls to action. Scope and technical feasibility are confirmed before work begins."],
+  ["Lead Capture Installation", "Make it easier to get inquiries.", "$499", "One customer inquiry or service-request form, email notifications, a confirmation message and a tested submission workflow. Existing website access and compatibility required."],
+  ["Website Enhancement", "Make an existing page work harder.", "$699", "Refresh one existing page's layout, approved imagery, content hierarchy and calls to action. More extensive redesigns are separately scoped."],
+  ["One-Page Website Launch", "Get your business online.", "$1,200", "One responsive page with service sections, contact information, a simple inquiry form and basic search setup. Client supplies approved content and brand assets."],
+  ["Small Business Website", "A focused home for your business.", "$2,500+", "Up to three pages, responsive design, basic search setup and a simple inquiry pathway. Features and final price depend on scope."],
+  ["Business Website Plus", "More space for what you offer.", "$5,000+", "Up to five pages with responsive design and an agreed customer journey. Content, features and integrations are scoped in the proposal."],
+  ["Custom Website", "Build around the bigger vision.", "$7,000+", "Six or more pages with custom strategy, design and development. Page count, functionality, integrations, revisions and schedule are defined in the proposal."],
 ] as const;
-export const servicePaymentTerms = "Quick Fix is paid in full upfront. One-Page Launch and Small Business Site require 50% upfront and 50% before launch or final handoff. Custom Website milestones are defined in your proposal. Domain, hosting, copywriting, e-commerce, new booking systems and custom integrations are quoted separately. Every project has a written scope; additions require a separate quote.";
+export const servicePaymentTerms = "Standard projects require a 50% deposit before work begins and the remaining 50% before launch or final handoff. Every project receives a written scope and estimated schedule. Hosting, domains, paid assets, third-party subscriptions, copywriting, e-commerce, advanced booking and custom integrations may cost extra. Additional work requires a separate quote.";
 const shortAmount = (amount: number) => `$${amount / 1000}k`;
 export const websiteInvestmentRange = `${shortAmount(studio.pricing.website)}–$10k`;
 export const investmentOptions = [
-  "$300 · Quick Fix",
-  "$1,200 · One-Page Launch",
-  "$2,500 · Small Business Site",
-  `${shortAmount(studio.pricing.refinement)}–${shortAmount(studio.pricing.website)} · refinement or custom scope`,
-  `${websiteInvestmentRange} · custom website`,
+  "$350 · Website Quick Fix",
+  "$499 · Lead Capture Installation",
+  "$699 · Website Enhancement",
+  "$1,200 · One-Page Website Launch",
+  "$2,500+ · Small Business Website (up to 3 pages)",
+  "$5,000+ · Business Website Plus (up to 5 pages)",
+  "$7,000+ · Custom Website (6+ pages)",
   "$10k–$20k · larger build + integrations",
   "$20k+ · advanced custom systems",
   "Custom project · priced by scope",
