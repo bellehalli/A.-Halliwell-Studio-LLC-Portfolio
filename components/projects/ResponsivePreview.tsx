@@ -4,7 +4,7 @@ import { ArrowUpRight } from "@/components/ui/StudioIcons";
 import { useEffect, useState } from "react";
 import WillowPreview from "@/components/projects/WillowPreview";
 
-export default function ResponsivePreview({ url, title, willow = false }: { url: string; title: string; willow?: boolean }) {
+export default function ResponsivePreview({ url, title, willow = false, directMobile = false }: { url: string; title: string; willow?: boolean; directMobile?: boolean }) {
   const [mobile, setMobile] = useState<boolean | null>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -16,7 +16,7 @@ export default function ResponsivePreview({ url, title, willow = false }: { url:
     return () => query.removeEventListener("change", update);
   }, []);
 
-  if (mobile === null || (mobile && !loaded)) {
+  if (mobile === null || (mobile && !loaded && !directMobile)) {
     return <div className="project-preview-facade">
       <span>INTERACTIVE WEBSITE PREVIEW</span>
       {mobile === null ? <p>Loading preview options…</p> : <button type="button" onClick={() => setLoaded(true)}>Load interactive preview <ArrowUpRight /></button>}
