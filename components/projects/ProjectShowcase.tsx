@@ -41,7 +41,7 @@ export default function ProjectShowcase({ project }: { project: Project }) {
             <div className="project-coming-soon" role="status">
               <div><span>Concept in development</span><strong>Coming Soon</strong><p>The full experience is taking shape.</p></div>
             </div>
-          ) : <ProjectMedia project={project} />}
+          ) : <ProjectMedia project={project} mode={project.slug === "willow-lily" || project.slug === "maison-riviere" ? "live" : "all"} />}
         </div>
 
         <div className="project-world-footer work-gallery-details">
