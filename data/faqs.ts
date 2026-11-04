@@ -11,7 +11,7 @@ export const studioFaqs = [
   },
   {
     "question": "What is included in the Small Business Site?",
-    "answer": "Up to five pages with mobile-ready design, basic SEO setup, a simple inquiry form or an existing booking link, and two revision rounds. You supply copy, logo and photos. New booking systems, commerce and custom integrations are separate scopes."
+    "answer": "Up to three pages with mobile-ready design, basic SEO setup, and a simple inquiry pathway. The $5,000+ Business Website Plus tier covers up to five pages; the $7,000+ Custom Website tier covers six or more pages. Revisions and final features are defined in the proposal. You supply copy, logo and photos. New booking systems, commerce and custom integrations are separate scopes."
   },
   {
     "question": "How do payments work?",
@@ -23,7 +23,7 @@ export const studioFaqs = [
   },
   {
     "question": "How many revisions are included?",
-    "answer": "One-Page Launch and Small Business Site include two rounds of revisions. Quick Fix covers one agreed issue and verification that the fix works. Larger engagements may include additional rounds, as specified in your proposal. Each round is one consolidated set of feedback on the presented work. New features or a change in direction may require additional scope."
+    "answer": "Revision allowances are specified in the written proposal. Website Quick Fix includes verification of the agreed corrections; larger projects may include consolidated revision rounds as agreed. Each round is one consolidated set of feedback on the presented work. New features or a change in direction may require additional scope."
   },
   {
     "question": "Do I need my copy, photos, and branding ready?",
