@@ -59,9 +59,9 @@ export default function Page() {
           <small>EXPLORE BY SERVICE</small>
           <h2 id="service-explore-title">Choose the problem you need solved.</h2>
           <nav className="service-explore-links" aria-label="Explore services">
-            <Link href="/web-design"><span>Custom web design</span><ArrowUpRight /></Link>
-            <Link href="/web-development"><span>Custom web development</span><ArrowUpRight /></Link>
-            <Link href="/interactive-experiences"><span>Interactive digital experiences</span><ArrowUpRight /></Link>
+            <Link href="/work"><span>Custom web design</span><ArrowUpRight /></Link>
+            <Link href="/lab"><span>Custom web development</span><ArrowUpRight /></Link>
+            <Link href="/lab"><span>Interactive digital experiences</span><ArrowUpRight /></Link>
           </nav>
         </section>
 
