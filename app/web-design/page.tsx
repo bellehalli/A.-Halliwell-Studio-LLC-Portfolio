@@ -11,6 +11,10 @@ export const metadata: Metadata = pageMetadata({
 
 export default function Page() {
   return <SeoLandingPage
+    theme="design"
+    lead="A website should feel like your brand and make the next step obvious."
+    outcomes={["Distinctive visual direction, not a recycled theme","Thoughtful layouts for desktop, tablet and mobile","Clear service pages, navigation and inquiry journeys","Design that makes the business easier to understand"]}
+    pricingNote="One-page launches start at $1,200. Websites up to three pages start at $2,500; up to five pages at $5,000; and six or more pages at $7,000. Final pricing depends on scope."
     eyebrow="CUSTOM WEB DESIGN · WORKING WORLDWIDE"
     title="Custom web design built around the decision."
     intro="A beautiful website is only useful when people can understand the business, trust the offer and know what to do next. A. Halliwell Studio designs custom websites around that entire journey for businesses worldwide. Remote collaboration brings the studio to your project wherever you are based."
